@@ -41,12 +41,13 @@ export function quantile(xs: number[], p: number): number {
 }
 
 /** Histogramme : bornes et effectifs normalisés en densité. */
-export function histogram(xs: number[], bins: number, lo?: number, hi?: number): { centers: number[]; density: number[]; width: number } {
+export function histogram(xs: number[], bins: number, lo?: number, hi?: number, dropOutside = false): { centers: number[]; density: number[]; width: number } {
   const a = lo ?? Math.min(...xs)
   const b = hi ?? Math.max(...xs)
   const width = (b - a) / bins || 1
   const counts = new Array<number>(bins).fill(0)
   for (const x of xs) {
+    if (dropOutside && (x < a || x > b)) continue
     let k = Math.floor((x - a) / width)
     if (k < 0) k = 0
     if (k >= bins) k = bins - 1

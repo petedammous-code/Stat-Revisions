@@ -8,9 +8,11 @@ import { renderAssocier } from './associer'
 import { renderNumerique } from './numerique'
 import { renderAnnale } from './annale'
 import type { ExerciseContext } from './common'
+import { setGlossaryScope } from '../content/glossary'
 
 /** Aiguille vers le composant selon le type d'exercice. */
 export function renderExercise(ex: Exercise, ctx: ExerciseContext): HTMLElement {
+  setGlossaryScope(ctx.chapter)
   switch (ex.type) {
     case 'qcm':
       return renderQcm(ex, ctx)

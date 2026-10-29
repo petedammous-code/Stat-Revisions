@@ -148,7 +148,7 @@ registerGlossary([
     definition: '$P:=\\mathbf{X}(\\mathbf{X}^T\\mathbf{X})^{-1}\\mathbf{X}^T$ : projection orthogonale sur $F=\\mathrm{Vect}(\\mathbf{1},\\underline{\\mathbf{x}})$ (dimension 2) ; $\\mathbf{X}\\hat\\beta=P\\mathbf{Y}$ et $n\\hat\\sigma^2=\\|(I_n-P)\\mathbf{Y}\\|^2$, d’où $n\\hat\\sigma^2/\\sigma^2\\sim\\chi^2(n-2)$ (Cochran).',
     source: 'PC2 Ex. 1',
   },
-])
+], 'ch2')
 
 const chapter: Chapter = {
   number: 2,

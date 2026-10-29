@@ -106,7 +106,7 @@ registerGlossary([
     definition: '$\\mathfrak R_k(x)$ : distance de $x$ à son $k$-ième plus proche voisin ; $\\hat\\eta_{n,k}(x)=\\frac1k\\sum_{i\\in N_k(x)}\\mathbf 1\\{Y_i=1\\}$, classifieur plug-in $2\\mathbf 1\\{\\hat\\eta_{n,k}\\ge1/2\\}-1$.',
     source: 'Examen 2025 Ex. 3',
   },
-])
+], 'ch9')
 
 const chapter: Chapter = {
   number: 9,

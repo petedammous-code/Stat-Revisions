@@ -8,6 +8,7 @@ import { renderExercise } from '../components/exercise'
 import { renderFlashcards } from '../components/flashcards'
 import { renderSheet } from './fiches'
 import { getItemStats } from '../core/store'
+import { setGlossaryScope } from '../content/glossary'
 
 const TABS = [
   { id: 'cours', label: 'Cours' },
@@ -19,6 +20,7 @@ const TABS = [
 ]
 
 export function renderChapterPage(ch: Chapter, route: Route): HTMLElement {
+  setGlossaryScope(ch.slug)
   const page = el('main', 'page')
   const tab = route.segments[2] ?? 'cours'
   const head = el('div')

@@ -12,6 +12,7 @@ import { renderSheetsPage } from './pages/fiches'
 import { renderDashboard } from './pages/dashboard'
 import { getChapter } from './content'
 import { unmountAll } from './components/viz'
+import { setGlossaryScope } from './content/glossary'
 
 const app = document.getElementById('app')!
 initTheme()
@@ -19,6 +20,7 @@ initTooltips()
 
 function render(route: Route): void {
   unmountAll(app)
+  setGlossaryScope('')
   app.innerHTML = ''
   app.append(renderTopbar(route))
   const [first, second] = route.segments

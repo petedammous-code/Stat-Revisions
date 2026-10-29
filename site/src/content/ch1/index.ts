@@ -134,7 +134,7 @@ registerGlossary([
     definition: '$\\nu\\ll\\mu$ : tout ensemble $\\mu$-négligeable est $\\nu$-négligeable ; par Radon–Nikodym ($\\mu$ $\\sigma$-finie), équivaut à l’existence d’une densité $\\nu=f\\cdot\\mu$.',
     source: 'Poly ch.1, Déf. 14 et Thm 2.1',
   },
-])
+], 'ch1')
 
 const chapter: Chapter = {
   number: 1,

@@ -148,7 +148,7 @@ registerGlossary([
     definition: '$\\beta_{\\phi_n}(\\theta)=\\mathbb{P}_{n,\\theta}(\\phi_n=1)$ : probabilité de rejeter $H_0$ avec le $n$-ième test. Taille asymptotique $\\sup_{\\Theta_0}\\limsup_n\\beta_{\\phi_n}$ ; consistance : $\\liminf_n\\beta_{\\phi_n}(\\theta)=1$ sur $\\Theta_1$.',
     source: 'Poly ch.6, Déf. 1.9–1.11',
   },
-])
+], 'ch6')
 
 const chapter: Chapter = {
   number: 6,

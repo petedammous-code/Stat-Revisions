@@ -162,34 +162,52 @@ export const GLOSSARY: GlossaryEntry[] = [
   },
 ]
 
-const extra: GlossaryEntry[] = []
+/** Entrées ajoutées par les chapitres, avec leur portée (slug du chapitre). */
+const extra: { entry: GlossaryEntry; chapter: string }[] = []
 
-/** Ajoute des entrées de glossaire (utilisé par les chapitres). */
-export function registerGlossary(entries: GlossaryEntry[]): void {
+/**
+ * Ajoute des entrées de glossaire propres à un chapitre. Une même écriture LaTeX peut avoir
+ * des sens différents selon les chapitres (ex. γ) : la recherche privilégie le chapitre affiché.
+ */
+export function registerGlossary(entries: GlossaryEntry[], chapter = ''): void {
   for (const e of entries) {
-    if (!GLOSSARY.some((g) => g.key === e.key) && !extra.some((g) => g.key === e.key)) extra.push(e)
+    if (!extra.some((g) => g.entry.key === e.key && g.chapter === chapter)) extra.push({ entry: e, chapter })
   }
-  dirty = true
+}
+
+let scope = ''
+/** Fixe le chapitre courant (appelé par la page chapitre avant le rendu). */
+export function setGlossaryScope(chapter: string): void {
+  scope = chapter
 }
 
 function normalizeTex(t: string): string {
   return t.replace(/\s+/g, '').replace(/\\left|\\right/g, '')
 }
 
-const index = new Map<string, GlossaryEntry>()
-let dirty = true
-function buildIndex(): void {
-  index.clear()
-  for (const e of [...GLOSSARY, ...extra]) for (const t of e.tex) index.set(normalizeTex(t), e)
-  dirty = false
-}
-
-/** Retrouve l'entrée dont une variante LaTeX correspond exactement au symbole. */
+/**
+ * Retrouve l'entrée dont une variante LaTeX correspond exactement au symbole.
+ * Priorité : chapitre courant, puis glossaire commun, puis autres chapitres.
+ */
 export function findGlossaryEntry(tex: string): GlossaryEntry | undefined {
-  if (dirty) buildIndex()
-  return index.get(normalizeTex(tex))
+  const n = normalizeTex(tex)
+  const match = (e: GlossaryEntry) => e.tex.some((t) => normalizeTex(t) === n)
+  if (scope) {
+    const own = extra.find((g) => g.chapter === scope && match(g.entry))
+    if (own) return own.entry
+  }
+  const core = GLOSSARY.find(match)
+  if (core) return core
+  if (scope) return undefined // symbole d'un autre chapitre : pas d'infobulle potentiellement trompeuse
+  return extra.find((g) => match(g.entry))?.entry
 }
 
+/** Toutes les entrées (le même `key` peut exister dans plusieurs chapitres). */
 export function allGlossary(): GlossaryEntry[] {
-  return [...GLOSSARY, ...extra]
+  return [...GLOSSARY, ...extra.map((g) => g.entry)]
+}
+
+/** Entrée par clé, en privilégiant le chapitre courant. */
+export function glossaryByKey(key: string): GlossaryEntry | undefined {
+  return extra.find((g) => g.chapter === scope && g.entry.key === key)?.entry ?? GLOSSARY.find((g) => g.key === key) ?? extra.find((g) => g.entry.key === key)?.entry
 }

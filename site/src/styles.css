@@ -318,3 +318,5 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
   details { display: block; }
   details > summary { display: none; }
 }
+
+.rich-table { width: auto; max-width: 100%; display: block; overflow-x: auto; }

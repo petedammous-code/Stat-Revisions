@@ -134,7 +134,7 @@ registerGlossary([
     definition: '$\\tau_n(c)=c^2/((1-c/n)^{-n}-1)\\to c^2/(e^c-1)$ : dans $\\mathcal{U}([0,\\theta])$, tout estimateur sans biais vérifie $\\mathrm{Var}_\\theta(T)\\ge\\theta^2\\tau_n(c)/n^2$ (Exercice 3 / PC3 Ex. 3).',
     source: 'Poly ch.3, Exercice 3 ; PC3 Ex. 3 Q6',
   },
-])
+], 'ch3')
 
 const chapter: Chapter = {
   number: 3,

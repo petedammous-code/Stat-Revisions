@@ -47,3 +47,15 @@ describe('Texte riche', () => {
     expect(extractMath('a $x$ b $$y$$ c')).toEqual([{ tex: 'x', display: false }, { tex: 'y', display: true }])
   })
 })
+
+describe('Socle — compléments', () => {
+  it('rend les tableaux markdown', () => {
+    const html = richToHtml('| a | b |\n|---|---|\n| $x$ | 2 |')
+    expect(html).toContain('<table class="rich-table">')
+    expect(html).toContain('<th>a</th>')
+    expect(html).toContain('katex')
+  })
+  it('rend l’indicatrice en gras', () => {
+    expect(richToHtml('$\\mathbb{1}_A$')).toContain('mathbf')
+  })
+})

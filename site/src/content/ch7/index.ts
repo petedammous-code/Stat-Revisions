@@ -127,7 +127,7 @@ registerGlossary([
     definition: '$\\gamma_0=\\operatorname{signe}$ (médiane), $\\gamma_\\infty(x)=x$ (moyenne), $\\gamma_k(x)=x$ si $|x|\\le k$ et $k\\operatorname{signe}(x)$ sinon (Huber).',
     source: 'PC7 Ex. 5, éq. (5)',
   },
-])
+], 'ch7')
 
 const chapter: Chapter = {
   number: 7,

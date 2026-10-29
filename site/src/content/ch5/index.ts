@@ -148,7 +148,7 @@ registerGlossary([
     definition: '$\\phi^{\\star,1}$ : rejet si $\\bar X_n>\\theta_0+z_{1-\\alpha}/\\sqrt n$ (à droite) ; $\\phi^{\\star,2}$ : rejet si $\\bar X_n<\\theta_0-z_{1-\\alpha}/\\sqrt n$ (à gauche) ; $\\phi^{\\star,3}$ : rejet si $|\\bar X_n-\\theta_0|>z_{1-\\alpha/2}/\\sqrt n$ (bilatéral, U.M.P.U.).',
     source: 'Poly ch.5, Exercice 5 ; PC5 Ex. 2',
   },
-])
+], 'ch5')
 
 const chapter: Chapter = {
   number: 5,

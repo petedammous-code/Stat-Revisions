@@ -169,7 +169,7 @@ registerGlossary([
     definition: '$\\widehat R_n(g)=\\frac1n\\sum_{k=1}^n\\mathbb{1}_{\\{g(\\mathbf{X}_k)\\ne Y_k\\}}$ : erreur d’apprentissage ; tend vers $R(g)$ pour $g$ **fixée** (LGN), pas pour une règle choisie au vu des données.',
     source: 'Poly ch.8, Compléments Déf. 4.1',
   },
-])
+], 'ch8')
 
 const chapter: Chapter = {
   number: 8,

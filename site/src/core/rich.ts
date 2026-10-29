@@ -81,8 +81,17 @@ function findInlineEnd(text: string, from: number): number {
   return -1
 }
 
+/**
+ * Normalisations d'affichage : `\mathbb{1}` (indicatrice du poly) n'a pas de glyphe ajouré
+ * dans les polices KaTeX et s'afficherait comme un 1 ordinaire ; on le rend en gras.
+ */
+function prepareTex(tex: string): string {
+  return tex.replace(/\\mathbb\{1\}/g, '\\mathbf{1}').replace(/\\mathbb 1(?![0-9])/g, '\\mathbf{1}')
+}
+
 /** Rend une formule en HTML (lève si `throwOnError`). */
 export function texToHtml(tex: string, display: boolean, throwOnError = false): string {
+  tex = prepareTex(tex)
   return katex.renderToString(tex, {
     displayMode: display,
     throwOnError,
@@ -96,7 +105,7 @@ export function texToHtml(tex: string, display: boolean, throwOnError = false): 
 /** Vérifie qu'une formule compile ; renvoie le message d'erreur ou null. */
 export function checkTex(tex: string, display: boolean): string | null {
   try {
-    katex.renderToString(tex, { displayMode: display, throwOnError: true, macros: { ...KATEX_MACROS }, strict: 'error' })
+    katex.renderToString(prepareTex(tex), { displayMode: display, throwOnError: true, macros: { ...KATEX_MACROS }, strict: 'error' })
     return null
   } catch (e) {
     return e instanceof Error ? e.message : String(e)
@@ -150,6 +159,22 @@ function lightMarkdown(src: string): string {
       para = []
     }
   }
+  let tableRows: string[] = []
+  const cells = (row: string) => row.slice(1, -1).split('|').map((c) => c.trim())
+  const flushTable = () => {
+    if (!tableRows.length) return
+    const rows = tableRows
+    tableRows = []
+    const isSep = (r: string) => /^\|[\s:|-]+\|$/.test(r)
+    let html = '<table class="rich-table">'
+    let body = rows
+    if (rows.length >= 2 && isSep(rows[1])) {
+      html += '<thead><tr>' + cells(rows[0]).map((c) => `<th>${inline(c)}</th>`).join('') + '</tr></thead>'
+      body = rows.slice(2)
+    }
+    html += '<tbody>' + body.filter((r) => !isSep(r)).map((r) => '<tr>' + cells(r).map((c) => `<td>${inline(c)}</td>`).join('') + '</tr>').join('') + '</tbody></table>'
+    out.push(html)
+  }
   const flushList = () => {
     if (list) {
       const startAttr = listOrdered && listStart !== 1 ? ` start="${listStart}"` : ''
@@ -164,6 +189,7 @@ function lightMarkdown(src: string): string {
     if (trimmed === '') {
       flushPara()
       flushList()
+      flushTable()
       continue
     }
     const display = /^\u0000\d+\u0000$/.test(trimmed)
@@ -173,6 +199,12 @@ function lightMarkdown(src: string): string {
       out.push(trimmed)
       continue
     }
+    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+      flushPara()
+      flushList()
+      tableRows.push(trimmed)
+      continue
+    } else if (tableRows.length) flushTable()
     const h = /^(#{1,6})\s+(.*)$/.exec(trimmed)
     if (h) {
       flushPara()
@@ -210,6 +242,7 @@ function lightMarkdown(src: string): string {
   }
   flushPara()
   flushList()
+  flushTable()
   return out.join('\n')
 }
 

@@ -1,5 +1,5 @@
 /** Infobulles de glossaire : survol / focus d'un `.gloss`. */
-import { allGlossary } from '../content/glossary'
+import { glossaryByKey } from '../content/glossary'
 import { richToHtml } from './rich'
 
 let tip: HTMLElement | null = null
@@ -16,7 +16,7 @@ function ensureTip(): HTMLElement {
 
 function show(target: HTMLElement): void {
   const key = target.dataset.gloss
-  const entry = allGlossary().find((g) => g.key === key)
+  const entry = key ? glossaryByKey(key) : undefined
   if (!entry) return
   const t = ensureTip()
   t.innerHTML = `<div class="tooltip-title">${entry.name}</div>${richToHtml(entry.definition)}<div class="tooltip-src">${entry.source}</div>`

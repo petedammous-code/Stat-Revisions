@@ -41,6 +41,8 @@ export interface SliderHandle {
   root: HTMLElement
   get: () => number
   set: (v: number) => void
+  /** Affiche ou masque le curseur. */
+  setVisible: (visible: boolean) => void
   /** Reconfigure bornes, pas et étiquette (la valeur est ramenée dans les bornes). */
   configure: (o: { min?: number; max?: number; step?: number; label?: string; value?: number }) => void
 }
@@ -77,6 +79,9 @@ export function slider(opts: SliderOptions): SliderHandle {
     set: (v: number) => {
       input.value = String(opts.log ? Math.log10(v) : v)
       refresh()
+    },
+    setVisible: (visible: boolean) => {
+      root.style.display = visible ? '' : 'none'
     },
     configure: (o) => {
       if (o.min !== undefined) input.min = String(o.min)
@@ -207,4 +212,13 @@ export function details(summary: string, body: HTMLElement | string, open = fals
 
 export function clear(e: HTMLElement): void {
   while (e.firstChild) e.removeChild(e.firstChild)
+}
+
+/** Retarde `fn` jusqu'à `ms` millisecondes après le dernier appel (calculs lourds sur curseur). */
+export function debounce<A extends unknown[]>(fn: (...args: A) => void, ms = 120): (...args: A) => void {
+  let t: ReturnType<typeof setTimeout> | undefined
+  return (...args: A) => {
+    if (t !== undefined) clearTimeout(t)
+    t = setTimeout(() => fn(...args), ms)
+  }
 }

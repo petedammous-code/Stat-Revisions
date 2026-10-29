@@ -32,10 +32,22 @@ function themeLayout(): Layout {
     font: { color: fg, family: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif', size: 13 },
     xaxis: { gridcolor: grid, zerolinecolor: grid, automargin: true },
     yaxis: { gridcolor: grid, zerolinecolor: grid, automargin: true },
-    margin: { l: 50, r: 20, t: 40, b: 45 },
-    legend: { orientation: 'h', y: -0.2 },
+    margin: { l: 50, r: 20, t: 40, b: 50 },
+    legend: { orientation: 'h', y: -0.28, yanchor: 'top' },
     autosize: true,
   }
+}
+
+/** Plotly 4 n'affiche plus `title: 'texte'` : on convertit en `{ text }` (figure et axes). */
+function normalizeTitles(layout: Layout): Layout {
+  const out: Layout = { ...layout }
+  if (typeof out.title === 'string') out.title = { text: out.title }
+  for (const [k, v] of Object.entries(out)) {
+    if (/^[xyz]axis\d*$/.test(k) && v && typeof v === 'object' && typeof (v as Layout).title === 'string') {
+      out[k] = { ...(v as Layout), title: { text: (v as Layout).title } }
+    }
+  }
+  return out
 }
 
 function merge(base: Layout, extra: Layout): Layout {
@@ -61,7 +73,7 @@ export function plot(container: HTMLElement, traces: Trace[], layout: Layout = {
   let lastTraces = traces
   let lastLayout = layout
   const render = () => {
-    void Plotly.react(container, lastTraces as any, merge(themeLayout(), lastLayout) as any, CONFIG as any)
+    void Plotly.react(container, lastTraces as any, merge(themeLayout(), normalizeTitles(lastLayout)) as any, CONFIG as any)
   }
   render()
   const onTheme = () => render()
@@ -130,6 +142,21 @@ export function segmentsByColor(xs: number[], y0s: number[], y1s: number[], colo
   return [...groups.entries()].map(([c, idx]) =>
     segmentsTrace(idx.map((i) => xs[i]), idx.map((i) => y0s[i]), idx.map((i) => y1s[i]), names[c] ?? c, c, horizontal),
   )
+}
+
+/** Courbe de niveau `z = level` d'une grille (frontière de décision 2D). z[j][i] correspond à (xs[i], ys[j]). */
+export function contourLevelTrace(xs: number[], ys: number[], z: number[][], level: number, name: string, color: string, dash: 'solid' | 'dash' | 'dot' = 'solid'): Trace {
+  return {
+    x: xs, y: ys, z, name, type: 'contour', showscale: false, hoverinfo: 'skip', showlegend: true,
+    contours: { start: level, end: level, size: 1, coloring: 'lines' },
+    line: { color, width: 2.5, dash },
+    colorscale: [[0, color], [1, color]],
+  }
+}
+
+/** Carte de couleurs d'une grille (zones de décision). */
+export function heatmapTrace(xs: number[], ys: number[], z: number[][], colorscale: [number, string][], extra: Trace = {}): Trace {
+  return { x: xs, y: ys, z, type: 'heatmap', colorscale, showscale: false, hoverinfo: 'skip', opacity: 0.35, ...extra }
 }
 
 /** Boîte à moustaches d'un échantillon. */
