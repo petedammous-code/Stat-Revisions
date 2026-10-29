@@ -86,7 +86,7 @@ export const summarySheet: SummarySheet = {
     'Codage $\\{-1,1\\}$ : $\\eta=\\mathbb{P}(Y=1\\mid\\mathbf{X})$ et $\\mathbb{E}[Y\\mid\\mathbf{X}]=2\\eta-1$ ; la règle est $2\\,\\mathbb{1}_{\\{\\cdot\\}}-1$, pas $\\mathbb{1}_{\\{\\cdot\\}}$.',
     'Le seuil $\\frac12$ porte sur $\\eta$, pas sur $\\mathbf{x}$ ; seuil au milieu des moyennes seulement pour des gaussiennes de même variance et $p=\\frac12$.',
     'Comparer les densités **pondérées** $p\\,q_1$ et $(1-p)\\,q_{-1}$ ; avec des uniformes, le seuil n’est pas au milieu du recouvrement (PC8 Ex. 5).',
-    '$R^\\star=\\mathbb{E}[\\min(\\eta,1-\\eta)]\\le\\min(p,1-p)$ (Jensen), égalité seulement dans des cas dégénérés.',
+    '$R^\\star=\\mathbb{E}[\\min(\\eta,1-\\eta)]\\le\\min(p,1-p)$ (Jensen), avec égalité ssi $\\eta(\\mathbf{X})$ reste p.s. du même côté de $\\frac12$.',
     'Classifieur bayésien non unique sur $\\{\\eta=\\frac12\\}$ (ou $\\{\\eta=\\frac1{c+1}\\}$).',
     '$|\\eta-\\frac12|\\le|\\eta-\\tilde\\eta|$ seulement sur $\\{\\tilde g\\ne g^\\star\\}$, et pour un même seuil $\\frac12$.',
     'Double aléa : $R_{01}(\\widehat g_n)$ est une variable aléatoire ; préciser $\\mathbb{E}$ (test) ou $\\mathbb{E}_n$ (apprentissage) ; Fubini pour intervertir.',

@@ -178,7 +178,7 @@ La règle des $k$-PPV (vote majoritaire) prédit 1 ssi au moins la moitié des $
     title: '7. Ce que garantit la règle par substitution (Prop. 1.5)',
     role: 'preuves',
     intro:
-      'Si l’on estime bien $\\eta$, la règle associée est presque aussi bonne que celle de Bayes : l’excès de risque est contrôlé par l’erreur $L^1$ sur $\\eta$. Avec un modèle bien spécifié et un estimateur consistant, l’excès de risque moyen tend vers 0. Ce sont les questions 3 de l’Examen 2025 Ex. 3 et les PC8 Ex. 2 et 7.',
+      'Si l’on estime bien $\\eta$, la règle associée est presque aussi bonne que celle de Bayes : l’excès de risque est contrôlé par l’erreur $L^1$ sur $\\eta$. Avec un modèle bien spécifié et un estimateur consistant, l’excès de risque moyen tend vers 0. C’est la question 3 de l’Examen 2025 Ex. 3 et l’objet des PC8 Ex. 2 et 7.',
     blocks: [
       {
         kind: 'text',

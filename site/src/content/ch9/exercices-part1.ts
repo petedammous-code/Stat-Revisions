@@ -159,7 +159,7 @@ export const exercisesPart1: Exercise[] = [
     statement: 'Si $X\\in\\mathcal G(v)$ (sous-gaussienne de facteur $v$), alors $\\mathrm{Var}(X)=v$.',
     answer: false,
     justifications: [
-      { text: 'Faux : la définition impose seulement $\\mathrm{Var}(X)\\le v$ ; par exemple une variable dans $[a,b]$ est dans $\\mathcal G((b-a)^2/4)$ sans avoir cette variance.', correct: true, explanation: 'Le poly le dit explicitement : « la définition n’exige pas que la variance soit égale à $v$ ».' },
+      { text: 'Faux : la définition impose seulement $\\mathrm{Var}(X)\\le v$ ; par exemple une variable **centrée** à valeurs dans $[a,b]$ est dans $\\mathcal G((b-a)^2/4)$ (lemme de Hoeffding) sans avoir en général cette variance.', correct: true, explanation: 'Le poly le dit explicitement : « la définition n’exige pas que la variance soit égale à $v$ ».' },
       { text: 'Vrai : on l’obtient en identifiant les développements de $\\psi_X$ et de $\\lambda^2v/2$ à l’ordre 2.', correct: false, explanation: 'Le développement donne seulement l’**inégalité** $\\mathrm{Var}(X)\\le v$ (on compare deux fonctions, pas deux égalités).' },
       { text: 'Vrai pour la gaussienne, donc vrai en général.', correct: false, explanation: 'Pour $\\mathcal N(0,v)$ il y a égalité, mais c’est un cas particulier ; une Bernoulli centrée de paramètre $0{,}1$ est dans $\\mathcal G(1/4)$ avec une variance $0{,}09$.' },
     ],
@@ -259,8 +259,7 @@ export const exercisesPart1: Exercise[] = [
       '$e^{\\lambda X}$ est bornée, donc $\\psi$ est bien définie et (domination) deux fois dérivable sous l’espérance.',
       'Calcul : $\\psi\'(\\lambda)=\\mathbb E[Xe^{\\lambda X}]/\\mathbb E[e^{\\lambda X}]$ et $\\psi\'\'(\\lambda)$ = variance de $X$ sous la loi basculée de densité $e^{\\lambda X}/\\mathbb E[e^{\\lambda X}]$.',
       'La loi basculée est portée par $[a,b]$, donc $\\psi\'\'(\\lambda)\\le\\widetilde{\\mathbb E}_\\lambda[(X-\\frac{a+b}2)^2]\\le\\frac{(b-a)^2}4$.',
-      '$\\psi(0)=0$ et $\\psi\'(0)=\\mathbb E[X]=0$.',
-      'Taylor-Lagrange à l’ordre 2 en 0 : $\\psi(\\lambda)=\\frac{\\lambda^2}2\\psi\'\'(\\xi)\\le\\frac{\\lambda^2(b-a)^2}8$.',
+      'Taylor-Lagrange à l’ordre 2 en 0, avec $\\psi(0)=0$ et $\\psi\'(0)=\\mathbb E[X]=0$ : $\\psi(\\lambda)=\\frac{\\lambda^2}2\\psi\'\'(\\xi)\\le\\frac{\\lambda^2(b-a)^2}8$.',
     ],
     explanation: 'On majore la dérivée seconde (variance d’une loi modifiée, au plus $(b-a)^2/4$) puis on intègre deux fois à partir de $\\psi(0)=\\psi\'(0)=0$. Le $8$ vient de $\\frac12\\cdot\\frac{(b-a)^2}4$.',
   },
@@ -275,12 +274,11 @@ export const exercisesPart1: Exercise[] = [
     prompt: 'Remettre dans l’ordre la preuve de $R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R\\le2\\sup_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|$ p.s.',
     steps: [
       'Fixer $\\varepsilon>0$ et $g_\\varepsilon\\in\\mathcal C$ avec $R(g_\\varepsilon)\\le\\inf_{\\mathcal C}R+\\varepsilon$.',
-      'Ajouter et retrancher $\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})$ dans $R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R$.',
-      'Utiliser $\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})\\le\\widehat{\\mathrm R}_n(g_\\varepsilon)$ et $-\\inf R\\le-R(g_\\varepsilon)+\\varepsilon$.',
+      'Ajouter et retrancher $\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})$ dans $R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R$, puis utiliser $\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})\\le\\widehat{\\mathrm R}_n(g_\\varepsilon)$ et $-\\inf R\\le-R(g_\\varepsilon)+\\varepsilon$.',
       'Majorer $R(\\hat g^*_{n,\\mathcal C})-\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})$ et $\\widehat{\\mathrm R}_n(g_\\varepsilon)-R(g_\\varepsilon)$ chacun par le sup sur $\\mathcal C$.',
       'Faire tendre $\\varepsilon$ vers 0.',
     ],
-    explanation: 'Les deux observations clés : définition du MRE (étape 3) et appartenance de $\\hat g^*_{n,\\mathcal C}$ et $g_\\varepsilon$ à $\\mathcal C$ (étape 4). En espérance, le terme en $g_\\varepsilon$ (règle fixée) est d’espérance nulle : pas de facteur 2.',
+    explanation: 'Les deux observations clés : définition du MRE (étape 2) et appartenance de $\\hat g^*_{n,\\mathcal C}$ et $g_\\varepsilon$ à $\\mathcal C$ (étape 3). En espérance, le terme en $g_\\varepsilon$ (règle fixée) est d’espérance nulle : pas de facteur 2.',
   },
   {
     id: 'ch9-ord-pisier',
@@ -293,7 +291,7 @@ export const exercisesPart1: Exercise[] = [
     prompt: 'Remettre dans l’ordre la preuve de $\\mathbb E[\\max_i|Z_i|]\\le\\sigma\\sqrt{2\\log(2m)}$.',
     steps: [
       'Pour $\\lambda>0$, Jensen : $e^{\\lambda\\mathbb E[\\max_iZ_i]}\\le\\mathbb E[e^{\\lambda\\max_iZ_i}]$.',
-      'Majorer le maximum des exponentielles par leur somme : $\\mathbb E[e^{\\lambda\\max_iZ_i}]\\le\\sum_i\\mathbb E[e^{\\lambda Z_i}]\\le m\\,e^{\\lambda^2\\sigma^2/2}$.',
+      'Majorer ensuite ce membre de droite en bornant le maximum des exponentielles par leur somme : $\\mathbb E[e^{\\lambda\\max_iZ_i}]\\le\\sum_i\\mathbb E[e^{\\lambda Z_i}]\\le m\\,e^{\\lambda^2\\sigma^2/2}$.',
       'Prendre le logarithme et diviser par $\\lambda$ : $\\mathbb E[\\max_iZ_i]\\le\\frac{\\log m}\\lambda+\\frac{\\lambda\\sigma^2}2$.',
       'Choisir $\\lambda=\\sqrt{2\\log m}/\\sigma$ : $\\mathbb E[\\max_iZ_i]\\le\\sigma\\sqrt{2\\log m}$.',
       'Appliquer ce résultat aux $2m$ variables $\\pm Z_i$, puisque $\\max_i|Z_i|=\\max(Z_1,\\dots,Z_m,-Z_1,\\dots,-Z_m)$.',
@@ -312,7 +310,7 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       'Choisir $K$ points distincts de $\\mathsf X$ (infini) et considérer les lois $\\mathbb P_{\\mathbf b}$ : $\\mathbf X$ uniforme sur ces points, label $b_j$ en $a_j$ ; elles ont toutes $R^\\star=0$.',
       'Minorer le sup sur les lois par la moyenne sur les $2^K$ étiquetages $\\mathbf b$.',
-      'Minorer la probabilité d’erreur en se restreignant à l’événement « le point test n’a pas été observé ».',
+      'Dans cette moyenne, minorer la probabilité d’erreur en se restreignant à l’événement « le point test n’a pas été observé ».',
       'Pour un point non observé, son label est indépendant des labels vus : la règle se trompe avec probabilité $1/2$.',
       'Calculer $\\mathbb P(\\text{point non observé})=(1-1/K)^n$, d’où le minorant $\\frac12(1-1/K)^n$.',
       'Choisir $K$ assez grand pour que $\\frac12(1-1/K)^n\\ge\\frac12-\\varepsilon$.',

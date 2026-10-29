@@ -54,8 +54,8 @@ export const exercisesPart2: Exercise[] = [
         prompt: 'Étape 1 — Première majoration à écrire :',
         choices: [
           { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\mathbb E[\\max_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|]$ (Th. 1.2, éq. (3))', correct: true, explanation: 'Décomposition + définition du MRE + absence de biais du risque empirique de l’oracle (règle fixée).' },
-          { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\mathbb E[|\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})-R(\\hat g^*_{n,\\mathcal C})|]$ puis Hoeffding', correct: false, explanation: 'Hoeffding ne s’applique pas au MRE (pertes non indépendantes) : il faut passer par le max sur la classe.' },
-          { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le2\\,\\mathbb E[\\max_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|]$', correct: false, explanation: 'Correct mais sous-optimal : le facteur 2 de l’éq. (2) disparaît en espérance.' },
+          { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\mathbb E[|\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})-R(\\hat g^*_{n,\\mathcal C})|]\\le\\sqrt{\\pi/(2n)}$, par Hoeffding appliqué à $\\hat g^*_{n,\\mathcal C}$', correct: false, explanation: 'Faux : Hoeffding ne s’applique pas au MRE, choisi au vu des données (ses pertes ne sont pas des variables indépendantes d’espérance $R(\\hat g^*_{n,\\mathcal C})$) ; une borne indépendante de $|\\mathcal C|$ est d’ailleurs fausse (Ex. 1.1 : risque empirique nul, risque grand). Il faut passer par le max sur la classe.' },
+          { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\max_{g\\in\\mathcal C}\\mathbb E[|\\widehat{\\mathrm R}_n(g)-R(g)|]$', correct: false, explanation: 'Faux : on ne peut pas sortir le max de l’espérance ($\\max_g\\mathbb E[\\cdot]\\le\\mathbb E[\\max_g\\cdot]$, pas l’inverse). Comme la règle choisie dépend de l’échantillon, c’est l’espérance du max qu’il faut contrôler.' },
         ],
       },
       {
@@ -70,7 +70,7 @@ export const exercisesPart2: Exercise[] = [
         prompt: 'Étape 3 — Conclusion :',
         choices: [
           { text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\sqrt{\\frac{\\log(2M)}{2n}}$', correct: true, explanation: '$\\frac1{2\\sqrt n}\\sqrt{2\\log(2M)}=\\sqrt{\\log(2M)/(2n)}$.' },
-          { text: '$\\le\\sqrt{\\frac{2\\log(2M)}n}$', correct: false, explanation: 'Oubli du facteur $\\frac1{2\\sqrt n}$ correctement simplifié : $\\frac{\\sqrt2}{2}=\\frac1{\\sqrt2}$.' },
+          { text: '$\\le\\sqrt{\\frac{2\\log(2M)}n}$', correct: false, explanation: 'Erreur de simplification : $\\frac1{2\\sqrt n}\\sqrt{2\\log(2M)}=\\sqrt{\\frac{2\\log(2M)}{4n}}=\\sqrt{\\frac{\\log(2M)}{2n}}$ ; la réponse proposée est deux fois trop grande (facteur $\\frac12$ oublié).' },
           { text: '$\\le\\frac{\\log(2M)}{2n}$', correct: false, explanation: 'Oubli de la racine : la vitesse est $1/\\sqrt n$ (cas agnostique), pas $1/n$ (cas réalisable, compléments).' },
         ],
       },
@@ -107,7 +107,7 @@ export const exercisesPart2: Exercise[] = [
         prompt: 'Étape 3 — Majoration du biais au carré, pour $d\\ge2$ :',
         choices: [
           { text: '$\\le L^2\\big(\\frac{k}{c_-v_d(n+1)}\\big)^{2/d}$ (Lipschitz, puis Jensen avec $u\\mapsto u^{2/d}$ concave et Q7)', correct: true, explanation: '$|\\bar\\eta_k-\\eta|\\le L\\mathfrak R_k$, $\\mathbb E[\\mathfrak R_k^2]\\le(\\mathbb E[\\mathfrak R_k^d])^{2/d}$.' },
-          { text: '$\\le L^2\\frac{k}{c_-v_d(n+1)}$', correct: false, explanation: 'On a besoin de $\\mathbb E[\\mathfrak R_k^2]$, pas de $\\mathbb E[\\mathfrak R_k^d]$ : il manque l’exposant $2/d$.' },
+          { text: '$\\le L^2\\big(\\frac{k}{c_-v_d(n+1)}\\big)^{2}$', correct: false, explanation: 'Exposant erroné : Jensen donne $\\mathbb E[\\mathfrak R_k^2]\\le(\\mathbb E[\\mathfrak R_k^d])^{2/d}$, pas $(\\mathbb E[\\mathfrak R_k^d])^2$ ; ce majorant, bien plus petit quand $k/n\\to0$, n’est pas justifié.' },
           { text: '$\\le\\frac{L^2}k$', correct: false, explanation: 'Confusion avec le terme de variance ; le biais dépend du rayon des voisins, donc de $k/n$.' },
         ],
       },
@@ -522,7 +522,7 @@ On fixe $K$ points distincts $a_1,\\dots,a_K$ et, pour $\\mathbf q\\in\\{0,1\\}^
     hints: [
       'Q1 : une règle de $\\mathcal C$ est un vecteur de $m$ signes ; le risque empirique est une somme de termes ne dépendant chacun que de $d_j$.',
       'Q2 : pour une règle **fixée**, les pertes sont i.i.d. dans $\\{0,1\\}$ ; borne de l’union sur la classe (aucune indépendance requise).',
-      'Q3 : Th. 1.2 éq. (2) (facteur 2), puis résoudre $2\\cdot2^me^{-2n\\varepsilon^2}=\\delta$. Q4 : éq. (1) ; l’approximation décroît avec $q$, l’estimation croît comme $\\sqrt{q^d/n}$.',
+      'Q3 : Th. 1.2 éq. (2) (facteur 2), puis résoudre $2\\cdot2^me^{-2n\\varepsilon^2}=\\delta$. Q4 : éq. (1) ; l’approximation décroît quand on raffine la partition, la borne d’estimation croît comme $\\sqrt{q^d/n}$.',
     ],
     correction: `**Q1.** Une règle de $\\mathcal C$ est déterminée par $(d_1,\\dots,d_m)\\in\\{-1,1\\}^m$ (les $Q_j$ forment une partition) : $|\\mathcal C|=2^m=2^{q^d}$. Le risque empirique s’écrit $\\widehat{\\mathrm R}_n(g)=\\sum_{j=1}^m\\frac1n\\sum_{i=1}^n\\mathbf{1}_{\\{\\mathbf X_i\\in Q_j\\}}\\mathbf{1}_{\\{Y_i\\ne d_j\\}}$, somme de termes dont le $j$-ième ne dépend que de $d_j$ : on minimise séparément, en prenant pour $d_j$ le label majoritaire parmi les observations de $Q_j$. Le MRE est le **vote majoritaire** dans chaque cellule.
 
@@ -530,7 +530,7 @@ On fixe $K$ points distincts $a_1,\\dots,a_K$ et, pour $\\mathbf q\\in\\{0,1\\}^
 
 **Q3.** Par le Th. 1.2, éq. (2), $R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R\\le2\\sup_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|$ p.s. Avec $\\varepsilon=\\sqrt{\\frac{(m+1)\\log2+\\log(1/\\delta)}{2n}}$, on a $2^{m+1}e^{-2n\\varepsilon^2}=\\delta$ ; par Q2 et passage au complémentaire, $\\sup_g|\\widehat{\\mathrm R}_n(g)-R(g)|\\le\\varepsilon$ avec probabilité au moins $1-\\delta$, et sur cet événement l’erreur d’estimation est au plus $2\\varepsilon$ : c’est la borne demandée (Th. 1.6 avec $|\\mathcal C|=2^m$). En espérance, le Th. 1.8 donne $\\sqrt{(m+1)\\log2/(2n)}$.
 
-**Q4.** Par l’éq. (1), $R(\\hat g^*_{n,\\mathcal C})-R^\\star=\\{R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R\\}+\\{\\inf_{\\mathcal C}R-R^\\star\\}$. L’erreur d’**approximation** ne dépend pas des données et décroît quand $q$ grandit (cellules plus fines ; les classes sont emboîtées quand on raffine la partition, par exemple de $q$ à $2q$). L’erreur d’**estimation** est d’ordre $\\sqrt{m/n}=\\sqrt{q^d/n}$ et croît avec $q$ : il faut **peu de cellules devant $n$** pour que chaque vote porte sur assez de points. Le bon $q$ réalise un compromis ; en pratique on le choisit par validation (Méthode 1.2). En dimension $d$, $m=q^d$ explose : même avec $q=2$, il faut $n\\gg2^d$ — c’est le **fléau de la dimension**, déjà rencontré pour les $k$ plus proches voisins (Examen 2025 Ex. 3 Q9).`,
+**Q4.** Par l’éq. (1), $R(\\hat g^*_{n,\\mathcal C})-R^\\star=\\{R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R\\}+\\{\\inf_{\\mathcal C}R-R^\\star\\}$. L’erreur d’**approximation** ne dépend pas des données et décroît (au sens large) quand on raffine la partition, par exemple de $q$ à $2q$ (classes emboîtées) ; elle tend donc à diminuer quand $q$ grandit. L’erreur d’**estimation** est majorée (Q3, Th. 1.8) par une quantité d’ordre $\\sqrt{m/n}=\\sqrt{q^d/n}$, croissante en $q$ : il faut **peu de cellules devant $n$** pour que chaque vote porte sur assez de points. Le bon $q$ réalise un compromis ; en pratique on le choisit par validation (Méthode 1.2). En dimension $d$, $m=q^d$ explose : même avec $q=2$, il faut $n\\gg2^d$ — c’est le **fléau de la dimension**, déjà rencontré pour les $k$ plus proches voisins (Examen 2025 Ex. 3 Q9).`,
     bareme: [
       { label: 'Q1 cardinal 2^m et vote majoritaire', points: 0.5 },
       { label: 'Q2 énoncé de Hoeffding + union', points: 0.75 },

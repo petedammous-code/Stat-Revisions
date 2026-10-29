@@ -160,7 +160,7 @@ export const vizKnnChoixK: Viz = {
         },
       )
       info.innerHTML = richToHtml(
-        `Pour $k=${kk}$ : erreur d’apprentissage $${eTr[kk - 1].toFixed(3)}$, erreur de validation $${eVa[kk - 1].toFixed(3)}$, risque $R(\\hat g_{n,k})=${rT[kk - 1].toFixed(3)}$, risque bayésien $R^\\star=${RSTAR.toFixed(3)}$. **Petit $k$** : prédiction très variable (terme $1/k$ de l’Examen 2025 Q8), l’erreur d’apprentissage est optimiste (nulle en $k=1$ : chaque point est son propre voisin). **Grand $k$** : on moyenne $\\eta$ sur une boule trop grande (biais $(k/n)^{2/d}$) et la frontière est lissée. La validation choisit $k=${kVal}$ (pointillé vert) ; l’ordre théorique $k^\\star\\asymp n^{2/(d+2)}=\\sqrt n\\approx${kTh.toFixed(0)}$ est en tirets violets (Q9).`,
+        `Pour $k=${kk}$ : erreur d’apprentissage $${eTr[kk - 1].toFixed(3)}$, erreur de validation $${eVa[kk - 1].toFixed(3)}$, risque $R(\\hat g_{n,k})=${rT[kk - 1].toFixed(3)}$, risque bayésien $R^\\star=${RSTAR.toFixed(3)}$. **Petit $k$** : prédiction très variable (terme $1/k$ de l’Examen 2025 Q8), l’erreur d’apprentissage est optimiste (nulle en $k=1$ : chaque point est son propre voisin). **Grand $k$** : on moyenne $\\eta$ sur une boule trop grande (biais en $(k/n)^{1/d}$, biais au carré en $(k/n)^{2/d}$) et la frontière est lissée. La validation choisit $k=${kVal}$ (pointillé vert) ; l’ordre théorique $k^\\star\\asymp n^{2/(d+2)}=\\sqrt n\\approx${kTh.toFixed(0)}$ est en tirets violets (Q9).`,
       )
     }
     const recompute = () => {

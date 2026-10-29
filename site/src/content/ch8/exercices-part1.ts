@@ -142,7 +142,7 @@ export const exercisesPart1: Exercise[] = [
     question: 'Pour la règle du plus proche voisin $\\hat h_n(x)=Y_{\\varphi_n(x)}$, avec $\\eta$ continue et $X_{(n)}\\to X$ en probabilité, $\\lim_n\\mathbb{P}(Y\\ne\\hat h_n(X))$ vaut :',
     options: [
       { text: '$2\\,\\mathbb{E}[\\eta(X)(1-\\eta(X))]$', correct: true, explanation: 'Exact (Q6) : $\\mathbb{E}[(1-\\eta(X))\\eta(X_{(n)})]+\\mathbb{E}[\\eta(X)(1-\\eta(X_{(n)}))]\\to2\\,\\mathbb{E}[\\eta(1-\\eta)]$ par convergence dominée. Comme $\\eta(1-\\eta)=r^\\star(1-r^\\star)$, c’est compris entre $R^\\star$ et $2R^\\star(1-R^\\star)$.' },
-      { text: '$R^\\star=\\mathbb{E}[\\min(\\eta(X),1-\\eta(X))]$', correct: false, explanation: 'Faux : le 1-PPV n’est **pas** consistant en général ; il ne fait mieux que $2R^\\star(1-R^\\star)$ qu’à la limite, et atteint $R^\\star$ seulement si $\\eta\\in\\{0,\\frac12,1\\}$.' },
+      { text: '$R^\\star=\\mathbb{E}[\\min(\\eta(X),1-\\eta(X))]$', correct: false, explanation: 'Faux : le 1-PPV n’est **pas** consistant en général. Sa limite $2\\,\\mathbb{E}[r^\\star(1-r^\\star)]$ vérifie $2r^\\star(1-r^\\star)\\ge r^\\star$ (car $r^\\star\\le\\frac12$), avec égalité seulement si $r^\\star\\in\\{0,\\frac12\\}$, c’est-à-dire $\\eta(X)\\in\\{0,\\frac12,1\\}$ p.s.' },
       { text: '$2R^\\star(1-R^\\star)$', correct: false, explanation: 'Faux : c’est un **majorant** (Q7), obtenu par Jensen $\\mathbb{E}[r^{\\star2}]\\ge(\\mathbb{E}r^\\star)^2$ ; l’égalité n’a pas lieu en général.' },
       { text: '$0$', correct: false, explanation: 'Faux : aucune règle ne fait mieux que $R^\\star$, qui est $>0$ dès que les classes se recouvrent (erreur irréductible).' },
     ],
@@ -210,7 +210,7 @@ export const exercisesPart1: Exercise[] = [
     justifications: [
       { text: 'Faux : le modèle LDA est **mal spécifié** ; $\\eta_{\\hat\\theta_n}$ ne converge pas vers la vraie fonction de régression et la frontière reste un hyperplan, alors que la frontière de Bayes est une quadrique.', correct: true, explanation: 'Hypothèse (i) de la Prop. 1.5 violée ; l’excès de risque plafonne (voir la visualisation « risque quand n augmente »).' },
       { text: 'Vrai : l’EMV est toujours consistant, donc la Prop. 1.5 s’applique.', correct: false, explanation: 'La consistance de l’EMV suppose le modèle bien spécifié ; ici le « vrai » paramètre n’est pas dans le modèle LDA.' },
-      { text: 'Vrai : la LDA est un cas particulier de la QDA, donc elle hérite de sa garantie.', correct: false, explanation: 'C’est l’inverse : la QDA contient la LDA, pas la réciproque.' },
+      { text: 'Vrai : la LDA est un cas particulier de la QDA, donc elle hérite de sa garantie.', correct: false, explanation: 'Le modèle LDA est bien un sous-modèle de la QDA, mais c’est justement pourquoi il ne contient pas ici la vraie loi : la Prop. 1.5 exige que la vraie loi appartienne au modèle **utilisé pour estimer**. Un sous-modèle n’hérite pas de la garantie du modèle plus large.' },
       { text: 'Faux : aucune règle plug-in n’a un excès de risque qui tend vers 0.', correct: false, explanation: 'Si le modèle est bien spécifié (ici la QDA), l’excès de risque moyen tend vers 0 (Prop. 1.5).' },
     ],
   },

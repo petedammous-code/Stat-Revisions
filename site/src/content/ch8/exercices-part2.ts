@@ -32,7 +32,7 @@ export const exercisesPart2: Exercise[] = [
     prompt: 'Remettre dans l’ordre la preuve de $R(\\tilde g)-R(g^\\star)\\le2\\,\\mathbb{E}[|\\eta(X)-\\tilde\\eta(X)|]$ pour $\\tilde g=2\\,\\mathbb{1}_{\\{\\tilde\\eta\\ge1/2\\}}-1$.',
     steps: [
       'Écrire l’excès de risque par la formule (4) : $R(\\tilde g)-R(g^\\star)=2\\,\\mathbb{E}[|\\eta(X)-\\frac12|\\,\\mathbb{1}_{\\{\\tilde g(X)\\ne g^\\star(X)\\}}]$.',
-      'Décrire la zone de désaccord : $\\{\\tilde g\\ne g^\\star\\}=\\{\\eta\\ge\\frac12>\\tilde\\eta\\}\\cup\\{\\tilde\\eta\\ge\\frac12>\\eta\\}$ (même seuil des deux côtés).',
+      'Dans cette espérance, décrire l’ensemble de l’indicatrice (zone de désaccord) : $\\{\\tilde g\\ne g^\\star\\}=\\{\\eta\\ge\\frac12>\\tilde\\eta\\}\\cup\\{\\tilde\\eta\\ge\\frac12>\\eta\\}$ (même seuil des deux côtés).',
       'Sur chacune des deux parties, $\\eta$ et $\\tilde\\eta$ sont de part et d’autre de $\\frac12$, donc $|\\eta-\\frac12|\\le|\\eta-\\tilde\\eta|$.',
       'En déduire $|\\eta-\\frac12|\\mathbb{1}_{\\{\\tilde g\\ne g^\\star\\}}\\le|\\eta-\\tilde\\eta|\\mathbb{1}_{\\{\\tilde g\\ne g^\\star\\}}\\le|\\eta-\\tilde\\eta|$, puis prendre l’espérance (croissance) et multiplier par 2.',
     ],
@@ -140,10 +140,10 @@ export const exercisesPart2: Exercise[] = [
       'Par (5), $R^\\star=\\mathbb{E}[\\min(\\eta(X),1-\\eta(X))]$.',
       'La fonction $u\\mapsto\\min(u,1-u)$ est concave sur $[0,1]$.',
       'Donc, par l’inégalité de Jensen, $\\mathbb{E}[\\min(\\eta,1-\\eta)]=\\min(\\mathbb{E}[\\eta],1-\\mathbb{E}[\\eta])=\\min(p,1-p)$.',
-      'Ainsi le meilleur classifieur ne fait jamais mieux que le meilleur classifieur constant.',
+      'Ainsi $R^\\star\\le\\min(p,1-p)$ : le classifieur de Bayes fait au moins aussi bien que le meilleur classifieur constant.',
     ],
     faultyIndex: 2,
-    explanation: 'Jensen pour une fonction concave donne seulement l’**inégalité** $\\mathbb{E}[\\min(\\eta,1-\\eta)]\\le\\min(p,1-p)$, pas l’égalité. Le classifieur de Bayes fait en général strictement mieux que la constante ; égalité seulement si $\\eta(X)$ reste du même côté de $\\frac12$ p.s. (les attributs ne changent jamais la décision). La ligne 4 est donc fausse aussi, comme conséquence de la ligne 3.',
+    explanation: 'Jensen pour une fonction concave donne seulement l’**inégalité** $\\mathbb{E}[\\min(\\eta,1-\\eta)]\\le\\min(p,1-p)$, pas l’égalité. Le classifieur de Bayes fait en général strictement mieux que la constante ; égalité seulement si $\\eta(X)$ reste du même côté de $\\frac12$ p.s. (les attributs ne changent jamais la décision). La ligne 4 est juste : elle n’utilise que l’inégalité.',
   },
   // ------------------------------------------------------------------ Étape suivante
   {
@@ -280,7 +280,7 @@ export const exercisesPart2: Exercise[] = [
         choices: [
           { text: '$R(\\tilde g_n)-R(g^\\star)\\le2\\,\\mathbb{E}[|\\tilde\\eta_n(X)-\\eta(X)|]$, l’espérance portant sur $X$ seul', correct: true, explanation: 'Indépendance du point de test et de $\\mathcal{D}_n$ (Prop. 2.5) ; on majore l’indicatrice par 1.' },
           { text: '$R(\\tilde g_n)-R(g^\\star)=0$', correct: false, explanation: 'L’excès n’est nul que si $\\tilde g_n=g^\\star$ presque partout.' },
-          { text: '$R(\\tilde g_n)-R(g^\\star)\\le\\mathbb{P}(\\tilde\\eta_n(X)\\ne\\eta(X))$', correct: false, explanation: 'Majoration sans intérêt (souvent égale à 1) et qui ne découle pas de Q4.' },
+          { text: '$R(\\tilde g_n)-R(g^\\star)\\le\\mathbb{E}[|\\tilde\\eta_n(X)-\\eta(X)|]$, sans facteur 2', correct: false, explanation: 'Facteur 2 oublié : l’excès vaut $2\\,\\mathbb{E}[|\\eta-\\frac12|\\mathbb{1}_{\\{\\tilde g_n\\ne g^\\star\\}}]$. Contre-exemple : $\\eta\\equiv0{,}7$, $\\tilde\\eta_n\\equiv0{,}45$ donne un excès $0{,}4>0{,}25$.' },
         ],
       },
       {
@@ -490,7 +490,7 @@ en utilisant $\\mathbb{1}_{\\{g(X)=1\\}}=1-\\mathbb{1}_{\\{g(X)=-1\\}}$. Le seco
 
 **Q3–Q4.** $\\{\\hat h_n(X)=1\\}=\\bigcup_i\\{Y_i=1,\\varphi_n(X)=i\\}$ (réunion disjointe), donc en sommant Q2 sur $i$ et avec $\\sum_i\\eta(X_i)\\mathbb{1}_{\\{\\varphi_n(X)=i\\}}=\\eta(X_{(n)})$ : $\\mathbb{P}(Y=-1,\\hat h_n(X)=1\\mid\\cdot)=(1-\\eta(X))\\eta(X_{(n)})$. De même $\\mathbb{P}(Y=1,\\hat h_n(X)=-1\\mid\\cdot)=\\eta(X)(1-\\eta(X_{(n)}))$.
 
-**Q5.** $\\eta$ continue et $X_{(n)}\\to X$ en probabilité donnent $\\eta(X_{(n)})\\to\\eta(X)$ en probabilité (théorème de continuité, ch.6 Th. 2.1) ; la suite est bornée par 1 : par convergence dominée (pour la convergence en probabilité), $\\mathbb{E}[\\eta(X_{(n)})]\\to\\mathbb{E}[\\eta(X)]$ ; de même $\\mathbb{E}[\\eta(X)\\eta(X_{(n)})]\\to\\mathbb{E}[\\eta(X)^2]$.
+**Q5.** $\\eta$ continue et $X_{(n)}\\to X$ en probabilité donnent $\\eta(X_{(n)})\\to\\eta(X)$ en probabilité (théorème de continuité pour la convergence en probabilité, ch.6 Outils Th. 2.1) ; la suite est bornée par 1 : par convergence dominée (pour la convergence en probabilité), $\\mathbb{E}[\\eta(X_{(n)})]\\to\\mathbb{E}[\\eta(X)]$ ; de même $\\mathbb{E}[\\eta(X)\\eta(X_{(n)})]\\to\\mathbb{E}[\\eta(X)^2]$.
 
 **Q6.** En prenant l’espérance (tour) et en sommant les deux types d’erreur : $\\mathbb{P}(Y\\ne\\hat h_n(X))=\\mathbb{E}[(1-\\eta(X))\\eta(X_{(n)})]+\\mathbb{E}[\\eta(X)(1-\\eta(X_{(n)}))]\\to2\\,\\mathbb{E}[\\eta(X)(1-\\eta(X))]=2\\,\\mathbb{E}[r^\\star(1-r^\\star)]$ par Q5 et Q1.
 

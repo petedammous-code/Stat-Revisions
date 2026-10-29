@@ -229,7 +229,7 @@ $$\\mathbb E\\big[\\widehat R_{n,m}\\,\\big|\\,\\mathcal D_n\\big]=R(g_n),\\qqua
           },
           {
             text: 'On prend l’espérance : $\\mathbb P(|\\widehat R_{n,m}-R(g_n)|\\ge\\varepsilon)\\le2e^{-2m\\varepsilon^2}$.',
-            justification: 'Tour des espérances ; une constante est son propre espérance.',
+            justification: 'Tour des espérances ; la borne conditionnelle est une constante (elle ne dépend pas de $\\mathcal D_n$).',
           },
         ],
         pitfalls: ['Évaluer sur $\\mathcal D_{\\mathrm{fit}}$ : biais optimiste.', 'La borne est en $m$ (taille de **validation**), pas en $n$.'],
@@ -494,7 +494,7 @@ $$\\mathbb E\\big[\\mathcal E^{\\mathcal C}_{\\mathrm{est}}(\\hat g^*_{n,\\mathc
         pitfalls: [
           '(2) est **presque sûre** avec facteur 2 ; (3) est **en espérance**, sans facteur 2 : ne pas mélanger.',
           'Le sup porte sur **toute la classe**, pas seulement sur $\\hat g^*_{n,\\mathcal C}$ (qui dépend des données).',
-          'Même schéma « $2\\sup$ » que la preuve de consistance des M-estimateurs (LGN uniforme, ch.7) : la LGN uniforme porte sur le même type d’objet (Outils §2.9).',
+          'Rapprochement (non écrit dans ce passage du poly) : même schéma « $2\\sup$ » que la preuve de consistance des M-estimateurs du ch.7 ; le poly signale seulement (Outils §2.9) que la LGN uniforme du ch.7 porte sur le même type d’objet que $\\sup_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|$.',
         ],
       },
       {

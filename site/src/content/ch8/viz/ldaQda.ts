@@ -27,7 +27,7 @@ export const vizLdaQda: Viz = {
   id: 'ch8-lda-qda-logistique',
   title: 'LDA, QDA et régression logistique : frontières de décision estimées',
   description:
-    'Données simulées selon le modèle de l’analyse discriminante (Cadre 1.2) : $\\mathbf{X}\\mid Y=i\\sim\\mathcal{N}(\\mu_i,\\Sigma_i)$, $\\mathbb{P}(Y=1)=p$. Les trois règles *plug-in* sont estimées sur le même échantillon : **LDA** (covariance poolée, frontière droite), **QDA** (une covariance par classe, frontière conique), **logistique** ($\\mathrm{sigm}(\\theta^\\top\\mathbf{x})$ avec ordonnée à l’origine, EMV (12) par Newton). Pointillés gris : frontière de Bayes. Étoiles : moyennes estimées $\\widehat\\mu_{i,n}$ ; croix : points mal classés par la règle choisie.',
+    'Données simulées selon le modèle de l’analyse discriminante (Cadre 1.2) : $\\mathbf{X}\\mid Y=i\\sim\\mathcal{N}(\\mu_i,\\Sigma_i)$, $\\mathbb{P}(Y=1)=p$. Les trois règles *plug-in* sont estimées sur le même échantillon : **LDA** (covariance poolée, frontière droite), **QDA** (une covariance par classe, frontière conique), **logistique** ($\\mathrm{sigm}(\\theta^\\top\\mathbf{x})$ avec ordonnée à l’origine, EMV (12) par Newton, avec une très faible pénalité ridge pour garantir l’existence du minimum quand les classes sont séparables : réglage numérique hors poly). Pointillés gris : frontière de Bayes. Étoiles : moyennes estimées $\\widehat\\mu_{i,n}$ ; croix : points mal classés par la règle choisie.',
   source: 'Poly ch.8, Cadres 1.2–1.3, éq. (11)–(12), Figures 3–5 ; PC8 Ex. 3 (Figure 1) ; Examen 2025 Ex. 4 Q8',
   mount(container) {
     const { controls, plot: plotEl, info } = vizFrame(container)
