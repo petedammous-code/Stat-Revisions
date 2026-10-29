@@ -25,6 +25,10 @@ Les tests vérifient que tout le KaTeX compile, que chaque exercice respecte les
 
 `.github/workflows/tests.yml` s'exécute à chaque push ; `.github/workflows/deploy.yml` déploie sur GitHub Pages à chaque push sur `main` si les tests passent (Settings → Pages → Source : « GitHub Actions »).
 
+## État
+
+Les 9 chapitres sont complets (375 exercices, 60 visualisations, 183 flashcards). Bilan détaillé, points à vérifier et URL de déploiement : `RAPPORT.md`.
+
 ## Organisation du dépôt
 
 - `*.pdf` : poly (Cours, Outils mathématiques, Exercices, Compléments), PC (énoncés, corrigés), annales.

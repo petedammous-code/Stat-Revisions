@@ -154,3 +154,22 @@
 1. **Titres Plotly invisibles.** Avec `plotly.js-dist-min` 4.x, `layout.title` et `xaxis.title` / `yaxis.title` donnés sous forme de **chaîne** ne s’affichent pas (format retiré depuis Plotly 3 ; il faut `{ text: '…' }`). Les visualisations de ch6 (et sans doute ch1, ch2) passent des chaînes : leurs titres de figure et d’axes sont absents. Demande : dans `core/plot.ts`, normaliser `title`, `xaxis.title`, `yaxis.title` (chaîne → `{ text }`) avant `Plotly.react`, ou documenter `{ text }` dans le guide. Contournement ch4 : `{ text: … }` partout.
 2. **Glossaire : collisions de symboles entre chapitres.** `\mathbb{Q}` (ch1 : loi d’une observation) et `\mathrm{Gamma}(p,\lambda)` (ch1 : convention d’intensité) ont un autre sens au ch.4 (loi du pivot ; convention d’échelle du CC 2022). `registerGlossary` déduplique par clé mais l’index LaTeX est global : la dernière variante enregistrée gagne. Demande : glossaire **par chapitre** (priorité aux entrées du chapitre courant) ou option `scope: slug`. Contournement ch4 : écrire `\mathbb Q` (avec espace) et ajouter `\,` pour désactiver l’infobulle.
 3. **Segmented à options variables.** Pour changer la liste des options d’un `segmented` (méthodes disponibles selon le modèle dans `ch4-couverture-ic`), ch4 remplace le nœud DOM. Demande : `SegmentedHandle.setOptions(options, value)`.
+
+## Statut des demandes (orchestrateur)
+
+Traitées dans le socle :
+- Cache Vitest trompeur : `npm test` vide désormais `node_modules/.vitest-cache` et `.vite` avant chaque exécution.
+- Titres et étiquettes en LaTeX : rendus par `richInline` (sans interprétation des blocs : un titre « 2. … » reste un titre).
+- Plusieurs figures par visualisation : `vizFrame(container, { plots: 2 })`.
+- Segments d'IC : `segmentsTrace`, `segmentsByColor` ; boîtes et tapis : `boxTrace`, `rugTrace` ; frontières 2D : `contourLevelTrace`, `heatmapTrace`.
+- Curseurs : `integer`, `configure({ min, max, step, label, value })`, `setVisible` ; `segmented(...).setValue(v)` ; `debounce`.
+- Plan du chapitre sans double numérotation ; listes numérotées qui respectent leur numéro de départ.
+- Titres Plotly en chaîne normalisés en `{ text }` (Plotly 4) ; légende sous l'axe des abscisses.
+- Indicatrice `\mathbb{1}` rendue en gras lisible.
+- Tableaux markdown dans le texte riche.
+- Glossaire par chapitre (`registerGlossary(entries, 'chN')`, priorité au chapitre affiché ; test dédié).
+- `histogram(..., dropOutside)` ; Plotly redimensionné à l'ouverture d'une section repliée.
+- Taille du bundle : Plotly, KaTeX et contenu dans des fichiers séparés.
+- Passe de cohérence : révision ciblée qui propose bien les items ratés, virgule décimale acceptée dans les applications numériques, valeurs affichées arrondies, puces d'association re-sélectionnables et accessibles au clavier, défilement tactile qui ne réordonne plus les étapes, boutons ▲▼ de taille tactile.
+
+Non traitées (contournements en place dans les chapitres, sans effet visible) : abscisses textuelles dans `barTrace`/`pointsTrace`, `segmented.setOptions`, option de repère orthonormé `vizFrame({ aspect: 1 })`.
