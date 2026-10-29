@@ -132,6 +132,16 @@ export function segmentsByColor(xs: number[], y0s: number[], y1s: number[], colo
   )
 }
 
+/** Boîte à moustaches d'un échantillon. */
+export function boxTrace(values: number[], name: string, color?: string, extra: Trace = {}): Trace {
+  return { y: values, name, type: 'box', boxpoints: 'outliers', marker: { color, size: 4 }, line: { color }, ...extra }
+}
+
+/** « Tapis » d'observations : petits traits verticaux à hauteur `y`. */
+export function rugTrace(xs: number[], y: number, name: string, color?: string, extra: Trace = {}): Trace {
+  return { x: xs, y: xs.map(() => y), name, type: 'scatter', mode: 'markers', marker: { color, symbol: 'line-ns-open', size: 10, line: { width: 1.5, color } }, hoverinfo: 'x', ...extra }
+}
+
 /** Ligne verticale (forme de layout). */
 export function vline(x: number, color: string, dash: 'solid' | 'dash' | 'dot' = 'dash'): Record<string, unknown> {
   return { type: 'line', x0: x, x1: x, y0: 0, y1: 1, yref: 'paper', line: { color, width: 2, dash } }

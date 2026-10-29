@@ -32,6 +32,8 @@ export interface SliderOptions {
   format?: (v: number) => string
   /** Échelle logarithmique : la valeur réelle est 10^x. */
   log?: boolean
+  /** Arrondit la valeur réelle à l'entier le plus proche (utile avec `log`). */
+  integer?: boolean
   onChange: (v: number) => void
 }
 
@@ -39,6 +41,8 @@ export interface SliderHandle {
   root: HTMLElement
   get: () => number
   set: (v: number) => void
+  /** Reconfigure bornes, pas et étiquette (la valeur est ramenée dans les bornes). */
+  configure: (o: { min?: number; max?: number; step?: number; label?: string; value?: number }) => void
 }
 
 /** Curseur avec étiquette LaTeX et valeur courante. */
@@ -53,7 +57,10 @@ export function slider(opts: SliderOptions): SliderHandle {
   input.max = String(opts.max)
   input.step = String(opts.step)
   input.value = String(opts.value)
-  const real = () => (opts.log ? Math.pow(10, Number(input.value)) : Number(input.value))
+  const real = () => {
+    const v = opts.log ? Math.pow(10, Number(input.value)) : Number(input.value)
+    return opts.integer ? Math.round(v) : v
+  }
   const fmt = opts.format ?? ((v: number) => (Number.isInteger(v) ? String(v) : v.toPrecision(3)))
   const refresh = () => {
     val.textContent = fmt(real())
@@ -69,6 +76,16 @@ export function slider(opts: SliderOptions): SliderHandle {
     get: real,
     set: (v: number) => {
       input.value = String(opts.log ? Math.log10(v) : v)
+      refresh()
+    },
+    configure: (o) => {
+      if (o.min !== undefined) input.min = String(o.min)
+      if (o.max !== undefined) input.max = String(o.max)
+      if (o.step !== undefined) input.step = String(o.step)
+      if (o.label !== undefined) lab.innerHTML = richInline(o.label)
+      if (o.value !== undefined) input.value = String(opts.log ? Math.log10(o.value) : o.value)
+      const v = Number(input.value)
+      input.value = String(Math.min(Number(input.max), Math.max(Number(input.min), v)))
       refresh()
     },
   }
@@ -96,9 +113,14 @@ export function select<T extends string>(label: string, options: SelectOption<T>
   return root
 }
 
-/** Groupe de boutons exclusifs (segmented control). */
-export function segmented<T extends string>(options: SelectOption<T>[], value: T, onChange: (v: T) => void): HTMLElement {
-  const root = el('div', 'segmented')
+export interface SegmentedHandle<T extends string> extends HTMLElement {
+  /** Sélectionne une valeur sans déclencher `onChange`. */
+  setValue?: (v: T) => void
+}
+
+/** Groupe de boutons exclusifs (segmented control). `root.setValue(v)` change la sélection sans rappel. */
+export function segmented<T extends string>(options: SelectOption<T>[], value: T, onChange: (v: T) => void): SegmentedHandle<T> {
+  const root = el('div', 'segmented') as SegmentedHandle<T>
   const buttons = new Map<T, HTMLButtonElement>()
   for (const o of options) {
     const b = el('button', 'seg')
@@ -112,6 +134,9 @@ export function segmented<T extends string>(options: SelectOption<T>[], value: T
     })
     buttons.set(o.value, b)
     root.append(b)
+  }
+  root.setValue = (v: T) => {
+    for (const [k, x] of buttons) x.classList.toggle('active', k === v)
   }
   return root
 }
