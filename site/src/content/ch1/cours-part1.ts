@@ -7,7 +7,7 @@ export const coursePart1: CourseSection[] = [
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s1-intuition',
-    title: '1 · Intuition et notations : la démarche statistique',
+    title: '1. Intuition et notations : la démarche statistique',
     role: 'intuition',
     intro:
       'Un modèle statistique est une **hypothèse mathématiquement formalisée** sur le mécanisme aléatoire qui a produit les données : un espace d’observations et une famille de lois candidates. Tout le cours (estimation, régions de confiance, tests, apprentissage) se déroule **à l’intérieur** d’un modèle ; le choix du modèle, lui, est une hypothèse discutable (« tous les modèles sont faux, mais certains sont utiles », G. Box).',
@@ -75,7 +75,7 @@ Le **point de départ** est un jeu de données $(x_1,\\dots,x_n)$ : numériques 
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s2-modele',
-    title: '2 · Modèle statistique, modèle paramétrique, modèle dominé',
+    title: '2. Modèle statistique, modèle paramétrique, modèle dominé',
     role: 'definitions',
     intro:
       'La Définition 1.1 fixe l’objet central du cours ; les Exemples 1.1 à 1.4 sont les quatre modèles fétiches (pile ou face, tailles, temps d’attente, sondage). La Définition 1 (famille dominée) est ce qui permettra d’écrire des **densités**, donc la vraisemblance du chapitre 2.',
@@ -189,7 +189,7 @@ Par le théorème de Radon–Nikodym (Thm 2.1), « dominé par $\\mu$ » équiva
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s3-identifiabilite',
-    title: '3 · Identifiabilité',
+    title: '3. Identifiabilité',
     role: 'definitions',
     intro:
       'Pour espérer retrouver $\\theta$ à partir des observations, il faut au minimum que deux valeurs distinctes du paramètre produisent deux lois distinctes : c’est l’**identifiabilité**. Méthode : exprimer $\\theta$ comme fonction de la loi (une probabilité d’événement, un moment) ; contre-exemple type : le mélange gaussien sans contrainte.',
@@ -299,7 +299,7 @@ $$\\mathbb{P}_\\theta=\\mathbb{P}_{\\theta'}\\ \\Longrightarrow\\ \\theta=\\thet
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s4-statistiques',
-    title: '4 · Statistiques, statistiques indépendantes, modèle induit',
+    title: '4. Statistiques, statistiques indépendantes, modèle induit',
     role: 'definitions',
     intro:
       'Une **statistique** est une fonction mesurable des observations seules (sans $\\theta$). Transformer les observations transporte chaque loi du modèle : c’est le **modèle induit**, dont on calcule les lois par la méthode de la fonction muette et le changement de variables (§6). Les théorèmes de Gosset et de Cochran (§8) ne sont que des calculs de modèles induits dans le cas gaussien.',
@@ -454,7 +454,7 @@ On pose $\\mathcal{C}^T:=\\{\\mathbb{P}^T,\\ \\mathbb{P}\\in\\mathcal{C}\\}$. Le
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s5-echantillon',
-    title: '5 · n-échantillon, produit de modèles, premiers estimateurs',
+    title: '5. n-échantillon, produit de modèles, premiers estimateurs',
     role: 'definitions',
     intro:
       'Le **$n$-échantillon** formalise « répéter $n$ fois la même expérience de façon indépendante » : loi produit $\\mathbb{Q}^{\\otimes n}$, densité produit (formule (1)) qui sera la vraisemblance. À ne pas confondre avec le **produit de $n$ modèles**, où chaque coordonnée peut suivre une loi différente de la famille. On peut déjà proposer des **estimateurs** : moyenne empirique pour Bernoulli, réponses randomisées.',

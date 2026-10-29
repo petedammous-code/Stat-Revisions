@@ -142,6 +142,7 @@ function lightMarkdown(src: string): string {
   let para: string[] = []
   let list: string[] | null = null
   let listOrdered = false
+  let listStart = 1
 
   const flushPara = () => {
     if (para.length) {
@@ -151,7 +152,8 @@ function lightMarkdown(src: string): string {
   }
   const flushList = () => {
     if (list) {
-      out.push(`<${listOrdered ? 'ol' : 'ul'}>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</${listOrdered ? 'ol' : 'ul'}>`)
+      const startAttr = listOrdered && listStart !== 1 ? ` start="${listStart}"` : ''
+      out.push(`<${listOrdered ? 'ol' : 'ul'}${startAttr}>${list.map((l) => `<li>${inline(l)}</li>`).join('')}</${listOrdered ? 'ol' : 'ul'}>`)
       list = null
     }
   }
@@ -188,6 +190,7 @@ function lightMarkdown(src: string): string {
       if (!list) {
         list = []
         listOrdered = ordered
+        listStart = ol ? Number(ol[1]) : 1
       }
       list.push(ul ? ul[1] : ol![2])
       continue

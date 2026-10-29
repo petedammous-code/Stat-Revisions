@@ -38,7 +38,9 @@ export const vizMelangeIdentifiabilite: Viz = {
         `**Deux paramètres, une loi.** $(\\pi,\\mu_1,\\mu_2)=(${fmt(pi)},${fmt(mu1)},${fmt(mu2)})$ et $(1-\\pi,\\mu_2,\\mu_1)=(${fmt(1 - pi)},${fmt(mu2)},${fmt(mu1)})$ donnent exactement la même densité (courbes orange et rouge superposées) : la fonction $\\theta\\mapsto\\mathbb{P}_\\theta$ n’est **pas injective**, le modèle n’est pas identifiable au sens de la Déf. 2 (« label switching », Ex. 1.7). Aucune quantité d’observations ne permettra de distinguer ces deux valeurs du paramètre.` +
           (constrain
             ? violated
-              ? `\n\n**Contrainte $\\mu_1<\\mu_2$ violée** : le paramètre courant n’appartient pas à l’espace restreint ; dans l’espace $\\{\\pi\\in\\,]0,1[,\\ \\mu_1<\\mu_2\\}$, un seul des deux triplets est admissible : $(${fmt(1 - pi)},${fmt(mu2)},${fmt(mu1)})$.`
+              ? Math.abs(mu1 - mu2) < 1e-9
+                ? `\n\n**Cas de bord $\\mu_1=\\mu_2$** : aucun des deux triplets n’est dans l’espace restreint $\\{\\pi\\in\\,]0,1[,\\ \\mu_1<\\mu_2\\}$ ; la loi $\\mathcal{N}(\\mu_1,1)$ ne dépend alors plus de $\\pi$ (« conventions au bord à préciser », poly p. 13).`
+                : `\n\n**Contrainte $\\mu_1<\\mu_2$ violée** : le paramètre courant n’appartient pas à l’espace restreint ; dans l’espace $\\{\\pi\\in\\,]0,1[,\\ \\mu_1<\\mu_2\\}$, un seul des deux triplets est admissible : $(${fmt(1 - pi)},${fmt(mu2)},${fmt(mu1)})$.`
               : `\n\n**Avec la contrainte $\\mu_1<\\mu_2$** (et $\\pi\\in\\,]0,1[$), le triplet échangé $(1-\\pi,\\mu_2,\\mu_1)$ n’est plus dans $\\Theta$ : l’identifiabilité est rétablie (démontrée rigoureusement par les fonctions caractéristiques et un système de Vandermonde, PC1 Ex. 7). Attention aux bords : si $\\pi\\in\\{0,1\\}$ une moyenne disparaît, si $\\mu_1=\\mu_2$ c’est $\\pi$ qui disparaît (« conventions au bord à préciser », poly p. 13).`
             : `\n\nPour rendre le modèle identifiable, on **restreint l’espace des paramètres** (par exemple $\\mu_1<\\mu_2$) : activez l’option.`),
       )

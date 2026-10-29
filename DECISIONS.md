@@ -3,6 +3,7 @@
 ## ch6 — Statistiques asymptotiques
 
 
+
 1. **Notations des convergences.** Le poly note la convergence en probabilité $\xrightarrow{\mathbb{P}_{n,\theta}\text{-prob}}$ et la convergence en loi $\overset{\mathbb{P}_{n,\theta}}{\Longrightarrow}$ ; ces deux formes sont utilisées partout dans le chapitre (et enregistrées au glossaire). La flèche courte $\Rightarrow$ est tolérée dans les corrections et les options de QCM quand la probabilité sous-jacente est évidente, conformément à l'usage des corrigés de PC.
 2. **Variance empirique.** $\hat\sigma_n^2$ (normalisée par $n$) et $S_n^2$ (normalisée par $n-1$) suivent le poly (Ex. 1.6) ; la PC6 Ex. 3 normalise $S_n^2$ par $n$ : signalé dans le cours (section « Notations »), sans incidence asymptotique.
 3. **Convention exponentielle / Gamma.** Intensité (poly, PC6, PC7, Examen 2025) : $\mathcal{E}(\theta)$ a pour moyenne $1/\theta$, $\Gamma(2,\theta)$ pour moyenne $2/\theta$. Dans la variante type examen (Weibull), la loi de $X^c$ est écrite explicitement avec sa densité $\theta^{-1}e^{-y/\theta}$ (échelle), comme dans le CC 2022 Ex. 1, pour éviter toute ambiguïté.
@@ -18,6 +19,7 @@
 
 
 
+
 1. **Double numérotation du poly.** Les blocs reprennent la numérotation de l'extraction : encadrés « N.M » (Déf. 1.1, Thm 1.1–1.3, Prop. 2.1–2.9, Lemme 1.1, Lemme 2.1, Cor. 2.1, Thm 2.1) et définitions non encadrées numérotées en continu (Déf. 1 : dominé, Déf. 2 : identifiabilité, Déf. 3 : statistique, Déf. 4, Déf. 5, Déf. 6, Déf. 7, Déf. 8–14). La « Formule (1) » (densité produit) est présentée comme un bloc `proposition` étiqueté « Formule (1) ».
 2. **Conventions exponentielle / Gamma.** Intensité (poly, PC1, Examen 2025) partout dans le cours ; les énoncés en convention d'**échelle** (CC 2022 Ex. 1 et 3, PC3 Ex. 5) sont reproduits tels quels avec la densité écrite explicitement et un rappel « convention d'échelle » dans l'exercice.
 3. **Statistiques d'ordre.** La densité jointe des statistiques d'ordre, la loi de $X_{(k)}$, la loi Beta de $F(X_{(k)})$ et les espacements exponentiels ne figurent pas dans le cours du poly (seulement Ex. 1.8 et Ex. 1.13) ; ils sont intégrés en section 9 (scope programme) car ils tombent aux annales (CC 2022 Ex. 3, Examen 2025 Ex. 3 Q6), sourcés « PC3 Ex. 5 » et « CC 2022 Ex. 3 ».
@@ -30,6 +32,7 @@
 10. **Hors programme.** Section 11 (compléments §4 du poly) en `scope: 'hors-programme'`, blocs concis ; la Prop. 4.1 (biais de $1/\bar X_n$) y est rattachée bien que l'application p. 31 des Outils l'évoque.
 
 ## ch2 — Estimation ponctuelle
+
 
 
 

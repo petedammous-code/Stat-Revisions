@@ -26,7 +26,7 @@ export const exercisesPart2: Exercise[] = [
         choices: [
           { text: '$\\mathrm{Gamma}\\big(\\frac{n-1}2,\\frac1{2\\sigma^2}\\big)$ (intensité), i.e. $K_n/\\sigma^2\\sim\\chi^2(n-1)$', correct: true, explanation: 'Gosset (ii) : $K_n/\\sigma^2\\sim\\chi^2(n-1)=\\mathrm{Gamma}(\\frac{n-1}2,\\frac12)$ (Prop. 2.8) ; multiplier par $\\sigma^2$ divise l’intensité par $\\sigma^2$.' },
           { text: '$\\mathrm{Gamma}\\big(\\frac n2,\\frac1{2\\sigma^2}\\big)$', correct: false, explanation: 'Ce serait $\\sum_i(X_i-\\mu)^2$ (centrage par $\\mu$, $n$ degrés de liberté) ; le centrage par la moyenne empirique perd un degré de liberté.' },
-          { text: '$\\mathrm{Gamma}\\big(\\frac{n-1}2,2\\sigma^2\\big)$', correct: false, explanation: 'Confusion intensité / échelle : avec la convention du poly (intensité), la densité est $\\propto u^{a-1}e^{-u/(2\\sigma^2)}$, soit $b=1/(2\\sigma^2)$.' },
+          { text: '$\\mathrm{Gamma}\\big(\\frac{n-1}2,2\\sigma^2\\big)$ (intensité $2\\sigma^2$)', correct: false, explanation: 'Confusion intensité / échelle : la densité de $K_n$ est $\\propto u^{\\frac{n-1}2-1}e^{-u/(2\\sigma^2)}$, donc l’**intensité** vaut $1/(2\\sigma^2)$ ; $2\\sigma^2$ est l’**échelle** (c’est ainsi que l’écrirait le CC 2022, en convention d’échelle).' },
         ],
       },
       {
@@ -165,7 +165,7 @@ export const exercisesPart2: Exercise[] = [
         ],
       },
     ],
-    conclusion: 'Pour $q=0{,}75$ : $\\hat\\theta_n=2(\\overline{\\mathrm{RR}}_n-0{,}25)$ et la variance est au moins $0{,}75/n$, contre au plus $0{,}25/n$ sans randomisation : le prix de la confidentialité est un facteur 3 sur la variance (au pire).',
+    conclusion: 'Plus précisément, avec $p=(1-q)+\\theta(2q-1)$, on a $p(1-p)=q(1-q)+(2q-1)^2\\theta(1-\\theta)$, d’où $\\mathrm{Var}_\\theta(\\hat\\theta_n)=\\frac{\\theta(1-\\theta)}n+\\frac{q(1-q)}{n(2q-1)^2}$ : la randomisation **ajoute** le terme $\\frac{q(1-q)}{n(2q-1)^2}$ à la variance de l’enquête directe. Pour $q=0{,}75$ : $\\hat\\theta_n=2(\\overline{\\mathrm{RR}}_n-0{,}25)$ et ce terme vaut $0{,}75/n$, alors que $\\theta(1-\\theta)/n\\le0{,}25/n$ : la variance est multipliée par au moins $4$.',
   },
   {
     id: 'ch1-etape-exp-translatee',
@@ -180,8 +180,8 @@ export const exercisesPart2: Exercise[] = [
       {
         prompt: 'Étape 1 — Après le changement de variables $u_1=ny_1$, $u_k=(n-k+1)(y_k-y_{k-1})$ (jacobien $n!$), la densité de $(U_1,\\dots,U_n)$ s’écrit :',
         choices: [
-          { text: '$\\lambda^{-n}e^{-(u_1-na)/\\lambda}\\mathbb{1}_{\\{u_1>na\\}}\\prod_{i\\ge2}e^{-u_i/\\lambda}\\mathbb{1}_{\\mathbb{R}_+}(u_i)$', correct: true, explanation: 'Le $n!$ du jacobien compense le $n!$ de la densité jointe ; $\\sum_iy_i=\\sum_iu_i$ par l’identité, et $\\sum_i(y_i-a)=\\sum_iu_i-na$ ; la contrainte $y_1\\ge a$ devient $u_1\\ge na$.' },
-          { text: '$(n!)^2\\lambda^{-n}e^{-(\\sum_iu_i-na)/\\lambda}\\mathbb{1}_{\\{u_1>na\\}}\\prod_{i\\ge2}\\mathbb{1}_{\\mathbb{R}_+}(u_i)$', correct: false, explanation: 'Le jacobien **compense** le facteur $n!$ : la densité ne contient plus de $n!$ (sinon elle n’intégrerait pas à 1).' },
+          { text: '$\\lambda^{-n}e^{-(u_1-na)/\\lambda}\\mathbb{1}_{\\{u_1>na\\}}$ $\\times\\prod_{i\\ge2}e^{-u_i/\\lambda}\\mathbb{1}_{\\mathbb{R}_+}(u_i)$', correct: true, explanation: 'Le $n!$ du jacobien compense le $n!$ de la densité jointe ; $\\sum_iy_i=\\sum_iu_i$ par l’identité, et $\\sum_i(y_i-a)=\\sum_iu_i-na$ ; la contrainte $y_1\\ge a$ devient $u_1\\ge na$.' },
+          { text: '$(n!)^2\\lambda^{-n}e^{-(\\sum_iu_i-na)/\\lambda}$ $\\times\\mathbb{1}_{\\{u_1>na\\}}\\prod_{i\\ge2}\\mathbb{1}_{\\mathbb{R}_+}(u_i)$', correct: false, explanation: 'Le jacobien **compense** le facteur $n!$ : la densité ne contient plus de $n!$ (sinon elle n’intégrerait pas à 1).' },
           { text: '$\\lambda^{-n}e^{-(\\sum_iu_i-a)/\\lambda}\\prod_i\\mathbb{1}_{\\mathbb{R}_+}(u_i)$', correct: false, explanation: 'Le décalage est $na$ (il y a $n$ observations $\\ge a$ et $\\sum_i(y_i-a)=\\sum_iy_i-na$), et $u_1=ny_1\\ge na$, pas $\\ge0$.' },
         ],
       },
@@ -326,10 +326,12 @@ export const exercisesPart2: Exercise[] = [
     difficulty: 3,
     tags: ['statistiques-ordre', 'changement-variables', 'modele-induit'],
     statement: `Soit $(X_1,\\dots,X_n)$ un $n$-échantillon de la loi $\\mathcal{E}(a,\\lambda)$ de densité $f_\\theta(x)=\\lambda^{-1}e^{-(x-a)/\\lambda}\\mathbb{1}_{[a,+\\infty[}(x)$, $\\theta=(a,\\lambda)\\in\\mathbb{R}\\times\\mathbb{R}_+^*$ (convention : $\\mathrm{Gamma}(p,\\lambda)$ **d’échelle** $\\lambda$, $\\mathbb{E}=p\\lambda$). On note $X_{1:n}<\\dots<X_{n:n}$ les statistiques d’ordre, $p_\\theta(y)=\\prod_if_\\theta(y_i)$, et
+
 $$U_1:=nX_{1:n},\\qquad U_k:=(n-k+1)(X_{k:n}-X_{(k-1):n})\\quad(k\\ge2).$$
+
 On admet l’identité $\\sum_{i=1}^nu_i=nu_1+\\sum_{i=2}^n(n-i+1)(u_i-u_{i-1})$ (3).
 
-1. Montrer que pour toute $h$ mesurable bornée, $\\mathbb{E}_\\theta[h(X_{1:n},\\dots,X_{n:n})]=\\sum_{\\tau\\in\\mathfrak{S}_n}\\mathbb{E}_\\theta\\big[h(X_{\\tau_1},\\dots,X_{\\tau_n})\\mathbb{1}_{\\{X_{\\tau_1}<\\dots<X_{\\tau_n}\\}}\\big]$.
+1. Montrer que pour toute $h$ mesurable bornée, $\\mathbb{E}_\\theta[h(X_{1:n},\\dots,X_{n:n})]$ $=\\sum_{\\tau\\in\\mathfrak{S}_n}\\mathbb{E}_\\theta\\big[h(X_{\\tau_1},\\dots,X_{\\tau_n})\\mathbb{1}_{A_\\tau}\\big]$ où $A_\\tau=\\{X_{\\tau_1}<\\dots<X_{\\tau_n}\\}$.
 2. En déduire que la densité jointe de $(X_{1:n},\\dots,X_{n:n})$ est $n!\\,p_\\theta(y)\\mathbb{1}_{\\{a\\le y_1<\\dots<y_n\\}}$.
 3. Montrer que $U_1,\\dots,U_n$ sont indépendantes et préciser leurs lois (on utilisera le changement de variables $u_1=ny_1$, $u_k=(n-k+1)(y_k-y_{k-1})$, de jacobien $n!$).
 4. Montrer que $T_1:=\\sum_{i=1}^n(X_{i:n}-X_{1:n})$ est indépendante de $X_{1:n}$ et suit $\\mathrm{Gamma}(n-1,\\lambda)$.
@@ -380,10 +382,13 @@ La densité est de **forme produit** : les $U_i$ sont indépendantes ; $U_1$ a p
     tags: ['changement-variables', 'gosset', 'chi2', 'modele-induit'],
     statement: `On observe un $n$-échantillon $(X_1,\\dots,X_n)$ de la loi log-normale $LN(\\mu,\\sigma^2)$ : $X=e^{\\mu+\\sigma\\xi}$ avec $\\xi\\sim\\mathcal{N}(0,1)$, $\\theta=(\\mu,\\sigma^2)\\in\\Theta=\\mathbb{R}\\times\\mathbb{R}_+^*$. On rappelle que $\\chi^2(p)=\\Gamma(p/2,1/2)$ (intensité), d’espérance $p$ et de variance $2p$, et l’on admet (Q2) que l’EMV est $\\hat\\mu_{ML}=\\bar Y_n$, $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_i(Y_i-\\bar Y_n)^2$ avec $Y_i=\\ln X_i$.
 
-1. Déterminer le support $S$ de la loi de $X$ et montrer que sa densité est $p_{\\mu,\\sigma}(x)=\\dfrac{1}{x\\sqrt{2\\pi\\sigma^2}}\\exp\\Big(-\\dfrac{(\\ln x-\\mu)^2}{2\\sigma^2}\\Big)\\mathbb{1}_S(x)$.
-3. Calculer le biais et la variance de $\\hat\\mu_{ML}$.
-4. Calculer le biais et la variance de $\\widehat{\\sigma^2}_{ML}$.
-5. Construire un intervalle de confiance bilatéral non asymptotique de niveau $1-\\alpha$ pour $\\sigma^2$.`,
+**Q1.** Déterminer le support $S$ de la loi de $X$ et montrer que sa densité est $p_{\\mu,\\sigma}(x)=\\dfrac{1}{x\\sqrt{2\\pi\\sigma^2}}\\exp\\Big(-\\dfrac{(\\ln x-\\mu)^2}{2\\sigma^2}\\Big)\\mathbb{1}_S(x)$.
+
+**Q3.** Calculer le biais et la variance de $\\hat\\mu_{ML}$.
+
+**Q4.** Calculer le biais et la variance de $\\widehat{\\sigma^2}_{ML}$.
+
+**Q5.** Construire un intervalle de confiance bilatéral non asymptotique de niveau $1-\\alpha$ pour $\\sigma^2$.`,
     hints: [
       'Q1 : fonction muette avec $h$ bornée, $\\mathbb{E}[h(X)]=\\mathbb{E}[h(e^{\\mu+\\sigma\\xi})]$, changement de variable $x=e^y$, $\\mathrm{d}y=\\mathrm{d}x/x$.',
       'Q3–Q4 : les $Y_i=\\ln X_i$ sont i.i.d. $\\mathcal{N}(\\mu,\\sigma^2)$ (modèle induit) : appliquer le théorème de Gosset à $(\\bar Y_n,S_n^2)$ ; écrire $\\widehat{\\sigma^2}_{ML}=\\frac{n-1}nS_n^2$ et utiliser les moments du $\\chi^2(n-1)$.',
@@ -428,9 +433,12 @@ intervalle de confiance **exact** (non asymptotique) de niveau $1-\\alpha$ pour 
 (a) Quelle est la loi de $\\bar X_n$ ? (b) Montrer que $S_n^2$ et $\\bar X_n$ sont indépendantes et donner la loi de $(n-1)S_n^2/\\sigma^2$. (c) Calculer $\\mathbb{E}[S_n^2]$ et $\\mathbb{E}[S_n^4]$.
 
 **Partie B (Ex. 4 Q2, Q3, Q7).** Régression linéaire simple : $Y\\sim\\mathcal{N}(\\mathbf{X}\\beta,\\sigma^2\\mathrm{I}_n)$ avec $\\mathbf{X}=[\\mathbf{1},x]$ de rang 2, $\\beta=(\\beta_0,\\beta_1)^\\top$, $H=\\mathbf{X}(\\mathbf{X}^\\top\\mathbf{X})^{-1}\\mathbf{X}^\\top$, $\\hat\\beta=(\\mathbf{X}^\\top\\mathbf{X})^{-1}\\mathbf{X}^\\top Y$, $\\hat\\sigma^2=\\frac1n\\|(\\mathrm{I}_n-H)Y\\|^2$, $S^2=\\frac n{n-2}\\hat\\sigma^2$, $u=x-\\bar x\\mathbf{1}$, $\\delta\\in\\mathbb{R}$.
-2. Montrer que $\\hat\\beta$ est un vecteur gaussien ; donner son espérance et sa covariance.
-3. Montrer que $\\hat\\sigma^2$ et $\\hat\\beta$ sont indépendants et donner la loi de $n\\hat\\sigma^2/\\sigma^2$.
-7. On admet $\\mathbb{E}[\\bar Y-\\delta\\hat\\beta_1]=0$ et $\\mathrm{Var}(\\bar Y-\\delta\\hat\\beta_1)=\\sigma^2w(\\delta)$ avec $w(\\delta)=\\frac1n+\\frac{\\delta^2}{\\|u\\|^2}$. Montrer que $\\bar Y-\\delta\\hat\\beta_1\\sim\\mathcal{N}(0,\\sigma^2w(\\delta))$ et qu’elle est indépendante de $S^2$.`,
+
+**Q2.** Montrer que $\\hat\\beta$ est un vecteur gaussien ; donner son espérance et sa covariance.
+
+**Q3.** Montrer que $\\hat\\sigma^2$ et $\\hat\\beta$ sont indépendants et donner la loi de $n\\hat\\sigma^2/\\sigma^2$.
+
+**Q7.** On admet $\\mathbb{E}[\\bar Y-\\delta\\hat\\beta_1]=0$ et $\\mathrm{Var}(\\bar Y-\\delta\\hat\\beta_1)=\\sigma^2w(\\delta)$ avec $w(\\delta)=\\frac1n+\\frac{\\delta^2}{\\|u\\|^2}$. Montrer que $\\bar Y-\\delta\\hat\\beta_1\\sim\\mathcal{N}(0,\\sigma^2w(\\delta))$ et qu’elle est indépendante de $S^2$.`,
     hints: [
       'A : c’est le théorème de Gosset (« théorème IV.3.24 » dans l’ancien poly) ; pour (c), $(n-1)S_n^2/\\sigma^2\\sim\\chi^2(n-1)$ et $\\mathbb{E}[(\\chi^2_{n-1})^2]=\\mathrm{Var}+\\text{moyenne}^2$.',
       'B2 : $\\hat\\beta=AY$ avec $A=(\\mathbf{X}^\\top\\mathbf{X})^{-1}\\mathbf{X}^\\top$ : Prop. 2.4 ($A\\Sigma A^\\top$) et $A\\mathbf{X}=\\mathrm{I}_2$.',
@@ -476,9 +484,11 @@ et aussi $(n-2)S^2/\\sigma^2\\sim\\chi^2(n-2)$ ($\\mathbb{E}[S^2]=\\sigma^2$).
 $$\\Big(\\mathbb{R}^n,\\mathcal{B}(\\mathbb{R}^n),\\{p_{n,\\theta}\\cdot\\mathrm{Leb}^{\\otimes n}:\\ \\theta=(\\mu,\\sigma)\\in\\Theta:=\\mathbb{R}\\times\\mathbb{R}_+^*\\}\\Big),\\qquad p_{n,\\theta}(x_1,\\dots,x_n):=\\sigma^{-n}\\prod_{i=1}^ng\\Big(\\frac{x_i-\\mu}\\sigma\\Big),$$
 et les variables canoniques $X_i(x_1,\\dots,x_n)=x_i$.
 
-1. Montrer que sous $p_{n,\\theta}\\cdot\\mathrm{Leb}^{\\otimes n}$ les statistiques $X_1,\\dots,X_n$ sont i.i.d. et identifier leur loi.
-2. Montrer que sous $p_{n,\\theta}\\cdot\\mathrm{Leb}^{\\otimes n}$ les variables $(X_i-\\mu)/\\sigma$ sont i.i.d. de densité $g$.
-4. On suppose $g$ gaussienne centrée réduite et l’on pose $S_n:=\\sum_iX_i$, $K_n:=\\sum_i(X_i-n^{-1}S_n)^2$. Déterminer le modèle statistique induit par $(S_n,K_n)$ (on pourra utiliser le théorème de Gosset).`,
+**Q1.** Montrer que sous $p_{n,\\theta}\\cdot\\mathrm{Leb}^{\\otimes n}$ les statistiques $X_1,\\dots,X_n$ sont i.i.d. et identifier leur loi.
+
+**Q2.** Montrer que sous $p_{n,\\theta}\\cdot\\mathrm{Leb}^{\\otimes n}$ les variables $(X_i-\\mu)/\\sigma$ sont i.i.d. de densité $g$.
+
+**Q4.** On suppose $g$ gaussienne centrée réduite et l’on pose $S_n:=\\sum_iX_i$, $K_n:=\\sum_i(X_i-n^{-1}S_n)^2$. Déterminer le modèle statistique induit par $(S_n,K_n)$ (on pourra utiliser le théorème de Gosset).`,
     hints: [
       'Q1 : densité de forme produit ⇒ indépendance ; même facteur ⇒ même loi ; la constante de normalisation se trouve par le changement de variable $v=(u-\\mu)/\\sigma$.',
       'Q2 : appliquer le résultat de l’Exercice 2 (translation-échelle) avec $a=-\\mu/\\sigma$, $b=1/\\sigma$, ou refaire la fonction muette.',

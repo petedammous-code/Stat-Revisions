@@ -7,7 +7,7 @@ export const coursePart2: CourseSection[] = [
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s6-outils-chgt',
-    title: '6 · Outils I : fonction muette, changement de variables, lois Gamma, χ², Student, Radon–Nikodym',
+    title: '6. Outils I : fonction muette, changement de variables, lois Gamma, χ², Student, Radon–Nikodym',
     role: 'preuves',
     intro:
       'Tout calcul de modèle induit passe par la **méthode de la fonction muette** : on écrit $\\mathbb{E}[h(T)]$ pour une fonction test $h$ quelconque et l’on reconnaît une densité. Pour une transformation régulière, cela donne la **formule du changement de variables** (Prop. 2.1 en dimension 1, Prop. 2.2 en dimension $k$). On rappelle ensuite les lois Gamma, $\\chi^2$ et de Student, et le théorème de Radon–Nikodym qui fonde la notion de modèle dominé.',
@@ -43,7 +43,7 @@ $$q(y)=\\mathbb{1}_J(y)\\,p\\big(\\phi^{-1}(y)\\big)\\,\\big|(\\phi^{-1})\'(y)\\
           { text: '$\\phi$ est un $\\mathcal{C}^1$-difféomorphisme de $I$ sur $J$ ; changement de variable $x=\\phi^{-1}(y)$, $\\mathrm{d}x=|(\\phi^{-1})\'(y)|\\,\\mathrm{d}y$ : $\\mathbb{E}[h(Y)]=\\int_Jh(y)\\,p(\\phi^{-1}(y))\\,|(\\phi^{-1})\'(y)|\\,\\mathrm{d}y$.', justification: 'Changement de variable dans l’intégrale de Lebesgue ($\\phi\'$ ne s’annule pas, donc $\\phi$ strictement monotone).' },
           { text: 'L’égalité vaut pour toute $h$ : la densité de $Y$ est $q$ (fonction muette). Enfin $(\\phi^{-1})\'(y)=1/\\phi\'(\\phi^{-1}(y))$.', justification: 'Identification ; dérivation de $\\phi\\circ\\phi^{-1}=\\mathrm{id}_J$.' },
         ],
-        pitfalls: ['Oublier la **valeur absolue** (si $\\phi$ est décroissante, $(\\phi^{-1})\'<0$) ou l’**indicatrice** du support $J$ : les deux erreurs classiques du corrigé de la PC1 Ex. 2.'],
+        pitfalls: ['Oublier la **valeur absolue** (si $\\phi$ est décroissante, $(\\phi^{-1})\'<0$) ou l’**indicatrice** du support $J$ : deux erreurs classiques (le corrigé de la PC1 Ex. 2 insiste sur $|b_i|$ : une « densité » $\\frac1b\\,p$ serait négative pour $b<0$).'],
       },
       {
         kind: 'example',
@@ -168,7 +168,7 @@ Propriétés : densité symétrique, décroissance **polynomiale** (queues plus 
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s7-gaussiens',
-    title: '7 · Outils II : lois gaussiennes et vecteurs gaussiens',
+    title: '7. Outils II : lois gaussiennes et vecteurs gaussiens',
     role: 'preuves',
     intro:
       'Tout le calcul gaussien découle de la fonction caractéristique $\\exp(it^\\top\\mu-\\frac12t^\\top\\Sigma t)$ : stabilité par transformation affine ($AX+b\\sim\\mathcal{N}(A\\mu+b,A\\Sigma A^\\top)$), **décorrélation $\\Leftrightarrow$ indépendance** dans un vecteur gaussien, densité quand $\\Sigma$ est inversible, formes quadratiques $\\chi^2$. Ce sont les briques des théorèmes de Cochran et de Gosset.',
@@ -344,7 +344,7 @@ $$g_{\\mu,\\Sigma}(x)=\\frac1{(2\\pi)^{n/2}\\sqrt{\\det\\Sigma}}\\exp\\Big(-\\fr
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s8-cochran-gosset',
-    title: '8 · Théorèmes de Cochran et de Gosset',
+    title: '8. Théorèmes de Cochran et de Gosset',
     role: 'preuves',
     intro:
       '« Extrêmement utiles, voire fondamentaux, pour tous les exercices portant sur des modèles gaussiens » (§1.9) : ce sont des résultats de probabilité sur les projections orthogonales d’un vecteur $\\mathcal{N}(\\mu,\\sigma^2\\mathrm{I}_n)$. Cochran donne l’indépendance des projections et la loi $\\chi^2$ de leurs normes ; Gosset en est l’application à $\\mathbb{R}^n=\\mathbb{R}\\mathbf{1}_n\\oplus(\\mathbb{R}\\mathbf{1}_n)^\\perp$ (moyenne et variance empiriques). Outils de la PC1 Ex. 3 (loi de $(S_n,K_n)$), Ex. 4 (régression), et de la plupart des annales gaussiennes.',
@@ -517,7 +517,7 @@ $$g_{\\mu,\\Sigma}(x)=\\frac1{(2\\pi)^{n/2}\\sqrt{\\det\\Sigma}}\\exp\\Big(-\\fr
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s9-ordre',
-    title: '9 · Statistiques d’ordre : densité jointe, espacements, loi du maximum',
+    title: '9. Statistiques d’ordre : densité jointe, espacements, loi du maximum',
     role: 'preuves',
     intro:
       'Les statistiques d’ordre $X_{(1)}\\le\\dots\\le X_{(n)}$ apparaissent dans le poly (Ex. 1.8, Ex. 1.13) et dans deux annales (CC 2022 Ex. 3 ; Examen 2025 Ex. 3 Q6) ; la PC3 Ex. 5 en donne la densité jointe et la transformation en **espacements** i.i.d. pour l’échantillon exponentiel. Tout repose sur deux outils de ce chapitre : l’échangeabilité d’un $n$-échantillon et le changement de variables.',
@@ -566,7 +566,7 @@ En intégrant les autres coordonnées, $X_{k:n}$ a pour densité $\\frac{n!}{(k-
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s10-examen',
-    title: '10 · Méthodes types et « À l’examen »',
+    title: '10. Méthodes types et « À l’examen »',
     role: 'liens-examen',
     intro:
       'Le chapitre 1 pèse environ 9 % des points en 2025 (22 % dans le CC 2022, DIAGNOSTIC §7–8) : il n’est presque jamais interrogé pour lui-même, mais ses outils ouvrent chaque problème (densité par changement de variables, loi exacte via Gosset/Cochran, statistiques d’ordre) et sont **attendus avec leurs hypothèses** dans la rédaction.',
@@ -653,7 +653,7 @@ Exemples à connaître : $X^c$ Weibull $\\to$ exponentielle (CC 2022 Ex. 1 Q1 : 
   // -------------------------------------------------------------------------
   {
     id: 'ch1-s11-hp',
-    title: '11 · Compléments (hors programme) : hypergéométrique, censure, logistique, biais de 1/X̄ₙ, régression, modèles non dominés',
+    title: '11. Compléments (hors programme) : hypergéométrique, censure, logistique, biais de 1/X̄ₙ, régression, modèles non dominés',
     role: 'complements',
     scope: 'hors-programme',
     intro: 'Section « 4 Les compléments » du poly (p. 42–59) : « Les contenus de cette partie ne sont pas exigibles ; ils enrichissent la culture statistique et préparent certains chapitres ultérieurs. » Résumés concis.',

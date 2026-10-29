@@ -39,6 +39,10 @@ describe('Texte riche', () => {
     expect(html).toContain('math-display')
     expect(html).toContain('class="gloss"')
   })
+  it('respecte le numéro de départ des listes numérotées', () => {
+    expect(richToHtml('3. trois\n4. quatre')).toContain('<ol start="3">')
+    expect(richToHtml('1. un\n2. deux')).toContain('<ol>')
+  })
   it('extrait les formules', () => {
     expect(extractMath('a $x$ b $$y$$ c')).toEqual([{ tex: 'x', display: false }, { tex: 'y', display: true }])
   })
