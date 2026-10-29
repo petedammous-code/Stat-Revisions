@@ -6,6 +6,7 @@ Chaque section est rédigée par le vérificateur du chapitre (qui n'a pas const
 
 
 
+
 Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visualisations, 43 exercices dont 4 annales, 23 flashcards, fiche, 6 Monte-Carlo) relu ligne à ligne contre `content/extraction/ch6.md`, `pc6.md`, `pc7.md` (Ex. 2–3) et `DIAGNOSTIC.md` (§2.A Ex. 2 Q6–Q10, §2.B Ex. 2 Q5–7, §5.8–5.10, §6, §7, §8). Toutes les applications numériques ont été recalculées (IC Poisson $[0{,}098;0{,}173]$, IC Gamma $[2{,}01;2{,}99]$, $C=\pi/2$, $2/\sqrt5$, les trois IC exponentiels à $x=0{,}196$, DL de $v_{Mom}$ jusqu'à l'ordre $\sigma^8$, moment centré d'ordre 4 de l'exponentielle $9\theta^4$, $\gamma=1/180$ pour $\mathcal U([0,1])$, valeurs exactes à $n$ fini citées dans les Monte-Carlo). `npm run typecheck`, `npm test` (41 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright (aucune erreur console, aucun `.katex-error`, graphes non vides, pas de débordement horizontal à 1280 px ni à 390 px).
 
 - [Corrigé] `exercices-part1.ts`, QCM `ch6-qcm-variance-exp2` : l'explication du distracteur $5\theta^2$ attribuait l'erreur à un « oubli du facteur $1/4$ », ce qui donnerait $20\theta^2$ ; $5\theta^2$ provient de l'oubli du facteur $\tfrac12$ de la dérivée de la racine ($\phi_2'=-\theta^3/2$ au lieu de $-\theta^3/4$). Réécrite.
@@ -29,6 +30,7 @@ Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visua
 
 
 
+
 Contrôle indépendant de `site/src/content/ch2/` (cours, 41 exercices, 21 flashcards, fiche, 6 Monte-Carlo, 6 viz) contre `content/extraction/ch2.md`, `pc2.md`, `pc6.md` (Ex. 1), `pc7.md` (Ex. 2–4) et `DIAGNOSTIC.md`. Énoncés, hypothèses et preuves des Déf. 1.1–1.8, Méthodes 1.1–1.2, Prop. 1.1–1.3, Thm 1.1, Outils (Prop. 2.1, Déf. 2.1–2.2, Thm 2.1–2.2, Lemmes 2.1–2.3) conformes à l'extraction ; Ex. 1.1 à 1.15 et PC2 Ex. 1–3 recalculés (biais/EQM de $1/\bar X_n$, Ex. 1.5 $\hat b_n=0{,}1+\sqrt{0{,}27}\approx0{,}62$, mélange $-0{,}05$ et $0{,}2875$, $\chi^2(8)$ : 2,180 / 17,535, variance asymptotique $\frac54\theta^2$, Gamma(2, θ) biais $\theta/(2n-1)$, log-normale $(\theta,\theta)$, log-normale Q9(a)). typecheck, 74 tests et build OK ; rendu Playwright des six onglets à 1280 et 390 px : 0 erreur console, 0 `katex-error`, graphes non vides, pas de débordement horizontal.
 
 - [Corrigé] QCM `ch2-qcm-mediane-qualificatifs` : l'explication du distracteur « $T(x)=\mathrm{signe}(x)$ » utilisait un symbole non défini $\bar Y_n$ ; remplacé par $\tan\big(\frac\pi{2n}\sum_i\mathrm{signe}(X_i)\big)$ (Ex. 4.1, marqué hors programme).
@@ -46,6 +48,7 @@ Contrôle indépendant de `site/src/content/ch2/` (cours, 41 exercices, 21 flash
 - [Manque] PC6 Ex. 1 Q1 (deux estimateurs des moments de l'exponentielle) n'a pas d'exercice dédié : il n'est traité que via le cours (Ex. 1.4), la viz `ch2-methode-moments` et l'étape suivante EMV exponentiel. Volumes du guide largement respectés (41 exercices : 11 QCM, 6 VF, 5 ordonner, 4 trouver-erreur, 5 étape-suivante, 3 associer, 3 numériques, 4 annales ; 21 flashcards dont 6 « hypothèse manquante » ; 6 viz ; 6 Monte-Carlo).
 - [Manque] Aucune annale ni étape suivante ne porte le tag `cours` (seuls QCM/VF/ordonner/associer « poly ») ; même remarque que pour le ch.6.
 ## Chapitre 1
+
 
 
 Périmètre contrôlé : `site/src/content/ch1/**` (cours en 11 sections, 7 visualisations, 42 exercices dont 4 annales, 22 flashcards, fiche, 7 Monte-Carlo) relu ligne à ligne contre `content/extraction/ch1.md`, `pc1.md`, `pc3.md` (Ex. 5), `pc4.md` (Ex. 2 Q4–6) et `DIAGNOSTIC.md` (§2.A Ex. 2 Q1, Q3–5, Ex. 3 Q6 ; §2.B CC 2022 Ex. 1 Q1, Ex. 2 Q1, Ex. 3 Q1–6, Ex. 4 Q2–3, 7 ; §5–8). Aucun fichier du socle n'a été recopié dans `ch1/` (uniquement des données et des imports de `core/` et `sim/`). Recalculés : $\check\lambda_n=1{,}5695$ et $\hat\pi_n=0{,}935$ (football), $\hat\theta_n=0{,}30$ et écart-type $0{,}049$ (réponses randomisées), $\mathbb E[S_n^4]=1{,}2$, $0{,}9^5=0{,}59049$ et $\mathbb E[X_{(5)}]=5/3$, biais/variance de $\widehat{\sigma^2}_{ML}$ et risque $(2n-1)\sigma^4/n^2$, variance asymptotique $\frac54\theta^2$ de $\hat\theta_{n,2}$, densités des espacements (CC 2022 Ex. 3), compensation des termes en $u^2$ (PC1 Ex. 3 complément), tolérances des 7 Monte-Carlo (environ 4 écarts-types Monte-Carlo chacune). Sources contrôlées contre l'extraction ; PDF consulté pour le Thm 1.3 (p. 21, conforme). `npm run typecheck`, `npm test` (74 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright à 1280 et 390 px : aucune erreur console, aucun `.katex-error`, 11 graphes non vides, aucun champ de saisie hors numériques (4), plus aucun débordement horizontal (il y en avait 95 px sur Entraînement et 23 px sur Type annale à 390 px).
