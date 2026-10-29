@@ -13,7 +13,7 @@ export default defineConfig({
     rolldownOptions: {
       output: {
         // Bibliothèques lourdes et contenu dans des fichiers séparés (cache navigateur indépendant).
-        advancedChunks: {
+        codeSplitting: {
           groups: [
             { name: 'plotly', test: /plotly\.js-dist-min/, priority: 3 },
             { name: 'katex', test: /node_modules[\\/]katex/, priority: 2 },
