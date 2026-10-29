@@ -210,7 +210,7 @@ export const exercisesPart2: Exercise[] = [
         ],
       },
     ],
-    conclusion: 'Conforme au Thm 1.7 ($v_\\psi\\ge1/\\mathbb{I}=2$). La médiane reste un bon point de départ : un pas de score de Fisher la rend efficace (Thm 4.5, hors programme).',
+    conclusion: 'L’EMV atteint la borne $1/\\mathbb{I}=2$ (Thm 1.6–1.7) ; la médiane (non couverte par le Thm 1.7, $\\operatorname{signe}$ n’étant pas dérivable) fait moins bien, ce qui se lit directement sur les variances. La médiane reste un bon point de départ : un pas de score de Fisher la rend efficace (Thm 4.5, hors programme).',
   },
   // ------------------------------------------------------------------ Associer
   {
@@ -327,12 +327,14 @@ export const exercisesPart2: Exercise[] = [
     id: 'ch7-annale-2025',
     type: 'annale',
     title: 'Examen 2025 Ex. 2 (Q7, Q8, Q10) — EMV, médiane et efficacité asymptotique (log-normale)',
-    source: 'Examen 2025 Ex. 2 Q7–Q8 et Q10',
+    source: 'Examen 2025 Ex. 2 Q7–Q8 et Q10 (énoncé adapté)',
     origin: 'annale',
     difficulty: 2,
     tags: ['emv', 'information-fisher', 'mediane', 'efficacite', 'annale-2025'],
     durationMin: 25,
-    statement: `Soit un $n$-échantillon de la loi log-normale $LN(\\mu,\\sigma^2)$, $X=e^{\\mu+\\sigma\\xi}$, $\\xi\\sim\\mathcal{N}(0,1)$, $\\theta=(\\mu,\\sigma^2)\\in\\mathbb{R}\\times\\mathbb{R}_+^*$ ; le modèle est **régulier** (admis). On note $Y_i=\\ln X_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ ; l’EMV est $\\hat\\mu_{ML}=\\bar Y_n$, $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_i(Y_i-\\bar Y_n)^2$.
+    statement: `*Énoncé adapté de l’Examen 2025 (Ex. 2) : la Q7 originale demande le calcul direct par TCL multivarié (ch.6) ; on la relit ici avec l’information de Fisher (ch.7).*
+
+Soit un $n$-échantillon de la loi log-normale $LN(\\mu,\\sigma^2)$, $X=e^{\\mu+\\sigma\\xi}$, $\\xi\\sim\\mathcal{N}(0,1)$, $\\theta=(\\mu,\\sigma^2)\\in\\mathbb{R}\\times\\mathbb{R}_+^*$ ; le modèle est **régulier** (admis). On note $Y_i=\\ln X_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ ; l’EMV est $\\hat\\mu_{ML}=\\bar Y_n$, $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_i(Y_i-\\bar Y_n)^2$.
 
 **Rappel du sujet** : TCL du quantile empirique, $\\sqrt n(\\hat q_\\alpha-q_\\alpha)\\overset{d}{\\to}\\mathcal{N}\\big(0,\\frac{\\alpha(1-\\alpha)}{f(q_\\alpha)^2}\\big)$.
 
@@ -354,7 +356,7 @@ Le modèle étant régulier, $\\mathbb{I}(\\theta)=-\\mathbb{E}_\\theta[\\mathrm
 
 $$\\mathbb{I}(\\mu,\\sigma^2)=\\begin{pmatrix}1/\\sigma^2&0\\\\0&1/(2\\sigma^4)\\end{pmatrix}.$$
 
-L’EMV est consistant et l’équation de vraisemblance est satisfaite en un point intérieur ; par le théorème de normalité asymptotique de l’EMV (Poly ch.7, Thm 1.6, dans sa version vectorielle, compléments §4.4), $\\sqrt n(\\hat\\theta_{ML}-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,\\mathbb{I}(\\theta)^{-1})=\\mathcal{N}\\big(0,\\mathrm{diag}(\\sigma^2,2\\sigma^4)\\big)$. C’est exactement la covariance obtenue directement par le TCL multivarié appliqué à $W_i=(Y_i-\\mu,(Y_i-\\mu)^2-\\sigma^2)$ et Slutsky (ch.6) : les deux méthodes concordent.
+L’EMV est consistant et l’équation de vraisemblance est satisfaite en un point intérieur ; par le théorème de normalité asymptotique de l’EMV (Poly ch.7, Thm 1.6, dans sa version vectorielle : compléments §4.4, Thm 4.4, hors programme ; le Thm 1.6 lui-même est scalaire), $\\sqrt n(\\hat\\theta_{ML}-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,\\mathbb{I}(\\theta)^{-1})=\\mathcal{N}\\big(0,\\mathrm{diag}(\\sigma^2,2\\sigma^4)\\big)$. C’est exactement la covariance obtenue directement par le TCL multivarié appliqué à $W_i=(Y_i-\\mu,(Y_i-\\mu)^2-\\sigma^2)$ et Slutsky (ch.6) : les deux méthodes concordent.
 
 **Q2.** $\\ln$ est croissante et la médiane de $\\mathcal{N}(\\mu,\\sigma^2)$ est $\\mu$, donc la médiane de $X$ est $e^\\mu$ ; on pose $\\hat\\mu_{Med}:=\\ln\\tilde X_n=\\mathrm{med}(Y_1,\\dots,Y_n)$. Le rappel appliqué aux $Y_i$ avec $\\alpha=\\frac12$, $q_{1/2}=\\mu$, $f(\\mu)=\\frac1{\\sqrt{2\\pi\\sigma^2}}$ (densité continue et $>0$ en $\\mu$) donne
 
@@ -367,7 +369,7 @@ C’est la formule $1/(4q_{\\theta^\\star}(\\theta^\\star)^2)$ de la médiane (P
 - $\\sigma\\to0$ : $v_{ML}\\approx v_{Mom}<v_{Med}$ (moments quasi efficaces, médiane à $2/\\pi\\approx64\\,\\%$) ;
 - $\\sigma\\to\\infty$ : $v_{ML}<v_{Med}\\ll v_{Mom}$ (les moments empiriques d’une loi à queue lourde ont une variance qui explose).
 
-Le **Thm 1.7 du ch.7** (modèle régulier, $\\Theta$ ouvert) garantit $v_\\psi\\ge1/\\mathbb{I}$ pour tout Z-estimateur régulier : l’EMV, qui atteint cette borne, est asymptotiquement efficace dans cette classe ; $\\hat\\mu_{Mom}$ (Z-estimateur associé aux moments) ne peut pas faire mieux, et l’inégalité vaut aussi pour la médiane, dont la variance se compare directement. Intérêts : EMV optimal et explicite ; médiane robuste (fonction d’influence bornée, aucune hypothèse de moment) ; moments simples mais inadaptés aux queues lourdes.`,
+Le **Thm 1.7 du ch.7** (modèle régulier, $\\Theta$ ouvert) garantit $v_\\psi\\ge1/\\mathbb{I}$ pour tout Z-estimateur régulier : l’EMV, qui atteint cette borne, est asymptotiquement efficace dans cette classe. *Précision* : le Thm 1.7 est énoncé pour un paramètre **scalaire** ; ici $\\theta=(\\mu,\\sigma^2)$ et l’on invoque son extension vectorielle (compléments §4.4–4.6, hors programme), qui donne pour la composante $\\mu$ la borne $(\\mathbb{I}^{-1})_{11}=\\sigma^2$, égale à $1/\\mathbb{I}_{\\mu\\mu}$ car $\\mathbb{I}$ est diagonale. $\\hat\\mu_{Mom}$ (Z-estimateur associé aux deux équations de moments) ne peut donc pas faire mieux. La médiane n’est **pas** un Z-estimateur régulier ($\\operatorname{signe}$ non dérivable) : pour elle, l’inégalité $v_{Med}=\\frac\\pi2\\sigma^2>\\sigma^2$ se lit directement sur les formules. Intérêts : EMV optimal et explicite ; médiane robuste (fonction d’influence bornée, aucune hypothèse de moment) ; moments simples mais inadaptés aux queues lourdes.`,
     bareme: [
       { label: 'Q1 information de Fisher (hessienne, espérance)', points: 0.5 },
       { label: 'Q1 loi limite par le Thm 1.6 et cohérence avec le TCL', points: 0.5 },

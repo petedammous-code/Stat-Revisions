@@ -215,10 +215,10 @@ export const exercisesPart2: Exercise[] = [
     tags: ['rvm', 'upp', 'cours'],
     prompt: 'Associer chaque situation (monotonie du rapport en $T$, hypothèses) à la région de rejet du test U.P.P. Dans tous les cas, $d_\\alpha$ est fixé sous $\\mathbb{P}_{\\theta_0}$.',
     pairs: [
-      { left: 'Rapport croissant, $H_0:\\theta\\le\\theta_0$ contre $H_1:\\theta>\\theta_0$', right: '$\\{T(Z)>d_\\alpha\\}$ avec $\\mathbb{P}_{\\theta_0}(T>d_\\alpha)=\\alpha$', explanation: 'Th. 1.3.' },
-      { left: 'Rapport croissant, $H_0:\\theta\\ge\\theta_0$ contre $H_1:\\theta<\\theta_0$', right: '$\\{T(Z)<d_\\alpha\\}$ avec $\\mathbb{P}_{\\theta_0}(T<d_\\alpha)=\\alpha$', explanation: 'On renverse l’ordre sur $\\Theta$ : petites valeurs de $T$ $\\leftrightarrow$ petites valeurs de $\\theta$.' },
-      { left: 'Rapport décroissant, $H_0:\\theta\\le\\theta_0$ contre $H_1:\\theta>\\theta_0$', right: '$\\{T(Z)<d_\\alpha\\}$, cas de l’Examen 2025 Ex. 1 (intensité)', explanation: 'Th. 1.4.' },
-      { left: 'Rapport décroissant, $H_0:\\theta\\ge\\theta_0$ contre $H_1:\\theta<\\theta_0$', right: '$\\{T(Z)>d_\\alpha\\}$, grandes valeurs de $T$ plaidant pour un petit $\\theta$', explanation: 'Double renversement.' },
+      { left: 'Rapport croissant, $H_0:\\theta\\le\\theta_0$ contre $H_1:\\theta>\\theta_0$', right: '$\\{T(Z)>d_\\alpha\\}$ : grandes valeurs de $T$ $\\leftrightarrow$ grandes valeurs de $\\theta$, on rejette $\\theta\\le\\theta_0$', explanation: 'Th. 1.3.' },
+      { left: 'Rapport croissant, $H_0:\\theta\\ge\\theta_0$ contre $H_1:\\theta<\\theta_0$', right: '$\\{T(Z)<d_\\alpha\\}$ : petites valeurs de $T$ $\\leftrightarrow$ petites valeurs de $\\theta$, on rejette $\\theta\\ge\\theta_0$', explanation: 'On renverse l’ordre sur $\\Theta$ : petites valeurs de $T$ $\\leftrightarrow$ petites valeurs de $\\theta$.' },
+      { left: 'Rapport décroissant, $H_0:\\theta\\le\\theta_0$ contre $H_1:\\theta>\\theta_0$', right: '$\\{T(Z)<d_\\alpha\\}$ : petites valeurs de $T$ $\\leftrightarrow$ grandes valeurs de $\\theta$, on rejette $\\theta\\le\\theta_0$ (Examen 2025 Ex. 1, intensité)', explanation: 'Th. 1.4.' },
+      { left: 'Rapport décroissant, $H_0:\\theta\\ge\\theta_0$ contre $H_1:\\theta<\\theta_0$', right: '$\\{T(Z)>d_\\alpha\\}$ : grandes valeurs de $T$ $\\leftrightarrow$ petites valeurs de $\\theta$, on rejette $\\theta\\ge\\theta_0$', explanation: 'Double renversement.' },
     ],
   },
   {

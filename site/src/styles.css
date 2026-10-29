@@ -328,3 +328,7 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
 .exam-running .exercise:not(.exercise-annale) .feedback, .exam-running .slot.correct, .exam-running .slot.wrong,
 .exam-running .sortable-item.correct, .exam-running .sortable-item.wrong, .exam-running .line.correct, .exam-running .line.wrong { border-color: var(--border); background: var(--bg-soft); }
 .exam-running .exercise:not(.exercise-annale) .feedback { display: none; }
+
+/* Téléphone : tableaux et formules en ligne longues défilent dans leur bloc, pas la page. */
+.card table, .rich table, .bareme, .match-solution { display: block; overflow-x: auto; max-width: 100%; }
+.rich p, .rich li, .statement, .option-text, .step-body, .line-body { overflow-x: auto; overflow-y: hidden; }

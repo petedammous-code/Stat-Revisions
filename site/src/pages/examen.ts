@@ -72,12 +72,13 @@ function pickItems(duration: number, seed: number): { parts: Part[] } {
   const short: Item[] = []
   const annEstim: Item[] = []
   const annLearn: Item[] = []
+  const inProgram = (e: Exercise) => !e.tags.includes('hors-programme')
   for (const ch of byWeight) {
-    const c = shuffle(ch.exercises.filter((e) => e.type !== 'annale' && e.type !== 'numerique' && e.tags.includes('cours')), rng)
+    const c = shuffle(ch.exercises.filter(inProgram).filter((e) => e.type !== 'annale' && e.type !== 'numerique' && e.tags.includes('cours')), rng)
     for (const e of c.slice(0, 3)) course.push({ chapter: ch.slug, ex: e, points: 0, outcome: null })
-    const q = shuffle(ch.exercises.filter((e) => (e.type === 'qcm' || e.type === 'vrai-faux' || e.type === 'numerique') && !e.tags.includes('cours')), rng)
+    const q = shuffle(ch.exercises.filter(inProgram).filter((e) => (e.type === 'qcm' || e.type === 'vrai-faux' || e.type === 'numerique') && !e.tags.includes('cours')), rng)
     for (const e of q.slice(0, 3)) short.push({ chapter: ch.slug, ex: e, points: 0, outcome: null })
-    for (const a of ch.exercises.filter((e) => e.type === 'annale')) {
+    for (const a of ch.exercises.filter(inProgram).filter((e) => e.type === 'annale')) {
       const it = { chapter: ch.slug, ex: a, points: 0, outcome: null }
       if (APPRENTISSAGE.includes(ch.slug)) annLearn.push(it)
       else if (ESTIMATION.includes(ch.slug)) annEstim.push(it)

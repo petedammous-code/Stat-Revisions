@@ -123,7 +123,7 @@ export const flashcards: Flashcard[] = [
     id: 'ch5-fc-hm-thm13',
     kind: 'hypothese-manquante',
     front: 'Énoncé tronqué (Th. 1.3) : « Si la famille est à rapport de vraisemblance monotone croissant en $T$, alors $\\mathbb{1}_{\\{T>d_\\alpha\\}}$ avec $\\mathbb{P}_{\\theta_0}(T>d_\\alpha)=\\alpha$ est U.P.P.($\\alpha$) pour $\\theta\\le\\theta_0$ contre $\\theta>\\theta_0$. » Quelle hypothèse manque ?',
-    back: 'Il manque : **$T(Z)$ est à densité** par rapport à Lebesgue sous chaque $\\mathbb{P}_\\theta$ (sinon l’équation de $d_\\alpha$ n’a pas de solution et il faut randomiser, Ex. 4.2).',
+    back: 'Il manque : **$T(Z)$ est à densité** par rapport à Lebesgue sous chaque $\\mathbb{P}_\\theta$ (sinon l’équation de $d_\\alpha$ peut n’avoir aucune solution et il faut randomiser, Ex. 4.2).',
     source: 'Poly ch.5, Th. 1.3',
     tags: ['rvm', 'upp', 'hypotheses'],
     choices: [

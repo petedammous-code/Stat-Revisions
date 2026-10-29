@@ -52,7 +52,7 @@ export const summarySheet: SummarySheet = {
   pitfalls: [
     '**Seuil sous $H_0$** : Ex. 1.1, $X>z_{1-\\alpha}-1$ et non $X>z_{1-\\alpha}$ ; ne jamais calculer le seuil sous $\\theta_1$.',
     '**Convention échelle / intensité** : $\\theta^{-1}e^{-x/\\theta}$ (PC5 Ex. 1, CC 2022) $\\Rightarrow$ rejet pour $\\sum X_i$ grand ; $\\theta e^{-\\theta x}$ (Examen 2025) $\\Rightarrow$ rejet pour $\\sum X_i$ **petit**, seuil $\\chi^2_\\alpha(2n)/(2\\theta_0)$.',
-    '**Taille ≠ niveau** : la preuve de Neyman-Pearson utilise la taille **exacte** ; en discret, un test pur n’a qu’une taille $<\\alpha$ (PC4 Ex. 4 : $0{,}049$).',
+    '**Taille ≠ niveau** : la preuve de Neyman-Pearson utilise la taille **exacte** ; en discret, un test pur n’a en général qu’une taille $<\\alpha$ (PC4 Ex. 4 : $0{,}049$).',
     '**Unicité** presque partout seulement ; elle tombe en présence d’atomes (uniforme, exponentielle translatée).',
     '**Stricte monotonie** du rapport : l’uniforme (rapport croissant au sens large) sort de la Déf. 1.4.',
     '**Région de rejet** : pas toujours une queue (Ex. 1.2, variances différentes) ; le critère est « $r$ grand ».',

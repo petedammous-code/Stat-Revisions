@@ -177,7 +177,7 @@ Les tests sont précieux (risque de 1re espèce contrôlé, optimalité) et dang
 
 **Piège** : ne pas rejeter pour les grandes valeurs de $\\sum X_i$ — une grande intensité donne de **petites** observations. La Q3 enchaîne sur la $p$-valeur : $\\hat\\alpha(Z)=F_{\\chi^2(2n)}(2\\theta_0\\sum_iX_i)$.
 
-**Ex. 4 Q4 et Q12 (QCM sur les DM/EN)** : le test d’égalité des variances de deux échantillons gaussiens par **rapport de vraisemblance généralisé** conduit à $S_X^2/S_Y^2\\sim F(n-1,p-1)$ sous $H_0$ ; tester un sous-modèle d’une régression multiple (effet conjoint de deux variables) se fait par le **test de Fisher** $F=\\frac{(SCR_0-SCR)/2}{SCR/(n-p)}\\sim F(2,n-p)$ — c’est l’Exercice 6 du poly (PC5 Ex. 4), complément §9.`,
+**Ex. 4 Q4 et Q12 (questions sur les DM/EN : Q4 en QCM, Q12 question ouverte)** : le test d’égalité des variances de deux échantillons gaussiens par **rapport de vraisemblance généralisé** conduit à $S_X^2/S_Y^2\\sim F(n-1,p-1)$ sous $H_0$ ; tester un sous-modèle d’une régression multiple (effet conjoint de deux variables) se fait par le **test de Fisher** $F=\\frac{(SCR_0-SCR)/2}{SCR/(n-p)}\\sim F(2,n-p)$ — c’est l’Exercice 6 du poly (PC5 Ex. 4), complément §9.`,
       },
       {
         kind: 'text',
@@ -205,7 +205,7 @@ Jumeau direct : Exercice 1 du poly / PC5 Ex. 1 (c’est le cas $c=1$).`,
         kind: 'text',
         id: 'ch5-s7-pieges',
         title: 'Pièges relevés dans les annales et les corrigés (DIAGNOSTIC §6)',
-        text: `- **Conventions** : « exponentielle de paramètre $\\theta$ » = intensité dans le poly et l’Examen 2025 ($\\theta e^{-\\theta x}$), **moyenne/échelle** dans la PC4 Ex. 1, la PC5 Ex. 1 et le CC 2022 ($\\theta^{-1}e^{-x/\\theta}$). Le sens de la monotonie et la direction de la région de rejet **s’inversent**. Relire l’en-tête du sujet et écrire la densité utilisée.
+        text: `- **Conventions** : « exponentielle de paramètre $\\theta$ » = intensité dans la convention générale du poly (ch.1 : $\\mathcal{E}(\\theta)=\\Gamma(1,\\theta)$) et l’Examen 2025 ($\\theta e^{-\\theta x}$), **moyenne/échelle** dans la PC4 Ex. 1, la PC5 Ex. 1 (= Exercice 1 du poly ch.5) et le CC 2022 ($\\theta^{-1}e^{-x/\\theta}$). Le sens de la monotonie et la direction de la région de rejet **s’inversent**. Relire l’en-tête du sujet et écrire la densité utilisée.
 - **Sens de la région de rejet** : on rejette du côté où la statistique rend $H_1$ plus vraisemblable ; le seuil se calibre toujours à la **borne** $\\theta_0$.
 - **Niveau / taille / puissance** : un test U.P.P. est de taille exactement $\\alpha$, sauf exception (exponentielle translatée, PC5 Ex. 3 : puissance 1). Risque de 2e espèce $=1-\\beta_\\phi$.
 - **Seuil sous $H_0$** : Ex. 1.1, $X>z_{1-\\alpha}-1$ et non $X>z_{1-\\alpha}$.
@@ -406,7 +406,7 @@ On rejette $H_0$ si $\\Lambda_n\\le c_{n,\\alpha}$, avec $\\mathbb{P}_\\theta(\\
           { text: '$\\Lambda=\\big(\\hat\\sigma^2/(\\hat\\sigma^2+\\frac1n\\mathbf{Y}^\\top M\\mathbf{Y})\\big)^{n/2}$, fonction décroissante de $F=\\frac{n-p}{p-r}\\cdot\\frac{\\mathbf{Y}^\\top M\\mathbf{Y}}{n\\hat\\sigma^2}$ : on rejette si $F>k_\\alpha$.', justification: 'Rejet pour $\\Lambda$ petit $\\iff$ $F$ grand.' },
           { text: 'Sous $H_0$, $n\\hat\\sigma^2/\\sigma^2\\sim\\chi^2(n-p)$ et $\\mathbf{Y}^\\top M\\mathbf{Y}/\\sigma^2\\sim\\chi^2(p-r)$ indépendantes : $F\\sim$ Fisher$(p-r,n-p)$.', justification: 'Théorème de Cochran ; $(I_n-\\Pi)(\\Pi-\\Pi_0)=0$.' },
         ],
-        conclusion: 'Avec $r$ groupes codés en régression ($H_0:\\mu_1=\\dots=\\mu_r$) : **ANOVA à un facteur**, Fisher$(r-1,n-r)$ ; par exemple 3 groupes de 10, quantile $0{,}95$ de Fisher$(2,27)\\approx3{,}354$. C’est le test de Fisher des QCM de l’Examen 2025 Ex. 4 (Q4, Q12).',
+        conclusion: 'Avec $r$ groupes codés en régression ($H_0:\\mu_1=\\dots=\\mu_r$) : **ANOVA à un facteur**, Fisher$(r-1,n-r)$ ; par exemple 3 groupes de 10, quantile $0{,}95$ de Fisher$(2,27)\\approx3{,}354$. C’est le test de Fisher de l’Examen 2025 Ex. 4 Q12 (iii) ; la Q4 (égalité de deux variances, $F(n-1,p-1)$) relève aussi du rapport de vraisemblance généralisé.',
       },
       {
         kind: 'text',

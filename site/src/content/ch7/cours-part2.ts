@@ -360,7 +360,7 @@ $$\\sqrt n\\big(\\hat\\theta_n-\\theta^\\star\\big)=\\frac{-\\sqrt n\\,\\widehat
           },
           {
             text: 'Efficacité relative $\\frac{1/\\mathbb{I}}{\\pi^2/4}=\\frac8{\\pi^2}\\simeq0{,}81$ : la médiane demande $\\simeq1{,}23\\,n$ observations pour la précision de l’EMV avec $n$.',
-            justification: 'Comparaison par variance asymptotique (ch.6, Prop. 1.3), conforme à $v_\\psi\\ge1/\\mathbb{I}$ (Thm 1.7).',
+            justification: 'Comparaison par variance asymptotique (ch.6, Prop. 1.3) ; cohérent avec l’optimalité de l’EMV (Thm 1.7), même si la médiane, Z-estimateur non dérivable, n’entre pas littéralement dans sa classe.',
           },
         ],
         conclusion: 'Sur $N=49$ observations simulées avec $\\theta^\\star=2$ : $\\widehat\\theta_n^{\\mathrm{med}}=1{,}7717$, $\\hat\\theta_n^{\\mathrm{MV}}=1{,}7813$. **Figure 4** : $10^4$ réalisations de $\\sqrt n(\\hat\\theta_n-\\theta^\\star)$, $n=499$ : l’histogramme de l’EMV est plus resserré. L’écart est **modeste** ; la médiane, calculable sans optimisation, reste raisonnable (et sert de point de départ au score de Fisher, §9).',
@@ -483,11 +483,11 @@ $$\\sqrt n\\big(\\hat\\theta_n-\\theta^\\star\\big)=\\frac{-\\sqrt n\\,\\widehat
         title: 'Ce qui est tombé — Examen 2025 Ex. 2 Q7–Q8 et Q10 (log-normale, ≈ 2 pts)',
         text: `Modèle $Y_i=\\ln X_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ i.i.d., $\\theta=(\\mu,\\sigma^2)$, régularité admise.
 
-- **Q7** (normalité asymptotique de $\\hat\\theta_{ML}$) : traitée au ch.6 par TCL multivarié + Slutsky ; **cohérence attendue avec le ch.7** : la covariance limite $\\mathrm{diag}(\\sigma^2,2\\sigma^4)$ est $\\mathbb{I}(\\theta)^{-1}$ avec $\\mathbb{I}(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$ (version vectorielle du Thm 1.6, compléments §4.4).
+- **Q7** (normalité asymptotique de $\\hat\\theta_{ML}$) : traitée au ch.6 par TCL multivarié + Slutsky ; **cohérence attendue avec le ch.7** : la covariance limite $\\mathrm{diag}(\\sigma^2,2\\sigma^4)$ est $\\mathbb{I}(\\theta)^{-1}$ avec $\\mathbb{I}(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$ (version vectorielle du Thm 1.6, compléments §4.4, hors programme).
 - **Q8** (médiane) : $\\hat\\mu_{Med}=\\ln\\tilde X_n=\\mathrm{med}(Y_i)$ ; TCL du quantile rappelé par le sujet avec $\\alpha=1/2$, $f(\\mu)=1/\\sqrt{2\\pi\\sigma^2}$ : $\\sqrt n(\\hat\\mu_{Med}-\\mu)\\Rightarrow\\mathcal{N}(0,\\frac\\pi2\\sigma^2)$, $C=\\pi/2$. C’est la formule $1/(4q_{\\theta^\\star}(\\theta^\\star)^2)$ de l’Ex. 1.9 / §4.8.
-- **Q10** (comparaison) : $v_{ML}=\\sigma^2=1/\\mathbb{I}(\\mu)$ — l’EMV est **asymptotiquement efficace** (Thm 1.7) — $<v_{Med}=\\frac\\pi2\\sigma^2$ (efficacité relative $2/\\pi\\approx0{,}64$) ; $v_{Mom}=\\sigma^2+\\frac23\\sigma^6+\\dots$ : $\\approx v_{ML}$ quand $\\sigma\\to0$, explose comme $\\frac14e^{4\\sigma^2}$ quand $\\sigma\\to\\infty$. La médiane est **robuste** (fonction d’influence bornée, aucune hypothèse de moment).
+- **Q10** (comparaison) : $v_{ML}=\\sigma^2=1/\\mathbb{I}(\\mu)$ — l’EMV est **asymptotiquement efficace** (Thm 1.7 ; énoncé en dimension 1, il s’étend à $\\theta=(\\mu,\\sigma^2)$ — hors programme — avec la borne $(\\mathbb{I}^{-1})_{11}=\\sigma^2$, puisque $\\mathbb{I}$ est diagonale) — $<v_{Med}=\\frac\\pi2\\sigma^2$ (efficacité relative $2/\\pi\\approx0{,}64$) ; $v_{Mom}=\\sigma^2+\\frac23\\sigma^6+\\dots$ : $\\approx v_{ML}$ quand $\\sigma\\to0$, explose comme $\\frac14e^{4\\sigma^2}$ quand $\\sigma\\to\\infty$. La médiane est **robuste** (fonction d’influence bornée, aucune hypothèse de moment).
 
-**Rédaction attendue** : « Le modèle est régulier (admis) ; par le Thm 1.6 du ch.7, $\\sqrt n(\\hat\\mu_{ML}-\\mu)\\Rightarrow\\mathcal{N}(0,1/\\mathbb{I}(\\mu))$ avec $\\mathbb{I}(\\mu)=1/\\sigma^2$ ; par le Thm 1.7, aucun Z-estimateur régulier ne fait mieux. » Citer **le bon chapitre** pour chaque théorème (TCL et méthode-δ : ch.6).`,
+**Rédaction attendue** : « Le modèle est régulier (admis) ; par le Thm 1.6 du ch.7, $\\sqrt n(\\hat\\mu_{ML}-\\mu)\\Rightarrow\\mathcal{N}(0,1/\\mathbb{I}(\\mu))$ avec $\\mathbb{I}(\\mu)=1/\\sigma^2$ ; par le Thm 1.7, aucun Z-estimateur régulier ne fait mieux. » (La médiane n’est pas un Z-estimateur régulier : pour elle, comparer directement $\\frac\\pi2\\sigma^2>\\sigma^2$.) Citer **le bon chapitre** pour chaque théorème (TCL et méthode-δ : ch.6).`,
       },
       {
         kind: 'text',

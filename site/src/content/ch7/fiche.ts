@@ -51,7 +51,7 @@ export const summarySheet: SummarySheet = {
         'Vérifier la régularité (support indépendant de $\\theta$, $C^2$, information finie non nulle) et que $\\theta^\\star$ est intérieur.',
         'Calculer $\\mathbb{I}(\\theta)=-\\mathbb{E}_\\theta[\\ddot\\ell]$ (souvent plus court) ou $\\mathbb{E}_\\theta[\\dot\\ell^2]$.',
         'Conclure $\\sqrt n(\\hat\\theta_n-\\theta)\\Rightarrow\\mathcal{N}(0,1/\\mathbb{I}(\\theta))$ (Thm 1.6) ; contrôler par la méthode-δ si l’EMV est explicite.',
-        'Comparer à tout autre estimateur : $v\\ge1/\\mathbb{I}$ (Thm 1.7) ; efficacité relative $(1/\\mathbb{I})/v$.',
+        'Comparer à tout autre Z-estimateur régulier : $v\\ge1/\\mathbb{I}$ (Thm 1.7) ; pour la médiane (non régulière), comparer directement les variances ; efficacité relative $(1/\\mathbb{I})/v$.',
       ],
     },
     {
