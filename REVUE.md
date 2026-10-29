@@ -12,6 +12,7 @@ Chaque section est rédigée par le vérificateur du chapitre (qui n'a pas const
 
 
 
+
 Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visualisations, 43 exercices dont 4 annales, 23 flashcards, fiche, 6 Monte-Carlo) relu ligne à ligne contre `content/extraction/ch6.md`, `pc6.md`, `pc7.md` (Ex. 2–3) et `DIAGNOSTIC.md` (§2.A Ex. 2 Q6–Q10, §2.B Ex. 2 Q5–7, §5.8–5.10, §6, §7, §8). Toutes les applications numériques ont été recalculées (IC Poisson $[0{,}098;0{,}173]$, IC Gamma $[2{,}01;2{,}99]$, $C=\pi/2$, $2/\sqrt5$, les trois IC exponentiels à $x=0{,}196$, DL de $v_{Mom}$ jusqu'à l'ordre $\sigma^8$, moment centré d'ordre 4 de l'exponentielle $9\theta^4$, $\gamma=1/180$ pour $\mathcal U([0,1])$, valeurs exactes à $n$ fini citées dans les Monte-Carlo). `npm run typecheck`, `npm test` (41 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright (aucune erreur console, aucun `.katex-error`, graphes non vides, pas de débordement horizontal à 1280 px ni à 390 px).
 
 - [Corrigé] `exercices-part1.ts`, QCM `ch6-qcm-variance-exp2` : l'explication du distracteur $5\theta^2$ attribuait l'erreur à un « oubli du facteur $1/4$ », ce qui donnerait $20\theta^2$ ; $5\theta^2$ provient de l'oubli du facteur $\tfrac12$ de la dérivée de la racine ($\phi_2'=-\theta^3/2$ au lieu de $-\theta^3/4$). Réécrite.
@@ -32,6 +33,7 @@ Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visua
 - [Manque] Aucun exercice ne porte sur PC6 Ex. 2 (Pareto translaté, vitesse $n$, pivot exact $\mathcal E(1)$) ni sur PC6 Ex. 7 (racines consistantes), bien qu'ils soient dans la feuille de la semaine ; PC6 Ex. 2 est seulement cité dans le cours (Ex. 1.5, Ex. 1.7). Volumes du guide néanmoins respectés (43 ≥ 25 ; 10 QCM, 6 VF, 5 ordonner, 5 trouver-erreur, 5 étape-suivante, 4 associer, 4 numériques, 4 annales).
 - [Manque] Pas de visualisation de l'Ex. 1.5 / PC6 Ex. 2 (vitesse $n$, limite exponentielle) ni du test du signe vs Student (PC6 Ex. 3), suggérées dans l'extraction §7 ; les 7 viz présentes couvrent LGN/TCL, consistance, Slutsky, variance empirique, méthode-δ, IC asymptotiques, Wald/Wilson.
 ## Chapitre 2
+
 
 
 
@@ -66,6 +68,7 @@ Contrôle indépendant de `site/src/content/ch2/` (cours, 41 exercices, 21 flash
 
 
 
+
 Périmètre contrôlé : `site/src/content/ch1/**` (cours en 11 sections, 7 visualisations, 42 exercices dont 4 annales, 22 flashcards, fiche, 7 Monte-Carlo) relu ligne à ligne contre `content/extraction/ch1.md`, `pc1.md`, `pc3.md` (Ex. 5), `pc4.md` (Ex. 2 Q4–6) et `DIAGNOSTIC.md` (§2.A Ex. 2 Q1, Q3–5, Ex. 3 Q6 ; §2.B CC 2022 Ex. 1 Q1, Ex. 2 Q1, Ex. 3 Q1–6, Ex. 4 Q2–3, 7 ; §5–8). Aucun fichier du socle n'a été recopié dans `ch1/` (uniquement des données et des imports de `core/` et `sim/`). Recalculés : $\check\lambda_n=1{,}5695$ et $\hat\pi_n=0{,}935$ (football), $\hat\theta_n=0{,}30$ et écart-type $0{,}049$ (réponses randomisées), $\mathbb E[S_n^4]=1{,}2$, $0{,}9^5=0{,}59049$ et $\mathbb E[X_{(5)}]=5/3$, biais/variance de $\widehat{\sigma^2}_{ML}$ et risque $(2n-1)\sigma^4/n^2$, variance asymptotique $\frac54\theta^2$ de $\hat\theta_{n,2}$, densités des espacements (CC 2022 Ex. 3), compensation des termes en $u^2$ (PC1 Ex. 3 complément), tolérances des 7 Monte-Carlo (environ 4 écarts-types Monte-Carlo chacune). Sources contrôlées contre l'extraction ; PDF consulté pour le Thm 1.3 (p. 21, conforme). `npm run typecheck`, `npm test` (74 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright à 1280 et 390 px : aucune erreur console, aucun `.katex-error`, 11 graphes non vides, aucun champ de saisie hors numériques (4), plus aucun débordement horizontal (il y en avait 95 px sur Entraînement et 23 px sur Type annale à 390 px).
 
 - [Corrigé] Titres de sections « N · … » remplacés par « N. … » (le socle ne transforme plus ces titres en listes ; cohérence avec ch2/ch6 et guide §10). Le point 9 de DECISIONS ch1 est donc obsolète.
@@ -92,6 +95,7 @@ Périmètre contrôlé : `site/src/content/ch1/**` (cours en 11 sections, 7 visu
 - [Manque] Aucun exercice sur les Prop. 2.5, 2.7 et 2.9 (i), ni sur la preuve de l'Ex. 1.6 (identifiabilité des modèles fétiches) ; aucune annale ni étape-suivante ne porte le tag `cours`.
 - [Manque] Visualisations suggérées par l'extraction §7 non réalisées : rotation d'un nuage gaussien (Cochran), ellipses de densité (Prop. 2.7), moyenne vs médiane gaussien/Laplace (PC1 Ex. 3), censure (Ex. 4.6), sur-dispersion football. Volumes du guide respectés : 42 exercices (11 QCM, 6 VF, 5 ordonner, 4 trouver-erreur, 5 étape-suivante, 3 associer, 4 numériques, 4 annales dont 3 de vraies annales), 22 flashcards dont 6 « hypothèse manquante », 7 visualisations, 7 Monte-Carlo.
 ## Chapitre 3
+
 
 
 Vérification indépendante de `site/src/content/ch3/` (cours en 10 sections, 37 exercices, 19 flashcards, fiche, 6 visualisations, 7 Monte-Carlo) contre `content/extraction/ch3.md`, `pc3.md`, `pc7.md` (Ex. 2 Q2), le PDF du poly (p. 24–25 relues : Déf. 1.9, Thm 1.1, Cor. 1.1–1.2) et `DIAGNOSTIC.md`. Toutes les formules et applications numériques ont été recalculées (Ex. 1.8, 1.9, famille $aX_{n:n}$ pour $n=5$, risques de $1/\bar X_n$ et de $\frac{n-1}{n\bar X_n}$, PC7 Ex. 2 Q2, CC 2022 Ex. 2 Q2–Q4, PC3 Ex. 2 avec $\mathbf x=(0,1,2)$, $\tau_{10}(1)$, PC3 Ex. 4–5, KL des quatre lois de la viz Fisher) : aucune erreur de calcul trouvée. typecheck, tests (92) et build passent ; rendu Playwright des six onglets sans erreur console, 0 erreur KaTeX, 10 graphes non vides (cours et viz), pas de débordement à 1280 px ni à 390 px, seuls les 4 exercices numériques ont un champ de saisie.
