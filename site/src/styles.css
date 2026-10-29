@@ -320,3 +320,11 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
 }
 
 .rich-table { width: auto; max-width: 100%; display: block; overflow-x: auto; }
+
+/* Examen blanc en cours : aucune indication de justesse avant la correction finale. */
+.exam-running .option.correct:not(.selected), .exam-running .option.wrong:not(.selected) { border-color: var(--border); background: var(--bg-soft); }
+.exam-running .option.correct.selected, .exam-running .option.wrong.selected { border-color: var(--accent); background: var(--accent-soft); }
+.exam-running .btn-choice.correct, .exam-running .btn-choice.wrong { border-color: var(--border); background: var(--bg-soft); }
+.exam-running .exercise:not(.exercise-annale) .feedback, .exam-running .slot.correct, .exam-running .slot.wrong,
+.exam-running .sortable-item.correct, .exam-running .sortable-item.wrong, .exam-running .line.correct, .exam-running .line.wrong { border-color: var(--border); background: var(--bg-soft); }
+.exam-running .exercise:not(.exercise-annale) .feedback { display: none; }

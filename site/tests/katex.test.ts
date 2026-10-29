@@ -2,12 +2,14 @@ import { describe, it, expect } from 'vitest'
 import { chapters, allStrings } from './helpers'
 import { extractMath, checkTex } from '../src/core/rich'
 import { allGlossary } from '../src/content/glossary'
+import { RAPPELS } from '../src/pages/examen'
 
 /** Tout le KaTeX du contenu doit se rendre sans erreur (mode strict). */
 describe('KaTeX', () => {
   const chs = chapters()
   const targets: { name: string; obj: unknown }[] = chs.map((c) => ({ name: c.slug, obj: c }))
   targets.push({ name: 'glossary', obj: allGlossary() })
+  targets.push({ name: 'rappels examen', obj: RAPPELS })
 
   for (const t of targets) {
     it(`toutes les formules de ${t.name} compilent`, () => {
