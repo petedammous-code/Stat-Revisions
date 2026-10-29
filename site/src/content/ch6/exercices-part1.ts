@@ -48,7 +48,7 @@ export const exercisesPart1: Exercise[] = [
       { text: '$\\frac54\\theta^2$', correct: true, explanation: 'Exact : TCL $\\sqrt n(\\overline{X^2_n}-2/\\theta^2)\\Rightarrow\\mathcal{N}(0,20/\\theta^4)$, puis méthode-δ avec $\\phi_2(t)=\\sqrt{2/t}$, $\\phi_2\'(2/\\theta^2)^2=\\theta^6/16$ : $\\frac{20}{\\theta^4}\\cdot\\frac{\\theta^6}{16}=\\frac54\\theta^2$.' },
       { text: '$\\theta^2$', correct: false, explanation: 'Faux : $\\theta^2$ est la variance asymptotique de $\\hat\\theta_n^{(1)}=1/\\bar X_n$ (l’EMV), qui est meilleur. Utiliser le moment d’ordre 2 augmente la variance.' },
       { text: '$\\frac{20}{\\theta^4}$', correct: false, explanation: 'Faux : c’est la variance asymptotique de $\\overline{X^2_n}$ (TCL), avant d’appliquer la méthode-δ ; il manque le facteur $\\phi_2\'(2/\\theta^2)^2$.' },
-      { text: '$5\\theta^2$', correct: false, explanation: 'Faux : erreur de calcul classique sur $\\phi_2\'$ (oubli du facteur $1/4$ dans $\\phi_2\'(2/\\theta^2)=-\\theta^3/4$).' },
+      { text: '$5\\theta^2$', correct: false, explanation: 'Faux : erreur de calcul classique sur $\\phi_2\'$ : oubli du facteur $\\frac12$ de la dérivée de la racine, qui donne $\\phi_2\'(2/\\theta^2)=-\\theta^3/2$ (carré $\\theta^6/4$) au lieu de $-\\theta^3/4$ (carré $\\theta^6/16$) ; $\\frac{20}{\\theta^4}\\cdot\\frac{\\theta^6}4=5\\theta^2$.' },
     ],
   },
   {
@@ -279,7 +279,7 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       'Décomposer $(X_n,Y_n)=U_n+V_n$ avec $U_n:=(0,Y_n-c)$ et $V_n:=(X_n,c)$ ; comme $Y_n\\Rightarrow\\delta_c$ équivaut à $Y_n\\to c$ en probabilité, $U_n\\to0$ en probabilité.',
       'Montrer $V_n\\Rightarrow\\mu\\otimes\\delta_c$ par les fonctions caractéristiques : $\\mathbb{E}_n[e^{\\mathrm{i}t_1X_n}e^{\\mathrm{i}t_2c}]\\to e^{\\mathrm{i}t_2c}\\int e^{\\mathrm{i}t_1x}\\mu(\\mathrm{d}x)$ (Lévy en dimension 1 puis 2).',
-      'Montrer que $U_n\\to0$ en probabilité et $V_n\\Rightarrow\\nu$ entraînent $U_n+V_n\\Rightarrow\\nu$ : majorer $|\\mathbb{E}_n[f(U_n+V_n)]-\\int f\\,\\mathrm{d}\\nu|$ pour $f$ lipschitzienne bornée par $L_f\\delta+2\\|f\\|_\\infty\\mathbb{P}_n(\\|U_n\\|\\ge\\delta)+|\\mathbb{E}_n[f(V_n)]-\\int f\\,\\mathrm{d}\\nu|$, puis Portmanteau (ii).',
+      'En déduire $U_n+V_n\\Rightarrow\\nu:=\\mu\\otimes\\delta_c$ : avec $U_n\\to0$ en probabilité et $V_n\\Rightarrow\\nu$ (deux étapes précédentes), majorer $|\\mathbb{E}_n[f(U_n+V_n)]-\\int f\\,\\mathrm{d}\\nu|$ pour $f$ lipschitzienne bornée par $L_f\\delta+2\\|f\\|_\\infty\\mathbb{P}_n(\\|U_n\\|\\ge\\delta)+|\\mathbb{E}_n[f(V_n)]-\\int f\\,\\mathrm{d}\\nu|$, puis Portmanteau (ii).',
       'Conclure $(X_n,Y_n)\\Rightarrow\\mu\\otimes\\delta_c$ et appliquer la transformation continue (Thm 1.4) à $(x,y)\\mapsto x+y$, $xy$, et $x/y$ (continue sur $\\mathbb{R}\\times\\mathbb{R}^*$, de mesure 1 si $c\\ne0$).',
     ],
     explanation: 'L’ordre logique est : décomposition → convergence en loi de la partie « gelée » $V_n$ → lemme d’addition d’un terme négligeable (c’est la Remarque 2, utilisée seule très souvent) → convergence du couple → transformation continue. Le point clé est que la limite de $Y_n$ est une constante : c’est ce qui rend la fonction caractéristique de $V_n$ calculable.',
@@ -295,7 +295,7 @@ export const exercisesPart1: Exercise[] = [
     prompt: 'Remettre dans l’ordre la preuve du Théorème 1.7 : $r_n(T_n-\\theta)\\Rightarrow G$, $g$ dérivable en $\\theta$ $\\Rightarrow$ $r_n(g(T_n)-g(\\theta))\\Rightarrow\\dot g(\\theta)G$.',
     steps: [
       'Par Slutsky (ii), $T_n-\\theta=r_n^{-1}\\cdot r_n(T_n-\\theta)\\to0$ en probabilité car $r_n^{-1}\\to0$.',
-      'Écrire le développement $g(\\theta+h)=g(\\theta)+\\dot g(\\theta)h+h\\varepsilon(h)$ avec $\\varepsilon$ continue en 0 et $\\varepsilon(0)=0$ (dérivabilité en $\\theta$).',
+      'Puisque $T_n-\\theta\\to0$ (étape précédente), développer $g$ au voisinage de $\\theta$ : $g(\\theta+h)=g(\\theta)+\\dot g(\\theta)h+h\\varepsilon(h)$ avec $\\varepsilon$ continue en 0 et $\\varepsilon(0)=0$ (dérivabilité en $\\theta$).',
       'En déduire, $\\mathbb{P}_n$-p.s. (car $\\mathbb{P}_n(T_n\\in D_g)=1$) : $r_n(g(T_n)-g(\\theta))=\\dot g(\\theta)r_n(T_n-\\theta)+r_n(T_n-\\theta)\\varepsilon(T_n-\\theta)$.',
       'Par continuité en probabilité, $\\varepsilon(T_n-\\theta)\\to0$ ; par Slutsky, le reste $R_n=r_n(T_n-\\theta)\\varepsilon(T_n-\\theta)\\to0$ en probabilité.',
       'Par transformation continue, $\\dot g(\\theta)r_n(T_n-\\theta)\\Rightarrow\\dot g(\\theta)G$ ; ajouter $R_n\\to0$ ne change pas la limite (Remarque 2 après Slutsky).',
@@ -314,7 +314,7 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       'Décomposer : $\\hat\\sigma_n^2=\\frac1n\\sum_i(X_i-\\mu)^2-(\\bar X_n-\\mu)^2$, donc $\\sqrt n(\\hat\\sigma_n^2-\\sigma^2)=\\frac1{\\sqrt n}\\sum_i\\{(X_i-\\mu)^2-\\sigma^2\\}-\\sqrt n(\\bar X_n-\\mu)^2$ (éq. (2)).',
       'Premier terme : $Z_i=(X_i-\\mu)^2-\\sigma^2$ i.i.d. centrés de variance $\\gamma<\\infty$ (moment d’ordre 4) ; TCL : $\\frac1{\\sqrt n}\\sum_iZ_i\\Rightarrow\\mathcal{N}(0,\\gamma)$.',
-      'Second terme : $\\sqrt n(\\bar X_n-\\mu)\\Rightarrow\\mathcal{N}(0,\\sigma^2)$ (TCL), donc $n(\\bar X_n-\\mu)^2\\Rightarrow\\sigma^2\\chi^2(1)$ (transformation continue) et $\\sqrt n(\\bar X_n-\\mu)^2=\\frac1{\\sqrt n}\\,n(\\bar X_n-\\mu)^2\\to0$ en probabilité (Slutsky).',
+      'Reste le second terme (le premier étant traité) : $\\sqrt n(\\bar X_n-\\mu)\\Rightarrow\\mathcal{N}(0,\\sigma^2)$ (TCL), donc $n(\\bar X_n-\\mu)^2\\Rightarrow\\sigma^2\\chi^2(1)$ (transformation continue) et $\\sqrt n(\\bar X_n-\\mu)^2=\\frac1{\\sqrt n}\\,n(\\bar X_n-\\mu)^2\\to0$ en probabilité (Slutsky).',
       'Conclure par la Remarque 2 après Slutsky : la somme d’une suite convergeant en loi vers $\\mathcal{N}(0,\\gamma)$ et d’une suite tendant vers 0 en probabilité converge en loi vers $\\mathcal{N}(0,\\gamma)$.',
       'Étendre à $S_n^2=\\frac n{n-1}\\hat\\sigma_n^2$ : $\\sqrt n(S_n^2-\\hat\\sigma_n^2)=\\sqrt n\\hat\\sigma_n^2/(n-1)\\to0$ en probabilité, même loi limite.',
     ],
@@ -350,7 +350,7 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       'Introduire un $n$-échantillon de Poisson $\\mathcal{P}(\\lambda)$ : $X_1+\\dots+X_n\\sim\\mathcal{P}(n\\lambda)$ (somme de Poisson indépendantes).',
       'Reconnaître la série comme une espérance : $e^{-n\\lambda}\\sum_kg(k/n)\\frac{(n\\lambda)^k}{k!}=\\mathbb{E}_{n,\\lambda}[g(\\bar X_n)]$ (théorème de transfert).',
-      'LGN faible : $\\bar X_n\\xrightarrow{\\mathbb{P}_{n,\\lambda}\\text{-prob}}\\lambda$.',
+      'LGN faible appliquée à la moyenne $\\bar X_n$ qui apparaît dans cette espérance : $\\bar X_n\\xrightarrow{\\mathbb{P}_{n,\\lambda}\\text{-prob}}\\lambda$.',
       'Convergence en probabilité $\\Rightarrow$ convergence en loi vers $\\delta_\\lambda$ (Thm 2.2 (i)).',
       'Par définition de la convergence en loi ($g$ continue bornée), $\\mathbb{E}_{n,\\lambda}[g(\\bar X_n)]\\to g(\\lambda)$.',
     ],
