@@ -113,7 +113,7 @@ registerGlossary([
     definition: '$\\mathcal{I}_{n,\\alpha}$ : intervalle gaussien $[\\bar X_n\\pm z_{1-\\alpha/2}\\sigma/\\sqrt n]$ (Ex. 1.4) ou de Bienaymé-Tchebychev $[\\bar X_n\\pm1/(2\\sqrt{n\\alpha})]$ (Ex. 1.8) ; $\\mathcal{I}^\\star_{n,\\alpha}=[\\bar X_n\\pm\\sqrt{\\log(2/\\alpha)/(2n)}]$ (Hoeffding).',
     source: 'Poly ch.4, Ex. 1.4 et 1.8',
   },
-])
+], 'ch4')
 
 const chapter: Chapter = {
   number: 4,

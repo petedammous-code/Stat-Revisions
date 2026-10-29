@@ -78,7 +78,7 @@ export const exercisesPart1: Exercise[] = [
     question: '$\\mathcal{N}(\\mu,\\sigma^2)$, $\\sigma$ connu ; $H_0:\\mu=\\mu_0$ contre $H_1:\\mu\\ne\\mu_0$ ; $\\phi_c=\\mathbb{1}_{\\{T(Z)\\ge c\\}}$ avec $T(Z)=\\sqrt n|\\bar X_n-\\mu_0|/\\sigma$. Quelle valeur de $c$ donne un test de taille $\\alpha$ ?',
     options: [
       { text: '$c=z_{1-\\alpha/2}$', correct: true, explanation: 'Exact : taille $\\beta_c(\\mu_0)=1-\\Phi(c)+\\Phi(-c)=2(1-\\Phi(c))=\\alpha\\iff c=z_{1-\\alpha/2}$ (valeur absolue : deux queues).' },
-      { text: '$c=z_{1-\\alpha}$', correct: false, explanation: 'Faux : avec la valeur absolue, $\\mathbb{P}_{\\mu_0}(|N|\\ge z_{1-\\alpha})=2\\alpha$ : la taille serait **doublée** (vrai/faux de la PC4).' },
+      { text: '$c=z_{1-\\alpha}$', correct: false, explanation: 'Faux : avec la valeur absolue, $\\mathbb{P}_{\\mu_0}(|N|\\ge z_{1-\\alpha})=2\\alpha$ : la taille serait **doublée** (erreur classique du test bilatéral).' },
       { text: '$c=z_{\\alpha/2}$', correct: false, explanation: 'Faux : $z_{\\alpha/2}=-z_{1-\\alpha/2}<0$, et $T\\ge0$ : on rejetterait toujours (taille 1).' },
       { text: '$c=\\mathrm{t}^{(n-1)}_{1-\\alpha/2}$', correct: false, explanation: 'Faux : le quantile de Student intervient quand $\\sigma$ est **inconnu** et remplacé par $S_n$ (test de Student, PC4 Ex. 2 Q8) ; ici $T(Z)$ est gaussienne repliée.' },
     ],
@@ -91,7 +91,7 @@ export const exercisesPart1: Exercise[] = [
     origin: 'annale',
     difficulty: 2,
     tags: ['ic-pivot', 'chi2', 'gosset'],
-    question: '$Y_i=\\ln X_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ i.i.d., $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_i(Y_i-\\bar Y_n)^2$. Quel est un IC de niveau $1-\\alpha$ pour $\\sigma^2$ ?',
+    question: '$Y_i=\\ln X_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ i.i.d., $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_i(Y_i-\\bar Y_n)^2$. Quel est un IC **exact** (non asymptotique) de niveau $1-\\alpha$ pour $\\sigma^2$ ?',
     options: [
       { text: '$\\Big[\\dfrac{n\\widehat{\\sigma^2}_{ML}}{\\chi^2_{1-\\alpha/2}(n-1)},\\ \\dfrac{n\\widehat{\\sigma^2}_{ML}}{\\chi^2_{\\alpha/2}(n-1)}\\Big]$', correct: true, explanation: 'Exact : $n\\widehat{\\sigma^2}_{ML}/\\sigma^2=(n-1)S_n^2/\\sigma^2\\sim\\chi^2(n-1)$ (Gosset) est un pivot ; on inverse l’encadrement $\\chi^2_{\\alpha/2}\\le G\\le\\chi^2_{1-\\alpha/2}$ : le grand quantile va à la petite borne.' },
       { text: '$\\Big[\\dfrac{n\\widehat{\\sigma^2}_{ML}}{\\chi^2_{\\alpha/2}(n-1)},\\ \\dfrac{n\\widehat{\\sigma^2}_{ML}}{\\chi^2_{1-\\alpha/2}(n-1)}\\Big]$', correct: false, explanation: 'Faux : quantiles **inversés** — la borne gauche dépasse la borne droite. Erreur classique (DIAGNOSTIC §6, point 11) lors du passage à l’inverse.' },
@@ -123,12 +123,12 @@ export const exercisesPart1: Exercise[] = [
     origin: 'pc',
     difficulty: 2,
     tags: ['test-unilateral', 'pivot', 'chi2'],
-    question: 'Modèle $\\mathcal{E}(1/\\theta)$ ($\\theta$ = espérance), $n$-échantillon ; $H_0:\\theta=\\theta_0$ contre $H_1:\\theta>\\theta_0$. Quelle région de rejet donne un test de niveau $\\alpha$ ?',
+    question: 'Modèle $\\mathcal{E}(1/\\theta)$ ($\\theta$ = espérance), $n$-échantillon ; $H_0:\\theta=\\theta_0$ contre $H_1:\\theta>\\theta_0$. Quelle région de rejet donne un test de **taille exactement $\\alpha$** qui rejette **du côté de l’alternative** (celui du corrigé) ?',
     options: [
       { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\ge\\chi^2_{1-\\alpha}(2n)\\big\\}$', correct: true, explanation: 'Exact : sous $\\mathbb{P}_{\\theta_0}$, $\\frac2{\\theta_0}\\sum_iX_i\\sim\\chi^2(2n)$ ; $\\theta$ étant une échelle, les grandes valeurs favorisent $H_1$ ; taille exactement $\\alpha$.' },
-      { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\le\\chi^2_{\\alpha}(2n)\\big\\}$', correct: false, explanation: 'Faux : mauvais sens. Rejeter pour les petites valeurs conviendrait à $H_1:\\theta<\\theta_0$, ou à une paramétrisation par l’**intensité** (Examen 2025 Ex. 1).' },
+      { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\le\\chi^2_{\\alpha}(2n)\\big\\}$', correct: false, explanation: 'Faux : mauvais sens. Ce test est bien de taille $\\alpha$ ($H_0$ simple), mais il rejette pour les **petites** valeurs, plus probables sous $H_0$ que sous $H_1$ : sa puissance est $<\\alpha$ pour tout $\\theta>\\theta_0$. Rejeter pour les petites valeurs conviendrait à $H_1:\\theta<\\theta_0$, ou à une paramétrisation par l’**intensité** (Examen 2025 Ex. 1).' },
       { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\ge\\chi^2_{1-\\alpha}(n)\\big\\}$', correct: false, explanation: 'Faux : chaque $2X_i/\\theta$ suit $\\chi^2(2)$, donc la somme suit $\\chi^2(2n)$ et non $\\chi^2(n)$.' },
-      { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\ge\\chi^2_{1-\\alpha/2}(2n)\\big\\}$', correct: false, explanation: 'Faux : $H_1$ est **unilatérale** ; le quantile $1-\\alpha/2$ donne un test de taille $\\alpha/2$, valide mais inutilement peu puissant.' },
+      { text: '$\\big\\{\\frac2{\\theta_0}\\sum_iz_i\\ge\\chi^2_{1-\\alpha/2}(2n)\\big\\}$', correct: false, explanation: 'Faux : $H_1$ est **unilatérale** ; le quantile $1-\\alpha/2$ donne un test de taille $\\alpha/2$ et non $\\alpha$ (de niveau $\\alpha$, mais inutilement peu puissant).' },
     ],
   },
   {
@@ -139,7 +139,7 @@ export const exercisesPart1: Exercise[] = [
     origin: 'annale',
     difficulty: 2,
     tags: ['bonferroni', 'tests-multiples', 'cours'],
-    question: 'On réalise $m$ tests **indépendants**, chacun de niveau $\\alpha$, toutes les hypothèses nulles étant vraies. Quelle affirmation est correcte ?',
+    question: 'On réalise $m$ tests **indépendants**, chacun de taille exactement $\\alpha$, toutes les hypothèses nulles étant vraies. Quelle affirmation est correcte ?',
     options: [
       { text: 'La probabilité de rejeter au moins une fois vaut $1-(1-\\alpha)^m\\to1$ ; Bonferroni (niveau $\\alpha/m$ par test) garantit, par sous-additivité, un risque global $\\le\\alpha$.', correct: true, explanation: 'Exact : réponse attendue de la Q6 ; c’est la même borne de l’union que pour la région $I_1\\times I_2$ de l’Ex. 1.7 (niveau au moins $1-\\alpha$).' },
       { text: 'Le risque global reste $\\alpha$, car chaque test est de niveau $\\alpha$.', correct: false, explanation: 'Faux : les erreurs s’accumulent ; pour $m=20$ et $\\alpha=5$ %, $1-0{,}95^{20}\\approx64$ % de chances d’au moins un faux positif.' },
@@ -155,12 +155,12 @@ export const exercisesPart1: Exercise[] = [
     origin: 'annale',
     difficulty: 2,
     tags: ['deux-echantillons', 'student', 'dualite'],
-    question: '$X_1,\\dots,X_n\\sim\\mathcal{N}(\\mu_0,\\sigma^2)$ et $Y_1,\\dots,Y_p\\sim\\mathcal{N}(\\mu_1,\\sigma^2)$ indépendants. Sous $H_0:\\mu_0=\\mu_1$, quelle statistique a une loi connue (et laquelle) ?',
+    question: '$X_1,\\dots,X_n\\sim\\mathcal{N}(\\mu_0,\\sigma^2)$ et $Y_1,\\dots,Y_p\\sim\\mathcal{N}(\\mu_1,\\sigma^2)$ indépendants. Pour tester $H_0:\\mu_0=\\mu_1$ ($\\sigma$ inconnu), quelle statistique de test utiliser, et quelle est sa loi sous $H_0$ ?',
     options: [
       { text: '$\\dfrac{\\bar X_n-\\bar Y_p}{S_{n,p}\\sqrt{1/n+1/p}}\\sim\\mathrm{t}(n+p-2)$, $S^2_{n,p}$ variance poolée normalisée en $n+p-2$.', correct: true, explanation: 'Exact (PC4 Ex. 5 Q2) : numérateur $\\mathcal{N}(0,\\sigma^2(1/n+1/p))$, $(n+p-2)S^2_{n,p}/\\sigma^2\\sim\\chi^2(n+p-2)$ indépendant (Cochran) : loi de Student. $\\sqrt{np/(n+p)}=1/\\sqrt{1/n+1/p}$.' },
       { text: 'La même statistique, de loi $\\mathrm{t}(n+p-1)$.', correct: false, explanation: 'Faux : deux moyennes sont estimées, on perd **deux** degrés de liberté : $n+p-2$.' },
       { text: '$\\dfrac{\\bar X_n-\\bar Y_p}{\\sigma\\sqrt{1/n+1/p}}\\sim\\mathcal{N}(0,1)$', correct: false, explanation: 'Faux pour la question : la loi est correcte mais $\\sigma$ est **inconnu**, ce n’est pas une statistique (pas calculable).' },
-      { text: '$S^2_X/S^2_Y\\sim\\mathrm{F}(n-1,p-1)$', correct: false, explanation: 'Faux pour la question : c’est le pivot du **test d’égalité des variances** (Q4 de l’Ex. 4, PC4 Ex. 5 Q6), pas celui des moyennes.' },
+      { text: '$S^2_X/S^2_Y\\sim\\mathrm{F}(n-1,p-1)$', correct: false, explanation: 'Faux pour la question : cette loi est exacte (variances égales), mais la statistique ne fait pas intervenir les moyennes ; c’est celle du **test d’égalité des variances** (Q4 de l’Ex. 4, PC4 Ex. 5 Q6–Q7), inutile pour comparer $\\mu_0$ et $\\mu_1$.' },
     ],
   },
   {
@@ -243,7 +243,7 @@ export const exercisesPart1: Exercise[] = [
     justifications: [
       { text: 'Vrai : sa puissance $\\theta\\mapsto\\mathbb{P}(\\chi^2(2n)\\ge\\frac{\\theta_0}\\theta\\chi^2_{1-\\alpha}(2n))$ est croissante, donc $\\sup_{\\theta\\le\\theta_0}\\beta(\\theta)=\\beta(\\theta_0)=\\alpha$.', correct: true, explanation: 'Monotonie de la puissance : le sup sur $\\Theta_0$ est atteint au bord $\\theta_0$ (corrigé PC4 Ex. 1 Q2).' },
       { text: 'Vrai : un test de taille $\\alpha$ pour une hypothèse simple l’est pour toute hypothèse qui la contient.', correct: false, explanation: 'Faux en général : agrandir $\\Theta_0$ peut augmenter le sup ; il faut la monotonie de la puissance.' },
-      { text: 'Faux : sous $\\theta<\\theta_0$, la statistique ne suit plus $\\chi^2(2n)$, la taille est inconnue.', correct: false, explanation: 'On ne connaît pas sa loi exacte « en $\\theta_0$ » mais on calcule la puissance via le pivot $2\\theta^{-1}\\sum X_i$ : elle est $\\le\\alpha$.' },
+      { text: 'Faux : sous $\\theta<\\theta_0$, la statistique ne suit plus $\\chi^2(2n)$, la taille est inconnue.', correct: false, explanation: 'Justification erronée : sa loi est connue,$\\frac2{\\theta_0}\\sum_iX_i=\\frac\\theta{\\theta_0}\\cdot\\frac2\\theta\\sum_iX_i$ avec $\\frac2\\theta\\sum_iX_i\\sim\\chi^2(2n)$ sous $\\mathbb{P}_\\theta$ ; la puissance se calcule et reste $\\le\\alpha$ pour $\\theta\\le\\theta_0$.' },
       { text: 'Faux : pour $H_0$ composite il faut le quantile $1-\\alpha/2$.', correct: false, explanation: '$\\alpha/2$ concerne les alternatives **bilatérales**, pas le caractère composite de $H_0$.' },
     ],
   },
@@ -307,8 +307,8 @@ export const exercisesPart1: Exercise[] = [
     prompt: 'Remettre dans l’ordre la preuve : si $G$ est pivotale de loi $\\mathbb Q$ et $\\mathbb Q(A_\\alpha)\\ge1-\\alpha$, alors $\\mathcal{C}(z)=\\{\\theta,\\ G(z,\\theta)\\in A_\\alpha\\}$ est une région de confiance de niveau $1-\\alpha$.',
     steps: [
       'Pour $z$ fixé, $\\mathcal{C}(z)$ est la section en $z$ de $G^{-1}(A_\\alpha)\\in\\mathcal{Z}\\otimes\\mathcal{B}(\\Theta)$ : c’est un borélien (mesurabilité conjointe de $G$).',
-      'Pour $\\theta$ fixé, $\\{z,\\ \\theta\\in\\mathcal{C}(z)\\}=\\{z,\\ G(z,\\theta)\\in A_\\alpha\\}\\in\\mathcal{Z}$ : condition (i) de la Déf. 1.1.',
-      '$\\mathbb{P}_\\theta(\\theta\\in\\mathcal{C}(Z))=\\mathbb{P}_\\theta(G(Z,\\theta)\\in A_\\alpha)=\\mathbb Q(A_\\alpha)$, quantité qui ne dépend pas de $\\theta$ car $G$ est pivotale.',
+      '$\\mathcal{C}$ étant ainsi à valeurs boréliennes, on vérifie la condition (i) de la Déf. 1.1 : pour $\\theta$ fixé, $\\{z,\\ \\theta\\in\\mathcal{C}(z)\\}=\\{z,\\ G(z,\\theta)\\in A_\\alpha\\}\\in\\mathcal{Z}$.',
+      'Cet événement étant mesurable, sa probabilité a un sens : $\\mathbb{P}_\\theta(\\theta\\in\\mathcal{C}(Z))=\\mathbb{P}_\\theta(G(Z,\\theta)\\in A_\\alpha)=\\mathbb Q(A_\\alpha)$, quantité qui ne dépend pas de $\\theta$ car $G$ est pivotale.',
       '$\\mathbb Q(A_\\alpha)\\ge1-\\alpha$, donc en prenant l’infimum sur $\\theta$ : $\\inf_\\theta\\mathbb{P}_\\theta(\\theta\\in\\mathcal{C}(Z))\\ge1-\\alpha$ (condition (ii)).',
     ],
     explanation: 'Mesurabilité de la région, mesurabilité de l’événement de couverture, calcul de la couverture grâce au pivot, puis infimum. Le point clé : la couverture vaut $\\mathbb Q(A_\\alpha)$ **pour tout** $\\theta$, ce qui rend l’infimum trivial.',
@@ -342,10 +342,10 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       '$X_i\\sim\\mathcal{E}(1/\\theta)=\\Gamma(1,1/\\theta)$ (convention forme–taux).',
       'Si $Y\\sim\\Gamma(a,b)$ et $c>0$, alors $cY\\sim\\Gamma(a,b/c)$ ; avec $c=2/\\theta$ : $2X_i/\\theta\\sim\\Gamma(1,1/2)=\\chi^2(2)$.',
-      'Les $X_i$ sont indépendants, donc les $2X_i/\\theta$ aussi.',
+      'Les $X_i$ étant indépendants, les variables $2X_i/\\theta\\sim\\chi^2(2)$ obtenues à l’étape précédente sont indépendantes.',
       'Additivité des lois Gamma de même taux : $2\\theta^{-1}\\sum_iX_i\\sim\\Gamma(n,1/2)=\\chi^2(2n)$, loi qui ne dépend pas de $\\theta$ : c’est un pivot.',
     ],
-    explanation: 'Identifier la loi d’une observation, changer d’échelle, invoquer l’indépendance, puis l’additivité. Distracteur classique : « $2X_i/\\theta\\sim\\Gamma(1,2)$ » (paramétrisation par l’échelle, que le poly utilise dans son texte ; la conclusion $\\chi^2(2)$ est la même).',
+    explanation: 'Identifier la loi d’une observation, changer d’échelle, invoquer l’indépendance, puis l’additivité. Erreur classique : « $2X_i/\\theta\\sim\\Gamma(1,2)$ » (paramétrisation par l’échelle, que le poly utilise dans son texte ; la conclusion $\\chi^2(2)$ est la même).',
   },
   {
     id: 'ch4-ord-prop-3-1',
@@ -359,8 +359,8 @@ export const exercisesPart1: Exercise[] = [
     steps: [
       '$E_\\beta$ est non vide et minoré (limites de $F$ en $\\pm\\infty$, $0<\\beta<1$) : $a=F^{\\leftarrow}(\\beta)$ est bien défini.',
       'Une suite de $E_\\beta$ décroît vers $a$ ; par continuité à droite de $F$, $F(a)\\ge\\beta$ : l’infimum est atteint.',
-      'Si $\\beta\\le F(t)$, alors $t\\in E_\\beta$, donc $a\\le t$.',
-      'Si $a\\le t$, alors par croissance $F(t)\\ge F(a)\\ge\\beta$.',
+      'L’infimum étant atteint, première implication : si $\\beta\\le F(t)$, alors $t\\in E_\\beta$, donc $a\\le t$.',
+      'Réciproque : si $a\\le t$, alors par croissance $F(t)\\ge F(a)\\ge\\beta$ (car $F(a)\\ge\\beta$).',
     ],
     explanation: 'La continuité à droite est l’ingrédient qui fait que l’infimum appartient à $E_\\beta$ ; les deux implications en découlent. Conséquence : $F^{\\leftarrow}(U)$ suit la loi de f.d.r. $F$ (méthode d’inversion).',
   },

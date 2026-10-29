@@ -142,3 +142,13 @@ function checkExercise(e: Exercise): void {
     }
   }
 }
+
+describe('Glossaire par chapitre', () => {
+  it('chaque chapitre enregistre ses symboles avec sa propre portée', async () => {
+    const files = import.meta.glob('../src/content/ch*/index.ts', { query: '?raw', import: 'default', eager: true }) as Record<string, string>
+    for (const [path, src] of Object.entries(files)) {
+      const slug = /content\/(ch\d)\//.exec(path)![1]
+      if (src.includes('registerGlossary(')) expect(src, `${slug} : registerGlossary sans portée '${slug}'`).toMatch(new RegExp(`\\], '${slug}'\\)`))
+    }
+  })
+})

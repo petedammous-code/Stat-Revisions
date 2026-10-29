@@ -437,7 +437,7 @@ Complément au point 3 : une conclusion « statistiquement significative » **ne
         id: 'ch4-ex-2-15',
         title: 'Exemple 2.15 — Étendue de la banquise arctique : IC et test de nullité de la pente',
         source: 'Poly ch.4, Ex. 2.15, p. 33–34 (lois admises : PC2 Ex. 1)',
-        setup: 'Régression linéaire gaussienne $Y_i=\\beta_0+\\beta_1t_i+\\sigma\\varepsilon_i$, $\\varepsilon_i$ i.i.d. $\\mathcal{N}(0,1)$, $t_i=\\text{année}_i-1979$ ; moindres carrés $(\\hat\\beta_0,\\hat\\beta_1)$, $\\hat\\sigma^2=\\frac1{n-2}\\sum_i(Y_i-\\hat\\beta_0-\\hat\\beta_1t_i)^2$ ; $ns=\\sum_i(t_i-\\bar t)^2$.',
+        setup: 'Régression linéaire gaussienne $Y_i=\\beta_0+\\beta_1t_i+\\sigma\\varepsilon_i$, $\\varepsilon_i$ i.i.d. $\\mathcal{N}(0,1)$, $t_i$ = (année $i$) $-\\,1979$ ; moindres carrés $(\\hat\\beta_0,\\hat\\beta_1)$, $\\hat\\sigma^2=\\frac1{n-2}\\sum_i(Y_i-\\hat\\beta_0-\\hat\\beta_1t_i)^2$ ; $ns=\\sum_i(t_i-\\bar t)^2$.',
         steps: [
           { text: '$\\hat\\beta_1\\sim\\mathcal{N}(\\beta_1,\\sigma^2/(ns))$, $(n-2)\\hat\\sigma^2/\\sigma^2\\sim\\chi^2(n-2)$, indépendant de $(\\hat\\beta_0,\\hat\\beta_1)$.', justification: 'Admis (PC2 Ex. 1 : Cochran).' },
           { text: '$G(Z;\\beta_1):=\\sqrt{ns}(\\hat\\beta_1-\\beta_1)/\\hat\\sigma\\sim\\mathrm{t}(n-2)$ : pivot.', justification: '$\\mathcal{N}(0,1)$ divisée par la racine d’un $\\chi^2(n-2)/(n-2)$ indépendant (définition de Student).' },

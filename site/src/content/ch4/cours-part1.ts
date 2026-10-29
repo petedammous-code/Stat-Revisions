@@ -364,7 +364,7 @@ $$T_n:=\\sqrt n\\,\\frac{\\bar X_n-\\mu}{S_n}=\\frac{\\sqrt n(\\bar X_n-\\mu)/\\
 3. Le cas **gaussien** est particulièrement important : variance connue ($\\mathcal{N}(0,1)$) puis inconnue (Student remplace la loi normale), variance ($\\chi^2$).
 4. En l’absence de pivot : **inégalité de concentration** (section 4) ou approche **asymptotique** (ch.6).
 
-**Tableau des pivots du chapitre** : $\\theta X\\sim\\mathcal{E}(1)$ (Ex. 1.1) ; $X/\\theta\\sim\\mathcal{U}([0,1])$ (Ex. 1.2) ; $X_{n:n}/\\theta$ de f.d.r. $x^n$ (PC4 Ex. 3) ; $2\\theta^{-1}\\sum_iX_i\\sim\\chi^2(2n)$ (exponentielle d’espérance $\\theta$, PC4 Ex. 1) ; $\\sqrt n(\\bar X_n-\\mu)/\\sigma\\sim\\mathcal{N}(0,1)$ ; $\\sqrt n(\\bar X_n-\\mu)/S_n\\sim\\mathrm{t}(n-1)$ ; $(n-1)S_n^2/\\sigma^2\\sim\\chi^2(n-1)$ ; $\\sqrt{ns}(\\hat\\beta_1-\\beta_1)/\\hat\\sigma\\sim\\mathrm{t}(n-2)$ (régression, Ex. 2.15) ; rapport de variances empiriques $\\sim\\mathrm{F}(n-1,p-1)$ (PC4 Ex. 5).`,
+**Tableau des pivots du chapitre** : $\\theta X\\sim\\mathcal{E}(1)$ (Ex. 1.1) ; $X/\\theta\\sim\\mathcal{U}([0,1])$ (Ex. 1.2) ; $X_{n:n}/\\theta$ de f.d.r. $x^n$ (PC4 Ex. 3) ; $2\\theta^{-1}\\sum_iX_i\\sim\\chi^2(2n)$ (exponentielle d’espérance $\\theta$, PC4 Ex. 1) ; $\\sqrt n(\\bar X_n-\\mu)/\\sigma\\sim\\mathcal{N}(0,1)$ ; $\\sqrt n(\\bar X_n-\\mu)/S_n\\sim\\mathrm{t}(n-1)$ ; $(n-1)S_n^2/\\sigma^2\\sim\\chi^2(n-1)$ ; $\\sqrt{ns}(\\hat\\beta_1-\\beta_1)/\\hat\\sigma\\sim\\mathrm{t}(n-2)$ (régression, Ex. 2.15) ; $\\frac{\\sigma_1^2}{\\sigma_0^2}\\times$ (rapport des variances empiriques des deux échantillons) $\\sim\\mathrm{F}(n-1,p-1)$ (PC4 Ex. 5).`,
       },
     ],
   },

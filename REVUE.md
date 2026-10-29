@@ -17,6 +17,7 @@ Chaque section est rédigée par le vérificateur du chapitre (qui n'a pas const
 
 
 
+
 Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visualisations, 43 exercices dont 4 annales, 23 flashcards, fiche, 6 Monte-Carlo) relu ligne à ligne contre `content/extraction/ch6.md`, `pc6.md`, `pc7.md` (Ex. 2–3) et `DIAGNOSTIC.md` (§2.A Ex. 2 Q6–Q10, §2.B Ex. 2 Q5–7, §5.8–5.10, §6, §7, §8). Toutes les applications numériques ont été recalculées (IC Poisson $[0{,}098;0{,}173]$, IC Gamma $[2{,}01;2{,}99]$, $C=\pi/2$, $2/\sqrt5$, les trois IC exponentiels à $x=0{,}196$, DL de $v_{Mom}$ jusqu'à l'ordre $\sigma^8$, moment centré d'ordre 4 de l'exponentielle $9\theta^4$, $\gamma=1/180$ pour $\mathcal U([0,1])$, valeurs exactes à $n$ fini citées dans les Monte-Carlo). `npm run typecheck`, `npm test` (41 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright (aucune erreur console, aucun `.katex-error`, graphes non vides, pas de débordement horizontal à 1280 px ni à 390 px).
 
 - [Corrigé] `exercices-part1.ts`, QCM `ch6-qcm-variance-exp2` : l'explication du distracteur $5\theta^2$ attribuait l'erreur à un « oubli du facteur $1/4$ », ce qui donnerait $20\theta^2$ ; $5\theta^2$ provient de l'oubli du facteur $\tfrac12$ de la dérivée de la racine ($\phi_2'=-\theta^3/2$ au lieu de $-\theta^3/4$). Réécrite.
@@ -51,6 +52,7 @@ Périmètre contrôlé : `site/src/content/ch6/**` (cours en 8 sections, 7 visua
 
 
 
+
 Contrôle indépendant de `site/src/content/ch2/` (cours, 41 exercices, 21 flashcards, fiche, 6 Monte-Carlo, 6 viz) contre `content/extraction/ch2.md`, `pc2.md`, `pc6.md` (Ex. 1), `pc7.md` (Ex. 2–4) et `DIAGNOSTIC.md`. Énoncés, hypothèses et preuves des Déf. 1.1–1.8, Méthodes 1.1–1.2, Prop. 1.1–1.3, Thm 1.1, Outils (Prop. 2.1, Déf. 2.1–2.2, Thm 2.1–2.2, Lemmes 2.1–2.3) conformes à l'extraction ; Ex. 1.1 à 1.15 et PC2 Ex. 1–3 recalculés (biais/EQM de $1/\bar X_n$, Ex. 1.5 $\hat b_n=0{,}1+\sqrt{0{,}27}\approx0{,}62$, mélange $-0{,}05$ et $0{,}2875$, $\chi^2(8)$ : 2,180 / 17,535, variance asymptotique $\frac54\theta^2$, Gamma(2, θ) biais $\theta/(2n-1)$, log-normale $(\theta,\theta)$, log-normale Q9(a)). typecheck, 74 tests et build OK ; rendu Playwright des six onglets à 1280 et 390 px : 0 erreur console, 0 `katex-error`, graphes non vides, pas de débordement horizontal.
 
 - [Corrigé] QCM `ch2-qcm-mediane-qualificatifs` : l'explication du distracteur « $T(x)=\mathrm{signe}(x)$ » utilisait un symbole non défini $\bar Y_n$ ; remplacé par $\tan\big(\frac\pi{2n}\sum_i\mathrm{signe}(X_i)\big)$ (Ex. 4.1, marqué hors programme).
@@ -68,6 +70,7 @@ Contrôle indépendant de `site/src/content/ch2/` (cours, 41 exercices, 21 flash
 - [Manque] PC6 Ex. 1 Q1 (deux estimateurs des moments de l'exponentielle) n'a pas d'exercice dédié : il n'est traité que via le cours (Ex. 1.4), la viz `ch2-methode-moments` et l'étape suivante EMV exponentiel. Volumes du guide largement respectés (41 exercices : 11 QCM, 6 VF, 5 ordonner, 4 trouver-erreur, 5 étape-suivante, 3 associer, 3 numériques, 4 annales ; 21 flashcards dont 6 « hypothèse manquante » ; 6 viz ; 6 Monte-Carlo).
 - [Manque] Aucune annale ni étape suivante ne porte le tag `cours` (seuls QCM/VF/ordonner/associer « poly ») ; même remarque que pour le ch.6.
 ## Chapitre 1
+
 
 
 
@@ -114,6 +117,7 @@ Périmètre contrôlé : `site/src/content/ch1/**` (cours en 11 sections, 7 visu
 
 
 
+
 Vérification indépendante de `site/src/content/ch3/` (cours en 10 sections, 37 exercices, 19 flashcards, fiche, 6 visualisations, 7 Monte-Carlo) contre `content/extraction/ch3.md`, `pc3.md`, `pc7.md` (Ex. 2 Q2), le PDF du poly (p. 24–25 relues : Déf. 1.9, Thm 1.1, Cor. 1.1–1.2) et `DIAGNOSTIC.md`. Toutes les formules et applications numériques ont été recalculées (Ex. 1.8, 1.9, famille $aX_{n:n}$ pour $n=5$, risques de $1/\bar X_n$ et de $\frac{n-1}{n\bar X_n}$, PC7 Ex. 2 Q2, CC 2022 Ex. 2 Q2–Q4, PC3 Ex. 2 avec $\mathbf x=(0,1,2)$, $\tau_{10}(1)$, PC3 Ex. 4–5, KL des quatre lois de la viz Fisher) : aucune erreur de calcul trouvée. typecheck, tests (92) et build passent ; rendu Playwright des six onglets sans erreur console, 0 erreur KaTeX, 10 graphes non vides (cours et viz), pas de débordement à 1280 px ni à 390 px, seuls les 4 exercices numériques ont un champ de saisie.
 
 - [Corrigé] Cours §5, calcul heuristique (§1.7) : les justifications appelaient « 1re dérivation » celle de $\int Tp_\theta$ et « 2e » celle de $\int p_\theta$, à l'inverse du poly (§1.10 : « la régularité du modèle justifie la **première** des deux dérivations ») ; numérotation retirée, chaque dérivation est désignée par son intégrale.
@@ -129,6 +133,7 @@ Vérification indépendante de `site/src/content/ch3/` (cours en 10 sections, 37
 - [À vérifier] Tolérances Monte-Carlo parfois larges (≈ 5 écarts-types pour `ch3-retrecissement-exponentielle-moyenne`, 0,016 pour σ ≈ 0,0032 ; ≈ 4 pour `ch3-variance-score-bernoulli`) : sans conséquence sur la validité, mais au-delà des 3–4 écarts-types du guide.
 - [Manque] Pas d'exercice ni de viz pour la Prop. 2.3 (biais-variance matriciel), le Lemme 2.1 (indépendance vis-à-vis de la mesure dominante) et la Prop. 1.2 (iii) dans le cas de deux modèles différents (seul le $n$-échantillon est exercé) ; l'idée de viz « ellipse de Cramér-Rao en régression » (extraction §7, point 9) n'est pas réalisée. Volumes du guide respectés : 37 exercices (10 QCM, 5 VF, 4 ordonner, 3 trouver-erreur, 4 étape-suivante, 3 associer, 4 numériques, 4 annales dont 3 issues de vraies annales), 19 flashcards dont 5 « hypothèse manquante », 6 visualisations, 7 Monte-Carlo.
 ## Chapitre 8
+
 
 
 
@@ -154,6 +159,7 @@ Vérification indépendante de `site/src/content/ch3/` (cours en 10 sections, 37
 
 
 
+
 Vérification indépendante de `site/src/content/ch9/` (cours, 41 exercices, 19 flashcards, fiche, 7 Monte-Carlo, 8 visualisations) contre `content/extraction/ch9.md`, `content/extraction/pc9.md`, le PDF du poly (p. 13–21 relues) et DIAGNOSTIC §2.A, §5.12, §6. Énoncés, hypothèses, sources et numérotation (Déf. 1.1–1.3, Prop. 1.1–1.3, Th. 1.1–1.8, Lemme 1.1, Outils Prop. 2.1–2.2, Déf. 2.1, Th. 2.1, Compléments §4.x en `hors-programme`) conformes ; toutes les applications numériques recalculées (738 / 2000 ; 0,046 ; 0,0195 ; 0,452 et 0,495 ; $k^\star=100$ et 17,7 ; $\sqrt{(K+1)\log2/(2n)}$ ; $2^{K-1}e^{-2nx^2}\sqrt{2\pi/n}$) ; Monte-Carlo cohérents avec le poly (risque exact de la règle gelée, $\frac12(1-1/K)^n$, $\mathbb E[Y^2]=7/3$, violations des inégalités = 0). typecheck, tests (161) et build passent ; rendu Playwright des six pages (1280 px et 390 px) : aucune erreur console, aucun `katex-error`, 15 graphes non vides, pas de débordement horizontal.
 
 - [Corrigé] `ch9-etape-th18`, étape 1 : un distracteur était **vrai** ($\le2\,\mathbb E[\max_g|\widehat{\mathrm R}_n(g)-R(g)|]$, « correct mais sous-optimal ») et un autre commençait par une inégalité vraie ; remplacés par deux erreurs réelles (Hoeffding appliqué au MRE avec une borne $\sqrt{\pi/(2n)}$ indépendante de $|\mathcal C|$ ; échange $\mathbb E\max\leftrightarrow\max\mathbb E$). Étape 3 : explication du distracteur $\sqrt{2\log(2M)/n}$ réécrite (elle était incompréhensible).
@@ -171,6 +177,7 @@ Vérification indépendante de `site/src/content/ch9/` (cours, 41 exercices, 19 
 - [À vérifier] Monte-Carlo `ch9-validation-variance` : tolérance 0,1 pour un écart-type MC ≈ 0,022 (≈ 4,5 σ), légèrement au-delà des 3–4 σ du guide ; `ch9-ex11-sur-apprentissage` : 0,1 pour σ ≈ 0,021 (≈ 4,8 σ).
 - [Manque] Pas d'exercice sur PC9 Ex. 5 (hyper-rectangles) ni sur PC9 Ex. 7 (classifieurs par hyperplan : risque via $F_{i,\mathbf a}$, $\min(u,v)=\frac12(u+v-|u-v|)$, $|\mathcal C_n|\le2\binom nd$) au-delà de la Prop. 1.2 résumée ; pas d'exercice sur Ex. 1.3 (convexité du risque logistique, identification à l'EMV) hors associer/flashcard. Volumes du guide respectés : 41 exercices (9 QCM, 6 VF, 4 ordonner, 4 trouver-erreur, 5 étape-suivante, 3 associer, 5 numériques, 5 annales dont 1 issue d'une vraie annale), 19 flashcards dont 5 « hypothèse manquante », 8 visualisations, 7 Monte-Carlo.
 ## Chapitre 5
+
 
 
 
@@ -194,6 +201,7 @@ Périmètre contrôlé : `site/src/content/ch5/**` (9 sections de cours, 7 visua
 ## Chapitre 7
 
 
+
 - [Corrigé] `ch7-err-bord` (trouver l'erreur) : deux lignes étaient fausses (la dernière, « $\mathbb{P}_{n,0}(\hat\theta_n=0)\to0$ », l'était aussi) ; elle est remplacée par un énoncé juste ($\theta>0$ : $\Phi(-\sqrt n\theta)\to0$) et la première ligne précise « sur l'ouvert $]0,+\infty[$ » (avec $\Theta=\mathbb{R}_+$ fermé, le modèle n'est pas régulier au sens du Cadre 1.1). Ligne fautive désormais unique.
 - [Corrigé] Ordre non unique dans trois exercices « ordonner » : `ch7-ord-thm11` (la décomposition (a)+(b)+(c) pouvait précéder l'inclusion d'événements), `ch7-ord-thm14` (contrôle de $R_\delta$ et développement de Taylor interchangeables ; évaluation au point aléatoire et identité (9) interchangeables), `ch7-ord-pc7-monotonie` (inclusion, positivité de la limite et LGN indépendantes). Étapes reformulées pour que chacune s'appuie sur la précédente.
 - [Corrigé] Examen 2025 Q7/Q10 (cours §8, QCM `ch7-qcm-annale-q10`, annale `ch7-annale-2025`) : le Thm 1.6/1.7 du poly est **scalaire** ; l'usage en dimension 2 est désormais signalé comme extension vectorielle hors programme (compléments §4.4), licite pour $\mu$ car $\mathbb{I}$ est diagonale ; la médiane n'étant pas un Z-estimateur régulier, la comparaison $v_{Med}>v_{ML}$ est présentée comme directe et non comme conséquence du Thm 1.7. L'annale est marquée « énoncé adapté » (la Q7 originale demande le TCL multivarié, pas l'information de Fisher).
@@ -203,3 +211,29 @@ Périmètre contrôlé : `site/src/content/ch5/**` (9 sections de cours, 7 visua
 - [À vérifier] Sources : Thm 1.3 cité « p. 17–18 » (théorème p. 18, principe p. 17) et Thm 1.6 « p. 23–24 » (énoncé p. 24) — vérifiés sur le PDF, laissés tels quels. Thm 1.6 : l'hypothèse « identité (10) / modèle régulier » ajoutée par le site est implicite dans le poly (Déf. 1.4 suppose un modèle régulier).
 - [À vérifier] `ch7-qcm-annale-q10`, `ch7-annale-2025` : bonne réponse unique vérifiée ; l'estimateur des moments y est qualifié de Z-estimateur (deux équations de moments) — exact mais en dimension 2.
 - [Manque] Rien de bloquant. Volumes : 39 exercices (9 QCM, 6 VF, 4 ordonner, 4 trouver-erreur, 5 étape-suivante, 3 associer, 4 numériques, 4 annales dont 1 issue d'une vraie annale — adaptée — et 3 PC), 19 flashcards dont 5 « hypothèse manquante », 6 visualisations (toutes rendues, aucune erreur console), 7 Monte-Carlo. Pas de viz « recouvrement fini / module de continuité » (idée 3 de l'extraction) ni « un pas de Newton » (idée 10, hors programme).
+## Chapitre 4
+
+
+Périmètre contrôlé : `site/src/content/ch4/**` (cours en 11 sections, 7 visualisations, 45 exercices dont 5 annales, 20 flashcards, fiche, 6 Monte-Carlo) relu contre `content/extraction/ch4.md` (en entier), `pc4.md` (Ex. 1, coquilles §0.5, idées §3), `pc2.md` (Ex. 1 Q7), `ch1.md` (numérotation Gosset/Student) et `DIAGNOSTIC.md` (§2.A Ex. 1 Q2–Q3, Ex. 2 Q5, Ex. 4 ; §2.B Ex. 1, Ex. 3, Ex. 4 ; §5.7 ; §6 ; §7 ; §8). Toutes les applications numériques ont été recalculées (scipy) : $p$-valeur PC4 Ex. 1 $=0{,}1071$ ; IC $[1{,}645;5{,}860]$ ; bornes unilatérales $5{,}18$ et $1{,}79$ ; puissance en $\theta=4$ ($n=10$, $\alpha=5$ %) $=\mathbb{P}(\chi^2(20)\ge15{,}71)=0{,}735$ ; Poisson ($0{,}0487$ ; $0{,}0835$ ; $0{,}8435$ ; $0{,}0143$ ; $0{,}2084$) ; $p$-valeur bilatérale PC4 Ex. 5 $=0{,}992$ (unilatérale $0{,}496$) ; vaccination $0{,}01717$ (binomiale et Poisson) ; Wilcoxon $n=m=10$ ($\varepsilon_{0,05}=59{,}2>50$) ; $+4{,}1$ % Student $n=32$ ; IC régression $[1{,}14;9{,}17]$ ; Ex. 2.13–2.14 ; rapports $0{,}607$ / $0{,}326$ ; $c_1=2{,}233$ ; $\alpha^{-1/10}=1{,}349$ ; Bonferroni $1-0{,}95^{20}=0{,}64$ ; seuil $\alpha\approx0{,}232$ où le rapport Hoeffding/Tchebychev dépasse 1. CC 2022 Ex. 3 Q9 recontrôlé : survie $(1+\frac{nt}{n-1})^{-(n-1)}$, densité décroissante ⇒ $c_1=0$ optimal, $c_2=\frac{n-1}n(\alpha^{-1/(n-1)}-1)$, IC $[X_{1:n}-\frac{\alpha^{-1/(n-1)}-1}{n}T_1,\ X_{1:n}]$ : correct. Fieller (A, B, C, condition $A>0$ ⇔ Student rejette) : correct. `npm run typecheck`, `npm test` (177 tests), `npm run build` passent ; rendu des six onglets vérifié avec Playwright à 1280 et 390 px (aucune erreur console, aucun `.katex-error`, 11 graphes Plotly tous non vides, plus de débordement horizontal après correction).
+
+- [Corrigé] `index.ts` : `registerGlossary([...])` sans portée `'ch4'` ; avec le glossaire par chapitre, les entrées à portée vide ne sont trouvées sur **aucune** page de chapitre (la recherche filtre sur `scope`) : les infobulles propres au ch.4 ne s'affichaient pas. Ajout de `'ch4'`.
+- [Corrigé] `ch4-qcm-region-chi2` : deux réponses défendables — pour $H_0$ simple, $\{\frac2{\theta_0}\sum z_i\le\chi^2_\alpha(2n)\}$ et $\{\ge\chi^2_{1-\alpha/2}(2n)\}$ sont aussi « de niveau $\alpha$ ». Question reformulée (« taille exactement $\alpha$, rejet du côté de l'alternative ») et explications des deux distracteurs précisées (le premier a une puissance $<\alpha$ sous $H_1$).
+- [Corrigé] `ch4-qcm-deux-echantillons-2025` : « Sous $H_0$, quelle statistique a une loi connue ? » admettait aussi $S_X^2/S_Y^2\sim\mathrm{F}(n-1,p-1)$ (vrai dans le modèle à variances égales). Question reformulée : « pour tester $H_0:\mu_0=\mu_1$, quelle statistique utiliser ».
+- [Corrigé] `ch4-qcm-bonferroni-2025` : « $1-(1-\alpha)^m$ » n'est exact que pour des tests de **taille** $\alpha$ (de niveau $\alpha$ : seulement $\le$) ; énoncé corrigé.
+- [Corrigé] `ch4-qcm-ic-sigma2-2025` : précisé « IC exact (non asymptotique) » pour écarter sans ambiguïté le distracteur asymptotique.
+- [Corrigé] `ch4-vf-composite-meme-test` : l'explication du 3e distracteur disait qu'on « ne connaît pas la loi » de la statistique sous $\theta<\theta_0$ ; elle est connue ($\frac\theta{\theta_0}\chi^2(2n)$). Réécrite.
+- [Corrigé] Ordonner à ordre non unique : `ch4-ord-prop-1-1` (étapes « borélien » / « condition (i) » / « couverture » permutables), `ch4-ord-pivot-chi2` (l'étape « indépendance » pouvait aller n'importe où avant l'additivité), `ch4-ord-prop-3-1` (les deux implications permutables, et la première pouvait précéder « infimum atteint ») : étapes reliées explicitement à la précédente.
+- [Corrigé] `ch4-etape-weibull-cc2022` étape 4 : le distracteur $\mathrm{Gcdf}_n(\theta\,\mathrm{Gqf}_n(1-\alpha)/\theta_0)$ était annoncé « décroissant » alors qu'il est croissant en $\theta$ ; remplacé par $1-\mathrm{Gcdf}_n(\cdot)$ (réellement décroissant) avec explication du rapport inversé.
+- [Corrigé] `ch4-etape-proportion` étape 1 : $\mathrm{Var}\le1/n$ est aussi une majoration uniforme valable (deux réponses) ; prompt changé en « meilleure majoration uniforme ».
+- [Corrigé] Sources : « vrai/faux du corrigé » de PC4 Ex. 2 (`ch4-err-bilateral-z`, `ch4-qcm-seuil-bilateral`) est une idée de l'extracteur (`pc4.md` §3), pas du corrigé ; mention retirée.
+- [Corrigé] `cours-part1.ts`, tableau des pivots : « rapport de variances empiriques $\sim\mathrm{F}(n-1,p-1)$ » faux si $\sigma_0\ne\sigma_1$ ; remplacé par $\frac{\sigma_1^2}{\sigma_0^2}\times$ rapport (pivot de PC4 Ex. 5 Q6).
+- [Corrigé] `exercices-part3.ts` (annale PC4 Ex. 1, 1(d)) : puissance en $\theta=4$ donnée « $\approx0{,}74$ » sans $n$ ni $\alpha$ ; recalculée $0{,}735\approx0{,}73$ et explicitée ($n=10$, $\alpha=5$ %, $\mathbb{P}(\chi^2(20)\ge15{,}71)$).
+- [Corrigé] `cours-part3.ts` (Méthode type « test ») et `fiche.ts` : `\text{ au moins aussi extrême que }` dans une formule inline (accent dans `\text`, interdit par le guide) qui débordait de 17 px à 390 px ; texte sorti des maths. Idem `\text{année}` (Ex. 2.15).
+- [Corrigé] `cours-part3.ts` (Wilcoxon) : « pour $n=m=10$ il ne rejette jamais » précisé (à $\alpha=5$ %, $\varepsilon_\alpha\approx59{,}2>50$). `fiche.ts` : piège « sens de la région » précisé « pour $H_1:\theta>\theta_0$ ».
+- [À vérifier] Coquilles signalées par le constructeur, toutes confirmées par recalcul et par l'extraction : borne $5{,}86$ (et non $5{,}79$), $p$-valeur bilatérale $0{,}99$ (et non $0{,}496$), Wilcoxon (échangeabilité, pas indépendance), CC 2022 Ex. 3 Q9 (facteur $1/(n-1)$). Le DIAGNOSTIC impose $0<c_1<c_2$ alors que le site prend $c_1=0$ (borne $=X_{1:n}$) : choix optimal et légitime ($A_\alpha=[0,c]$ de probabilité $1-\alpha$), mais un correcteur strict pourrait attendre $c_1>0$.
+- [À vérifier] Examen 2025 Ex. 1 Q2 : la forme du test de Neyman-Pearson $\{T<d_\alpha\}$ est **admise** (« admis, ch.5 ») dans l'annale du ch.4 ; la justification par le rapport de vraisemblance est du ch.5. Choix cohérent avec le découpage, mais l'annale n'est pas reproduite intégralement.
+- [À vérifier] Contournements de glossaire devenus inutiles : `\\mathbb Q` (au lieu de `\\mathbb{Q}`) pour la loi du pivot et `\\mathrm{Gamma}(p,\\lambda)\\,` dans les énoncés CC 2022. Laissés en l'état (rendu identique, et `\\mathbb Q` distingue utilement la loi du pivot de la loi générique $\mathbb{Q}$ de la Déf. 3.1).
+- [À vérifier] `trouver-erreur` (`ch4-err-quantiles-inverses`, `ch4-err-bilateral-z`) : la ligne suivant la ligne fautive en hérite (conclusion fausse par conséquence) ; « première ligne fausse » unique, conforme à l'usage.
+- [À vérifier] `ch4-vf-bonferroni-exact` : « niveau exact de $I_1\times I_2$ différent de $(1-\alpha/2)^2$ » suit l'affirmation du poly (Ex. 1.7, étape 2) sans calcul ; non vérifié numériquement (l'écart est probablement faible).
+- [À vérifier] La viz `ch4-loi-pvaleur` (cas discret) teste `|θ−θ₀|<1e-9` pour annoncer le régime « θ = θ₀ » : selon l'arrondi du curseur (pas 0,01 depuis 0,3), le message pourrait basculer en « intérieur de Θ₀ » ; cosmétique, non observé.
+- [Manque] Volumes du guide respectés et dépassés : 45 exercices (12 QCM, 6 VF, 4 ordonner, 5 trouver-erreur, 5 étape-suivante, 3 associer, 5 numériques, 5 annales dont 3 de vraies annales), 20 flashcards dont 5 « hypothèse manquante », 7 visualisations, 6 Monte-Carlo. Les idées de viz 4 (région bivariée de l'Ex. 1.7), 7 (couplage binomial animé), 8 (riverains/aéroport) et 10 (significativité vs taille d'effet) de l'extraction ne sont pas réalisées. PC4 Ex. 6 (vaccination) n'a qu'un résumé en cours, sans exercice interactif.

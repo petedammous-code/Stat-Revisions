@@ -185,7 +185,7 @@ $$\\mathcal{R}=\\Big\\{z\\in\\mathbb{R}_+^n:\\ \\frac2{\\theta_0}\\sum_iz_i\\ge\
 
 est de taille exactement $\\alpha$ (Méthode 2.1).
 
-**1(d).** Pour tout $\\theta$, $\\beta(\\theta)=\\mathbb{P}_\\theta\\big(\\frac2\\theta\\sum_iX_i\\ge\\frac{\\theta_0}\\theta\\chi^2_{1-\\alpha}(2n)\\big)=\\mathbb{P}\\big(\\chi^2(2n)\\ge\\frac{\\theta_0}\\theta\\chi^2_{1-\\alpha}(2n)\\big)$, croissante en $\\theta$. $H_0$ simple : taille $=\\beta(\\theta_0)=\\alpha$. Pour $\\theta>\\theta_0$ fixé, $\\beta(\\theta)\\to1$ quand $n\\to\\infty$ (A.N. : en $\\theta=4$, $\\beta\\approx0{,}74$).
+**1(d).** Pour tout $\\theta$, $\\beta(\\theta)=\\mathbb{P}_\\theta\\big(\\frac2\\theta\\sum_iX_i\\ge\\frac{\\theta_0}\\theta\\chi^2_{1-\\alpha}(2n)\\big)=\\mathbb{P}\\big(\\chi^2(2n)\\ge\\frac{\\theta_0}\\theta\\chi^2_{1-\\alpha}(2n)\\big)$, croissante en $\\theta$. $H_0$ simple : taille $=\\beta(\\theta_0)=\\alpha$. Pour $\\theta>\\theta_0$ fixé, $\\beta(\\theta)\\to1$ quand $n\\to\\infty$ (A.N. $n=10$, $\\alpha=5$ % : en $\\theta=4$, $\\beta=\\mathbb{P}(\\chi^2(20)\\ge\\tfrac12\\chi^2_{0{,}95}(20))=\\mathbb{P}(\\chi^2(20)\\ge15{,}71)\\approx0{,}73$).
 
 **1(e).** Pour $\\alpha<\\alpha\'$, $\\chi^2_{1-\\alpha}(2n)>\\chi^2_{1-\\alpha\'}(2n)$ : régions emboîtées. La $p$-valeur (Déf. 2.4, Prop. 2.1) est
 

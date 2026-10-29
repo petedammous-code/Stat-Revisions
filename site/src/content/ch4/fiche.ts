@@ -57,7 +57,7 @@ export const summarySheet: SummarySheet = {
       title: 'p-valeur',
       steps: [
         'Vérifier (a) niveau $\\alpha$ et (b) régions emboîtées (seuil monotone en $\\alpha$).',
-        'Écrire $\\hat\\alpha(Z)=\\mathbb{P}_{\\theta_0}(T\\text{ au moins aussi extrême que }T_{\\mathrm{obs}})$ ; bilatéral : deux queues ; discret : inclure la valeur observée.',
+        'Écrire $\\hat\\alpha(Z)$ = probabilité, sous $\\mathbb{P}_{\\theta_0}$, que $T$ soit au moins aussi extrême que $T_{\\mathrm{obs}}$ ; bilatéral : deux queues ; discret : inclure la valeur observée.',
         'Conclure : rejet pour tout $\\alpha>\\hat\\alpha$ ; ce n’est ni $\\mathbb{P}(H_0)$ ni $\\mathbb{P}(H_1)$.',
         'Sous $H_0$ (niveau atteint) : $\\hat\\alpha\\sim\\mathcal{U}(]0,1[)$ ; sinon dominée.',
       ],
@@ -79,7 +79,7 @@ export const summarySheet: SummarySheet = {
     'Garder $z_{1-\\alpha/2}$ en remplaçant $\\sigma$ par $S_n$ : intervalle trop court (il faut Student).',
     'Test bilatéral avec $z_{1-\\alpha}$ : taille $2\\alpha$ ; $p$-valeur bilatérale $2(1-\\Phi(T))$.',
     'Confondre taille (nombre) et niveau (contrainte) ; en discret la taille est $<\\alpha$.',
-    'Sens de la région de rejet : échelle ($\\mathcal{E}(1/\\theta)$, CC 2022) → grandes valeurs ; intensité ($\\theta e^{-\\theta x}$, Examen 2025) → petites valeurs.',
+    'Sens de la région de rejet pour $H_1:\\theta>\\theta_0$ : échelle ($\\mathcal{E}(1/\\theta)$, PC4 Ex. 1, CC 2022) → grandes valeurs de $\\sum_iX_i$ ; intensité ($\\theta e^{-\\theta x}$, Examen 2025) → petites valeurs.',
     '$p$-valeur discrète : $\\mathbb{P}(T\\ge t_{\\mathrm{obs}})$, pas $\\mathbb{P}(T>t_{\\mathrm{obs}})$.',
     '$p$-valeur ≠ probabilité de $H_0$, de $\\Theta_1$ ou de se tromper ; « ne pas rejeter » ≠ « prouver $H_0$ » ; significatif ≠ effet important.',
     'Sous $H_0$ la $p$-valeur n’est pas **toujours** uniforme (seulement dominée).',

@@ -140,7 +140,7 @@ En particulier, si $U\\sim\\mathcal{U}([0,1])$, alors $F^{\\leftarrow}(U)$ a pou
 
 **Ex. 6 — Vaccination** ($p_0=1/310\\,000$, $n=300\\,533$, 4 cas). $H_0:p\\le p_0$ (risque accepté) ; par **couplage**, $p\\mapsto\\mathbb{P}_p(S_n>c)$ croît, donc la taille vaut $\\mathbb{P}_{p_0}(S_n>c)$. Avec $\\mathbb{P}_{p_0}(S_n>3)=0{,}0172$ et $\\mathbb{P}_{p_0}(S_n>4)=0{,}0032$ : $c_{0{,}05}=3$ (rejet, $4>3$), $c_{0{,}01}=4$ (non-rejet) ; $p$-valeur $\\mathbb{P}_{p_0}(S_n>3)\\approx0{,}0172$. Approximation de Poisson $\\theta_0=np_0\\approx0{,}97$ : même $p$-valeur. *Choix de $H_0$* : les plaignants (« le nombre moyen dépasse $\\theta_0$ sauf preuve du contraire ») devraient mettre $H_0:\\theta\\ge\\theta_0$ ; le corrigé garde $H_0:\\theta\\le\\theta_0$ (ambiguïté signalée, voir DECISIONS).
 
-**Ex. 7 — Wilcoxon** (seul test non paramétrique). Sous $H_0:F_X=F_Y$, par **échangeabilité** le vecteur des rangs est uniforme sur $\\mathcal{S}_N$ ($N=n+m$) : $W_{n,m}=\\sum_{i\\le n}R_i$ est **libre** ; $\\mathbb{E}_0[W]=n(N+1)/2$, $\\mathrm{Var}_0(W)=nm(N+1)/12$ (les $R_i$ ne sont pas indépendants : $\\mathrm{Cov}_0(R_1,R_2)=-\\mathrm{Var}_0(R_1)/(N-1)$, car $\\sum_iR_i$ est constante). Test par **Bienaymé-Tchebychev** : rejet si $|W-n(N+1)/2|\\ge\\sqrt{nm(N+1)/(12\\alpha)}$ — très conservatif (pour $n=m=10$ il ne rejette jamais).`,
+**Ex. 7 — Wilcoxon** (seul test non paramétrique). Sous $H_0:F_X=F_Y$, par **échangeabilité** le vecteur des rangs est uniforme sur $\\mathcal{S}_N$ ($N=n+m$) : $W_{n,m}=\\sum_{i\\le n}R_i$ est **libre** ; $\\mathbb{E}_0[W]=n(N+1)/2$, $\\mathrm{Var}_0(W)=nm(N+1)/12$ (les $R_i$ ne sont pas indépendants : $\\mathrm{Cov}_0(R_1,R_2)=-\\mathrm{Var}_0(R_1)/(N-1)$, car $\\sum_iR_i$ est constante). Test par **Bienaymé-Tchebychev** : rejet si $|W-n(N+1)/2|\\ge\\sqrt{nm(N+1)/(12\\alpha)}$ — très conservatif (pour $n=m=10$ et $\\alpha=5$ %, $\\varepsilon_\\alpha\\approx59{,}2$ alors que $|W-105|\\le50$ : il ne rejette jamais).`,
       },
     ],
   },
@@ -178,7 +178,7 @@ En particulier, si $U\\sim\\mathcal{U}([0,1])$, alors $F^{\\leftarrow}(U)$ a pou
 2. Donner la **loi de $T(Z)$ sous $\\mathbb{P}_{\\theta_0}$** (pivot évalué en $\\theta_0$) et calibrer $c_\\alpha$ par un quantile **à la frontière** $\\theta_0$.
 3. Si $H_0$ est composite, montrer la **monotonie** de $\\theta\\mapsto\\beta_\\phi(\\theta)$ (réécriture par le pivot ; couplage dans le cas binomial) pour conclure que la taille vaut $\\beta_\\phi(\\theta_0)$.
 4. **Puissance** : $\\beta_\\phi(\\theta)=\\mathbb{P}_\\theta(T\\in\\mathcal{R}_\\alpha)$ réécrit avec le pivot sous $\\mathbb{P}_\\theta$.
-5. **$p$-valeur** : vérifier l’emboîtement, puis $\\hat\\alpha(Z)=\\mathbb{P}_{\\theta_0}(T(Z\')\\text{ au moins aussi extrême que }T(Z))$ ; en discret, compter la valeur observée.
+5. **$p$-valeur** : vérifier l’emboîtement, puis $\\hat\\alpha(Z)$ = probabilité, sous $\\mathbb{P}_{\\theta_0}$, que $T(Z\')$ soit au moins aussi extrême que $T(Z)$ ($Z\'$ copie indépendante de $Z$) ; en discret, compter la valeur observée.
 6. **Conclure en mots** : « on rejette $H_0$ au niveau 5 % », « on échoue à rejeter $H_0$ » ; interpréter.`,
       },
       {

@@ -25,7 +25,7 @@ export const exercisesPart2: Exercise[] = [
     id: 'ch4-err-bilateral-z',
     type: 'trouver-erreur',
     title: 'Test bilatéral : taille doublée',
-    source: 'PC4 Ex. 2 Q2 (vrai/faux du corrigé) ; Poly ch.4, Ex. 2.10',
+    source: 'PC4 Ex. 2 Q2 ; Poly ch.4, Ex. 2.10',
     origin: 'pc',
     difficulty: 1,
     tags: ['test-bilateral', 'taille', 'gaussien'],
@@ -178,7 +178,7 @@ export const exercisesPart2: Exercise[] = [
         choices: [
           { text: '$\\beta(\\theta)=1-\\mathrm{Gcdf}_n\\big(\\theta_0\\mathrm{Gqf}_n(1-\\alpha)/\\theta\\big)$, croissante, donc taille $=\\beta(\\theta_0)=\\alpha$', correct: true, explanation: 'Réécriture avec le pivot $T/\\theta$ sous $\\mathbb{P}_\\theta$ ; monotonie ⇒ sup au bord.' },
           { text: '$\\beta(\\theta)=\\alpha$ pour tout $\\theta$', correct: false, explanation: 'La puissance dépend de $\\theta$ ; seule sa valeur en $\\theta_0$ vaut $\\alpha$.' },
-          { text: '$\\beta(\\theta)=\\mathrm{Gcdf}_n\\big(\\theta\\,\\mathrm{Gqf}_n(1-\\alpha)/\\theta_0\\big)$, décroissante', correct: false, explanation: 'Rapport inversé ; un bon test unilatéral a une puissance croissante vers $H_1$.' },
+          { text: '$\\beta(\\theta)=1-\\mathrm{Gcdf}_n\\big(\\theta\\,\\mathrm{Gqf}_n(1-\\alpha)/\\theta_0\\big)$, décroissante, donc taille atteinte quand $\\theta\\to0$', correct: false, explanation: 'Rapport $\\theta/\\theta_0$ inversé : sous $\\mathbb{P}_\\theta$ on divise $T$ par $\\theta$, d’où l’argument $\\theta_0\\mathrm{Gqf}_n(1-\\alpha)/\\theta$. Un bon test unilatéral a une puissance croissante vers $H_1$.' },
         ],
       },
     ],
@@ -240,11 +240,11 @@ export const exercisesPart2: Exercise[] = [
     setup: '$n$-échantillon de $\\mathcal{B}\\mathrm{er}(\\theta)$, $\\theta\\in[0,1]$ ; on cherche $\\delta$ tel que $[\\bar X_n\\pm\\delta]$ soit de niveau $1-\\alpha$ **pour tout** $\\theta$.',
     steps: [
       {
-        prompt: 'Étape 1 — Majoration uniforme de la variance :',
+        prompt: 'Étape 1 — Meilleure majoration uniforme (en $\\theta$) de la variance :',
         choices: [
           { text: '$\\mathrm{Var}_\\theta(\\bar X_n)=\\frac{\\theta(1-\\theta)}n\\le\\frac1{4n}$', correct: true, explanation: '$\\theta(1-\\theta)$ est maximal en $\\theta=1/2$.' },
           { text: '$\\mathrm{Var}_\\theta(\\bar X_n)\\le\\frac{\\bar X_n(1-\\bar X_n)}n$', correct: false, explanation: 'Ce n’est pas une majoration valable pour tout $\\theta$ : on remplacerait l’inconnue par un estimateur (idée asymptotique, Wald).' },
-          { text: '$\\mathrm{Var}_\\theta(\\bar X_n)\\le\\frac1n$', correct: false, explanation: 'Vrai mais quatre fois trop large : intervalle inutilement long.' },
+          { text: '$\\mathrm{Var}_\\theta(\\bar X_n)\\le\\frac1n$', correct: false, explanation: 'Majoration uniforme valable, mais quatre fois trop large (ce n’est pas la meilleure) : intervalle inutilement long.' },
         ],
       },
       {
