@@ -1,0 +1,339 @@
+Ecole Polytechnique, promotion 2025                                       PC-5 Cours APM 41033 EP
+
+
+Exercice 1 ((⋆⋆) Rapport de vraisemblance monotone pour la construction de test
+UPP(α)). Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle (R+ , B(R+ ), {pθ .dµ, θ ∈ Θ}),
+où θ ∈ Θ := R∗+ , µ est la mesure de Lebesgue sur R et pθ est définie par
+
+                            x 7→ p(θ; x) = pθ (x) = θ−1 e−x/θ 1R+ (x) .
+
+   1. Soit 0 < θ0 < θ1 . Montrer que le test trouvé en PC4, Exercice 1, est un test UPP(α)
+      pour θ = θ0 contre θ = θ1 .
+   2. Montrer que la famille {p(θ; ·), θ ∈ Θ} est à rapports de vraisemblances monotones.
+   Soit θ0 > 0. On considère les hypothèses
+
+                                  H0 : θ ≤ θ 0 ,    contre   H1 : θ > θ 0 .
+
+   3. Déterminer un test U. P. P.(α) pour ces hypothèses. On explicitera le calcul des constantes
+      dans la définition de la fonction critique du test.
+
+                            0.3
+
+
+
+                           0.25
+
+
+
+                            0.2
+
+
+
+                           0.15
+
+
+
+                            0.1
+
+
+
+                           0.05
+
+
+
+                              0
+                                  0     5      10     15     20     25    30
+
+
+
+
+Figure 1 – En rouge : densité d’une loi Gamma de paramètres (10, 1/θ0 ) avec θ0 = 1 ; le
+seuil critique c est indiqué par un trait vertical. On trace aussi la densité de deux lois Gamma
+de paramètres (10, 1/θ1 ) avec θ1 = 0.5 (en bleu) et (10, 1/θ1′ ) avec θ1′ = 2 (en vert).
+
+
+Exercice 2 ((⋆⋆ puis ⋆ ⋆ ⋆) Un test UPP(α) n’existe pas toujours). Pour tout θ ∈ R,
+on note pθ la densité de la loi Gaussienne N(θ, 1) sur R
+                                                           
+                                          1           1   2
+                               pθ (x) := √ exp − (x − θ) .
+                                          2π          2
+    On dispose d’un n-échantillon Z = (X1 , · · · , Xn ) du modèle statistique (R, B(R), {pθ , θ ∈ Θ}) ;
+et pour θ0 ∈ Θ, on souhaite tester au niveau α ∈ (0, 1/2) les hypothèses
+
+                                  H0 : θ = θ 0 ,    contre   H1 : θ ̸= θ0 .                       (1)
+
+On notera, pour tout α, qα le quantile d’ordre α de la loi N(0, 1). Puisqu’il s’agit d’un test
+de la moyenne à variance connue, on pourrait supposer sans perte de généralités que n = 1.
+Cette solution n’est pas retenue dans le corrigé pour quantifier l’effet de n mais les calculs
+demeureraient quasiment identiques.
+
+                                                                                              Page 1
+Ecole Polytechnique, promotion 2025                                          PC-5 Cours APM 41033 EP
+
+
+  1. Soit θ1 ̸= θ0 . Etablir le test du rapport de vraisemblance pour le test d’hypothèses
+
+                                     H0 : θ = θ 0             H1 : θ = θ 1 ;
+
+     On pourra envisager successivement le cas θ1 > θ0 puis le cas θ1 < θ0 . Voir la figure 2.
+
+
+                             1.4
+                                            =0
+                                            =-1
+                             1.2            =0.5
+
+
+
+                               1
+
+
+                             0.8
+
+
+                             0.6
+
+
+                             0.4
+
+
+                             0.2
+
+
+                               0
+                                -1       -0.5       0         0.5        1
+                                                                      P
+Figure 2 – Dans le cas n = 10 et  Pθ0 = 0, on trace la densité de n−1 ni=1 Xi − θ0 sous pθ0
+en rouge ; puis la densité de n−1 ni=1 Xi sous pθ1 dans le cas θ1 = 0.5 (courbe verte) et le
+cas θ1 = −1 (courbe bleue). Les deux traits verticaux correspondent aux droites d’équations
+        √                 √
+x = qα / n et x = q1−α / n en prenant α = 0.05.
+
+  2. Déterminer un test U. P. P.(α) pour
+
+                                     H0 : θ = θ 0             H1 : θ > θ 0 .
+
+  3. Montrer qu’il n’existe pas de test U. P. P.(α) pour le problème (1).
+  4. En mimant la forme des tests obtenus dans les questions Q.1 et Q. 2, proposer un test de
+     niveau α pour le problème (1). Calculer sa fonction puissance en fonction de la fonction
+     de répartition d’une gaussienne N(0, 1). Dans la suite, on notera ϕ⋆,3 ce test.
+Nous allons définir une notion moins forte que celle de uniformément plus puissant. Un test
+ϕ des hypothèses H0 : θ = θ0 contre H1 : θ ∈ Θ1 est dit sans biais de niveau α s’il est de
+niveau α et si sa fonction puissance βϕ : θ 7→ Eθ [ϕ(Z)] vérifie
+
+                                     ∀θ ∈ Θ1 ,          βϕ (θ) ⩾ α .
+
+On définit alors la propriété UMPU(α) pour uniformly most powerful unbiased test : il s’agit
+d’un test uniformément plus puissant parmi les tests sans biais de niveau α.
+  5. Montrer qu’un test U. P. P.(α) est sans biais de niveau α. Il vient que tout test U. P. P.(α)
+     est aussi UMPU(α).
+  6. Soit ϕ une fonction critique. En observant que θ 7→ βϕ (θ) est dérivable sur R, montrer
+     que si βϕ (θ0 ) ≤ α et βϕ ≥ α dans un voisinage de θ0 , alors
+
+                                       βϕ (θ0 ) = α,        βϕ′ (θ0 ) = 0.                       (2)
+
+     Il vient qu’un test sans biais de niveau α pour le problème (1) vérifie ces conditions.
+
+
+                                                                                              Page 2
+Ecole Polytechnique, promotion 2025                                          PC-5 Cours APM 41033 EP
+
+
+   7. Montrer que la fonction puissance du test ϕ⋆,3 vérifie βϕ⋆,3 (θ) ≥ α pour tout θ ∈ R, et
+      par suite les conditions (2). ϕ⋆,3 est donc sans biais de niveau α.
+   8. L’objectif de cette question est de montrer que le test ϕ⋆,3 est UMPU(α) pour le
+      problème (1). Pour ce faire, on pose
+
+                    f1 (z) := pnθ0 (z),        f2 (z) := ∂θ pnθ (z)|θ=θ0 ,       f3,θ (z) := pnθ (z);
+
+      pnθ désigne la densité de l’observation Z dans le modèle pθ .
+       (a) Montrer que pour tout θ ̸= θ0 , et κ1 , κ2 ∈ R, nous avons
+                                                 
+                       nf3,θ (z)           f2 (z)
+                  z∈R :          > κ1 + κ2
+                         f1 (z)            f1 (z)
+                      (                           n
+                                                              !
+                                                 X                                 
+                    = z ∈ Rn : exp (θ − θ0 )        (xi − θ0 ) > exp n(θ − θ0 )2 /2 κ1
+                                                         i=1
+                                                                                         n
+                                                                                                      )
+                                                        exp n(θ − θ0 )2 /2                X
+                                                      +                      κ2 (θ − θ0 )   (xi − θ0 ) .
+                                                             θ − θ0
+                                                                                               i=1
+
+       (b) En déduire que pour tout θ ̸= θ0 , il existe κ1,θ et κ2,θ tels que :
+
+                            {z, ϕ⋆,3 (z) = 1} = {z : f3,θ (z) > κ1,θ f1 (z) + κ2,θ f2 (z)} .
+
+       (c) Pour toute fonction critique ϕ : Rn → [0, 1] et tout θ ̸= θ0 , on définit
+                                  Z
+                        Iθ (ϕ) :=     ϕ(z) (f3,θ (z) − κ1,θ f1 (z) − κ2,θ f2 (z)) dz.
+                                          Rn
+
+           Montrer que pour tout θ ̸= θ0 , ϕ⋆,3 ∈ arg maxϕ Iθ (ϕ). On s’inspirera de la démonstration
+           du théorème de Neyman-Pearson pour l’optimalité du test du rapport de vraisem-
+           blance dans le cas de deux hypothèses simples.
+       (d) En déduire que pour toute fonction critique ϕ vérifiant les conditions (2), on a
+           pour tout θ ̸= θ0 , βϕ⋆,3 (θ) ≥ βϕ (θ).
+       (e) Conclure.
+Exercice 3 ((⋆⋆⋆)). Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle (R+ , B(R+ ), (Pθ )θ∈Θ ),
+où Θ = R et, pour tout θ ∈ Θ, Pθ est la loi de densité
+
+                                      p(θ, x) = e−(x−θ) 1]θ,∞[ (x) .
+
+Pour (x1 , . . . , xn ) ∈ Rn , on pose x1:n = min(x1 , . . . , xn ). Soit θ0 < θ1 . Pour α ∈ ]0, 1[, on
+considère les hypothèses
+
+                                 H0 : θ = θ 0 ,      contre     H1 : θ = θ 1 .
+
+   1. Montrer que le rapport de vraisemblance est donné, pour tout (x1 , . . . , xn ) tel que
+      x1:n > θ0 , par
+                                                 (
+                      p(θ1 ; x1 , . . . , xn )      en(θ1 −θ0 ) si x1:n > θ1 ,
+                                               =
+                      p(θ0 ; x1 , . . . , xn )     0            si θ0 < x1:n ≤ θ1 .
+
+                                                                                                        Page 3
+Ecole Polytechnique, promotion 2025                                   PC-5 Cours APM 41033 EP
+
+
+   2. Montrer qu’on peut choisir la fonction critique d’un test U. P. P.(α) de l’une des deux
+      formes suivantes
+                               (                                               (
+                                 1 x1:n > θ1 ,                                   γ x1:n > θ1 ,
+       ϕ1 (x1 , . . . , xn ) =                      ou ϕ2 (x1 , . . . , xn ) =
+                                 γ θ0 < x1:n ≤ θ1 ,                              0 θ0 < x1:n ≤ θ1 ,
+
+      où γ est une constante de [0, 1[.
+   3. Montrer que si en(θ0 −θ1 ) ≤ α, on peut prendre ϕ1 comme fonction critique. On déterminera
+      la constante γ dans ce cas.
+   4. Déterminer la fonction critique du test pour en(θ0 −θ1 ) > α.
+Exercice 4 ((⋆⋆) Test du rapport de vraisemblance généralisée pour modèle de
+régression). Le test du rapport de vraisemblances généralisé est basé sur l’extension suivante
+du rapport de vraisemblance. Soit L(θ, Z) la vraisemblance de l’observation Z sous la loi Pθ .
+Le rapport de vraisemblance généralisé est défini par
+                                             supθ∈Θ0 L(θ, Z)
+                                    Λ(Z) =                   .
+                                             supθ∈Θ L(θ, Z)
+Le test rejette H0 : θ ∈ Θ0 si Λ(Z) ⩽ cα , cα étant choisi naturellement inférieur à 1 et de
+façon à ce que le niveau du test soit inférieur à α. On peut étudier ce test lorsque n → ∞
+dans les modèles réguliers.
+     Soient n et p deux entiers tels que p ⩽ n et soit X une matrice déterministe fixée à n lignes
+et p colonnes, de rang plein. Soit Y = (Y1 , . . . , Yn ) une observation du modèle statistique
+
+                          (Rn , B(Rn ), {N(Xβ, σ 2 I), β ∈ Rp , σ 2 > 0}) .
+
+Soit 0 ⩽ r < p. Dans cet exercice, on étudie le test du rapport de vraisemblance généralisé
+dans le cas où H0 : βr+1 = . . . = βp = 0.
+   1. Déterminer l’estimateur du maximum de vraisemblance θ̂ de θ = (β, σ 2 ) et en déduire
+      que
+                                                   1
+                                  sup L(θ, Y) =      n/2 σ
+                                                           e−n/2 .
+                                  θ∈Θ           (2π)     b
+   2. Déterminer l’estimateur du maximum de vraisemblance θ̂0 de θ = (β, σ 2 ) sous la
+      contrainte que βr+1 = . . . = βp = 0. En posant
+
+                              M = X(X T X)−1 X T − X0 (X0T X0 )−1 X0T ,
+
+      où X0 est la matrice extraite de X, de taille n × r contenant les r premières colonnes
+      de X, en déduire que
+                                                         1
+                          sup L(θ, Y) =                          n/2     e−n/2 .
+                          θ∈Θ0                     b2 + n1 YT MY
+                                           (2π)n/2 σ
+
+   3. En déduire que le test du rapport de vraisemblance généralisé rejette H0 si
+                                             n − p YT MY
+                                       F =               > kα ,
+                                             p − r nσ̂ 2
+      pour un certain seuil kα .
+
+                                                                                             Page 4
+Ecole Polytechnique, promotion 2025                                        PC-5 Cours APM 41033 EP
+
+
+   4. Montrer que, pour tout θ ∈ Θ0 , F suit, sous Pθ , une loi de Fisher dont on précisera les
+      paramètres.
+Soit maintenant Y une observation du modèle statististique
+
+                       (Rn , B(Rn ), {⊗ri=1 N(µi , σ 2 )⊗ni , µ1 , . . . , µr ∈ R, σ 2 > 0}) .
+                              P
+Dans cette écriture n = ri=1 ni . Pour tout θ = (µ1 , . . . , µr , σ 2 ) ∈ Θ = Rr × R∗+ , sous Pθ , Y
+est un vecteur Gaussien regroupant les résultats de r expériences Yi = (Xi,1 , . . . , Xi,ni ), i ∈
+{1, . . . , r}. Pour tout i, (Xi,1 , . . . , Xi,ni ) sont ni variables aléatoires Gaussiennes indépendantes
+de mêmes loi N(µi , σ 2 ). De plus, Y1 , . . . Yr sont indépendants et les variances des variables Xi,j
+sont toutes égales.
+   5. Utiliser les résultats précédents pour tester H0 : µ1 = . . . = µr .
+Exercice 5 ((⋆⋆) ). Soient p0 et p1 deux densités par rapport à une mesure σ-finie µ sur
+un espace mesurable (Z, Z). On considère le test
+
+                                H 0 : p = p0 ,    contre    H 1 : p = p1 .                               (3)
+
+Pour α ∈ ]0, 1[, on introduit la fonction critique ϕα donnée par
+                                         
+                                         
+                                         1     p1 (z) > cα p0 (z) ,
+                                ϕα (z) = γα p1 (z) = cα p0 (z) ,
+                                         
+                                         
+                                           0    p1 (z) < cα p0 (z) ,
+
+où γα ∈ [0, 1] et cα ≥ 0 sont solutions de l’équation
+
+                  E0 [ϕα (Z)] = P0 (p1 (Z) > cp0 (Z)) + γP0 (p1 (Z) = cp0 (Z)) = α .
+
+On rappelle que ϕα est U. P. P.(α) pour le test (3). L’objectif de l’exercice est de démontrer
+en relative généralité des propriétés de monotonie en les niveaux des différentes quantités
+induites dans la définition de ϕα .
+   1. Montrer que pour 0 < α1 < α2 < 1, cα1 ≥ cα2 .
+   2. Montrer que pour 0 < α1 < α2 < 1,
+
+                                     E1 [1 − ϕα1 (Z)] ≥ E1 [1 − ϕα2 (Z)] .                               (4)
+
+   3. Montrer que si on a égalité dans (4) alors il existe un test de taille strictement inférieure
+      à α2 et de puissance égale à 1 [plus difficile].
+Exercice 6 ((⋆⋆) Rapport de vraisemblance à valeur discrète). Dans des applica-
+tions de fiabilité ou sondage, au lieu de choisir a priori la taille d’un échantillon, on ef-
+fectue l’expérience pendant un temps aléatoire jusqu’à obtenir n réponses positives. Plus
+précisément, soit {Xk , k ∈ N} une suite de variables aléatoires indépendantes distribuées
+suivant une loi de Bernoulli de paramètre θ ∈ Θ = ]0, 1[. Notons T0 = 0 et définissons
+récursivement les instants
+                                 Ti = inf{k > Ti−1 , Xk = 1} ,
+c’est-à-dire l’instant où l’on tire le i-ième objet défectueux. On pose
+
+                                           Yi = Ti − Ti−1 − 1 .
+
+                                                                                                     Page 5
+Ecole Polytechnique, promotion 2025                                   PC-5 Cours APM 41033 EP
+
+
+  1. Montrer que les variables aléatoires Y1 , . . . , Yn sont indépendantes, distribuées suivant
+     une loi géométrique de paramètre θ,
+
+                                  Pθ (Yi = k) = θ(1 − θ)k ,      k∈N.
+
+Soit θ0 ∈ Θ. On considère le test
+
+                             H0 : θ ≤ θ 0 ,   contre     H1 : θ > θ 0 .                         (5)
+
+  2. Soit Z = (Y1 , · · · , Yn ) le vecteur d’observation. Montrer que P
+                                                                       la famille (Pθ )θ∈Θ est à
+     rapport de vraisemblance monotone en la statistique T (Z) := ni=1 Yi .
+  3. Montrer que pour tout θ ∈ Θ,
+                                                         
+                                                     n+k−1 n
+                              Pθ (T (Z) = k) =              θ (1 − θ)k .
+                                                       k
+
+  4. Déterminer la fonction critique d’un test U. P. P.(α) pour α ∈ ]0, 1[.
+
+
+
+
+                                                                                            Page 6
+

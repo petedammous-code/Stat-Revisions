@@ -1,0 +1,1197 @@
+Chapitre 9
+
+Approche discriminative et
+minimisation du risque empirique
+
+   Le chapitre 8 a posé le cadre de l’apprentissage supervisé et a décrit une pre-
+   mière façon de construire une règle de prédiction : modéliser la loi du couple
+   (X, Y ), estimer les paramètres du modèle, puis substituer l’estimateur dans
+   l’expression de la règle de Bayes. On verra dans ce chapitre une approche
+   différente.
+   Ce chapitre étudie la seconde voie, dite discriminative, qui est l’approche prin-
+   cipale de l’apprentissage statistique. On ne modélise plus la loi des données :
+   on choisit une classe C de règles et l’on retient celle qui commet, en moyenne,
+   la plus petite perte sur l’ensemble d’apprentissage. C’est la minimisation du
+   risque empirique. On en donne la définition et des exemples, puis on étudie
+   les compromis qu’elle entraîne : la décomposition de l’excès de risque en une
+   erreur d’approximation et une erreur d’estimation, le sur-apprentissage, et le
+   théorème no free lunch, qui interdit toute garantie sans hypothèse.
+   On montre ensuite comment contrôler l’erreur d’estimation. Elle est majorée
+   par les déviations uniformes du risque empirique autour du risque sur la classe,
+   et ces déviations se contrôlent, pour une classe finie et la perte 0–1, par une
+   inégalité de concentration, l’inégalité de Hoeffding, combinée à une borne de
+   l’union. p
+            On obtient ainsi des bornes en grande probabilité et en espérance,
+   d’ordre log |C| /n. Enfin, comme la minimisation du risque empirique pour
+   la perte 0–1 est un problème combinatoire, on la remplace par la minimisation
+   d’un risque convexifié, ce qui soulève les questions étudiées au chapitre suivant.
+
+
+De la modélisation à la minimisation du risque empirique
+    Dans l’approche par modélisation, la règle de décision est un sous-produit de l’estimation : on
+estime un paramètre, et on en déduit la règle par substitution (plug-in). Le chapitre 8 a cependant
+montré que, pour le modèle logistique et pour le modèle linéaire gaussien, l’estimateur du maximum
+de vraisemblance minimise une moyenne empirique de pertes, la perte logistique dans le premier
+cas, la perte quadratique dans le second. La règle obtenue peut donc se décrire sans référence
+au modèle : c’est la règle d’une classe de fonctions linéaires qui minimise une perte moyenne sur
+l’ensemble d’apprentissage.
+    L’approche discriminative prend ce constat pour point de départ. On renonce à décrire la loi
+du couple (X, Y ), on se donne une perte et une classe de règles, et l’on cherche dans cette classe
+une règle qui soit bonne sur les données. Le choix de la classe joue alors le rôle que jouait le choix
+du modèle : il porte l’hypothèse qui rend l’apprentissage possible.
+
+                                                  5
+6                                                    CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+Intuition. Le passage d’une approche à l’autre déplace l’hypothèse. En modélisation, on suppose que la
+loi des données appartient à une famille paramétrique, et l’on obtient des garanties sous cette loi. En
+minimisation du risque empirique, on ne suppose rien sur la loi, mais on ne compare plus la règle apprise
+qu’aux règles de la classe ; l’écart à la règle de Bayes dépend alors de la qualité de la classe, sur laquelle
+les données ne disent rien.
+1. LES FONDAMENTAUX                                                                                      7
+
+1      Les fondamentaux
+1.1     Rappel du cadre et motivation
+    On rappelle le cadre de l’apprentissage supervisé du chapitre 8, puis l’approche par modélisa-
+tion, dont les limites motivent ce chapitre.
+
+Le cadre de l’apprentissage supervisé
+   On observe un phénomène décrit par un couple aléatoire (X, Y ) ∼ P, à valeurs dans X × Y
+(cadre 1.1 du chapitre 8), et l’on veut prédire Y à partir de X. Les objets sont les suivants.
+    — Une règle de décision, ou prédicteur, ou classifieur, est une fonction mesurable g : X → Y
+      (définition 1.1).
+    — La perte ℓ(Y, g(X)) mesure la qualité de la prévision g(X) de la réponse Y (définition 1.2).
+    — Le risque, ou risque de généralisation, est la perte moyenne R(g) = E[ℓ(Y, g(X))] (défini-
+      tion 1.3).
+Le prédicteur bayésien g ⋆ vérifie R(g ⋆ ) ≤ R(g) pour toute règle g ; on note R⋆ = R(g ⋆ ) le risque
+bayésien (définition 1.4). Le chapitre 8 l’a calculé dans les deux cas usuels : c’est l’espérance
+conditionnelle E [ Y | X] en régression pour la perte quadratique (théorème 1.1), et le classifieur
+2 1{η(X)≥1/2} − 1 en classification binaire pour la perte 0–1 (théorème 1.2).
+
+
+
+
+Figure 1 – Deux ensembles d’apprentissage avec un attribut réel. À gauche, un problème de
+régression : la réponse est réelle. À droite, un problème de classification binaire : la réponse vaut
+−1 ou 1.
+
+    Le prédicteur bayésien dépend de P, qui est inconnue. On observe un ensemble d’apprentissage
+Dn = {(X1 , Y1 ), . . . , (Xn , Yn )}, formé de n couples indépendants de loi P, et l’on construit à partir
+de lui une règle gbn . L’objectif est de contrôler l’excès de risque de généralisation
+
+                          E(b         gn ) − R⋆ = E [ ℓ(Y, gbn (X)) | Dn ] − R⋆ ,
+                            gn ) := R(b
+
+où (X, Y ) est un couple de loi P indépendant de Dn . Comme au chapitre 8 (Section 4.4), R(b gn ) est
+une variable aléatoire, fonction de Dn : c’est le risque de la règle apprise, évalué sur un exemple
+nouveau. D’après la proposition 2.5, il s’obtient en calculant R(g) pour une règle g fixée, puis en
+remplaçant g par gbn .
+
+L’approche par modélisation
+     La première approche, étudiée au chapitre 8 (Section 1.3), procède en quatre étapes.
+8                                                     CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     Méthode 1.1: Construction d’un estimateur par modélisation statistique et substitution
+      1. On modélise la loi de (X, Y ) par un modèle paramétrique {Pθ : θ ∈ Θ}.
+      2. On calcule le prédicteur de Bayes gθ⋆ sous chacune des lois Pθ .
+      3. On estime θ par θ̂n .
+      4. On choisit la règle gbn = gθ̂⋆ (substitution, ou plug-in).
+                                     n
+
+
+
+   Trois exemples ont été traités. L’analyse discriminante linéaire et quadratique (Section 1.3)
+modélise X sachant Y = i par une loi N (µi , Σi ) et Y par une loi de Bernoulli ; la règle de
+décision est linéaire ou quadratique, et l’estimateur typique est l’estimateur du maximum de
+vraisemblance. Le modèle logistique (Section 1.3) pose Pθ (Y = 1 | X) = sigm(θ⊤ X) et laisse la loi
+de X quelconque ; la règle est linéaire, gbn (X) = 2 1{θ̂⊤ X≥0} − 1, et l’estimateur du maximum de
+                                                         n
+vraisemblance, conditionnel aux Xi , est
+                                                 n
+                                          1X                         
+                            θ̂n = arg min       log 1 + exp −Yi θ⊤ Xi .
+                                   θ∈R d  n i=1
+
+Le modèle linéaire gaussien homoscédastique (Section 1.3) pose L(Y | X) = N (θ⊤ X, σ 2 ) ; le
+prédicteur de Bayes est gθ⋆ (X) = θ⊤ X, l’estimateur du maximum de vraisemblance est celui des
+moindres carrés,
+                                                n
+                                              1X ⊤            2
+                                θ̂n = arg min       θ Xi − Y i ,
+                                       θ∈Rd n i=1
+
+et la règle retenue est gbn (X) = θ̂n⊤ X. Utiliser ce modèle revient à utiliser la perte des moindres
+carrés et une classe de fonctions linéaires. D’autres méthodes relèvent de la même démarche, avec
+des modèles non paramétriques et des règles non linéaires : le classifieur bayésien naïf et la règle
+des k plus proches voisins.
+    Le résultat typique de cette approche est la proposition 1.5, établie à l’exercice 2 (PC8) : sous
+Pn,θ⋆ , si θ̂n est consistant et sous des conditions de continuité, l’excès de risque moyen tend vers
+zéro,                          h  i             h                 i
+                         En,θ⋆ E gθ̂⋆    = En,θ⋆ R gθ̂⋆ − R (gθ⋆⋆ ) −−−−→ 0 .
+                                    n                       n               n→∞
+
+Ce résultat ne tient que sous le modèle : c’est une approche de type statistique, qui utilise un
+modèle statistique et obtient des résultats pour ce modèle. Elle laisse entier un problème, celui du
+choix du modèle statistique.
+
+1.2      Approche par minimisation du risque empirique
+   L’idée de l’approche discriminative est de chercher un prédicteur qui soit bon sur l’ensemble
+d’apprentissage {(Xi , Yi )}1≤i≤n . Le risque d’une règle n’est pas calculable, puisque P est inconnue,
+mais on peut en former une estimation à partir des données, et la minimiser.
+
+Le minimiseur du risque empirique
+
+
+     Définition 1.1: Risque empirique et minimiseur du risque empirique
+    Soit ℓ une fonction de perte et C une classe de règles de décision g : X → Y. Le risque empirique
+    d’une règle g sur l’ensemble d’apprentissage Dn est
+                                                     Xn
+                                        b n (g) := 1
+                                        R                ℓ(Yi , g(Xi )) .
+                                                   n i=1
+1. LES FONDAMENTAUX                                                                                           9
+
+
+                                                                ∗
+  Un minimiseur du risque empirique (MRE) sur C est une règle ĝn,C ∈ C, construite à partir
+  de Dn , telle que
+                b n (ĝ ∗ ) = min R
+                R                 b n (g) ,     ce que l’on écrit      ∗
+                                                                     ĝn,C           b n (g) .
+                                                                           = arg min R
+                       n,C
+                              g∈C                                               g∈C
+
+
+    Le minimum n’est pas toujours atteint, et le minimiseur n’est pas toujours unique ; lorsqu’il en
+existe plusieurs, on en considère un. On suppose dans tout le chapitre qu’un minimiseur existe et
+                                                                            ∗
+qu’il peut être choisi de façon mesurable en les données, de sorte que ĝn,C    (x) = g(x; Dn ) définit
+une règle apprise au sens du chapitre 8. Ces deux hypothèses sont satisfaites lorsque la classe C
+est finie, ce qui sera le cas de la Section 1.3.
+    On peut espérer que cette démarche soit raisonnable, pour la raison suivante. Pour toute règle
+g fixée, comme R(g) = E[ℓ(Y, g(X))] et que les couples (Xi , Yi ) ont la loi P,
+   — R b n (g) est un estimateur sans biais de R(g) : E[R
+                                                        b n (g)] = R(g), par linéarité de l’espérance ;
+                                                                                             P−prob
+  — la loi des grands nombres (chapitre 7, théorème 2.1) montre que R  b n (g) −→ R(g) dès
+    que R(g) < ∞, les variables ℓ(Yi , g(Xi )) étant indépendantes, de même loi, positives et
+    intégrables.
+                                                                             ∗
+Intuition. L’hypothèse « g fixée » est essentielle. Le minimiseur ĝn,C           est choisi au vu des données,
+et son risque empirique n’est pas une moyenne de variables indépendantes de même loi : chacun des
+                 ∗
+termes ℓ(Yi , ĝn,C  (Xi )) dépend de tout l’échantillon. Les deux propriétés ci-dessus ne s’appliquent donc pas
+àRb n (ĝn,C ), et toute la suite du chapitre consiste à mesurer ce que l’on perd en passant d’une règle fixée à
+         ∗
+
+une règle choisie dans C à partir des données.
+
+
+Le choix de la classe. Différentes classes donnent différents estimateurs, et l’on doit restreindre
+la classe de fonctions. Si l’on prend pour C l’ensemble YX de toutes les règles, le risque empirique
+se minimise sans rien apprendre, comme le montre l’exemple suivant.
+
+   Exemple 1.1: Une règle qui ne généralise pas
+  On se place en régression, Y = R, avec la perte quadratique, et l’on suppose que la loi de X
+  n’a pas d’atome : P(X = x) = 0 pour tout x ∈ X. Les attributs X1 , . . . , Xn sont alors presque
+  sûrement deux à deux distincts, et la règle
+                                         (
+                               ∗           Yi si x = Xi ,
+                             ĝn,C (x) =
+                                           0 si x ∈/ {X1 , . . . , Xn } ,
+
+          b n (ĝ ∗ ) = 0 : elle minimise le risque empirique sur C = RX . Pourtant, si (X, Y ) est
+  vérifie R      n,C
+  un couple de loi P indépendant de Dn , l’événement {X ∈ {X1 , . . . , Xn }} est de probabilité
+                                                                                       ∗
+  nulle, conditionnellement à Dn , puisque la loi de X n’a pas d’atome. On a donc ĝn,C   (X) = 0
+  presque sûrement, et
+                                  ∗
+                                                  ∗
+                                                               
+                              R(ĝn,C ) = E (Y − ĝn,C (X))2 Dn = E[Y 2 ] ,
+
+                                                                                 b n (ĝ ∗ ) ≪ R(ĝ ∗ ).
+  qui est le risque de la règle constante nulle. Cette règle ne généralise pas : R      n,C        n,C
+  C’est le sur-apprentissage. Le chapitre 8 (Section 4.3) en donne la version en classification.
+
+
+
+Choix de la classe : exemples en régression, perte quadratique
+    On compare, sur un même ensemble d’apprentissage en régression avec un attribut réel, les
+minimiseurs du risque empirique pour la perte quadratique dans quatre classes de complexité
+croissante : les fonctions affines, les polynômes de degré au plus 3, notés R3 [X], les polynômes de
+10                                                   CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+
+
+
+Figure 2 – Un petit ensemble d’apprentissage en régression. La règle de l’exemple 1.1 vaut Yi
+en chacun des attributs observés et 0 partout ailleurs : son risque empirique est nul, et elle ne dit
+rien des attributs qui n’ont pas été observés.
+
+
+degré au plus 20, notés R20 [X], et un réseau de neurones dense. On note d le nombre de paramètres
+de la classe, c’est-à-dire sa dimension lorsqu’elle est un espace vectoriel.
+
+
+
+
+Figure 3 – Minimiseurs du risque empirique pour la perte quadratique (en orange) sur un même
+ensemble d’apprentissage (points rouges), dans quatre classes : fonctions affines, R3 [X], R20 [X] et
+réseau de neurones dense, de gauche à droite. La courbe bleue est la fonction de régression qui a
+servi à simuler les données.
+
+
+                 C              fonctions affines         R3 [X]               R20 [X]
+                 d                      2                    4                   21
+                 b n (ĝ ∗ )
+                 R                   grand            petit, non nul             nul
+                        n,C
+                     ∗
+                 R(ĝn,C )           grand                 petit             très grand
+                 problème      sous-apprentissage         aucun          sur-apprentissage
+
+    Avec les fonctions affines, la classe est trop pauvre pour approcher la fonction de régression :
+le risque empirique et le risque sont tous deux grands, c’est le sous-apprentissage. Avec R20 [X], la
+classe contient un polynôme qui passe par tous les points de l’ensemble d’apprentissage, de sorte
+que le risque empirique du minimiseur est nul ; entre les points et près des bords de l’intervalle,
+ce polynôme oscille fortement, et son risque est très grand : c’est le sur-apprentissage. La classe
+R3 [X] réalise un compromis. Le réseau de neurones dense de la dernière figure passe lui aussi par
+les points de l’ensemble d’apprentissage, en les reliant presque par des segments. Le cours donne
+un carnet de démonstration qui permet de refaire ces ajustements (démonstration Colab).
+Intuition. Le tableau illustre le compromis de la Section 1.2. Plus la classe est riche, mieux elle peut
+suivre les données, et plus le minimiseur du risque empirique risque de suivre le bruit plutôt que la fonction
+1. LES FONDAMENTAUX                                                                                         11
+
+de régression. Ce n’est pas un énoncé, mais une tendance : on verra que, pour des classes finies, l’écart
+entre risque et risque empirique est contrôlé par une quantité qui croît avec la taille de la classe et décroît
+avec n.
+
+
+Choix de la classe en pratique : validation et validation croisée
+    En pratique, on ne connaît pas la fonction de régression et l’on ne peut pas calculer le risque.
+Pour choisir la complexité de C et éviter le sur-apprentissage, on réserve une partie des données à
+l’estimation du risque.
+
+   Méthode 1.2: Sélection par validation
+  On dispose de classes candidates C1 , . . . , CK .
+     — On découpe l’ensemble d’apprentissage Dn en deux parties : un ensemble d’ajustement
+       Dfit , qui sert à ajuster les règles, et un ensemble de validation Dval , qui sert à estimer
+       leur risque de généralisation.
+                                                       ∗
+     — Pour chaque classe Ci , on construit la règle ĝn,C i
+                                                             qui minimise le risque empirique sur
+       Dfit , puis on évalue
+                                                     1           X                                
+                              b (val) (ĝ ∗ ) :=
+                              R                                                        ∗
+                                                                              ℓ yi , ĝn,C   (xi ) .
+                                n        n,Ci
+                                                   |Dval |                                 i
+                                                             (xi ,yi )∈Dval
+
+
+     — On sélectionne la classe, et la règle associée, qui minimise ce risque de validation.
+
+    La validation croisée à k blocs (k-fold cross-validation) répète cette procédure k fois en chan-
+geant les rôles des parties. On partage Dn en k blocs ; pour chaque bloc, on ajuste les règles sur
+les k − 1 autres blocs et l’on calcule leur risque empirique sur le bloc laissé de côté. On retient la
+moyenne de ces k risques de validation pour faire la sélection.
+    L’exercice 1 (PC9) justifie cette démarche pour la perte 0–1. Si gn est une règle construite sur un
+ensemble d’apprentissage et si l’on dispose de m couples
+                                                   h      de validation
+                                                              i         indépendants de cet ensemble
+                                    bn,m vérifie E R
+et de loi P, l’erreur de validation R                bn,m Dn = R(gn ), et P(|R   bn,m − R(gn )| ≥ ε) ≤
+       2
+2e−2mε pour tout ε > 0, par l’inégalité de Hoeffding de la Section 1.3.
+Intuition. L’ensemble de validation joue, pour la règle ajustée, le rôle que joue un échantillon frais
+pour une règle fixée : comme la règle a été choisie sans lui, son risque de validation est une moyenne
+de variables indépendantes de même loi, conditionnellement à la règle, et il estime sans biais le risque.
+Le risque empirique calculé sur les données d’ajustement n’a pas cette propriété, comme le montrera la
+proposition 1.1. La validation croisée moyenne ces estimations sur plusieurs découpages pour en réduire la
+variabilité ; c’est une heuristique, dont l’analyse sort du cadre du cours.
+
+
+Décomposition de l’excès de risque pour une classe
+    Le choix de la classe gouverne deux sources d’erreur, que la décomposition suivante sépare. Soit
+gC∗ une règle de C telle que R(gC∗ ) = inf g∈C R(g), appelée oracle de la classe, et soit ĝn,C ∈ C un
+estimateur, c’est-à-dire une règle de C construite à partir de Dn . L’excès de risque se décompose
+en
+                 E(ĝn,C ) = R(ĝn,C ) − R⋆ = R(ĝn,C ) − R(gC∗ ) + R(g ∗ ) − R⋆     .              (1)
+                                              |       {z       }    | C{z      }
+                                                   erreur d’estimation          erreur d’approximation
+
+            C
+On note Eest  (ĝn,C ) := R(ĝn,C ) − R(gC∗ ) l’erreur d’estimation. Les deux termes sont positifs : le
+premier parce que ĝn,C appartient à C, le second par définition du risque bayésien. Si l’infimum
+n’est pas atteint, on remplace R(gC∗ ) par inf g∈C R(g) dans toute la suite ; seule la valeur de l’infimum
+intervient.
+12                                                   CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+
+
+
+Figure 4 – La règle de Bayes g ⋆ , notée g Bayes sur la figure, l’oracle gC∗ de la classe C et un
+estimateur ĝn,C de cette classe. La flèche bleue représente l’erreur d’approximation, la flèche verte
+l’erreur d’estimation.
+
+
+     — L’erreur d’estimation reflète notre connaissance imparfaite de la loi de (X, Y ) : elle provient
+       de ce que l’on choisit la règle dans C au vu de n observations seulement.
+     — L’erreur d’approximation dépend du choix de C et de la loi P, mais pas des données.
+
+     Comment ces deux erreurs varient-elles avec la classe et avec n ? Si C ⊂ C ′ , alors inf g∈C ′ R(g) ≤
+inf g∈C R(g) : l’erreur d’approximation décroît, au sens large, quand la classe grandit, et elle ne
+dépend pas de n. L’erreur d’estimation, au contraire, tend à croître quand la classe grandit et à
+décroître quand n grandit ; ce second point n’est pas un énoncé général, mais il sera établi, pour les
+minimiseurs du risque empirique sur une classe finie, par les bornes de la Section 1.3, qui croissent
+avec |C| et décroissent avec n.
+
+
+                                    erreur d’approximation     erreur d’estimation
+                       C grandit             décroît              tend à croître
+                       n grandit           inchangée             tend à décroître
+
+
+   La somme des deux erreurs passe donc, en général, par un minimum pour une classe de com-
+plexité intermédiaire : c’est la figure 9 du chapitre 8, où les classes trop pauvres sont du côté
+du sous-apprentissage et les classes trop riches du côté du sur-apprentissage. La Section 4.6 du
+chapitre 8 présente la même décomposition pour le risque moyen.
+
+
+Sur-apprentissage
+
+    On peut maintenant préciser ce que l’on entend par sur-apprentissage. On compare quatre
+                                                    ∗
+situations pour le minimiseur du risque empirique ĝn,C et l’oracle gC∗ :
+
+                               ∗
+                       (a) R(ĝn,C   b n (ĝn,C
+                                   )≪R      ∗
+                                                ),          b n (ĝn,C
+                                                        (b) R      ∗           ∗
+                                                                       ) ≪ R(ĝn,C ),
+                       (c) R(gC∗ ) ≪ R(ĝn,C
+                                         ∗
+                                             ),             b n (gC∗ ) ≪ R(gC∗ ) .
+                                                        (d) R
+
+Il y a sur-apprentissage dans la situation (b) : la règle apprise est bien meilleure sur les données qui
+ont servi à la choisir que sur des données nouvelles. La proposition suivante montre que l’inégalité
+va toujours dans ce sens en moyenne, ce qui écarte (a), et que le risque empirique de l’oracle,
+qui est une règle fixée, est un estimateur sans biais de son risque, ce qui écarte (d) en moyenne.
+La situation (c) décrit une erreur d’estimation grande, qui peut accompagner le sur-apprentissage
+mais qui fait intervenir le risque de l’oracle, inaccessible.
+1. LES FONDAMENTAUX                                                                                          13
+
+
+
+   Proposition 1.1: Biais optimiste du risque empirique du minimiseur
+  On suppose que la perte ℓ est positive et que R(g) < ∞ pour tout g ∈ C. Alors
+                             h            i                      
+                           E R b n (ĝ ∗ ) ≤ inf R(g) ≤ E R(ĝ ∗ ) .
+                                      n,C                     n,C
+                                                   g∈C
+
+
+
+                                           b n (g)] = R(g).
+  De plus, pour toute règle g ∈ C fixée, E[R
+
+
+
+   Démonstration
+  La dernière affirmation est la linéarité de l’espérance. Pour tout g ∈ C, on a Rb n (ĝ ∗ ) ≤ R
+                                                                                                b n (g)
+                                                                                         n,C
+  par définition du minimiseur, donc E[R   b n (ĝ )] ≤ E[R
+                                                  ∗       b n (g)] = R(g) ; on passe à l’infimum en
+                                                  n,C
+                                                                ∗
+  g. D’autre part, pour chaque réalisation de Dn , la règle ĝn,C   appartient à C, donc son risque,
+  calculé à Dn fixé comme le permet la proposition 2.5, est au moins égal à inf g∈C R(g) ; on
+  prend l’espérance.                                                                                 □
+
+
+Intuition. Le risque empirique du minimiseur est biaisé de façon optimiste : en choisissant la meilleure
+règle sur les données, on choisit aussi la règle que le hasard de l’échantillon a le plus favorisée. Plus la
+classe est riche, plus ce hasard a de règles parmi lesquelles favoriser l’une d’elles, et plus l’écart entre
+b n (ĝn,C
+R      ∗            ∗
+           ) et R(ĝn,C ) risque d’être grand. Le théorème 1.2 quantifie cet écart.
+
+
+Le théorème no free lunch
+   Peut-on espérer une règle d’apprentissage dont l’excès de risque soit petit pour toutes les lois ?
+Le théorème suivant répond par la négative, pour la perte 0–1, ℓ(y, y ′ ) = 1{y̸=y′ } .
+
+
+   Théorème 1.1: No free lunch
+  On se place en classification binaire, Y = {−1, 1}, avec la perte 0–1, et l’on suppose que
+  l’ensemble des attributs X est infini et muni d’une tribu qui contient les singletons (c’est le cas
+  de X = Rd ). Soit gbn (·) = gb(· ; (X1 , Y1 ), . . . , (Xn , Yn )) une règle de classification, c’est-à-dire
+  une fonction mesurable de (x, Dn ) à valeurs dans {−1, 1}. Pour tout n ∈ N∗ et tout ε > 0, il
+  existe une loi P sur X × Y telle que R⋆ = 0 et
+                                                                  1
+                                      E [E(b            gn )] ≥
+                                           gn )] = E [R(b           −ε,
+                                                                  2
+  où l’espérance porte sur l’ensemble d’apprentissage Dn , formé de n couples indépendants de
+  loi P.
+
+
+
+    La démonstration est donnée dans les compléments (Section 4.1), et l’exercice 6 (PC9) en est
+une version guidée. La loi P dépend de n et de la règle : pour chaque taille d’échantillon et chaque
+règle, on peut trouver un problème où la règle n’apprend rien. Le risque moyen 1/2 est celui d’une
+règle qui tire chaque prédiction à pile ou face.
+Intuition. La loi construite dans la démonstration répartit l’attribut uniformément sur un très grand
+nombre K de points et attache à chacun un label déterministe mais sans aucune régularité d’un point
+à l’autre. Avec n observations, on ne voit qu’au plus n de ces points ; un nouveau point est, avec une
+probabilité proche de un si K ≫ n, un point jamais observé, et son label n’est pas relié à ceux des points
+14                                                     CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+observés. Aucune règle ne peut faire mieux que deviner, quelle que soit sa construction. L’argument est
+rendu rigoureux en moyennant sur tous les étiquetages possibles.
+
+
+Interprétation du no free lunch. Il est impossible d’obtenir un résultat sur l’excès de risque
+  gn ) − R⋆ sans hypothèse sur la distribution P. Il faut faire une hypothèse ou changer d’objectif.
+R(b
+Deux approches se présentent.
+   1. L’approche par modélisation fait une hypothèse sur la distribution P. On contraint la
+      loi du couple (X, Y ) à un modèle statistique {Pθ : θ ∈ Θ}, on estime θ, on obtient gbn par
+      substitution et l’on contrôle E(b  gn ) = R(b  gn ) − R⋆ sous Pθ . L’hypothèse, ou l’espoir, est
+      que l’erreur de modélisation soit petite. Relèvent de cette approche l’analyse discriminante
+      linéaire et quadratique, la régression gaussienne, la classification logistique et le classifieur
+      bayésien naïf.
+   2. L’approche discriminative fait une hypothèse sur g ⋆ , ou change de métrique. On contraint
+      la famille de classifieurs à une classe C, on considère le minimiseur du risque empirique
+        ∗                                                                                   C    ∗
+      ĝn,C , ou une approximation de celui-ci, et l’on contrôle l’erreur d’estimation Eest   (ĝn,C ) =
+            ∗        ∗
+      R(ĝn,C ) − R(gC ). L’hypothèse, ou l’espoir, est que l’erreur d’approximation soit petite, ce qui
+      est une hypothèse sur g ⋆ , donc implicitement sur P. Relèvent de cette approche la régression
+      des moindres carrés, les réseaux de neurones, la classification logistique et les machines à
+      vecteurs de support.
+La classification logistique figure dans les deux listes : le même critère s’obtient comme maximum
+de vraisemblance dans le modèle logistique et comme minimiseur d’un risque empirique pour la
+perte logistique (Section 1.4).
+
+Résumé : le cadre de la minimisation du risque empirique
+     Dans l’approche discriminative, on minimise le risque empirique sur une classe C :
+                                         (              n
+                                                                         )
+                                                     1 X
+                            ∗
+                          ĝn,C = arg min Rb n (g) =       ℓ(Yi , g(Xi )) .
+                                    g∈C              n i=1
+
+  Trois questions liées entre elles.
+      1. Comment choisir C ? On a vu des exemples en régression, la décomposition de l’excès de
+         risque en erreur d’approximation et erreur d’estimation, le sur-apprentissage et le théorème
+         no free lunch ; en pratique, on emploie la validation croisée (exercice 1 (PC9)).
+                                                     ∗
+      2. Comment contrôler l’erreur d’estimation R(ĝn,C ) − R(gC∗ ) ? C’est l’objet de la Section 1.3.
+                            ∗
+      3. Comment calculer ĝn,C , et avec quelle précision ? La Section 1.4 aborde cette question.
+
+
+1.3     Contrôle du risque d’estimation dans une classe
+    On cherche maintenant à contrôler l’erreur d’estimation du minimiseur du risque empirique,
+c’est-à-dire l’écart entre son risque et celui de l’oracle de la classe. On la ramène d’abord à une
+quantité qui ne dépend que de la classe, la déviation uniforme entre risque et risque empirique,
+puis on contrôle celle-ci par une inégalité de concentration.
+
+Lien entre erreur d’estimation et déviation risque–risque empirique
+     Le but est de contrôler
+                                                             (
+                                                                   ∗
+                                                                 ĝn,C              b n (g) ,
+                                                                       = arg ming∈C R
+                C      ∗           ∗
+               Eest (ĝn,C ) = R(ĝn,C ) − R(gC∗ ) ,    où         ∗
+                                                                 gC = arg ming∈C R(g) .
+
+On considère un minimiseur s’il y en a plusieurs, et, comme seule la valeur du minimum compte,
+on écrit inf g∈C R(g) au lieu de R(gC∗ ) lorsque l’infimum n’est pas atteint.
+1. LES FONDAMENTAUX                                                                                      15
+
+
+
+   Théorème 1.2: Lien entre erreur de généralisation et processus empirique
+                                                                                           ∗
+  Soit C une classe de règles et ℓ une perte telle que R(g) < ∞ pour tout g ∈ C, et soit ĝn,C un
+  minimiseur du risque empirique sur C. Alors
+
+                    C
+                   Eest    ∗
+                        (ĝn,C         ∗
+                               ) = R(ĝn,C                      b n (g) − R(g) ,
+                                           ) − inf R(g) ≤ 2 sup R                    p.s.             (2)
+                                            g∈C            g∈C
+
+
+  Si de plus supg∈C | Rb n (g) − R(g)| est une variable aléatoire intégrable, ce qui est le cas lorsque
+  C est finie et la perte bornée, alors
+                                                                       
+                                   C ∗ 
+                                E Eest (ĝn,C ) ≤ E sup Rb n (g) − R(g) .                           (3)
+                                                    g∈C
+
+
+
+
+   L’excès de risque de généralisation du minimiseur du risque empirique est contrôlé par les
+déviations entre le risque et le risque empirique sur la classe. La démonstration repose sur deux
+observations :
+  1. Rb n (ĝ ∗ ) ≤ R
+                    b n (g) pour tout g ∈ C ;
+           n,C
+        b n (ĝ ∗ ) − R(ĝ ∗ )| ≤ supg∈C | R
+   2. | R                                  b n (g) − R(g)|, puisque ĝ ∗ appartient à C.
+               n,C        n,C                                         n,C
+
+   Démonstration
+  Soit ε > 0 et gε ∈ C telle que R(gε ) ≤ inf g∈C R(g) + ε ; si l’oracle existe, on peut prendre
+                                  b n (ĝ ∗ ) ≤ R
+  gε = gC∗ et ε = 0. En utilisant R             b n (gε ),
+                                         n,C
+
+                      ∗
+                  R(ĝn,C                    ∗
+                          ) − inf R(g) = R(ĝn,C   b n (ĝ ∗ ) + R
+                                                 )−R             b n (ĝ ∗ ) − inf R(g)
+                                                          n,C           n,C
+                             g∈C                                               g∈C
+                                             ∗
+                                       ≤ R(ĝn,C   b n (ĝ ∗ ) + R
+                                                 )−R             b n (gε ) − R(gε ) + ε .
+                                                          n,C
+
+
+  Chacune des deux différences est majorée par supg∈C | R     b n (g)−R(g)|, la première par la seconde
+                                 ∗
+  observation ; on en déduit R(ĝn,C ) − inf g∈C R(g) ≤ 2 supg∈C | R      b n (g) − R(g)| + ε, et (2) suit
+  puisque ε est arbitraire.
+  Pour (3), on prend l’espérance de la même inégalité, mais on majore seulement le premier
+  terme par le supremum. La règle gε est fixée, donc E[R      b n (gε )] = R(gε ), et le second terme est
+  d’espérance nulle :
+                                  h                         i                                 
+                 
+             ∗
+       E R(ĝn,C                        ∗
+                 ) − inf R(g) ≤ E R(ĝn,C  )−R  b n (ĝn,C
+                                                       ∗
+                                                           ) + ε ≤ E sup R       b n (g) − R(g) + ε ,
+                       g∈C                                              g∈C
+
+  et l’on conclut de même. Lorsque C est finie et la perte bornée, le supremum est un maximum
+  d’un nombre fini de variables aléatoires bornées ; il est donc mesurable et intégrable.   □
+
+
+Intuition. Le facteur 2 disparaît en espérance parce que l’un des deux termes porte sur une règle fixée,
+dont le risque empirique est sans biais. Seul le terme qui porte sur la règle apprise demande un contrôle
+uniforme : on ne sait pas à l’avance quelle règle de C sera choisie, et il faut donc que le risque empirique
+soit proche du risque pour toutes à la fois. C’est la conséquence du choix au vu des données que décrivait
+la proposition 1.1.
+
+
+                                     ∗                                  C     ∗
+Type de contrôle. Le risque R(ĝn,C     ), donc l’erreur d’estimation Eest (ĝn,C ), sont des variables
+aléatoires, fonctions de Dn . On peut chercher à les contrôler de deux façons :
+16                                                     CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+                                     C      ∗
+     1. en espérance, en majorant E[Eest (ĝn,C )] ;
+     2. en grande probabilité, sous la forme
+                                          C      ∗
+                                                                 
+                                       P Eest (ĝn,C ) ≤ ∆n,δ (C) ≥ 1 − δ ,
+
+        où ∆n,δ (C) dépend explicitement de la taille n de l’ensemble d’apprentissage Dn , du niveau
+        de confiance δ et de la classe.
+Dans les deux cas, d’après le théorème 1.2, il faut étudier les déviations uniformes de variables
+aléatoires par rapport à leurs moyennes.
+
+Contrôle des déviations uniformes, perte 0–1.                   On se restreint à la perte 0–1, pour laquelle
+                                                     n
+                                                     X
+                                       b n (g) = 1
+                                       R                   1{g(Xk )̸=Yk } .
+                                                 n
+                                                     k=1
+
+                                     b n (g) − R(g)|, pour une classe C finie, en grande probabilité et
+L’objectif est de contrôler supg∈C | R
+en espérance. L’approche procède en deux temps.
+   1. Pour toute règle g fixée, la probabilité P(| Rb n (g) − R(g)| > ε) est faible : c’est une inégalité
+      de concentration.
+     2. La borne de l’union donne
+                                                  X                     
+                               b n (g) − R(g)| > ε ≤
+                       P sup | R                        b n (g) − R(g)| > ε .
+                                                     P |R
+                             g∈C
+                                                              g∈C
+
+
+Inégalités de concentration : de Markov à Hoeffding
+   Une inégalité de concentration majore la probabilité qu’une variable aléatoire s’écarte de sa
+moyenne. Les plus simples sont celles de Markov et de Bienaymé-Tchebychev, rappelées à la
+Section 2.1 : si Z ≥ 0, alors P(Z > t) ≤ E[Z]/t pour tout t > 0, ce qui implique, si Z est de
+variance finie, P(|Z − E[Z]| ≥ ε) ≤PVar(Z)/ε2 . Si X1 , . . . , Xn sont indépendantes, de même loi et
+                                     n
+de carré intégrable, et si Z = n−1 i=1 Xi , on a Var(Z) = Var(X1 )/n, d’où
+                                    n
+                                                         !
+                                  1X                             Var(X1 )
+                             P         Xi − E[X1 ] ≥ ε ≤                  .
+                                 n i=1                             nε2
+
+Cette majoration décroît comme 1/n. Lorsque les variables sont bornées, on dispose d’une majo-
+ration exponentielle en n.
+
+
+     Théorème 1.3: Inégalité de Hoeffding (outil fondamental)
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes à valeurs dans [0, 1]. Pour tout ε > 0,
+                                         n
+                                                             !
+                                     1X                                  2
+                                P          {Xi − E[Xi ]} ≥ ε ≤ 2e−2nε ,
+                                     n i=1
+                                                                         Pn
+  et chacune des deux déviations unilatérales, P(n−1                          i=1 {Xi   − E[Xi ]}   ≥   ε) et
+       Pn                                             2
+  P(n−1 i=1 {Xi − E[Xi ]} ≤ −ε), est majorée par e−2nε .
+
+
+
+   Ce théorème est le corollaire 2.1 de la Section 2.4, où il est démontré ; il complète l’énoncé
+admis au chapitre 4 (théorème 3.1).
+1. LES FONDAMENTAUX                                                                                       17
+
+
+  Remarques.
+    — Il n’est pas besoin que les variables soient de même loi : il suffit qu’elles soient indépen-
+      dantes.
+    — Le théorème P  s’étend à des variables Xi                ∈    [ai , bi ] : la majoration devient
+                        n
+      2 exp −2n2 ε2 / i=1 (bi − ai )2 .
+    — Il existe différentes écritures de cette inégalité, et il faut prendre garde à ne pas les
+                                                      2        2
+      confondre. Parmi les trois majorations 2e−2nε , 2e−2ε /n et 2e−2nε de la probabilité ci-
+      dessus, seule la première estPla  bonne. La deuxième est la majoration correcte pour la
+                                      n
+      déviation de la somme, P(| i=1 {Xi − E[Xi ]}| ≥ ε) ; on retrouve la première en l’appli-
+      quant à nε. La troisième est fausse : pour des variables de Bernoulli de paramètre 1/2
+      et ε = n−1/2 , le théorème de la limite centrale (chapitre 6, théorème 1.6) montre que la
+      probabilité tend√vers 2(1 − Φ(2)) > 0, où Φ est la fonction de répartition de la loi N (0, 1),
+      tandis que 2e−2 n tend vers zéro.
+
+    L’inégalité de Hoeffding n’exploite aucune propriété de la distribution des variables X1 , . . . , Xn
+autre que leur support ; en particulier, la borne ne dépend pas de leur variance, et elle est la même
+pour toutes les distributions portées par l’intervalle [0, 1]. Le fait que cette borne soit agnostique
+est désirable, comme on va le voir : la loi des pertes 1{g(Xk )̸=Yk } est inconnue, mais elle est portée
+par {0, 1}. En contrepartie, pour certaines distributions, la moyenne empirique converge beaucoup
+plus vite vers son espérance que ne le prédit cette borne ; les inégalités de Bennett et de Bernstein,
+qui font intervenir la variance, permettent de raffiner ces résultats.
+Intuition. Pour une moyenne de n variables indépendantes de variance v, le théorème de la limite centrale
+                                                       2
+suggère une probabilité de déviation de l’ordre de e−nε /(2v) pour ε petit et n grand. Une variable à valeurs
+dans [0, 1] a une variance au plus 1/4, et l’exposant 2nε2 = nε2 /(2 · 1/4) de l’inégalité de Hoeffding est
+celui de ce comportement gaussien dans le pire cas. Ce rapprochement est heuristique : le théorème de la
+limite centrale est asymptotique et ne fournit aucune borne pour n fixé, alors que l’inégalité de Hoeffding
+en fournit une pour tout n.
+
+
+Structure de la preuve. La concentration se lit sur le contrôle des moments, et la preuve,
+détaillée à la Section 2.4 et reprise aux exercices 2 et 3 (PC9), comporte trois étapes.
+   1. Borne de Chernoff. Un contrôle de la fonction génératrice des moments E[exp(λZ)] entraîne
+                                                          2 2
+      la concentration. En particulier, si E[exp(λZ)] ≤ eλ σ /2 pour tout λ ∈ R, la variable centrée
+      Z est dite sous-gaussienne, et ses déviations sont majorées comme celles d’une loi N (0, σ 2 ).
+   2. Lemme de Hoeffding. Une variable aléatoire bornée et centrée est sous-gaussienne.
+            Pn                                                            Qn
+   3. Si Z = i=1 Xi avec X1 , . . . , Xn indépendantes, alors E[exp(λZ)] = i=1 E[exp(λXi )].
+
+
+   Lemme 1.1: Lemme de Hoeffding
+  Soit (Ω, F, P) un espace de probabilité et X une variable aléatoire réelle telle que P(X ∈
+  [a, b]) = 1 et E[X] = 0. Pour tout λ ∈ R,
+                                                 2     2
+                                         E eλX ≤ eλ (b−a) /8 .
+
+
+
+
+Écriture équivalente. L’inégalité de Hoeffding se lit aussi en fixant la probabilité d’échec plutôt
+que l’écart. On pose          r
+                                  ln(2/δ)                   2
+                          ε=                ⇐⇒ 2e−2nε = δ .
+                                    2n
+18                                                    CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+
+
+     Théorème 1.4: Inégalité de Hoeffding, seconde écriture
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes à valeurs dans [0, 1] et δ ∈ ]0, 1[.
+  Avec une probabilité supérieure à 1 − δ,
+                                       n
+                                                          r
+                                    1X                      ln(2/δ)
+                                          {Xi − E[Xi ]} ≤           .
+                                   n i=1                       2n
+
+
+
+
+     Démonstration
+  Avec P
+       le choix de ε ci-dessus, le théorème 1.3 montre que l’événement contraire,
+         n
+  {|n−1 i=1 {Xi − E[Xi ]}| ≥ ε}, a une probabilité au plus δ.                  □
+
+
+  Remarques.
+     — La précision ε est l’objectif que l’on se fixe sur la valeur absolue de la différence entre la
+       moyenne empirique et l’espérance.
+     — La confiance δ est la borne de la probabilité avec laquelle on admet que la condition sur
+       la précision ne soit pas satisfaite.
+     — Une fois ces deux paramètres choisis, le théorème donne le nombre d’observations suffisant :
+       n ≥ ln(2/δ)/(2ε2 ).
+     — La précision coûte cher : pour une confiance donnée, si l’on veut une précision dix fois
+       meilleure, il faut multiplier le nombre d’observations par cent.
+
+Application au contrôle du risque d’estimation
+    On combine maintenant l’inégalité de Hoeffding et la borne de l’union pour une classe finie de
+classifieurs, munie de la perte 0–1.
+
+
+     Théorème 1.5: Déviations uniformes sur une classe finie
+  On se place en classification avec la perte 0–1, et l’on suppose que |C| < ∞. Pour tout n ∈ N∗
+  et tout ε > 0,                                         
+                                   n               o                   2
+                                     b
+                            P sup Rn (g) − R(g) > ε ≤ |C| e−2nε ,
+                                    g∈C
+                                                             
+                                                                               2
+                                    b n (g) − R(g) > ε
+                              P sup R                             ≤ 2 |C| e−2nε .
+                                    g∈C
+
+
+
+
+     Démonstration
+                      |C|                          b n (g) − R(g)| > ε} est la réunion des événements
+  Notons C = {gj }j=1 . L’événement {supg∈C | R
+     b n (gj ) − R(gj )| > ε}, et la borne de l’union (Section 2.6) donne
+  {| R
+                                                 X    |C|                         
+                    P sup R   b n (g) − R(g) > ε ≤          P Rb n (gj ) − R(gj ) > ε .
+                        g∈C                             j=1
+
+  Pour chaque j, la règle gj est fixée, et les variables 1{gj (Xk )̸=Yk } , k = 1, . . . , n, sont indépen-
+  dantes, à valeurs dans {0, 1}, de loi de Bernoulli de paramètre R(gj ) ; leur moyenne est R        b n (gj ).
+1. LES FONDAMENTAUX                                                                                  19
+
+
+                                                                         2
+  Le théorème 1.3 majore donc chaque terme par 2e−2nε , ce qui donne la seconde inégalité. La
+                                                                                       2
+  première s’obtient de la même façon, avec la déviation unilatérale, majorée par e−2nε .   □
+
+   On utilise ici la force de l’inégalité de Hoeffding, qui est valable pour toute distribution à
+support borné : la loi de Bernoulli de paramètre R(gj ) est inconnue, mais la majoration n’en
+dépend pas, et elle est donc uniforme en j.
+
+Conclusion : contrôle en grande probabilité en classification
+
+
+   Théorème 1.6: Contrôle en grande probabilité de l’erreur d’estimation
+  On suppose que la perte est à valeurs dans [0, 1], ce qui est le cas de la perte 0–1 en clas-
+  sification, et que la classe C est finie. Pour tout δ ∈ ]0, 1[, avec une probabilité supérieure à
+  1 − δ,                                                        r
+                            C     ∗           ∗          ∗        log(2 |C| /δ)
+                          Eest (ĝn,C ) = R(ĝn,C ) − R(gC ) ≤ 2                .
+                                                                       2n
+
+
+
+   Démonstration
+  D’après le théorème 1.2, Eest C     ∗
+                                   (ĝn,C                b n (g) − R(g)| presque sûrement. Le théo-
+                                          ) ≤ 2 supg∈C | R
+  rème 1.5, dont la démonstration n’utilise que le fait que les pertes
+                                                                     p    ℓ(Yk , g(Xk )) sont indépen-
+  dantes et à valeurs dans [0, 1] pour g fixée, donne, avec ε = log(2 |C| /δ)/(2n), de sorte que
+             2
+  2 |C| e−2nε = δ,                                   r                 !
+                                   b n (g) − R(g)| ≤    log(2  |C| /δ)
+                       P sup | R                                         ≥1−δ .
+                            g∈C                               2n
+                       C     ∗
+                                        p
+  Sur cet événement, Eest (ĝn,C ) ≤ 2 log(2 |C| /δ)/(2n).                                          □
+
+   Pour une perte bornée quelconque, à valeurs dans [0, B], on applique le théorème à la perte
+ℓ/B : la borne est multipliée par B.
+
+  Remarques.
+     1. Dépendance en |C|. La borne ne dépend de la taille de la classe qu’à travers log |C|. Cette
+        dépendance logarithmique laisse l’espoir de généraliser le résultat à des classes infinies :
+        par exemple, l’exercice 7 (PC9) montre que, pour les classifieurs
+                                                                         linéaires en dimension d,
+        on peut se limiter à une classe de cardinal au plus 2 nd .
+                                                       √
+     2. Dépendance en n. La borne décroît comme 1/ n.
+                                                                    C      ∗
+    On a ainsi obtenu un contrôle en grande probabilité, du type P(Eest (ĝn,C ) ≤ ∆n,δ (C)) ≥ 1−δ ; les
+éléments de preuve manquants, qui concernent l’inégalité de Hoeffding, font l’objet des exercices 2
+et 3 (PC9). Restent deux questions : le contrôle en espérance et le contrôle pour une classe infinie.
+
+Contrôle en espérance de l’erreur d’estimation
+   Le théorème 1.2 a établi
+                                                                                    
+                                                       
+                          E           ∗
+                                  R(ĝn,C ) − R(gC∗ )               b n (g) − R(g)
+                                                            ≤ E max R                    ,
+                                                                   g∈C
+
+le supremum étant un maximum puisque la classe est finie. Il reste à majorer l’espérance d’un maxi-
+mum de variables aléatoires, ce que fait l’inégalité suivante pour des variables sous-gaussiennes.
+20                                                     CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+
+
+     Théorème 1.7: Inégalité de Pisier
+  Soient Z1 , . . . , Zm des variables aléatoires réelles sous-gaussiennes de même facteur σ 2 , c’est-
+  à-dire telles que, pour tout λ ∈ R et tout i,
+                                                         2 2
+                                                E eλZi ≤ eλ σ /2 .
+
+  Alors                                              
+                                                              p
+                                      E       max |Zi | ≤ σ       2 log(2m) .
+                                              1≤i≤m
+
+
+
+
+   La démonstration, qui fait l’objet de l’exercice 4 (PC9), est donnée dans les compléments
+(Section 4.4). Les variables n’ont pas à être indépendantes.
+   On l’applique aux variables Zj = R b n (gj ) − R(gj ), j ∈ {1, . . . , |C|}, pour la perte 0–1. Pour tout
+λ ∈ R, par indépendance des couples (Xi , Yi ),
+             h      Pn                             i  h                                 in
+     E eλZj = E e(λ/n) i=1 {1{gj (Xi )̸=Yi } −R(gj )} = E e(λ/n){1{gj (X1 )̸=Y1 } −R(gj )}
+                                                                                                   2
+                                                                                               ≤ eλ /(8n) ,
+
+en utilisant le lemme de Hoeffding (lemme 1.1) pour la variable centrée 1{gj (X1 )̸=Y1 } − R(gj ), à
+valeurs dans l’intervalle [−R(gj ), 1 − R(gj )] de longueur 1 :
+                              h                                i
+                             E e(λ/n){1{gj (X1 )̸=Y1 } −R(gj )} ≤ eλ /(8n ) .
+                                                                    2    2
+
+
+
+
+Les variables Zj sont donc sous-gaussiennes de facteur σ 2 = 1/(4n).
+
+
+     Théorème 1.8: Borne pour le risque intégré, ou borne en espérance
+                                                                                     ∗
+  On se place en classification avec la perte 0–1, et l’on suppose que |C| < ∞. Si ĝn,C est un
+  minimiseur du risque empirique sur C, alors
+                                                      r
+                                     ∗         ∗
+                                                        log(2 |C|)
+                               E R(ĝn,C ) − R(gC ) ≤               .
+                                                            2n
+
+
+
+     Démonstration
+                                                            √                b n (g) − R(g)|] ≤
+  On applique
+          p   l’inégalité de
+                           p Pisier avec m = |C| et σ = 1/(2 n) : E[maxg∈C | R
+    √
+  (2 n)−1 2 log(2 |C|) = log(2 |C|)/(2n), et l’on conclut par (3).                            □
+
+
+Extension à une classe infinie
+    Les bornes précédentes sont vides si la classe est infinie, ce qui est le cas de la plupart des
+classes utilisées en pratique. Pour les classifieurs linéaires en dimension d, qui sont ici des
+                                                                                              classi-
+fieurs affines, on peut cependant se ramener à une classe finie, de cardinal au plus 2 nd , formée
+des classifieurs dont l’hyperplan séparateur passe par d points de l’ensemble d’apprentissage. La
+dépendance logarithmique en le cardinal donne alors une borne d’ordre
+                                 r                       r           !
+                                   log(2 |C| /δ)            d log(n)
+                                2                 ≃O                   .
+                                        2n                      n
+1. LES FONDAMENTAUX                                                                                      21
+
+L’énoncé suivant précise ce résultat ; il est démontré dans les compléments (Section 4.6), à partir
+d’un lemme combinatoire admis, et c’est l’objet de l’exercice 7 (PC9).
+
+
+   Proposition 1.2: Classifieurs affines
+  On se place en classification binaire sur X = Rd , avec la perte 0–1, et l’on suppose que la loi
+  de X admet une densité par rapport à la mesure de Lebesgue et que n > d. Soit
+                              
+                          C = x 7→ 2 1{a⊤ x+b≥0} − 1 : (a, b) ∈ Rd × R
+
+  la classe des classifieurs affines, et gbn un minimiseur du risque empirique sur la classe finie
+  Cn ⊂ C, de cardinal au plus 2 nd , des classifieurs dont l’hyperplan passe par d points de
+  l’ensemble d’apprentissage (Section 4.6). Pour tout δ ∈ ]0, 1[, avec une probabilité supérieure
+  à 1 − δ,                                             s               
+                                                 2d      log 2 nd + 1 /δ
+                            gn ) − inf R(g) ≤
+                          R(b                       +2                     .
+                                   g∈C           n            2(n − d)
+
+
+
+              n
+                                                                                      p
+   Comme      d       ≤ nd , le membre de droite est, pour δ fixé et n ≥ 2d, d’ordre       d log(n)/n.
+
+Résumé : contrôle de l’erreur d’estimation
+
+
+  Les trois questions, suite.
+      1. Comment choisir C ? Exemples en régression, décomposition en erreur d’approximation
+         et erreur d’estimation, sur-apprentissage, théorème no free lunch, validation croisée : Sec-
+         tion 1.2.
+                                                         ∗
+      2. Comment contrôler l’erreur d’estimation R(ĝn,C     )−R(gC∗ ) ? On la majore par les déviations
+         du processus empirique supg∈C | R  b n (g) − R(g)|. Pour la perte 0–1 et une classe C finie, les
+         variables en jeu sont sous-gaussiennes : on obtient un contrôle en grande probabilité par
+         l’inégalité de Hoeffding, un contrôle en espérance par l’inégalité de Pisier, et une extension
+         à une classe infinie est possible.
+                            ∗
+      3. Comment calculer ĝn,C , et avec quelle précision ? C’est la question de la section suivante.
+
+
+1.4     Décision douce et convexification du risque
+    La troisième question, celle du calcul du minimiseur, se pose dès que l’on quitte les classes
+finies. Pour la perte 0–1, elle est difficile, et l’on est conduit à remplacer cette perte par une perte
+convexe. On décrit ici cette relaxation, qui est le second moyen de contrôle annoncé en ouverture
+du chapitre.
+
+En classification, minimiser le risque empirique est difficile
+   En classification avec la perte 0–1, le minimiseur du risque empirique est la solution du problème
+d’optimisation
+                                                     n
+                                                  1X
+                                    ∗
+                                  ĝn,C = arg min       1{Yi ̸=g(Xi )} .
+                                            g∈C   n i=1
+
+Le choix de la fonction de perte a ici une conséquence pratique : la perte 0–1 n’est ni différentiable,
+ni convexe, et le risque empirique, vu comme fonction des paramètres de la règle, est constant par
+morceaux. La minimisation du risque empirique est alors un problème combinatoire.
+22                                                    CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+
+
+
+Figure 5 – À gauche, un ensemble d’apprentissage en classification binaire, avec un attribut réel.
+À droite, le nombre d’erreurs commises sur cet ensemble par une famille de règles indexée par
+un paramètre réel, en fonction de ce paramètre : la fonction est constante par morceaux, et ses
+minima sont des paliers.
+
+
+Écriture en fonction de la marge
+    On prend les labels à valeurs dans Y = {−1, 1} ; le problème revient à trouver un classifieur
+g : X → {−1, 1}. Comme g(X)Y vaut 1 si la prédiction est correcte et −1 sinon,
+                                   g(X) ̸= Y       ⇐⇒       −g(X)Y > 0 ,
+et l’on peut réécrire la fonction objectif
+        n                      n                       n
+     1X                     1X                      1X
+           1{g(Xi )̸=Yi } =       1{−g(Xi )Yi >0} =       φ1 (−g(Xi )Yi ) ,           avec   φ1 := 1[0,+∞[ .
+     n i=1                  n i=1                   n i=1
+
+Les deux dernières écritures coïncident parce que −g(Xi )Yi ne prend que les valeurs −1 et 1. Cette
+réécriture est appelée spinning dans le cours ; la quantité Y g(X) est la marge de la prédiction.
+
+Classifieur doux
+   L’écriture précédente garde un sens lorsque g prend des valeurs réelles quelconques, ce qui
+conduit à la définition suivante. On note signe(t) = 2 heaviside(t) − 1, avec heaviside(t) = 1 si
+t > 0 et 0 sinon, comme au chapitre 8.
+
+     Définition 1.2: Classifieur doux
+  On appelle classifieur doux (soft classifier ) toute fonction mesurable h : X → R. Le classifieur
+  dur (hard classifier ) associé à h est g = signe(h).
+
+     Exemple 1.2: Classifieurs doux linéaires
+                                            Pd
+      — Linéaire, ou affine : hθ (x) = θ0 + i=1 θi x(i) , pour x = (x(1) , . . . , x(d) ).
+      — Linéaire généralisé : hθ (x) = θ⊤ Φ(x), où Φ est une transformation du vecteur des
+        attributs, par exemple
+                                           h                                  i⊤
+                                   Φ(x) = 1, {x(i) }di=1 , {x(i) x(j) }di,j=1
+         ou                            h                                           i⊤
+                                 Φ(x) = ψ1 (x(1) ), ψ2 (x(2) ), . . . , ψd (x(d) )    ,
+1. LES FONDAMENTAUX                                                                               23
+
+
+        pour des fonctions réelles ψ1 , . . . , ψd .
+
+   Pour un classifieur doux h, l’erreur du classifieur dur associé est contrôlée par la marge :
+                      1{signe(h(x))̸=y} ≤ φ1 (−y h(x)) ,      x ∈ X , y ∈ {−1, 1} .               (4)
+En effet, si signe(h(x)) ̸= y, alors ou bien h(x) > 0 et y = −1, ou bien h(x) ≤ 0 et y = 1 ; dans les
+deux cas −y h(x) ≥ 0. L’inégalité est une égalité, sauf lorsque h(x) = 0 et y = −1.
+
+Convexifier la perte
+    On remplace la perte 0–1 par une fonction φ convexe, croissante, telle que φ(0) = 1 et φ ≥ φ1 ,
+c’est-à-dire φ(z) ≥ 1{z≥0} pour tout z ∈ R. Pour une fonction croissante qui vaut 1 en 0, cette
+dernière condition se réduit à φ ≥ 0 sur ]−∞, 0[.
+
+                                   perte               φ(z)
+                                   0–1                 1[0,+∞[ (z)
+                                   charnière (hinge)   max(1 + z, 0)
+                                   exponentielle       exp(z)
+                                   logistique          log2 (1 + exp(z))
+                                   quadratique         (z + 1)2
+
+   Les pertes charnière, exponentielle et logistique remplissent toutes les conditions. La perte
+quadratique est convexe, vaut 1 en 0 et majore φ1 , mais elle n’est pas croissante : elle décroît sur
+]−∞, −1], et pénalise donc aussi les prédictions correctes de grande marge.
+
+
+
+
+Figure 6 – Les pertes convexes charnière (en noir), exponentielle (en rouge) et logistique (en
+vert), en fonction de z = −y h(x). Toutes valent 1 en 0 et majorent la perte 0–1.
+
+
+   Définition 1.3: φ-risque et φ-risque empirique
+  Soit φ une perte convexe comme ci-dessus. Le φ-risque d’un classifieur doux h est
+                                         Rφ (h) := E [φ(−Y h(X))] ,
+  et son φ-risque empirique est
+                                                    Xn
+                                     b n,φ (h) := 1
+                                     R                  φ(−Yi h(Xi )) .
+                                                  n i=1
+24                                                  CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+    Le φ-risque empirique est une approximation du φ-risque, au même sens que le risque empirique
+est une approximation du risque : pour h fixé tel que Rφ (h) < ∞, c’en est un estimateur sans
+biais et convergent. Il majore le risque 0–1 du classifieur dur associé.
+
+
+     Proposition 1.3: Le φ-risque majore le risque 0–1
+  Pour tout classifieur doux h,
+                      b n (signe(h)) ≤ R
+                      R                b n,φ (h)      et     R(signe(h)) ≤ Rφ (h) ,
+
+     b n et R désignent le risque empirique et le risque pour la perte 0–1.
+  où R
+
+
+
+     Démonstration
+  D’après (4) et l’hypothèse φ ≥ φ1 , 1{signe(h(x))̸=y} ≤ φ(−y h(x)) pour tous x et y. On ap-
+  plique cette inégalité aux couples (Xi , Yi ) et l’on moyenne, ou au couple (X, Y ) et l’on prend
+  l’espérance.                                                                                    □
+
+
+Minimisation du risque empirique pour une perte générale
+    On cherche alors un classifieur doux h, dans une classe donnée, qui minimise le φ-risque empi-
+      b n,φ (h) = n−1 Pn φ(−Yi h(Xi )), et l’on retient le classifieur dur signe(h).
+rique R                i=1
+
+     Exemple 1.3: Cas logistique
+  Pour la perte logistique et la classe des classifieurs doux linéaires généralisés hθ = θ⊤ Φ(·),
+
+                                              Xn                       
+                              b n,φ (hθ ) = 1
+                              R
+                                                                 ⊤
+                                                  log2 1 + e−Yi θ Φ(Xi ) .
+                                            n i=1
+
+  Cette fonction est convexe par rapport à θ : chaque terme est la composée de la fonction
+  convexe φ et de la fonction linéaire θ 7→ −Yi θ⊤ Φ(Xi ) (Section 2.7). On la minimise par
+  des méthodes d’optimisation convexe : algorithme du gradient, algorithme de Newton. Avec
+  Φ(x) = x, ce critère est, au facteur 1/ log 2 près, celui que minimise l’estimateur du maxi-
+  mum de vraisemblance du modèle logistique (chapitre 8, équation (12)) : les deux approches
+  conduisent ici à la même règle.
+
+
+Intuition. La perte convexe remplace une fonction en escalier, sans pente exploitable, par une fonction
+convexe, dont tout minimum local est un minimum global et que les méthodes de gradient savent minimiser ;
+c’est ce qui rend le calcul possible. En contrepartie, elle ne compte plus seulement les erreurs : une erreur
+de grande marge coûte cher, et une prédiction correcte de faible marge coûte encore quelque chose. Le
+minimiseur du risque convexifié n’a donc aucune raison d’être celui du risque 0–1, et la figure ci-dessus
+montre qu’il peut en différer légèrement.
+
+
+Trois questions ouvertes
+    On a remplacé la perte 0–1 par une perte convexe, pour des raisons computationnelles. Cela
+soulève plusieurs questions, qui sont le sujet du chapitre suivant.
+   1. Contrôle de l’écart entre Rφ et R. Avoir un classifieur de faible risque logistique ou
+      charnière garantit-il d’avoir un classifieur de faible risque 0–1 ? La proposition 1.3 répond
+      dans un sens, en majorant le risque par le φ-risque, mais elle ne compare pas les excès de
+      risque.
+1. LES FONDAMENTAUX                                                                               25
+
+
+
+
+Figure 7 – Risque convexifié. À gauche, en fonction du paramètre réel d’une famille de règles, le
+nombre d’erreurs sur l’ensemble d’apprentissage (en orange, constant par morceaux) et la somme
+des pertes logistiques (en bleu, convexe). À droite, les labels observés (en vert) et les prédictions
+des règles qui minimisent le nombre d’erreurs (en rouge) et la perte logistique (en bleu) : les deux
+règles changent de label en des points voisins, mais distincts.
+
+                                                                 ∗
+  2. Contrôle de l’erreur d’estimation Rφ (ĝn,C,φ ) − Rφ (gC,φ    ). En pratique, on minimise une
+     approximation empirique du risque convexifié sur une classe infinie de fonctions ; peut-on
+     contrôler l’erreur d’estimation pour des classes infinies ?
+  3. Contrôle de l’erreur d’optimisation. En pratique, comment minimiser le risque convexi-
+     fié, et avec quelle précision ?
+
+1.5    Le programme des exercices
+   La feuille de ce chapitre comporte sept exercices.
+                                               bn,m d’une règle gn construite sur Dn , calculée sur
+  — L’exercice 1 étudie l’erreur de validation R         h           i
+    m couples indépendants de Dn . On y montre que E R     bn,m Dn = R(gn ), que mR      bn,m suit,
+      conditionnellement à Dn , une loi binomiale de paramètres m et R(gn ), et l’on en tire deux
+                        bn,m − R(gn )| ≥ ε), par l’inégalité de Bienaymé-Tchebychev puis par celle
+      majorations de P(|R
+      de Hoeffding.
+  — L’exercice 2 introduit les variables sous-gaussiennes de facteur v : la loi N (0, v) et la loi de
+    Rademacher en sont des exemples, la classe est stable par somme de variables indépendantes,
+                                                                   2
+    et l’inégalité de Chernoff donne P(X > t) ∨ P(−X > t) ≤ e−t /(2v) .
+  — L’exercice 3 démontre le lemme de Hoeffding par l’étude de la fonction génératrice des cumu-
+    lants ψX , dont la dérivée seconde est la variance d’une loi modifiée, et en déduit l’inégalité
+    de Hoeffding pour une somme de variables indépendantes bornées.
+  — L’exercice 4 démontre l’inégalité de Pisier, en déduit la borne en espérance du théorème 1.8,
+    puis l’applique à la classe de toutes les règles lorsque l’ensemble des attributs est fini, de
+    cardinal K : l’excès de risque moyen du minimiseur du risque empirique est alors d’ordre
+    p
+      K/n.
+  — L’exercice 5 applique l’inégalité de Hoeffding à l’estimation, par un sous-échantillon tiré
+    uniformément, de la proportion des points d’un ensemble fini qui tombent dans un hyper-
+    rectangle, puis rend l’estimation uniforme sur tous les hyper-rectangles en se ramenant à une
+    famille finie déterminée par l’échantillon.
+  — L’exercice 6 démontre le théorème no free lunch (théorème 1.1) lorsque l’ensemble des attri-
+    buts est infini, en moyennant sur tous les étiquetages d’un ensemble de K points.
+  — L’exercice 7 traite les classifieurs par hyperplan : expression de leur risque à l’aide des
+    fonctions de répartition conditionnelles de a⊤ X, réduction à au plus 2 nd classifieurs passant
+26                                             CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     par d points de l’ensemble d’apprentissage, et bornes en probabilité et en espérance de l’excès
+     de risque, qui sont celles de la proposition 1.2.
+

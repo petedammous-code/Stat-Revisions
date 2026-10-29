@@ -1,0 +1,217 @@
+44                                  CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+4      Les compléments
+    Les contenus de cette partie ne sont pas exigibles ; ils donnent le cadre général dans lequel
+s’inscrivent les notions du chapitre, les deux approches de l’optimalité qui n’ont pas été retenues,
+et deux résultats qui prolongent la borne de Cramér-Rao.
+
+Théorie de la décision : le cadre général
+   Le risque a été défini pour un estimateur. La même définition vaut pour n’importe quelle
+procédure qui, à une observation, associe une décision : le choix d’un estimateur n’est qu’un cas
+particulier, et le test d’hypothèses en est un autre.
+
+     Définition 4.1: Risque d’une règle de décision
+    Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique et ℓ : Θ×A → R+ une fonction
+    de perte, où A est un ensemble d’actions muni d’une tribu A telle que ℓ(θ, ·) : (A, A) → R soit
+    mesurable pour tout θ ∈ Θ. Une règle de décision δ est une fonction mesurable δ : (Z, Z) →
+    (A, A), qui associe une action δ(Z) à une observation Z ; son risque est l’espérance
+
+                                                                                              (15)
+                                                               
+                                      Rℓ (θ, δ) := Eθ ℓ(θ, δ(Z)) .
+
+    L’estimation ponctuelle en est le cas particulier vu dans les fondamentaux : si g : Θ → Y est
+la fonction à estimer, où (Y, Y) est un espace mesurable, on prend pour espace d’actions A = Y,
+et un estimateur T : (Z, Z) → (Y, Y) de g est une règle de décision au sens de la définition ci-
+dessus. À une fonction de distance mesurable W : Y × Y → R+ , on associe la fonction de perte
+(θ, a) 7→ W (g(θ), a), qui représente la perte réalisée lorsqu’on estime g(θ) par l’action a. Toutes
+les notions définies pour les règles de décision, à commencer par l’admissibilité, s’appliquent donc
+aux estimateurs.
+    Le test d’hypothèses se formule de la même façon. Écrivons Θ = Θ0 ∪Θ1 , où Θ0 et Θ1 , disjoints,
+décrivent respectivement l’hypothèse nulle H0 et l’hypothèse alternative H1 . Mettre en œuvre un
+test, c’est prendre une décision à valeurs dans A := {0, 1}, l’action 0 étant d’accepter H0 et l’action
+1 de la rejeter. Une fonction de perte adaptée est
+                                (                               (
+                                  ℓ0 si θ ∈ Θ1 ,                  ℓ1 si θ ∈ Θ0 ,
+                      ℓ(θ, 0) =                       ℓ(θ, 1) =
+                                  0 sinon,                        0 sinon,
+
+pour deux réels ℓ0 , ℓ1 strictement positifs : accepter H0 alors qu’elle est fausse coûte ℓ0 , la rejeter
+alors qu’elle est vraie coûte ℓ1 , et une décision correcte ne coûte rien. Le risque d’un test ϕ pour
+cette perte vaut                           (
+                                             ℓ0 Pθ (ϕ(Z) = 0) si θ ∈ Θ1 ,
+                               Rℓ (θ, ϕ) =
+                                             ℓ1 Pθ (ϕ(Z) = 1) si θ ∈ Θ0 .
+Le choix ℓ0 = ℓ1 = 1 donne la perte dite 0-1, pour laquelle le risque s’exprime à l’aide de la
+fonction puissance βϕ (θ) = Pθ (ϕ(Z) = 1) : il vaut βϕ (θ) si θ ∈ Θ0 et 1 − βϕ (θ) si θ ∈ Θ1 . Ces
+notions seront reprises et développées dans le chapitre consacré aux tests.
+
+Approches minimax et bayésienne
+    La faiblesse des estimateurs constants est qu’ils ne se comportent bien que pour une seule valeur
+du paramètre, inconnue par hypothèse. Une façon de l’exclure consiste à agréger la fonction de
+risque en un seul nombre, ce qui rétablit un ordre total sur les règles de décision. Deux agrégations
+sont classiques ; elles ne sont pas développées dans ce cours, et l’on se contente ici de les définir.
+    L’approche minimax retient le risque dans le pire des cas,
+
+                                        Rℓ (δ) := sup Rℓ (θ, δ) ,
+                                                  θ∈Θ
+4. LES COMPLÉMENTS                                                                                             45
+
+et appelle risque minimax l’infimum Rℓ := inf δ Rℓ (δ) sur toutes les règles de décision. Une règle
+δ ∗ est dite minimax si Rℓ (δ ∗ ) = Rℓ . Ces procédures sont sûres, au sens où elles se prémunissent
+uniformément contre toutes les valeurs du paramètre ; en contrepartie, la recherche de garanties
+uniformes conduit parfois à des procédures trop conservatrices.
+    L’approche bayésienne se donne une mesure de probabilité Π sur Θ, muni d’une tribu conve-
+nable, appelée loi a priori, et considère l’intégrale du risque plutôt que son supremum :
+                                                 Z
+                                    Rℓ (Π, δ) :=    Rℓ (θ, δ) Π(dθ) .
+                                                            Θ
+Le risque de Bayes selon Π est Rℓ (Π) := inf δ Rℓ (Π, δ), et une règle qui atteint cet infimum
+est dite bayésienne selon Π. Le risque intégré réapparaîtra dans la partie du cours consacrée à
+l’apprentissage statistique.
+
+Quelles fonctions sont estimables sans biais dans le modèle binomial
+   L’Exemple 1.5 a montré qu’il n’existe pas d’estimateur sans biais de 1/θ dans le modèle bino-
+mial. La relation (1) permet de décrire complètement les fonctions qui en admettent un.
+
+   Proposition 4.1: Fonctions estimables sans biais dans le modèle binomial
+  Dans le modèle {0, . . . , n}, P({0, . . . , n}), {Bin(n, θ) , θ ∈ Θ} avec Θ = [0, 1[, une fonction
+                                                                       
+
+  g : Θ → R admet un estimateur sans biais si et seulement si g est un polynôme en θ de degré
+  au plus n ; cet estimateur est alors unique.
+
+   Démonstration
+  D’après (1), pour toute fonction T : {0, . . . , n} → R, l’application Φ(T ) : θ 7→ Eθ [T (Z)]
+  est un polynôme de degré au plus n. L’application Φ est linéaire, de l’espace des fonctions
+  {0, . . . , n} → R vers celui des polynômes de degré au plus n ; ces deux espaces vectoriels étant
+  de dimension finie n + 1, il suffit de montrer que Φ est injective pour conclure qu’elle est
+  bijective. Soit T ∈ ker Φ : pour tout θ ∈ [0, 1[,
+                                                  n  
+                                              n
+                                                  X  n               θ k
+                                    (1 − θ)                 T (k)          =0.
+                                                        k            1−θ
+                                                  k=0
+                                                                       Pn
+  En posant t = θ/(1−θ) et en notant que (1−θ)n ̸= 0, il vient F (t) := k=0 nk T (k)tk = 0 pour
+                                                                              
+
+  tout t ≥ 0. Un polynôme nul sur un intervalle est le polynôme nul, donc tous ses coefficients
+  sont nuls et T = 0. Ainsi Φ est bijective : toute fonction g polynomiale de degré au plus n
+  admet un et un seul estimateur sans biais, et aucune autre fonction n’en admet.            □
+
+
+Estimation équivariante du paramètre de translation
+    La restriction à une classe d’estimateurs invariants, évoquée à la Section 1.6, prend une forme
+particulièrement simple dans le modèle de translation.
+    Soit p une densité de probabilité par rapport à la mesure de Lebesgue sur Rd . Pour θ ∈
+Θ := Rd et x ∈ Rd , posons pθ (x) :=   p(x − θ), et soit (X1 , . . . , Xn ) un n-échantillon du modèle
+ Rd , B(Rd ), {Pθ = pθ · Leb , θ ∈ Θ} . On cherche un estimateur optimal de θ pour la perte (u, v) 7→
+w(u − v), où w : Rd → R+ est mesurable.
+    Pour tout c ∈ Rd , tout θ ∈ Θ et toute fonction mesurable positive h,
+                  Z                       Z                         Z
+Eθ [h(Xj + c)] =      h(x + c)pθ (x) dx =    h(y)pθ (y − c) dy =         h(y)pθ+c (y) dy = Eθ+c [h(Xj )] ,
+                    Rd                             Rd                        Rd
+où l’on a utilisé pθ (u) = p(u−θ) = pθ+c (u+c). Il est donc naturel de se restreindre aux estimateurs
+équivariants, c’est-à-dire vérifiant
+            T (x1 + c, . . . , xn + c) = T (x1 , . . . , xn ) + c ,     c ∈ Rd ,   x 1 , . . . , x n ∈ Rd ,   (16)
+46                                      CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+ce qui équivaut à T (x1 , . . . , xn ) = x1 + T (0, x2 − x1 , . . . , xn − x1 ) pour tous x1 , . . . , xn . Si T est
+équivariant, son risque ne dépend pas du paramètre : en effet,
+                                                                                                 
+             Rw (θ, T ) = Eθ w(T (X1 , . . . , Xn ) − θ) = Eθ w(T (X1 − θ, . . . , Xn − θ))
+                                                    
+                        = E0 w(T (X1 , . . . , Xn )) = Rw (0, T ) ,
+
+la deuxième égalité par (16) appliquée avec c = −θ, la troisième parce que le modèle est un modèle
+de translation. Il suffit donc de trouver un estimateur équivariant T0 réalisant inf T Rw (0, T ) sur
+la classe des estimateurs équivariants pour disposer d’un estimateur optimal dans cette classe : la
+comparaison de fonctions s’est réduite à la comparaison de nombres.
+
+Existence d’un estimateur efficace
+    Un estimateur efficace existe-t-il toujours ? La réponse est non, et le cas d’égalité dans l’inégalité
+de Cauchy-Schwarz caractérise exactement les modèles où il en existe un.
+    Plaçons-nous dans un modèle régulier avec Θ ⊆ R ouvert, et cherchons un estimateur efficace
+T de g(θ) = θ. La preuve du Théorème 1.1 montre que T est efficace si et seulement s’il y a
+égalité dans l’inégalité de Cauchy-Schwarz appliquée aux variables z 7→ T (z) − θ et z 7→ ∇θ ℓ(θ, z),
+c’est-à-dire si et seulement si ces deux fonctions sont colinéaires µ-presque partout. Ceci devant
+valoir pour toute valeur de θ, on en déduit qu’il existe une fonction c telle que
+
+                            ∇θ ℓ(θ, z) = c(θ) {T (z) − θ} ,         θ∈Θ,       z∈Z,
+
+condition nécessaire et suffisante d’efficacité. En intégrant cette équation par rapport à θ, on
+obtient le résultat suivant.
+
+     Théorème 4.1: Existence d’un estimateur efficace
+  Soit (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle paramétrique régulier avec Θ ⊆ R ouvert. Il existe un
+  estimateur efficace T ∗ de θ si et seulement si
+                                                                   
+                               pθ (z) = h(z) exp A(θ)T ∗ (z) + B(θ) ,
+
+  où θ 7→ A(θ) et θ 7→ B(θ) sont différentiables.
+
+    Un modèle de cette forme est une famille exponentielle, au sens de l’Exercice 3 (PC2). La condi-
+tion Eθ [∇θ ℓ(θ, Z)] = 0 impose alors B ′ (θ) = −θA′ (θ), de sorte que l’équation de vraisemblance
+s’écrit
+                               0 = ∇θ ℓ(θ, Z) = A′ (θ){T ∗ (Z) − θ} ,
+ce qui montre que T ∗ (Z) est solution des équations de vraisemblance : dans une famille exponen-
+tielle, l’estimateur efficace, lorsqu’il existe, est l’estimateur du maximum de vraisemblance.
+
+Estimateur à rétrécissement
+    Le biais peut-il réduire l’erreur quadratique ? L’Exemple 1.8 l’a montré sur un cas particulier ;
+la famille suivante le montre en général.
+    Soient Z une observation d’un modèle Z, Z, {Pθ , θ ∈ Θ} , g : Θ → R, et T (Z) un estimateur
+                                                               
+
+sans biais de g(θ), de carré intégrable. Pour γ > 0, considérons Tγ (Z) := γ T (Z). Son biais et sa
+variance valent
+
+          b(θ, Tγ ) = γ Eθ [T (Z)] − g(θ) = (γ − 1)g(θ) ,           Varθ (Tγ (Z)) = γ 2 Varθ (T (Z)) ,
+
+de sorte que, en posant υ(θ) := Varθ (T (Z)), la décomposition biais-variance donne
+
+                                   R(θ, Tγ ) = (γ − 1)2 {g(θ)}2 + γ 2 υ(θ) .                                   (17)
+4. LES COMPLÉMENTS                                                                                     47
+
+    Si γ > 1, alors R(θ, Tγ ) > υ(θ) = R(θ, T ) pour tout θ : l’estimateur Tγ est inadmissible, battu
+par T lui-même. Seules les valeurs γ ∈ [0, 1] sont intéressantes ; on parle alors d’estimateur à
+rétrécissement.
+    Deux cas se présentent. Si {g(θ)}2 ≤ υ(θ) pour tout θ ∈ Θ, alors Tγ est préférable à T pour
+tout γ ∈ [0, 1] : un estimateur biaisé est donc préférable à un estimateur sans biais. Si au contraire
+{g(θ)}2 > υ(θ), l’inégalité R(θ, Tγ ) ≤ R(θ, T ) = υ(θ) se réécrit, à partir de (17),
+
+                                  (1 − γ)2 {g(θ)}2 ≤ (1 − γ 2 )υ(θ) ,
+
+soit, pour γ < 1, après division par 1 − γ > 0, (1 − γ){g(θ)}2 ≤ (1 + γ)υ(θ), c’est-à-dire
+
+                                                     {g(θ)}2 − υ(θ)
+                                   γ ≥ γmin (θ) :=                  .
+                                                     {g(θ)}2 + υ(θ)
+
+Le rétrécissement n’améliore alors le risque que s’il n’est pas trop prononcé, et le seuil dépend du
+paramètre, donc n’est pas calculable en pratique.
+
+Le paramètre de translation : quatre lois de bruit
+   L’Exemple 1.1 a comparé les trois estimateurs du paramètre de translation pour deux lois de
+bruit. Voici les deux autres cas simulés, qui complètent le tableau.
+
+
+
+
+ À gauche, un bruit uniforme de densité p(x) = 1[−1/2,1/2] (x) ; à droite, un bruit de Cauchy de densité
+  p(x) = 1/(π(1 + x2 )). Mêmes conventions que pour l’Exemple 1.1 : m = 1000 répétitions, n = 100
+                                   observations, paramètre θ = 0.
+
+    Pour le bruit uniforme, dont la variance vaut 1/12, la moyenne empirique a une variance
+1/(12n) et la médiane empirique une variance asymptotique 1/(4np(0)2 ) = 1/(4n) : la moyenne
+l’emporte, mais c’est en réalité la demi-somme des extrêmes qui est de loin la meilleure, avec une
+variance d’ordre n−2 – le même phénomène que dans le modèle uniforme de l’Exemple 1.9, et
+pour la même raison, l’absence de régularité du modèle. Pour le bruit de Cauchy, ni la moyenne
+empirique ni la demi-somme des extrêmes n’ont d’espérance, encore moins de variance : la moyenne
+empirique de variables de Cauchy indépendantes suit la même loi de Cauchy quel que soit n, et
+n’apporte donc aucune précision supplémentaire (chapitre 2, Section 4). La médiane empirique,
+elle, reste un estimateur raisonnable. Les valeurs de variance annoncées pour la médiane sont,
+comme précédemment, des variances asymptotiques et non des variances exactes à n fini.
+

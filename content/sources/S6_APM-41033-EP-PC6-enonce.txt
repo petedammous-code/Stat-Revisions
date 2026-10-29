@@ -1,0 +1,341 @@
+Ecole Polytechnique, promotion 2025                                      PC-6 Cours APM 41033 EP
+
+
+Exercice 1 ((*) Intervalles de confiance asymptotiques pour la loi exponentielle).
+Soit une suite de n-échantillons du modèle statistique
+
+                               R+      +                         +
+                                                                     
+                                ⋆ , B(R⋆ ), {pθ · Leb, θ ∈ Θ := R⋆ }
+
+où (modèle exponentiel)
+                                      pθ : x 7→ θ exp(−θx)1R+ (x).
+On rappelle que
+                                1                  2                             20
+                                          Eθ X 2 = 2 ,           Varθ (X 2 ) =
+                                             
+                     Eθ [X] =     ,                                                 .
+                                θ                 θ                              θ4
+                                                    (1)    (2)
+   1. Construire les estimateurs de moments θ̂n et θ̂n associés aux fonctions T1 (x) = x et
+      T2 (x) = x2 .
+                                                                        (i)
+   2. Montrer que, pour i = 1, 2, les suites d’estimateurs {θ̂n , n ∈ N} sont consistantes
+      et asymptotiquement normales. Quel estimateur semble préférable d’un point de vue
+      asymptotique ?
+   3. La loi exponentielle est un exemple de loi dans la famille dite exponentielle (voir PC2)
+      i.e. sa densité est de la forme
+
+                                        x 7→ h(x) exp(T (x)θ − A(θ))
+                                                                                    (1)
+      où ici T (x) = −x et A(θ) = − ln θ. Nous avons établi en PC2 que θ̂n était aussi l’esti-
+      mateur MV. Calculer la (matrice d’)information de Fisher de la loi d’une observation.
+                                                                   (1)
+      Comment se compare-t-elle à la variance asymptotique de θ̂n ?
+   4. Proposer trois façons de construire des intervalles de confiance asymptotiques de ni-
+      veau 1 − α à l’aide de l’estimateur identifié à la question précédente : on envisagera
+      une méthode exploitant Slutsky, une méthode exploitant la méthode-δ (technique de
+      stabilisation de la variance) et une méthode qui s’avère exploitable dans ce cas précis.
+      Voir la figure 1.
+
+
+
+
+Figure 1 – Exercice 1. Les intervalles de confiance asymptotiques sont de la forme
+   (1)        (1)                                                                      √
+[θ̂n yinf , θ̂n ysup ]. On trace les intervalles [yinf , ysup ] en fonction de z1−α/2 / n ∈ [0, 0.25].
+On a noté z1−α/2 le quantile d’ordre 1 − α/2 d’une loi N (0, 1).
+                                                    .
+
+
+
+
+                                                                                              Page 1
+Ecole Polytechnique, promotion 2025                                   PC-6 Cours APM 41033 EP
+
+
+Exercice 2 ((*) Statistiques asymptotiques pour le modèle non régulier de Pareto
+translaté). La loi de Pareto est couramment utilisée pour modéliser des variables à queues
+lourdes. Cette loi a pour densité
+
+                x 7→ pθ (x) = η αη x−(η+1) 1[α,+∞[ (x) ,   θ := (α, η) ∈ R+    +
+                                                                          ∗ × R∗ ,
+
+par rapport à la mesure de Lebesgue. On rappelle que
+                                 η                                η
+                     Eθ [X] =       α,        Varθ (X) =                    α2 ;
+                                η−1                        (η − 1)2 (η − 2)
+
+de plus, sous Pθ , ln(X1 /α) ∼ E(η) ; l’espérance et la variance d’une v.a. E(η) sont 1/η et 1/η 2 .
+    Soit une suite de n-échantillons, d’un modèle (R, B(R), {pθ · Leb, θ ∈ Θ := R+           +
+                                                                                        ∗ × R∗ }).
+Dans la première partie de l’exercice, on suppose α connu. On peut alors vérifier que le modèle
+est régulier.
+   1. Déterminer l’estimateur η̂n du maximum de vraisemblance de η.
+   2. Montrer que la suite d’estimateurs {η̂n , n ∈ N} est consistante.
+   3. Montrer que la suite d’estimateurs {η̂n , n ∈ N} est asymptotiquement normale.
+   4. Construire un intervalle de confiance de probabilité de couverture asymptotique 1 − ρ
+      pour le paramètre η.
+On suppose maintenant que α est aussi un paramètre inconnu.
+   5. Déterminer l’estimateur du maximum de vraisemblance de (α, η) ; on le notera (α̂n , η̂n ).
+   6. Montrer que, pour tout θ = (α, η), nous avons
+                                                nη
+                                                α
+                              Pn,θ (α̂n > y) =       ,           ∀y ≥ α.
+                                                y
+
+      Déterminer la moyenne et la variance de α̂n (on prendra n suffisamment grand) sous
+      Pn,θ . En déduire l’erreur quadratique de cet estimateur et en donner un équivalent
+      lorsque n → ∞ ; commenter.
+   7. Montrer que {α̂n , n ≥ 1} est une suite d’estimateurs consistante pour α. En déduire que
+      {η̂n , n ≥ 1} est une suite d’estimateurs consistante pour η.
+   8. Déterminer la loi de nη ln(α̂n /α) sous Pn,θ . En déduire une fonction pivotale asymp-
+      totique pour α. Construire un intervalle de confiance de probabilité de couverture
+      asymptotique (1 − β) du paramètre α.
+
+
+Exercice 3 ((*) Non unicité d’une suite de tests consistante). Soit Θ un ouvert de
+R et θ0 ∈ Θ. On souhaite tester
+
+                                   H0 : θ = θ0 ,     H1 : θ > θ0
+
+On dispose d’une suite de n-échantillons du modèle (X, X , {Qθ , θ ∈ Θ}). Le modèle statistique
+est un modèle de translation : soit q · dLeb une loi sur R, on considère la famille de densités
+
+
+
+
+                                                                                             Page 2
+Ecole Polytechnique, promotion 2025                                            PC-6 Cours APM 41033 EP
+
+
+qθ : x 7→ q(x − θ). On suppose de plus la densité q symétrique par rapport à l’origine, continue
+et telle que q(0) > 0 1 et de variance σq2 inconnue. On définit les statistiques
+
+                                √                            √ (X̄n − θ0 )
+                                             
+                                            1
+                       Mn := 2 n Bn −           ,     Tn := n              ,
+                                            2                       Sn
+où Bn , X̄n et Sn2 sont définis par
+                        n                                 n                         n
+                    1X                                  1X                       1X
+            Bn :=      1{Xk ≥θ0 } ,            X̄n :=      Xk ,         Sn2 :=      (Xk − X̄n )2 .
+                    n                                   n                        n
+                      k=1                                k=1                      k=1
+
+On note Pn,θ := Q⊗n
+                 θ .
+   1. Montrer que l’on peut choisir une suite {tn , n ∈ N} de telle sorte que la suite de tests
+      ϕn,1 := 1{Mn ≥tn } soit de niveau asymptotique α et soit consistante, i.e. pour tout θ > θ0 ,
+      lim inf n Pn,θ (ϕn,1 = 1) = 1. On pourra considérer les étapes suivantes
+        — Proposer une valeur de tn garantissant un test de niveau asymptotique α.
+        — Pour θ > θ0 , exprimer l’espérance et la variance de la v.a. 1{Xk ≥θ0 } sous Pn,θ , à
+            l’aide de θ0 et de la fonction de répartition F de la loi q. Observer le signe de
+            Pn,θ (Xk ≥ θ0 ) − 1/2.
+        — Vérifier la consistance de la suite de tests.
+   2. Construire une suite de tests {ϕn,2 , n ∈ N} basée sur la statistique de test Tn de niveau
+      asymptotique α et consistante.
+Il n’y a donc pas unicité d’une suite de tests consistante pour un jeu d’hypothèses donnée.
+Nous verrons en PC7 une façon de comparer ces tests.
+
+
+Exercice 4 ((*) Statistique asymptotique dans un modèle de Poisson). Soit une
+suite de n-échantillons du modèle statistique (N, P(N), {pθ · µ, θ ∈ Θ := R+
+                                                                             ⋆ }) où (modèle de
+Poisson)
+                                                θk
+                                      pθ : k 7→    exp(−θ),
+                                                k!
+et µ est la mesure de comptage sur N. On pose X n := n−1 ni=1 Xi .
+                                                              P
+
+   1. Montrer que la suite {X n , n ∈ N} est une suite d’estimateurs de θ asymptotiquement
+      normale.
+   2. On cherche à estimer la probabilité g(θ) = Pn,θ (X1 = 0) = exp(−θ). Montrer que
+      {exp(−X̄n ), n ≥ 0} est une suite consistante et asymptotiquement normale d’estima-
+      teurs de g.
+   3. Construire un intervalle de confiance asymptotique pour g.
+
+
+Exercice 5 ((*) LGN faible et limite de série). Soit g : R → R une fonction continue
+et bornée. Montrer que
+                              ∞
+                                   k (nλ)k
+                              X    
+                          −nλ
+                        e       g            →n→∞ g(λ) .
+                                   n    k!
+                                         k=0
+    1. ces conditions entrainent que la médiane est unique et vaut zero, et que la fonction de répartition F est
+strictement croissante dans un voisinage de 0.
+
+
+                                                                                                         Page 3
+Ecole Polytechnique, promotion 2025                                                       PC-6 Cours APM 41033 EP
+
+
+Exercice 6 ((**) Estimateur de Hodges). Soit une suite de n-échantillons du modèle
+statistique (R, B(R), {pθ · Leb, θ ∈ Θ := R}) où (modèle gaussien variance connue)
+                                             1
+                                  pθ : x 7→ √ exp(−0.5(x − θ)2 ).
+                                             2π
+  1. Montrer que l’estimateur du maximum de vraisemblance de θ est asymptotiquement
+     normal.
+  2. Soit un réel b ̸= 1 et une suite {an , n ∈ N} de nombres positifs tels que limn→∞ an = 0
+                 √
+     et limn→∞ nan = ∞. On considère la suite d’estimateurs :
+
+                                   θ̃n = X n 1{|X n |≥an } + bX n 1{|X n |<an }
+
+     où X n := n−1 ni=1 Xi . Montrer que cette suite d’estimateurs est asymptotiquement
+                    P
+     normale ; on distinguera le cas θ = 0 et θ ̸= 0.
+  3. Commenter. Voir la figure 2.
+
+                              9
+                                                                            n=100
+                              8                                             n=250
+                                                                            n=500
+                                                                            y=1
+                              7
+
+                              6
+
+                              5
+
+                              4
+
+                              3
+
+                              2
+
+                              1
+
+                              0
+                              -0.8    -0.6   -0.4   -0.2   0   0.2   0.4   0.6      0.8
+
+
+
+
+Figure 2 – Exercice 6. La figure 2 montre   le comportement   de l’erreur quadratique (multi-
+                                                     2 
+pliée par n) de cet estimateur : θ 7→ nEn,θ θ̃n − θ     . On a pris an = n−1/4 et b = 0.25. On
+observera la forte oscillation au voisinage
+                                    h       de 0. Pour l’estimateur du maximum de vraisem-
+                                             2 i
+blance, la même quantité θ 7→ nEθ X n − θ       est constante et vaut 1.
+
+
+
+
+Exercice 7 ((***) Suite consistante d’estimateurs, racines des équations de vrai-
+semblance). Soit un modèle statistique (X, X , {Qθ := pθ · µ, θ ∈ Θ}) où µ est une mesure
+σ-finie sur X , Θ est un intervalle ouvert de R et la densité pθ vérifie
+Ha pour tout x ∈ X, θ 7→ pθ (x) est continûment différentiable sur Θ ; et pour tout x ∈ X et
+    θ ∈ Θ, pθ (x) > 0.
+                        R
+Hb pour tout θ, θ0 ∈ Θ, | log(pθ0 (x)/pθ (x))| pθ0 (x)dµ(x) < ∞.
+Hc le modèle est identifiable.
+
+
+
+
+                                                                                                           Page 4
+Ecole Polytechnique, promotion 2025                                                   PC-6 Cours APM 41033 EP
+
+
+Soit une suite de n-échantillons de ce modèle statistique. Pour tout n ∈ N∗ , la log-vraisemblance
+de l’observation Z = (X1 , . . . , Xn ) est donnée par :
+                                                               n
+                                                               X
+                                 ℓn (θ; X1 , . . . , Xn ) :=         log pθ (Xi ) .
+                                                               i=1
+
+Les équations de vraisemblance associées sont données par
+                                           n
+                                           X ∂ log pθ (Xi )
+                                                                     = 0.                                        (1)
+                                                      ∂θ
+                                           i=1
+
+L’objectif de cet exercice est d’établir l’existence d’une suite consistante d’estimateurs {θ̃n , n ≥
+1} de θ, et telle que pour tout n assez grand, θ̃n est une racine des equations de vraisemblance
+-(1).
+    Soient θ0 ∈ Θ et ε > 0 tels que ]θ0 − ε, θ0 + ε[ ⊂ Θ.
+   1. On pose
+
+      Sn = {x = (x1 , . . . , xn ) ∈ Xn : ℓn (θ0 , x) > ℓn (θ0 − ε, x)           et     ℓn (θ0 , x) > ℓn (θ0 + ε, x)} .
+
+      Montrer que limn→∞ Pn,θ0 ((X1 , . . . , Xn ) ∈ Sn ) = 1.
+   2. Montrer que si x ∈ Sn , il existe θ̃n ∈ ]θ0 − ε, θ0 + ε[ tel que
+
+                                                  ∂ ℓn
+                                                       (θ̃n , x) = 0 .
+                                                   ∂θ
+
+   3. Soit {θ̂n , n ∈ N} une suite consistante d’estimateurs de θ. On définit la suite {θ̃n , n ≥ 0}
+      par
+             
+                  la (ou une des) racine(s) de θ 7→ ∂θ ℓn (θ, X1 , · · · , Xn ), la plus proche de θ̂n si elle existe
+      θ̃n :=
+                 θ̂n                                                                                   sinon
+
+      Montrer que {θ̃n , n ≥ 1} est une suite consistante d’estimateurs de θ.
+Prenons ΘR:= ]0, 1[. Soient f0 et f1 deux densités par rapport à la mesure de Lebesgue sur R
+telles que |f0 (x) − f1 (x)|dx > 0. On considère
+
+                                   pθ (x) := (1 − θ)f0 (x) + θf1 (x) .
+
+   4. Interpréter ce modèle.
+   5. Écrire les équations de vraisemblance.
+   6. Montrer l’existence d’une suite consistante d’estimateurs {θ̃n , n ∈ N} de θ telle que pour
+      n assez grand, θ̃n est une racine des eqs. de vraisemblance.
+   7. (Question subsidiaire !) un algorithme de recherche de racines ? Voir la figure 3.
+
+
+
+
+                                                                                                             Page 5
+Ecole Polytechnique, promotion 2025                                                                                  PC-6 Cours APM 41033 EP
+
+
+
+
+                 Mélange de gaussiennes                      Histogramme (non normalise) des observations                          Suite produite par algo MM
+   0.2                                                50                                                             0.5
+
+  0.18                                                45
+
+  0.16                                                40                                                            0.45
+
+  0.14                                                35
+
+  0.12                                                30                                                             0.4
+
+   0.1                                                25
+
+  0.08                                                20                                                            0.35
+
+  0.06                                                15
+
+  0.04                                                10                                                             0.3
+
+  0.02                                                 5
+
+     0                                                 0                                                            0.25
+      -8   -6   -4    -2     0      2     4   6   8     -8        -6      -4      -2      0       2         4   6          0   2        4         6        8    10    12
+
+
+
+
+Figure 3 – Exercice 7. On prend fi ≡ N (µi , σi2 ) ; θ⋆ = 0.3, µ0 = −2, µ1 = 3, σ02 = 2,
+σ12 = 1, n = 500. (gauche) densité mélange x 7→ pθ⋆ (x) ; (centre) histogramme non normalisé
+de n = 500 observations ; (droite) En rouge, une trajectoire de l’algorithme Expectation
+Maximization, initialisée en θ1 = 0.5 ; en bleu, la valeur θ⋆ .
+
+
+
+
+                                                                                                                                                                     Page 6
+

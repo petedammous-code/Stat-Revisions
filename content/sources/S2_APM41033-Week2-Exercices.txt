@@ -1,0 +1,1298 @@
+3. LES EXERCICES                                                                                          33
+
+3     Les exercices
+    Leb et Leb⊗n désignent respectivement la mesure de Lebesgue sur R et celle sur Rn . N (µ, σ 2 )
+désigne la loi Gaussienne de moyenne µ et de variance σ 2 . Par convention, les vecteurs sont des
+vecteurs colonne ; et aT désigne la transposée de a.
+
+
+3.1     Questions courtes : avez-vous assimilé le chapitre ?
+    Avant d’aborder les exercices, vérifiez votre compréhension du chapitre en répondant – de tête,
+sans revenir au texte – aux questions suivantes. En cas d’hésitation, la référence entre parenthèses
+renvoie au passage concerné.
+   1. Soit (X1 , . . . , Xn ) un n-échantillon du modèle exponentiel E(θ) , θ ∈ R∗+ . Parmi X1 , X̄n ,
+                                                                    
+
+      θ et la constante 1, lesquels sont des estimateurs de θ ? Lesquels sont de bons estimateurs ?
+      (Exemple 1.1)
+    2. Décrire en une phrase le principe de la méthode des moments. Un modèle admet-il un seul
+       estimateur des moments ? (Méthode 1.1, Exemple 1.4)
+    3. Pour le modèle uniforme sur [a, b] avec a < b inconnus, combien de fonctions de moment
+       faut-il, et pourquoi ? L’intervalle [ân , b̂n ] obtenu contient-il toujours toutes les observations ?
+       (Exemple 1.5)
+    4. Parmi les qualificatifs « estimateur des moments », « Z-estimateur » et « M -estimateur »,
+       lesquels s’appliquent à la médiane empirique ? (Exemple 1.6, Exemple 1.15)
+    5. Vrai ou faux : la vraisemblance dépend du choix de la mesure dominante ; l’estimateur du
+       maximum de vraisemblance aussi. (Définition 1.4)
+    6. Vrai ou faux : l’estimateur du maximum de vraisemblance existe toujours et est unique.
+       (Exemple 1.12, Exemple 1.13)
+    7. Pour le modèle uniforme U ([0, θ]), comment détermine-t-on l’estimateur du maximum de
+       vraisemblance ? Pourquoi ne faut-il pas écrire l’équation de vraisemblance ? (Exemple 1.11,
+       Méthode 1.2)
+    8. Vrai ou faux : toute racine des équations de vraisemblance est un estimateur du maximum
+       de vraisemblance. (Définition 1.6)
+    9. Dans le modèle gaussien, l’estimateur du maximum de vraisemblance de σ 2 est la variance
+       empirique non corrigée. Quel est celui de σ ? Quel résultat invoque-t-on ? (Proposition 1.2)
+ 10. Pourquoi KL(P0 , P1 ) ≥ 0 ? Vers quoi converge la log-vraisemblance normalisée ℓn (ϑ) sous
+     Pθ⋆ , et pourquoi la limite atteint-elle son maximum en θ⋆ seulement lorsque le modèle est
+     identifiable ? (Théorème 1.1, Proposition 1.3)
+
+
+3.2     Groupe 1 — Exercices traités en petite classe
+   Les trois exercices de ce groupe sont traités en petite classe ; ils mettent en œuvre les deux
+méthodes de construction du chapitre, sur le modèle de régression linéaire gaussienne, sur un
+modèle de mélange et sur les familles exponentielles (Section 1.5).
+
+Objectif : Modèle linéaire gaussien
+Cet exercice poursuit l’Exercice 4 (PC1), où le modèle de régression linéaire gaussienne a été
+construit et où un estimateur des coefficients a été proposé par moindres carrés : on établit ici que
+cet estimateur est celui du maximum de vraisemblance, on détermine sa loi et celle de l’estimateur
+de la variance. Les questions 5 et 6 reposent sur le théorème de Cochran, énoncé et démontré au
+chapitre 1 (Théorème 1.1) ; la question 7 utilise la notion d’intervalle de confiance, définie dans les
+outils de ce chapitre (Définition 2.2).
+34                                                              CHAPITRE 2. ESTIMATION PONCTUELLE
+
+Exercice 1 (Modèle linéaire gaussien (⋆⋆)). Soient x1 , . . . , xn des réels. On considère le modèle statistique
+                      (                  n
+                                                                                                 )!
+            n     n              ⊗n
+                                        O                       2                  2      2    ∗
+           R , B(R ), pθ · dLeb :=          N (β1 + β2 xi , σ ) : θ := (β1 , β2 , σ ) ∈ R × R+        .
+                                               i=1
+
+On note 1 et x les vecteurs de R définis par 1 := (1, . . . , 1)T et x := (x1 , . . . , xn )T . Dans la suite, on
+                                       n
+
+suppose qu’il existe au moins deux indices i ̸= j tels que xi ̸= xj . Nous utiliserons les notations matricielles
+suivantes
+                           Y1
+                          
+                                                                                  
+                                                                                  β1
+                    Y :=  ...  ∈ Rn ,     X := 1 x ∈ Rn×2 ,                         ∈ R2 .
+                                                        
+                                                                          β :=
+                          
+                                                                                  β2
+                           Yn
+     1. Montrer que la matrice XT X est inversible.
+        Remarque : Puisque uT XT Xu ≥ 0 pour tout u ∈ R2 , on en déduit que la matrice est définie positive.
+     2. Déterminer les estimateurs du maximum de vraisemblance (β̂1 , β̂2 , σ̂ 2 ) de (β1 , β2 , σ 2 ).
+     3. Déterminer la loi de (β̂1 , β̂2 ) sous pθ · dLeb⊗n .
+     4. Montrer que, sous pθ · dLeb⊗n , β̂1 et β̂2 sont indépendants si et seulement si n−1 n
+                                                                                                 P
+                                                                                                   i=1 xi = 0.
+        Remarque : le modèle dépend de x1 , · · · , xn via les quantités β1 +β2 xi pour tout 1 ≤ i ≤ n soit encore,
+        les lignes de Xβ. Sans "pré-traitement", il n’y a pas de raisons que n−1 n
+                                                                                        P
+                                                                                          i=1 xi = 0. Néanmoins,
+        en écrivant
+                                                  n
+                                                        !                    n
+                                                 X                          X
+                    β1 1 + β2 x = β1 + β2 n−1        xi 1 + β2 (x − n−1        xi 1)
+                                                     i=1                      i=1
+                                                                                     n
+                                                                                                        1T x
+                                                                
+                                                               β̃1                  X
+                                                                      x̃ = x − n−1
+                                                     
+                                = β̃1 1 + β2 x̃ = 1        x̃                              xi 1 = x −        1
+                                                                β2                                      1T 1
+                                                                                     i=1
+
+                                                                                2
+        on peut paramétrer le modèle de façon équivalente par (β̃1 , β2 , σ ), tout en introduisant une matrice
+        d’expérience 1 x̃ dont les colonnes sont orthogonales (c’est le sens de n−1 n
+                                                                                             P
+                                                                                                i=1 i = 0).
+                                                                                                   x̃
+     5. Déterminer la loi de σ̂ 2 sous pθ · dLeb⊗n .
+     6. Montrer que sous pθ · dLeb⊗n , σ̂ 2 et (β̂1 , β̂2 ) sont indépendants.
+     7. Soit α ∈ ]0, 1[. Proposer un intervalle de confiance de niveau (1 − α) pour σ 2 . (La notion d’intervalle
+        de confiance est définie a minima dans les outils de ce chapitre, Définition 2.2 ; elle est développée
+        au chapitre suivant.)
+Corrigé : page 39.                                                                                               ♢
+
+
+Objectif : Modèles de mélanges uniformes, estimation
+Cet exercice compare, sur un modèle de mélange de deux lois uniformes, un estimateur du maxi-
+mum de vraisemblance et un estimateur des moments (Méthode 1.1 et Méthode 1.2) : les deux
+méthodes conduisent à des estimateurs différents, dont les analyses numériques de l’énoncé com-
+parent le biais et la dispersion.
+Exercice 2 (Estimation d’un coefficient de mélange (⋆)). Soit un n-échantillon (X1 , . . . , Xn ) du modèle
+(R, B(R), {fθ · Leb, θ ∈ ]0, 1[}) où
+                                               θ                (1 − θ)
+                                    fθ (x) =     1{[0,a]} (x) +         1{[0,b]} (x).
+                                               a                   b
+On suppose que a et b sont connus et que 0 < a < b. La fonction de répartition associée à la densité fθ
+vaut                                   
+                                       
+                                              0          x≤0
+                                        θ + (1−θ) x 0 ≤ x ≤ a
+                                       
+                                           a      b
+                                  x 7→
+                                        θ + (1−θ)
+                                       
+                                                 b
+                                                     x    a≤x≤b
+                                                1           x≥b
+                                       
+
+   1. Exprimer la fonction de vraisemblance à l’aide de Na := ni=1 1Xi ∈[0,a] le nombre d’observations à
+                                                             P
+      valeur dans [0, a].
+3. LES EXERCICES                                                                                                                                                                           35
+
+                                                                                                                           (1)
+    2. En déduire l’estimateur du maximum de vraisemblance de θ, noté θ̂n .
+                                                                                                                                                   (2)
+    3. En utilisant la méthode des moments (d’ordre 1), proposer un estimateur θ̂n de θ.
+   ▶ Analyses numériques. Pour les analyses numériques ci-dessous, on se donne des mesures x1 , . . .,
+xn obtenues comme la réalisation de tirages indépendants sous la loi f0.2 dans le cas a = 1 et b = 3.
+
+                                                                                                                           0.1
+   0.4                                                     0.4                                                                                                                 n=10
+                                       n=10                                                          n=10                 0.09                                                 n=200
+                                       n=200                                                         n=200
+  0.35                                                     0.2
+                                                                                                     y =0                 0.08
+
+   0.3                                                       0                                                            0.07
+
+  0.25                                                     -0.2                                                           0.06
+
+                                                                                                                          0.05
+   0.2                                                     -0.4
+
+                                                                                                                          0.04
+  0.15                                                     -0.6
+                                                                                                                          0.03
+   0.1                                                     -0.8
+                                                                                                                          0.02
+
+  0.05                                                       -1                                                           0.01
+
+     0                                                     -1.2                                                              0
+         0   0.2    0.4   0.6    0.8           1                  0      0.2   0.4   0.6       0.8           1                   0           0.2          0.4    0.6     0.8           1
+
+
+
+
+Figure 1 – [gauche] Tracé de deux réalisations de la fonction de vraisemblance θ 7→
+L(θ, X1 , · · · , Xn ) : une pour n = 10 puis une pour n = 200. [centre] Tracé de deux réalisa-
+tions de la fonction (aléatoire) dont l’estimateur des moments est un zero : une dans le cas n = 10
+                                                                              (1)
+et l’autre dans le cas n = 200. [droite] Evolution du biais de l’estimateur θ̂n en fonction de θ.
+Dans le cas n = 10 et n = 200.
+                                                                                                             (1)    (2)
+     Sur la figure 2, on visualise la loi de différents estimateurs : θ̂n , θ̂n et
+
+                                                                 b − 2n−1 n
+                                                                          P
+                                      b(Na /n) − a                            i=1 Xi
+                              θ̂n :=                ,     θ̃n :=                     .
+                                          b−a                          b−a
+
+
+
+                   1.2
+                                                                                       0.4
+                      1
+                                                                                     0.35
+                   0.8
+                                                                                       0.3
+                   0.6
+
+                   0.4                                                               0.25
+
+                   0.2                                                                 0.2
+
+                      0
+                                                                                     0.15
+                   -0.2
+                                                                                       0.1
+                   -0.4
+                                                                                     0.05
+                   -0.6
+                                                                                           0
+                   -0.8
+
+                          MV-1         MV-2        Mom-1              Mom-2                     MV-1               MV-2              Mom-1               Mom-2
+
+
+
+
+Figure 2 – Boxplot de la réalisation de N = 5000 estimateurs dans le cas n = 10 (gauche) et
+                                                                           (1)
+n = 200 (droite). Les boxplots MV-1 et MV-2 correspondent resp. à θ̂n et θ̂n ; ceux de Mom-1 et
+                               (2)
+Mom-2 correspondent à θ̃n et θ̂n . On fera attention aux échelles en ordonnées pour comparer les
+schémas de gauche et de droite.
+
+
+
+
+         Illustration / animation : L’estimateur seuillé du mélange prend souvent la valeur
+         0 quand n est petit
+         L’animation accessible par le QR code ci-contre permet de comparer, pour les quatre
+         estimateurs de cet exercice, les boîtes à moustaches obtenues sur des échantillons
+         répétés à mesure que n augmente, et d’observer la fréquence à laquelle l’estimateur                                                                           link
+         seuillé vaut exactement 0.
+
+
+Corrigé : page 41.                                                                                                                                                                         ♢
+36                                                                CHAPITRE 2. ESTIMATION PONCTUELLE
+
+Objectif : modèle exponentiel général
+Cet exercice définit les familles exponentielles, qui contiennent la plupart des modèles usuels, et
+établit pour elles la propriété observée sur les modèles de Bernoulli et de Poisson (Exemples 1.8
+et 1.9) : l’estimateur du maximum de vraisemblance est un estimateur des moments. La dernière
+question fait jouer l’invariance par reparamétrisation (Proposition 1.2). Les questions 2(b) et
+2(c) demandent des outils d’intégration (inégalité de Hölder, dérivation sous le signe intégral par
+convergence dominée).
+Exercice 3 (Famille exponentielle de densités (⋆ ⋆ ⋆)). Beaucoup de lois (dont des usuelles) ont une struc-
+ture particulière pour lesquelles elles sont dites dans la famille exponentielle. Soit (X, X ) un espace me-
+surable (nous prendrons X = Rk ou X = Nk ) et µ une mesure σ-finie sur (X, X ). Soit T : X → R et
+h : X → R+ deux fonctions mesurables.
+    On appelle modèle exponentiel canonique associé au couple (T, h), une famille de lois ayant une
+densité par rapport à µ de la forme
+
+                               x 7→ qη (x) = h(x) exp (ηT (x) − A(η)) ,             x∈X,                          (4)
+
+où A(η) est défini par :                                 Z
+                                     A(η) := log             h(x) exp (ηT (x)) µ(dx) .                            (5)
+
+L’espace des paramètres naturels de la famille canonique associée à (T, h) est l’ensemble
+
+                                           Ξ := {η ∈ R : |A(η)| < ∞} .
+
+Plus généralement on appelle famille exponentielle toute famille de loi de densité
+
+                                     x 7→ pθ (x) = h(x) exp(φ(θ)T (x) − B(θ))
+
+par rapport à une mesure µ σ-finie sur R ou N. Les valeurs admissibles de θ sont les éléments de
+                                         Z
+                          Θ := {θ ∈ R : h(x) exp(φ(θ)T (x)) µ(dx) < ∞}.
+
+     1. Les lois suivantes sont-elles dans la famille exponentielle, et si oui, sont-elles canoniques ?
+         (a) La loi exponentielle de densité
+
+                                                       x 7→ pη (x) = η exp(−ηx)1R+ (x)
+
+             sur X = R ? Si oui, précisez l’espace des paramètres naturels.
+         (b) La loi gaussienne N (η, 1) sur R. Si oui, précisez l’espace des paramètres naturels.
+         (c) Soit α > 0 fixé. La loi de Weibull sur ]0, ∞[ de paramètre d’échelle λ > 0 et de densité
+                                                  α  x α−1
+                                    x 7→ qλ (x) =             exp(−(x/λ)α )      x > 0.
+                                                  λ λ
+             Si oui, précisez l’espace des paramètres naturels.
+         (d) Montrer que la loi de Poisson définit un modèle exponentiel avec
+
+                                   φ(θ) = log(θ),            B(θ) = θ,    T (x) = x,     h(x) = 1/x!.
+
+             Préciser le modèle exponentiel canonique associé.
+         (e) Montrer que la loi binomiale définit un modèle exponentiel avec
+                                                                                                          !
+                                          θ                                                               n
+                        φ(θ) = log                 ,     B(θ) = −n log(1 − θ),     T (x) = x,    h(x) =       .
+                                         1−θ                                                              x
+
+             Préciser le modèle exponentiel canonique associé.
+     2. Nous allons tout d’abord établir certaines propriétés des modèles exponentiels canoniques.
+         (a) Supposons que l’espace des paramètres est ouvert, que A est régulière et que l’on peut permuter
+             dérivée et intégrale. Quelle relation a-t-on entre A′ (η), A′′ (η) et l’espérance et la variance de
+             T (X) sous qη ?
+3. LES EXERCICES                                                                                        37
+
+       (b) Montrer que la fonction η 7→ A(η) est convexe et que l’espace des paramètres naturels est un
+           sous-ensemble convexe de R.
+       (c) On suppose dans la suite que Ξ est un intervalle ouvert. Pour η ∈ Ξ, on pose
+                                                Z
+                                        G(η) := h(x) exp (ηT (x)) µ(dx) .
+
+           Montrer que G est infiniment différentiable sur Ξ et que, pour tout k ∈ N∗ et η ∈ Ξ,
+                                              Z
+                                   G(k) (η) = h(x) T k (x) exp (ηT (x)) µ(dx) .
+
+       (d) Soit (X1 , . . . , Xn ) un n-échantillon du modèle exponentiel canonique associé à (T, h).
+              i. Déterminer l’estimateur des moments associé à la fonction T .
+             ii. Déterminer l’estimateur du maximum de vraisemblance. Que remarque-t-on ?
+   3. Considérons dorénavant le modèle exponentiel général. On supposera que Θ est un intervalle ouvert
+      de R. On suppose que la fonction φ définit un difféomorphisme de Θ sur Ξ l’espace des paramètres
+      naturels associé. On dispose d’un n-échantillon (X1 , . . . , Xn ) du modèle
+
+                                            (X, X , {pθ · µ : θ ∈ Θ}) .
+
+      Déterminer l’estimateur du paramètre θ, solution des équations de vraisemblance [on pensera à
+      utiliser la paramétrisation canonique].
+
+Corrigé : page 44.                                                                                      ♢
+
+
+    En conclusion de l’exercice précédent : (i) les modèles exponentiels s’écrivent sous forme de
+facteurs séparables en la variable x et le paramètre de la famille φ(θ) (ou η dans le modèle ca-
+nonique). (ii) Il n’y a pas unicité de la représentation, y compris du paramètre canonique : on a
+en effet ηT (x) = (λη) (T (x)/λ) pour tout λ ∈ R par exemple. (iii) On a ici présenté une version
+simplifiée de la définition de ces modèles, mais en toute généralité le paramètre du modèle peut être
+vectoriel,
+        Pet  le produit φ(θ)T (x) peut être un produit scalaire entre des fonctions φ, T à valeur dans
+           q
+Rq i.e. j=1 φj (θ)Tj (x). Par exemple, la loi gaussienne Nd (µ, Σ) pour une matrice de covariance
+Σ inversible, a une densité proportionnelle à
+                                                                                 
+                        1                                  1
+                exp − (x − µ)T Σ−1 (x − µ) ∝ exp − (xT Σ−1 x − 2µT Σ−1 x)
+                        2                                  2
+                                                                                     
+                                                           1
+                                                = exp − Tr Σ−1 xxT + µT Σ−1 x
+                                                                         
+                                                           2
+                                                                                     
+                                                           1
+                                                = exp − Σ−1 , xxT + Σ−1 µ, x
+                                                           2
+
+et est donc un exemple de famille exponentielle canonique de dimension q > 1. (iv) Une
+grande partie des modèles utilisés en pratique sont des modèles exponentiels (modèle gaussien, log-
+normal, exponentiel, gamma, Bernoulli, Poisson, etc). Ils sont traités dans le chapitre « Famille
+exponentielle » du polycopié.
+
+3.3    Groupe 2 — Exercices bonus
+Guide de lecture. Les deux exercices qui suivent ne sont pas traités en petite classe. L’exercice
+Durée de vie (⋆⋆) ne demande que les notions du chapitre 1 (modèle statistique, identifiabilité,
+Définition 2) et des calculs sur la loi exponentielle : il montre comment l’observation supplémentaire
+de la cause de chaque panne rend identifiable un modèle qui ne l’était pas, et son corrigé se termine
+par le calcul de l’estimateur du maximum de vraisemblance dans le modèle ainsi enrichi. Vous
+pouvez l’aborder avant même d’avoir lu le chapitre 2. L’exercice Modèle auto-régressif (⋆⋆)
+demande d’écrire la densité d’observations qui ne sont ni indépendantes ni de même loi, à partir
+38                                                          CHAPITRE 2. ESTIMATION PONCTUELLE
+
+des lois conditionnelles successives, puis de maximiser la vraisemblance obtenue ; il suppose acquis
+le calcul de l’estimateur du maximum de vraisemblance du modèle gaussien (Exemple 1.10) et les
+propriétés des vecteurs gaussiens du chapitre 1 (Section 2). Il est préférable de le traiter après
+l’Exercice 1, dont il reprend la démarche de maximisation en deux temps.
+
+Objectif : Modélisation de durées de vie exponentielles
+Exercice 4 (Durée de vie (⋆⋆)). On considère un système ne fonctionnant que si deux machines sont toutes
+les deux en état de marche. On observe les durées de vie des deux machines, que l’on modélise comme des
+lois exponentielles de paramètres λ0 et λ1 , λi > 0 ; et des lois indépendantes.
+     1. Montrer qu’une variable aléatoire X suit la loi exponentielle E(λ) si et seulement si
+
+                                             ∀x > 0 : P(X > x) = exp(−λx).
+
+Le modèle statistique associé à cette expérience est
+
+                            R2+ , B(R2+ ), {Pθ = E(λ0 ) ⊗ E(λ1 ), θ = (λ0 , λ1 ) ∈ (R⋆+ )2 } .
+                                                                                            
+
+     2. Calculer la probabilité pour que le système ne tombe pas en panne avant la date t. En déduire la
+        loi de la durée de vie Z du système. Le système tombe en panne ; calculer la probabilité pour que
+        la panne soit due à une défaillance de la machine 1.
+     3. Soit I = 1 si la panne du système est due à une défaillance de la machine 1, I = 0 sinon. Calculer
+        Pθ (Z > t; I = δ) pour tout t ≥ 0 et δ ∈ {0, 1}. En déduire que Z et I sont indépendantes.
+     4. On dispose de n systèmes identiques et fonctionnant indépendamment les uns des autres dont on
+        observe les durées de vie Z1 , . . . , Zn .
+         (a) Écrire le modèle statistique correspondant. Les paramètres λ0 et λ1 sont-ils identifiables ?
+         (b) Supposons maintenant que l’on observe à la fois les durées de vie des systèmes Z1 , . . . , Zn et
+             les causes de la défaillance correspondantes I1 , . . . , In , Ii ∈ {0, 1}. Écrire le modèle statistique
+             dans ce cas. Les paramètres λ0 et λ1 sont-ils identifiables ?
+Corrigé : page 47.                                                                                                 ♢
+
+
+Objectif : Série temporelle
+Exercice 5 (Modèle auto-régressif (⋆⋆)). Soit θ := (ϕ, σ 2 ) ∈ Θ := R × R⋆+ . On considère l’observation
+Z = (X1 , . . . , Xn ), qui sous le modèle statistique pθ · dLeb⊗n , a la loi suivante : pour tout 1 ≤ k ≤ n, la
+loi conditionnelle de Xk sachant (X1 , · · · , Xk−1 ) est une loi N (ϕ Xk−1 , σ 2 ). Par convention, X0 = 0.
+     1. Écrire le modèle statistique engendré par l’observation Z.
+     2. Déterminer l’estimateur du maximum de vraisemblance de θ = (ϕ, σ 2 ).
+Corrigé : page 49.                                                                                                 ♢
+3. LES EXERCICES                                                                                                            39
+
+3.4     Corrigés des exercices
+    Les corrigés ci-dessous reprennent, en les complétant, ceux distribués avec la feuille de petite
+classe. Les résultats du chapitre 1 (vecteurs gaussiens, théorème de Cochran, loi du χ2 , méthode
+de la fonction muette) sont appelés par un renvoi et ne sont pas redémontrés ; la variable de la
+vraisemblance est notée ϑ, conformément à la convention du chapitre.
+
+   Corrigé de l’exercice 1 – Modèle linéaire gaussien
+                                                                                               Pn
+  On note      Y1 , . . . , Yn les statistiques canoniques, Y = (Y1 , . . . , Yn )T , Ȳ := n−1 i=1 Yi et x̄ :=
+            n
+  n−1 i=1 xi . Le paramètre est θ = (β1 , β2 , σ 2 ) ; la variable de la vraisemblance est notée ϑ =
+        P
+  (b1 , b2 , v) ∈ Θ = R2 × R∗+ , avec b := (b1 , b2 )T . On suppose n ≥ 3 : cette hypothèse, implicite
+  dans l’énoncé, est nécessaire pour que l’estimateur de la variance soit presque sûrement défini
+  (questions 2 et 5).
+  Préliminaire. Sous pθ · Leb⊗n , les Yi sont indépendantes, de lois N (β1 + β2 xi , σ 2 ). La densité
+  de leur loi jointe par rapport à Leb⊗n est le produit des densités (Section 1.7, équation (1)) :
+  pour y = (y1 , . . . , yn )T ,
+                            n                   (y − β − β x )2 
+                            Y         1            i   1    2 i          1               1            2
+                                                                                                         
+  pθ (y1 , . . . , yn ) =         √         exp −                  =             exp   −      ∥y − Xβ∥     .
+                            i=1       2πσ 2            2σ 2          (2πσ 2 )n/2         2σ 2
+
+  Un vecteur dont les coordonnées sont des variables gaussiennes indépendantes est un vecteur
+  gaussien (Lemme 2.1 du chapitre 1) : sous Pθ , Y ∼ N (Xβ, σ 2 In ).
+      1. On a
+                                          Pn                            n              n                   n
+                  n                            x
+                                                                                    X         2
+                                          Pni=1 2i ,
+                                                                        X                                  X
+             T                                                 T
+          X X = Pn                                       det(X X) = n         x2i −         xi        =n         (xi − x̄)2 ,
+                             i=1 xi        i=1 xi                       i=1           i=1                  i=1
+                                                    Pn      2
+                                                                       Pn
+                                                                        2      2
+          la dernière égalité venant de        i=1 (xi − x̄) =     i=1 xi − nx̄ . Ce déterminant est
+          positif, et nul si et seulement si xi = x̄ pour tout i, ce qui est exclu puisque deux
+          des xi sont distincts : il est strictement positif et la matrice est inversible. Comme
+          uT XT Xu = ∥Xu∥2 ≥ 0 pour tout u ∈ R2 , la matrice XT X est symétrique positive ;
+          étant inversible, elle est définie positive. Explicitement,
+                                                             Pn     2
+                                                                           Pn
+                                                                i=1 xi    − i=1 xi
+                                                                                   
+                              T    −1            1
+                          (X X) =             n                  n                   .
+                                         n i=1 (xi − x̄)2 − i=1 xi
+                                           P                   P
+                                                                             n
+
+          La condition « deux xi distincts » signifie que les colonnes 1 et x de X sont linéairement
+          indépendantes : le sous-espace F := Im(X) = Vect(1, x) de Rn est de dimension 2.
+      2. La vraisemblance est Ln (ϑ) = pϑ (Y1 , . . . , Yn ) > 0, et la log-vraisemblance normalisée
+         s’écrit
+                                    1            1
+                          ℓn (ϑ) = − log(2πv) −     ∥Y − Xb∥2 ,               ϑ = (b, v) ∈ R2 × R∗+ .
+                                    2           2nv
+          Elle est différentiable sur Θ, qui est ouvert : on est dans le cas régulier de la Méthode 1.2,
+          et les équations de vraisemblance s’écrivent
+                                   1 T                          ∂ ℓn         1  1
+                 ∇b ℓn (ϑ) =         X (Y − Xb) = 0 ,                (ϑ) = − +       ∥Y − Xb∥2 = 0 .
+                                  nv                             ∂v         2v 2nv 2
+          Plutôt que de résoudre ce système directement, on maximise en deux temps, comme
+          pour le modèle gaussien (Exemple 1.10).
+          Maximisation en b à v fixé. Maximiser ℓn en b revient à minimiser J(b) := ∥Y−Xb∥2 sur
+          R2 . Cette fonction est quadratique, de gradient ∇J(b) = −2XT (Y − Xb) et de matrice
+40                                                       CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+        hessienne 2XT X, définie positive d’après la question 1 : elle est strictement convexe et
+        admet un unique minimum, caractérisé par les équations normales XT X b = XT Y, soit
+                                                  
+                                                   β̂
+                                          β̂ := 1 = (XT X)−1 XT Y .
+                                                   β̂2
+                                                                                                         P 2
+        Les équations normales s’écrivent nb1 + b2 i xi =                      i Yi et b1
+                                                                  P         P              P
+                                                                                              i x i + b2  i xi =
+                    ; la première  donne                      et, en  reportant  dans  la seconde,
+        P
+          i x i Y i                      b 1 =  Ȳ  −  b 2 x̄
+                                     Pn
+                                            (x − x̄)(Yi − Ȳ )
+                               β̂2 = i=1 Pn i                 2
+                                                                    ,     β̂1 = Ȳ − β̂2 x̄ .
+                                             i=1 (xi − x̄)
+
+        Posons P := X(XT X)−1 XT . Cette matrice est symétrique, vérifie P 2 = P et P X = X,
+        et son image est F : c’est la matrice de la projection orthogonale sur F , et In −P celle de
+        la projection orthogonale sur F ⊥ , de dimension n − 2. Ainsi Xβ̂ = P Y est la projection
+        orthogonale de Y sur F , Y − Xβ̂ = (In − P )Y et J(β̂) = ∥(In − P )Y∥2 .
+        Maximisation en v. Posons S := n−1 ∥(In − P )Y∥2 . La fonction v 7→ ℓn (β̂, v) =
+        − 12 log(2πv)−S/(2v) a pour dérivée (S −v)/(2v 2 ). Si S > 0, cette dérivée est strictement
+        positive pour v < S et strictement négative pour v > S : le maximum est atteint en
+        v = S seulement. Pour tout (b, v) ∈ Θ, on a alors ℓn (b, v) ≤ ℓn (β̂, v) ≤ ℓn (β̂, S), avec
+        égalité si et seulement si (b, v) = (β̂, S). L’estimateur du maximum de vraisemblance
+        existe donc, est unique, et vaut
+                                                  n
+                                               1X                           1          1
+        (β̂1 , β̂2 , σ̂ 2 )   avec   σ̂ 2 :=         (Yi − β̂1 − β̂2 xi )2 = ∥Y−Xβ̂∥2 = ∥(In −P )Y∥2 .
+                                               n i=1                        n          n
+
+        Si S = 0, la fonction v 7→ ℓn (β̂, v) tend vers +∞ en 0 et la vraisemblance n’a pas de
+        maximum. On verra à la question 5 que S > 0 Pθ -presque sûrement dès que n ≥ 3 ;
+        pour n = 2, en revanche, F = R2 , P = I2 et S = 0 toujours : l’estimateur du maximum
+        de vraisemblance n’est pas défini.
+        L’estimateur (β̂1 , β̂2 ) est l’estimateur des moindres carrés proposé dans l’Exercice 4
+        (PC1) : dans le modèle gaussien, moindres carrés et maximum de vraisemblance
+        coïncident pour les coefficients de régression (cas général dans les compléments,
+        Exemple 4.7). L’estimateur du maximum de vraisemblance de σ 2 divise la somme des
+        carrés des résidus par n, et non par n − 2.
+     3. On a β̂ = AY avec A := (XT X)−1 XT ∈ R2×n . Sous Pθ , Y ∼ N (Xβ, σ 2 In ), et l’image
+        d’un vecteur gaussien par une application linéaire est un vecteur gaussien (Proposi-
+        tion 2.4 du chapitre 1) :
+
+                            β̂ ∼ N AXβ, σ 2 AAT = N β, σ 2 (XT X)−1 ,
+                                                                     
+
+        puisque AX = I2 et AAT = (XT X)−1 XT X(XT X)−1 = (XT X)−1 . En particulier
+        Eθ [β̂] = β : l’estimateur est sans biais. Avec l’expression de (XT X)−1 obtenue à la
+        question 1,
+                                             Pn
+                                         σ 2 i=1 x2i                                 σ2
+                       Varθ (β̂1 ) = Pn                 ,    Var θ ( β̂ 2 ) =   n               ,
+                                       n i=1 (xi − x̄)2                                       2
+                                                                              P
+                                                                                i=1 (xi − x̄)
+                                               Pn
+                                            σ2      xi                σ 2 x̄
+                   Covθ (β̂1 , β̂2 ) = − Pn i=1         2
+                                                          = − Pn               2
+                                                                                  .
+                                        n i=1 (xi − x̄)        i=1 (xi − x̄)
+
+
+     4. Sous Pθ , (β̂1 , β̂2 ) est un vecteur gaussien ; ses deux coordonnées sont indépendantes si
+        et seulement si elles sont décorrélées (Proposition 2.6 du chapitre 1), c’est-à-dire si et
+3. LES EXERCICES                                                                                      41
+
+
+      seulement si Covθ (β̂1 , β̂2 ) = 0. D’après la question 3, et puisque σ 2 > 0 et i (xi −
+                                                                                      P
+                                                                            n
+      x̄)2 > 0, cette covariance est nulle si et seulement si x̄ = n−1 i=1 xi = 0. Avec la
+                                                                          P
+
+      paramétrisation centrée de la remarque de l’énoncé, l’estimateur de β̃1 = β1 + β2 x̄ est
+      β̂1 + β̂2 x̄ = Ȳ , et il est indépendant de β̂2 .
+   5. Sous Pθ , Y ∼ N (Xβ, σ 2 In ), et Rn = F ⊕ F ⊥ est une somme orthogonale de sous-
+      espaces de dimensions 2 et n − 2. Le théorème de Cochran (Théorème 1.1 du chapitre 1)
+      affirme que ∥PF ⊥ (Y − Xβ)∥2 /σ 2 ∼ χ2 (n − 2). Or Xβ ∈ F , donc PF ⊥ (Xβ) = 0 et
+      PF ⊥ (Y − Xβ) = (In − P )Y. Ainsi
+
+                                  nσ̂ 2   ∥(In − P )Y∥2
+                                    2
+                                        =               ∼ χ2 (n − 2) ,
+                                  σ             σ2
+                                       2
+      autrement dit σ̂ 2 a laloi de σn U avec U ∼ χ2 (n − 2) = Gamma n−2     1
+                                                                          2 , 2 , c’est-à-dire la
+                                                                                
+
+      loi Gamma n−2       n                                                        2     n−2 2
+                     2 , 2σ 2 (Section 2). Comme E[U ] = n − 2, on obtient Eθ [σ̂ ] = n σ :
+                                                                        n         1
+                                                         2
+      l’estimateur du maximum de vraisemblance de σ est biaisé, et n−2 σ̂ = n−2 ∥Y − Xβ̂∥2
+                                                                            2
+
+      est sans biais. Enfin, la loi χ2 (n − 2) ayant une densité par rapport à la mesure de
+      Lebesgue dès que n ≥ 3, Pθ (σ̂ 2 = 0) = 0, ce qui achève la question 2.
+   6. Le théorème de Cochran affirme aussi que les projections PF Y = P Y et PF ⊥ Y = (In −
+      P )Y sont indépendantes sous Pθ . Or σ̂ 2 = n−1 ∥(In − P )Y∥2 est une fonction mesurable
+      de (In − P )Y, et β̂ une fonction mesurable de P Y, puisque XT P = (P X)T = XT donne
+
+                               β̂ = (XT X)−1 XT Y = (XT X)−1 XT P Y .
+
+      Des fonctions mesurables de variables aléatoires indépendantes sont indépendantes : σ̂ 2
+      et (β̂1 , β̂2 ) sont indépendants. On peut aussi appliquer directement le Corollaire 2.1 du
+      chapitre 1 au vecteur centré Y − Xβ ∼ N (0, σ 2 In ) et aux projecteurs P et In − P , dont
+      le produit est nul.
+   7. Sous Pθ , la variable aléatoire nσ̂ 2 /σ 2 suit la loi χ2 (n − 2) quelle que soit la valeur de
+                                                                         n−2     n−2
+      θ : c’est la situation décrite après la Définition 2.2. Notons qα/2    et q1−α/2  les quantiles
+                                            2
+      d’ordre α/2 et 1 − α/2 de la loi χ (n − 2). Cette loi a une densité strictement positive
+      sur R∗+ , donc une fonction de répartition continue et strictement croissante sur R∗+ : ces
+                                         n−2       n−2
+      quantiles sont bien définis, 0 < qα/2    < q1−α/2  , et
+                          
+                            n−2  nσ̂ 2 n−2
+                                                 α α
+                        Pθ qα/2 ≤ 2 ≤ q1−α/2  = 1−   − =1−α.
+                                  σ                2  2
+      Comme σ 2 > 0 et σ̂ 2 > 0 presque sûrement, l’encadrement se résout par rapport à σ 2 :
+                                        nσ̂ 2         nσ̂ 2 
+                                  Pθ     n−2   ≤ σ 2 ≤ n−2 = 1 − α .
+                                        q1−α/2        qα/2
+
+                                     n−2             n−2
+      L’intervalle aléatoire nσ̂ 2 /q1−α/2 , nσ̂ 2 /qα/2   , dont les bornes sont des statistiques, est
+                                                        
+
+      donc un intervalle de confiance de niveau 1 − α pour σ 2 au sens de la Définition 2.2, et
+                                                                                         n−2
+      son niveau est égal à 1 − α. D’autres choix de quantiles, par exemple 0 et q1−α        , donnent
+      d’autres intervalles de même niveau ; leur comparaison est l’objet du chapitre suivant.
+
+
+  Corrigé de l’exercice 2 – Estimation d’un coefficient de mélange
+ Le paramètre est noté θ ∈ ]0, 1[ et la variable de la vraisemblance ϑ. Le modèle est dominé
+ par la mesure de Lebesgue Leb sur R.
+42                                                           CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+                                                                                        Rt
+ Préliminaire : la fonction de répartition. Pour t ∈ R, Fθ (t) := Pθ (X1 ≤ t) = −∞ fθ dLeb.
+ Comme fθ est nulle hors de [0, b], on a Fθ (t) = 0 pour t ≤ 0 et Fθ (t) = 1 pour t ≥ b ; pour
+                      Rt                                                                 Rt
+ 0 ≤ t ≤ a, Fθ (t) = 0 aθ + 1−θ    dx = aθ + 1−θ   t, et pour a ≤ t ≤ b, Fθ (t) = Fθ (a)+ a 1−θ
+                                                
+                               b              b                                                 b dx =
+ θ + 1−θ
+       b t. C’est  la fonction donnée  dans l’énoncé.    On lit sur cette expression  que f θ · Leb est
+ le mélange, de poids θ et 1 − θ, des lois uniformes sur [0, a] et sur [0, b].
+     1. Pour tout x ∈ R, en séparant les cas x ∈ [0, a] et x ∈ ]a, b],
+                                          ϑ         1 − ϑ              1−ϑ
+                               fϑ (x) =          +          1[0,a] (x) +     1]a,b] (x) .
+                                            a          b                  b
+        Sous Pθ , les observations sont dans [0, b] presque sûrement ; Na d’entre elles sont dans
+        [0, a] et les n − Na autres dans ]a, b]. La vraisemblance vaut donc
+                              n
+                              Y                  ϑ       1 − ϑ Na  1 − ϑ n−Na
+                  Ln (ϑ) =          fϑ (Xi ) =        +                           ,     ϑ ∈ ]0, 1[ .
+                              i=1
+                                                  a         b           b
+
+        Elle ne dépend des observations que par la statistique Na .
+     2. Sur ]0, 1[, Ln > 0 et la log-vraisemblance normalisée s’écrit
+                                        Na     ϑ 1 − ϑ    Na      1−ϑ
+                             ℓn (ϑ) =      log    +     + 1−      log     .
+                                        n       a   b        n         b
+                        a+ϑ(b−a)
+        Comme ϑa + 1−ϑ
+                    b =    ab    , la fonction ℓn est dérivable sur ]0, 1[, de dérivée
+
+                             Na   b−a         n − Na 1    bNa − na − nϑ(b − a)
+                 ℓ′n (ϑ) =                  −           =                       .
+                             n a + ϑ(b − a)      n  1−ϑ   n(1 − ϑ) a + ϑ(b − a)
+
+        Le dénominateur est strictement positif sur ]0, 1[. Le numérateur est une fonction affine
+        strictement décroissante de ϑ, qui s’annule en
+                                                  bNa − na    b (Na /n) − a
+                                         θ̂n :=             =               .
+                                                   n(b − a)       b−a
+
+        Comme 0 ≤ Na /n ≤ 1, on a toujours θ̂n ≤ 1, avec égalité si et seulement si Na = n, et
+        θ̂n > 0 si et seulement si Na /n > a/b. Trois cas se présentent.
+                                                                            i   h
+          — Si 0 < θ̂n < 1, c’est-à-dire si a/b < Na /n < 1 : ℓ′n > 0 sur 0, θ̂n et ℓ′n < 0 sur
+             i        h
+               θ̂n , 1 . La log-vraisemblance atteint son maximum en θ̂n seulement : l’estimateur
+           du maximum de vraisemblance existe, est unique et vaut θ̂n .
+         — Si θ̂n ≤ 0, c’est-à-dire si Na /n ≤ a/b : ℓ′n < 0 sur ]0, 1[, la log-vraisemblance est
+           strictement décroissante, et sa borne supérieure sur l’intervalle ouvert ]0, 1[, qui
+           est sa limite en 0, n’est pas atteinte. Il n’y a pas d’estimateur du maximum de
+           vraisemblance dans Θ = ]0, 1[.
+         — Si θ̂n = 1, c’est-à-dire si Na = n : ℓ′n > 0 sur ]0, 1[, la log-vraisemblance est
+           strictement croissante et sa borne supérieure n’est pas atteinte. Là encore, il n’y a
+           pas d’estimateur du maximum de vraisemblance.
+        Les densités f0 et f1 sont celles des lois uniformes sur [0, b] et sur [0, a] : le modèle se
+        prolonge sans difficulté à [0, 1], sur lequel Ln est continue, et l’étude de signe ci-dessus
+        montre que, sur [0, 1], le maximum de la vraisemblance est atteint en un point unique,
+        θ̂n ∨ 0 = max(θ̂n , 0), qui vaut 1 lorsque Na = n. C’est l’estimateur retenu par la feuille,
+
+                                                       θ̂n(1) := θ̂n ∨ 0 ,
+3. LES EXERCICES                                                                                      43
+
+
+      estimateur du maximum de vraisemblance du modèle prolongé à [0, 1], qui coïncide
+      avec celui du modèle initial sur l’événement
+                                                 Pn {0 < θ̂n < 1}. Cet événement est de
+      probabilité tendant vers 1 : sous Pθ , Na = i=1 1{Xi ∈[0,a]} est une somme de n variables
+      de Bernoulli indépendantes, de paramètre
+                                                                            a
+                        pθ := Pθ (X1 ∈ [0, a]) = Fθ (a) = θ + (1 − θ)         ∈ ]a/b, 1[ ,
+                                                                            b
+      donc Na ∼ Bin(n, pθ ), et la loi faible des grands nombres (Théorème 2.1) donne
+             Pθ −prob
+      Na /n −→ pθ . Comme a/b < pθ < 1, il vient Pθ (Na /n ≤ a/b) → 0 et Pθ (Na =
+      n) = pnθ → 0.
+      Remarque sur le biais. Comme Eθ [Na ] = npθ ,
+                                            b pθ − a   bθ + (1 − θ)a − a
+                              Eθ [θ̂n ] =            =                   =θ :
+                                              b−a            b−a
+                                                                      (1)
+      l’estimateur non seuillé θ̂n est sans biais. En revanche, θ̂n ≥ θ̂n , avec inégalité stricte sur
+      l’événement {θ̂n < 0}, qui est de probabilité strictement positive (il contient {Na = 0},
+      de probabilité (1 − pθ )n > 0) : Eθ [θ̂n ] > θ, et le biais de θ̂n vaut Eθ [−θ̂n 1{θ̂n <0} ] > 0.
+                                             (1)                       (1)
+
+      Il se calcule à partir de la loi binomiale de Na ,
+                                        1     X  bk         n 
+                        Eθ θ̂n(1) =                                pk (1 − pθ )n−k ,
+                                
+                                                        −a
+                                     b−a             n          k θ
+                                              k>na/b
+
+      et c’est cette formule qui est tracée sur la figure 1 (droite).
+   3. Le moment exact associé à T (x) = x vaut
+                                                Z a                Z b
+                                                    x                  x       a          b
+                             Z
+         e(θ) := Eθ [X1 ] =      xfθ (x) dx = θ       dx + (1 − θ)       dx = θ + (1 − θ) ,
+                               R                 0 a                0 b        2          2
+                                                                                         n
+      soit e(θ) = 2b − θ b−a2 . L’équation des moments e(ϑ) = X̄n , où X̄n := n
+                                                                                   −1
+                                                                                         i=1 Xi ,
+                                                                                      P
+      admet une unique solution réelle,
+                                                         b − 2X̄n
+                                                θ̃n :=            ,
+                                                           b−a
+      qui n’appartient pas nécessairement à Θ = ]0, 1[ : on a θ̃n ∈ ]0, 1[ si et seulement si a/2 <
+      X̄n < b/2. Sous Pθ , les observations sont dans [0, b], donc X̄n ∈ [0, b], et rien n’impose
+      X̄n ∈ ]a/2, b/2[ à n fixé : par exemple, si toutes les observations sont inférieures à a/2,
+      événement de probabilité Fθ (a/2)n > 0, alors θ̃n ≥ 1. L’estimateur des moments au sens
+      de la Définition 1.2 n’est donc défini que sur l’événement {a/2 < X̄n < b/2}, où il vaut
+                                                                                 Pθ −prob
+      θ̃n . Cet événement est de probabilité tendant vers 1, puisque X̄n −→ e(θ) ∈ ]a/2, b/2[
+      (Proposition 1.1). Comme pour le maximum de vraisemblance, on retient l’estimateur
+      seuillé
+                                                      si θ̃n ≤ 0 ,
+                                                
+                                                 0
+                                      θ̂n(2) :=   1   si θ̃n ≥ 1 ,
+                                                  θ̃n sinon.
+                                                
+
+      Remarque sur le biais. Comme Eθ [X̄n ] = e(θ), on a Eθ [θ̃n ] = (b − 2e(θ))/(b − a) = θ :
+                                                                (2)
+      l’estimateur non seuillé θ̃n est sans biais, tandis que θ̂n ne l’est pas en général.
+ Analyses numériques. On prend a = 1 et b = 3.
+   — La figure ci-dessous représente la densité fθ et la fonction de répartition Fθ pour plusieurs
+      valeurs de θ. À θ fixé, la densité est constante par morceaux ; à x fixé, c’est une fonction
+      croissante de θ sur [0, a] et décroissante sur ]a, b].
+44                                                   CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+
+
+           Densité (à gauche) et fonction de répartition (à droite) de la loi de mélange, pour a = 1,
+                                  b = 3 et différentes valeurs de θ dans ]0, 1[.
+
+     — On simule nmax = 200 réalisations de la loi de mélange de paramètre θtrue = 0,2. La
+       figure 1 (gauche) représente la vraisemblance calculée à partir des n = 10 premières
+       observations, puis des n = 200 observations. Sur le jeu de taille n = 10, on observe
+       Na /n = 0,30 ≤ a/b, donc θ̂n = (3 × 0,30 − 1)/2 = −0,05 < 0 : la vraisemblance est
+       décroissante sur ]0, 1[ et son maximum sur [0, 1] est atteint au bord, en θ = 0. Sur le
+       jeu de taille n = 200, on observe Na /n = 0,525 et θ̂n = (3 × 0,525 − 1)/2 = 0,2875 : le
+       maximum est atteint à l’intérieur de ]0, 1[, et l’estimateur diffère de θtrue .
+     — Sur le même jeu de données, la figure 1 (centre) représente la fonction ϑ 7→ e(ϑ) − X̄n =
+       ϑ a/2+(1−ϑ) b/2− X̄n pour n = 10 puis n = 200 ; cette fonction dépend des observations
+       par X̄n , elle est donc aléatoire. L’estimateur des moments existe si cette fonction s’annule
+       dans ]0, 1[. Pour n = 10, le zéro est négatif ; pour n = 200, l’estimateur existe et est
+       unique, et il diffère lui aussi de θtrue .
+                                                            (1)
+     — La figure 1 (droite) représente le biais θ 7→ Eθ [θ̂n ] − θ, calculé par la formule binomiale
+       de la question 2, pour n = 10 et n = 200. Il est positif, conformément à la remarque de
+       la question 2, et d’autant plus faible que n est grand.
+     — On répète enfin l’expérience N = 5000 fois : on produit N jeux de données de taille
+                                                                      (1)          (2)
+       n = 200 sous θtrue = 0,2 et l’on calcule, pour chacun, θ̂n , θ̂n , θ̃n et θ̂n sur les n = 10
+       premières observations, puis sur les n = 200 observations ; la figure 2 représente les
+       boîtes à moustaches de ces N réalisations indépendantes. Les échelles des ordonnées
+       diffèrent entre les deux graphiques. Les estimateurs seuillés MV-2 et Mom-2 prennent
+       leurs valeurs dans [0, 1]. La comparaison de MV-1 et MV-2 d’une part, de Mom-1 et
+       Mom-2 d’autre part, montre que le seuillage intervient fréquemment pour n = 10, et
+       que, pour n = 200, il n’intervient plus, sur ces N réalisations, que pour l’estimateur des
+       moments.
+
+
+
+
+  Corrigé de l’exercice 3 – Famille exponentielle de densités
+
+ Dans tout le corrigé, on note G(η) := h(x) exp(ηT (x)) µ(dx) ∈ [0, +∞] pour η ∈ R, de sorte
+                                       R
+
+ que A = log G, avec les conventions log 0 = −∞ et log(+∞) = +∞.
+   1. (a) Prenons X = R, µ = Leb, h = 1R+ et T (x) = −x. Pour η ∈ R, G(η) = 0 e−ηx dx
+                                                                                  R +∞
+
+           vaut 1/η si η > 0 et +∞ sinon : l’espace des paramètres naturels est Ξ = ]0, +∞[,
+           A(η) = − log η, et h(x) exp(ηT (x) − A(η)) = ηe−ηx 1R+ (x) = pη (x). La famille des
+           lois exponentielles est le modèle exponentiel canonique associé à (T, h).
+3. LES EXERCICES                                                                                    45
+
+
+       (b) La densité de N (η, 1) s’écrit
+
+                           1    (x − η)2     1   2
+                                                               η2 
+                          √ exp −           = √ e−x /2 exp ηx −      .
+                           2π       2          2π               2
+                                                     2
+           Prenons µ = Leb, h(x) = (2π)−1/2 e−x /2 et T (x) = x. Pour tout η ∈ R, en écrivant
+                                                                                   2
+           x2 − 2ηx = (x − η)2 − η 2 , G(η) = (2π)−1/2 R exp(−(x2 − 2ηx)/2) dx = eη /2 . Ainsi
+                                                      R
+                              2
+           Ξ = R, A(η) = η /2, et la famille {N (η, 1) , η ∈ R} est le modèle exponentiel
+           canonique associé à (T, h).
+       (c) La densité de Weibull s’écrit, pour x > 0,
+
+                   qλ (x) = αxα−1 λ−α exp − λ−α xα = h(x) exp φ(λ)T (x) − B(λ)
+                                                                                   
+
+           avec h(x) = αxα−1 1]0,+∞[ (x), T (x) = −xα , φ(λ) = λ−α et B(λ) = α log λ. C’est
+           une famille exponentielle au sens général : le paramètre λ n’intervient que par
+           φ(λ) = λ−α , et le modèle n’est pas canonique en λ, sauf si α = 1, où l’on retrouve les
+           lois exponentielles. Le modèle canonique associé est obtenu par  la reparamétrisation
+                                                                         R +∞              α
+           η = λ−α : le changement de variable u = xα donne G(η) = 0 αxα−1 e−ηx dx =
+           R +∞ −ηu
+            0
+                 e   du, qui vaut 1/η si η > 0 et +∞ sinon : Ξ = ]0, +∞[ et A(η) = − log η.
+       (d) La loi de Poisson de paramètre θ > 0 a pour densité, par rapport à la mesure de
+           comptage µ sur N,
+
+                                            θk   1
+                             pθ (k) = e−θ
+                                                                   
+                                               =    exp k log θ − θ ,      k∈N,
+                                            k!   k!
+          ce qui est la forme h(k) exp(φ(θ)T (k) − B(θ)) avec h(k) = 1/k!, T (k) = k, φ(θ) =
+          log θ, B(θ) = θ et Θ = ]0, +∞[. Le modèle     P canonique associé s’obtient en posant
+          η = log θ ∈ R : pour tout η ∈ R, G(η) = k∈N eηk /k! = exp(eη ) < ∞, donc Ξ = R,
+                                               1
+          A(η) = eη = B(eη ), et qη (k) = k!     exp(ηk − eη ).
+      (e) Pour k ∈ {0, . . . , n},
+                                                   
+                                n k                  n                 θ                 
+                    pθ (k) =        θ (1 − θ)n−k =        exp k log        + n log(1 − θ) ,
+                                 k                   k               1−θ
+
+          ce qui est la forme annoncée avec h(k) = nk , T (k) = k, φ(θ) = log(θ/(1 − θ)),
+                                                             
+
+          B(θ) = −n log(1 − θ), Θ = ]0, 1[, et µ la mesure de comptage sur {0, . . . , n}. Le
+          modèle canonique associé s’obtient en posantPη = log(θ/(1           − θ)) ∈ R, c’est-à-dire
+                                                                n
+          θ = eη /(1 + eη ) : pour tout η ∈ R, G(η) = k=0 nk eηk = (1 + eη )n < ∞, donc
+                                                                       
+
+          Ξ = R et A(η) = n log(1 + eη ) = B eη /(1 + eη ) .
+   2. (a) RSi l’on peut dériver deux fois sous le signe intégral, G′ (η) = hT eηT dµ et G′′ (η) =
+                                                                             R
+
+             hT 2 eηT dµ, de sorte que, qη étant égale à heηT /G(η),
+
+                            G′ (η)
+                                       Z
+                  A′ (η) =          = T qη dµ = Eη [T (X)] ,
+                            G(η)
+                              ′′
+                            G    (η)  G′ (η) 2
+                 A′′ (η) =           −            = Eη [T (X)2 ] − Eη [T (X)]2 = Varη (T (X)) .
+                             G(η)        G(η)
+
+           La question (c) justifie ces dérivations sous l’intégrale lorsque Ξ est un intervalle
+           ouvert.
+       (b) Si Ξ est vide, il n’y a rien à démontrer. Sinon, soit η0 ∈ Ξ : 0 < G(η0 ) < ∞, ce qui
+           impose µ({h > 0}) > 0. Pour tout η ∈ R, la fonction heηT est alors strictement
+           positive sur l’ensemble {h > 0}, de mesure strictement positive, donc G(η) > 0
+           et A(η) > −∞ : ainsi Ξ = {η ∈ R : A(η) < +∞}. Soient η1 , η2 ∈ Ξ et λ ∈ ]0, 1[.
+46                                                      CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+         L’inégalité de Hölder, pour les exposants conjugués 1/λ et 1/(1 − λ), appliquée aux
+         fonctions positives (heη1 T )λ et (heη2 T )1−λ , donne
+                                Z
+                                            λ        1−λ
+         G(λη1 + (1 − λ)η2 ) =       heη1 T    heη2 T       dµ
+                                 Z             λ  Z            1−λ
+                              ≤       heη1 T dµ         heη2 T dµ      = G(η1 )λ G(η2 )1−λ < ∞ ,
+
+         soit, en passant au logarithme, A(λη1 + (1 − λ)η2 ) ≤ λA(η1 ) + (1 − λ)A(η2 ) < +∞.
+         Ainsi λη1 + (1 − λ)η2 ∈ Ξ, ce qui montre que Ξ est convexe, et l’inégalité obtenue
+         est la convexité de A sur Ξ.
+     (c) Soit η ∈ Ξ. Comme Ξ est ouvert, il existe ε > 0 tel que η ± ε ∈ Ξ. De eε|T | ≤
+         eεT + e−εT , on tire
+                             Z
+                               h eε|T | eηT dµ ≤ G(η + ε) + G(η − ε) < ∞ .                (6)
+
+         Pour tout entier m ≥ 0, la constante Cm := supu≥0 um e−εu/2 est finie et
+         |T |m eε|T |/2 ≤ Cm eε|T | ; avec (6), il vient
+                                 Z
+                                     h |T |m eε|T |/2 eηT dµ < ∞ , m∈N.       (7)
+
+         En particulier, h|T |m eRηT est µ-intégrable pour tout m ∈ N et tout η ∈ Ξ, et l’on
+         peut poser Gm (η) := hT m eηT dµ, avec G0 = G. Montrons que Gm est dérivable
+         sur Ξ, de dérivée Gm+1 . Pour η ∈ Ξ, ε comme ci-dessus et 0 < |s| ≤ ε/2,
+
+                           Gm (η + s) − Gm (η)                  esT − 1
+                                                    Z
+                                                  = h T m eηT           dµ .
+                                      s                            s
+         Quand s → 0, l’intégrande converge en tout point vers hT m+1 eηT . L’inégalité des
+         accroissements finis appliquée à u 7→ eu entre 0 et sT (x) donne |esT (x) − 1| ≤
+         |s| |T (x)| e|s| |T (x)| , donc
+
+                                                 esT − 1
+                                 h T m eηT               ≤ h |T |m+1 eε|T |/2 eηT ,
+                                                    s
+        fonction µ-intégrable d’après (7) et indépendante de s. Le théorème de convergence
+        dominée, appliqué le long de toute suite sj → 0, donne G′m (η) = Gm+1 (η). Par
+        récurrence sur k, G est infiniment dérivable sur Ξ et G(k) = Gk , ce qui est la formule
+        demandée. Comme G > 0 sur Ξ, la fonction A = log G est elle aussi infiniment
+        dérivable sur Ξ, et les formules de la question (a) sont établies : A′ = G′ /G et
+        A′′ = G′′ /G − (G′ /G)2 .
+     (d) i. Le moment exact associé à T est e(η) = Eη [T (X1 )] =
+                                                                                  R
+                                                                                    T qη dµ =
+            G′ (η)/G(η) = A′ (η), bien défini d’après (7). L’estimateur des moments associé
+            à T est donc la solution η ∈ Ξ, lorsqu’elle existe et est unique, de l’équation
+                                                                       n
+                                        ′                           1X
+                                      A (η) = T̄n ,          T̄n :=    T (Xk ) .
+                                                                    n
+                                                                      k=1
+
+          ii. Sous qη · µ, les variables X1 , . . . , Xn sont i.i.d. de densité qη ; la densité du
+              n-échantillon par rapport à µ⊗n est
+                                                  n
+                                                 Y               Xn                
+                         (x1 , . . . , xn ) 7→          h(xk ) exp η   T (xk ) − nA(η) ,
+                                                  k=1                 k=1
+3. LES EXERCICES                                                                                      47
+
+
+                et la log-vraisemblance normalisée s’écrit, sur Ξ,
+                                                     n
+                                                  1X
+                                       ℓn (η) =      log h(Xk ) + η T̄n − A(η) ,
+                                                  n
+                                                    k=1
+
+
+                 Roù log h(Xk ) est fini presque sûrement, puisque Pη (h(X1 ) = 0) =
+                   {h=0} η
+                           q dµ = 0. D’après la question (c), ℓn est infiniment dérivable sur Ξ, avec
+                 ℓ′n (η) = T̄n − A′ (η) et ℓ′′n (η) = −A′′ (η) = − Varη (T (X1 )) ≤ 0. Cette variance
+                 est nulle si et seulement si T est constante qη · µ-presque sûrement, c’est-à-dire
+                 µ-presque partout sur {h > 0}, propriété qui ne dépend pas de η ; dans ce cas
+                 dégénéré, A est affine, qη ne dépend pas de η, le modèle n’est pas identifiable et
+                 tout point de Ξ maximise la vraisemblance. Supposons donc Varη (T (X1 )) > 0
+                 pour un, donc pour tout, η ∈ Ξ. Alors ℓ′′n < 0 : la log-vraisemblance est
+                 strictement concave sur l’intervalle ouvert Ξ, et A′ est continue et strictement
+                 croissante. D’après le Lemme 2.3, l’équation de vraisemblance A′ (η) = T̄n a au
+                  plus une solution, et cette solution, lorsqu’elle existe, est l’unique estimateur du
+                  maximum de vraisemblance ; elle existe si et seulement si T̄n appartient à l’in-
+                  tervalle ouvert A′ (Ξ), et, dans le cas contraire, la log-vraisemblance n’a pas de
+                  maximum sur Ξ, un maximum intérieur étant nécessairement un point critique.
+                  On remarque que l’équation de vraisemblance est l’équation des moments de
+                  la question précédente : dans un modèle exponentiel canonique, l’estimateur
+                  du maximum de vraisemblance et l’estimateur des moments associé à la statis-
+                  tique T existent simultanément et coïncident. C’est ce que l’on a observé pour
+                  les modèles de Bernoulli (Exemple 1.8), de Poisson (Exemple 1.9) et gaussien
+                 (Exemple 1.10).
+   3. RDans le modèle exponentiel général, la normalisation pθ dµ = 1 impose eB(θ) =
+                                                                        R
+
+        heφ(θ)T dµ = G(φ(θ)), c’est-à-dire B = A ◦ φ sur Θ. Puisque φ est un difféomor-
+      phisme de Θ sur Ξ, elle est dérivable, de dérivée ne s’annulant pas, et B est dérivable
+              ′         ′      ′                                                                ⊗n
+      avec
+        Qn B = (A ◦ φ) φ . Sous  Pn pθ · µ, la densité du n-échantillon par rapport à µ           est
+          k=1  h(x  k )  exp φ(θ)    k=1 T (x  k ) − nB(θ)  , et la log-vraisemblance  normalisée vaut
+                                      n
+                                  1
+                        ℓ˜n (θ) =
+                                      X
+                                            log h(Xk ) + φ(θ) T̄n − B(θ) = ℓn (φ(θ)) ,
+                                  n
+                                      k=1
+
+      où ℓn est la log-vraisemblance du modèle canonique de la question 2(d). L’équation de
+                        ′
+      vraisemblance ℓ˜n (θ) = φ′ (θ)T̄n − B ′ (θ) = 0 s’écrit, en divisant par φ′ (θ) ̸= 0,
+
+                                B ′ (θ)
+                                        = T̄n        soit     A′ (φ(θ)) = T̄n .
+                                φ′ (θ)
+
+      Sa solution est donc θ̂n = φ−1 (η̂n ), où η̂n est la solution dans Ξ de l’équation A′ (η) =
+      T̄n : l’existence et l’unicité de θ̂n équivalent à celles de η̂n . Comme ℓ˜n = ℓn ◦φ avec φ
+      bijective, les points de maximum de ℓ˜n sont les images réciproques par φ de ceux de ℓn :
+      c’est l’invariance de l’estimateur du maximum de vraisemblance par reparamétrisation
+      (Proposition 1.2). Pour la loi de Poisson, A′ (η) = eη et l’on retrouve θ̂n = eη̂n = X̄n
+      (Exemple 1.9) ; pour la loi binomiale à m essais (le nombre noté n à la question 1(e)),
+      A′ (η) = meη /(1 + eη ) et θ̂n = X̄n /m.
+48                                                     CHAPITRE 2. ESTIMATION PONCTUELLE
+
+     Corrigé de l’exercice 4 – Durée de vie
+
+ On note θ = (λ0 , λ1 ) ∈ Θ = (R∗+ )2 , et X0 , X1 les durées de vie des deux machines, indépen-
+ dantes sous Pθ , de lois E(λ0 ) et E(λ1 ).
+                                                                 R +∞
+   1. Si X ∼ E(λ), alors, pour tout x > 0, P(X > x) = x λe−λt dt = e−λx . Récipro-
+      quement, supposons P(X > x) = e−λx pour tout x > 0. La fonction de réparti-
+      tion FX de X vérifie alors FX (x) = 1 − e−λx pour x > 0 ; par continuité à droite,
+      FX (0) = limx↓0 FX (x) = 0, et, FX étant croissante et positive, FX (x) = 0 pour tout
+      x ≤ 0. Ainsi FX coïncide sur R avec la fonction de répartition de la loi E(λ) ; la fonction
+      de répartition caractérisant la loi, X ∼ E(λ).
+      2. Le système fonctionne tant que les deux machines fonctionnent : sa durée de vie est
+         Z = X0 ∧ X1 = min(X0 , X1 ). Pour t > 0, par indépendance et d’après la question 1,
+
+                Pθ (Z > t) = Pθ (X0 > t, X1 > t) = Pθ (X0 > t) Pθ (X1 > t) = e−(λ0 +λ1 )t ,
+
+        et la question 1 donne Z ∼ E(λ0 + λ1 ) sous Pθ . Le couple (X0 , X1 ) a une densité par
+        rapport à Leb⊗2 et la diagonale {x0 = x1 } est de mesure de Lebesgue nulle dans R2 :
+        Pθ (X0 = X1 ) = 0, et la panne est presque sûrement due à une seule machine. Elle est
+        due à la machine 1 sur l’événement {X1 < X0 }, de probabilité
+                                            Z +∞                 Z +∞                 
+                        Pθ (X1 < X0 ) =            λ1 e−λ1 x1            λ0 e−λ0 x0 dx0 dx1
+                                            0                     x1
+                                            Z +∞
+                                                                                λ1
+                                        =          λ1 e−(λ0 +λ1 )x1 dx1 =            ,
+                                            0                                λ0 + λ1
+
+        par le théorème de Fubini appliqué à la densité produit.
+      3. Posons I = 1{X1 <X0 } . Pour t ≥ 0, le même calcul donne
+                                                         Z +∞
+           Pθ (Z > t, I = 1) = Pθ (t < X1 < X0 ) =               λ1 e−λ1 x1 e−λ0 x1 dx1
+                                                          t
+                                                             λ1
+                                                     =            e−(λ0 +λ1 )t = Pθ (I = 1) Pθ (Z > t) ,
+                                                         λ 0 + λ1
+        et, en échangeant les rôles des deux machines, Pθ (Z > t, I = 0) = Pθ (t < X0 < X1 ) =
+          λ0     −(λ0 +λ1 )t
+        λ0 +λ1 e             = Pθ (I = 0) Pθ (Z > t). Par passage au complémentaire, Pθ (Z ≤ t, I =
+        δ) = Pθ (I = δ) − Pθ (Z > t, I = δ) = Pθ (I = δ) Pθ (Z ≤ t) pour tout t ≥ 0 et tout
+        δ ∈ {0, 1}, et cette égalité est immédiate pour t < 0, les deux membres étant nuls.
+        Les classes {{Z ≤ t} , t ∈ R} et {{I = 0}, {I = 1}} sont stables par intersection finie
+        et engendrent respectivement σ(Z) et σ(I) ; l’indépendance de deux classes stables par
+        intersection s’étend aux tribus qu’elles engendrent (lemme de classe monotone) : Z et I
+        sont indépendantes sous Pθ .
+      4. (a) Les durées de vie Z1 , . . . , Zn des n systèmes sont indépendantes et de
+             même loi E(λ0 + λ1 ) sous Pθ : l’observation est un n-échantillon du modèle
+              R+ , B(R+ ), {E(λ0 + λ1 ) , θ ∈ Θ} , c’est-à-dire le modèle
+                                                                                    
+                             Rn+ , B(Rn+ ), E(λ0 + λ1 )⊗n , θ = (λ0 , λ1 ) ∈ (R∗+ )2
+                                           
+                                                                                       ,
+
+             dominé par Leb⊗n , de densité (z1 , . . . , zn ) 7→ i=1 (λ0 + λ1 )e−(λ0 +λ1 )zi 1R+ (zi ). La
+                                                                Qn
+             loi des observations ne dépend de θ que par la somme λ0 + λ1 : pour 0 < τ < λ1 ,
+             les paramètres (λ0 , λ1 ) et (λ0 + τ, λ1 − τ ) sont distincts et définissent la même loi.
+             Le modèle n’est pas identifiable (Définition 2) ; seule la somme λ0 + λ1 l’est.
+3. LES EXERCICES                                                                                                           49
+
+
+        (b) On observe maintenant les couples (Z1 , I1 ), . . . , (Zn , In ), indépendants et de même
+            loi que (Z, I). Déterminons cette loi. Pour A ∈ B(R+ ) et δ ∈ {0, 1}, par indépen-
+            dance de Z et I (question 3), et en notant λδ le paramètre de la machine δ,
+
+             Pθ (Z ∈ A, I = δ) = Pθ (Z ∈ A) Pθ (I = δ)
+                                                                               λδ
+                                 Z                                                          Z
+                               = (λ0 + λ1 )e−(λ0 +λ1 )z dz ×                        =               λδ e−(λ0 +λ1 )z dz .
+                                      A                                     λ0 + λ1             A
+
+            La loi de (Z, I) sur R+ × {0, 1} admet donc, par rapport à la mesure µ := Leb ⊗ ν,
+            où ν est la mesure de comptage sur {0, 1}, la densité
+
+                          qθ (z, δ) = λδ e−(λ0 +λ1 )z 1R+ (z) ,           (z, δ) ∈ R+ × {0, 1} .
+
+            L’observation est un n-échantillon du modèle
+                                                                              
+                             R+ × {0, 1}, B(R+ ) ⊗ P({0, 1}), {qθ · µ , θ ∈ Θ} ,
+
+            c’est-à-dire le modèle
+                                                          ⊗n                    
+                       (R+ × {0, 1})n , B(R+ ) ⊗ P({0, 1})    , (qθ · µ)⊗n , θ ∈ Θ   .
+
+            Ce modèle est identifiable : si θ = (λ0 , λ1 ) et θ′ = (λ′0 , λ′1 ) définissent la même loi
+            des observations, ils définissent la même loi de (Z1 , I1 ), donc la même loi de I1 et
+            la même loi de Z1 , soit
+
+                             λ1       λ′
+                                  = ′ 1 ′                  et      E(λ0 + λ1 ) = E(λ′0 + λ′1 ) ,
+                          λ0 + λ1  λ0 + λ 1
+
+            la seconde égalité entraînant λ0 +λ1 = λ′0 +λ′1 , puisque la loi E(λ) a pour espérance
+            1/λ. On en déduit λ1 = λ′1 , puis λ0 = λ′0 : θ = θ′ . L’observation supplémentaire de
+            la cause de chaque panne rend le modèle identifiable.
+ Complément : estimation dans le second modèle. Notons Nδ :=P i=1 1{Ii =δ} le nombre de
+                                                                       Pn
+                                                                        n
+ pannes dues à la machine δ, avec N0 + N1 = n, et Z̄n := n−1 i=1 Zi , qui est strictement
+ positive presque sûrement. Pour ϑ = (l0 , l1 ) ∈ Θ, la vraisemblance et la log-vraisemblance
+ normalisée du second modèle s’écrivent
+                                    n
+                                    Y
+                        Ln (ϑ) =          lIi e−(l0 +l1 )Zi = l0N0 l1N1 e−(l0 +l1 )nZ̄n ,
+                                    i=1
+                                    N0          N1
+                         ℓn (ϑ) =      log l0 +    log l1 − (l0 + l1 )Z̄n .
+                                    n           n
+ La log-vraisemblance est la somme de deux fonctions d’une seule variable, lδ 7→ Nnδ log lδ −lδ Z̄n .
+ Si Nδ > 0, cette fonction est strictement concave sur R∗+ , de dérivée Nδ /(nlδ ) − Z̄n , nulle
+ en lδ = Nδ /(nZ̄n ) seulement, qui est donc son unique point de maximum (Lemme 2.3).
+ Si Nδ = 0, elle se réduit à lδ 7→ −lδ Z̄n , strictement décroissante, et n’a pas de maximum
+ sur R∗+ . Ainsi, sur l’événement {N0 > 0, N1 > 0}, dont la probabilité tend vers 1 puisque
+ Pθ (Nδ = 0) = (1 − Pθ (I = δ))n → 0, l’estimateur du maximum de vraisemblance existe, est
+ unique, et vaut
+                                        Nδ
+                                λ̂δ = Pn        ,    δ ∈ {0, 1} :
+                                        i=1 Zi
+ le nombre de pannes imputables à la machine δ, rapporté à la durée totale de fonctionnement
+ observée.
+50                                                                 CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+     Corrigé de l’exercice 5 – Modèle auto-régressif
+ Les observations ne sont ni indépendantes ni de même loi : la vraisemblance n’est pas celle d’un
+ n-échantillon, mais sa définition s’étend à tout modèle dominé, comme densité de l’observation
+ vue comme fonction du paramètre (voir le modèle de régression, Section 4). Pour v > 0, on
+ note gv (u) := (2πv)−1/2 exp(−u2 /(2v)) la densité de N (0, v). On suppose n ≥ 2 : avec une
+ seule observation X1 ∼ N (0, σ 2 ), le paramètre ϕ n’intervient pas dans la loi de l’observation
+ et ne peut être estimé.
+    1. Fixons θ = (ϕ, σ 2 ) ∈ Θ. Montrons que, sous Pθ , la loi de Z = (X1 , . . . , Xn ) admet, par
+       rapport à Leb⊗n , la densité, avec la convention x0 := 0,
+                                    n                                                        n
+                                    Y                                  1               1 X                    2
+                                                                                                                 
+         pθ (x1 , . . . , xn ) :=         gσ2 (xk −ϕxk−1 ) =                   exp   −          (x k −ϕx k−1 )     . (8)
+                                                                   (2πσ 2 )n/2         2σ 2
+                                    k=1                                                     k=1
+
+        Méthode de la fonction muette (Section 2). Soient f1 , . . . , fn : R → R mesurables bor-
+        nées. La loi conditionnelle deR Xn sachant (X1 , . . . , Xn−1 ) étant N (ϕXn−1 , σ 2 ), on a
+        Eθ [fn (Xn ) | X1 , . . . , Xn−1 ] = R fn (xn ) gσ2 (xn − ϕXn−1 ) dxn presque sûrement, et cette
+        quantité est une fonction mesurable bornée f˜n−1 (Xn−1 ) de Xn−1 . Par la propriété de
+        conditionnement successif,
+                               n
+                              hY             i     h n−1
+                                                     Y                                           i
+                         Eθ          fk (Xk ) = Eθ       fk (Xk ) Eθ fn (Xn ) | X1 , . . . , Xn−1
+                              k=1                         k=1
+                                                        h n−2                               i
+                                                                 fk (Xk ) fn−1 f˜n−1 (Xn−1 ) ,
+                                                          Y                         
+                                                = Eθ
+                                                          k=1
+
+        expression de la même forme avec n − 1 facteurs. En répétant l’opération, et puisque
+        X1 ∼ N (ϕX0 , σ 2 ) = N (0, σ 2 ), on obtient
+                      hYn           i Z Y      n           n
+                                                           Y
+                   Eθ       fk (Xk ) =            fk (xk )   gσ2 (xk − ϕxk−1 ) dx1 · · · dxn
+                            k=1                       Rn k=1           k=1
+                                                  Z     n
+                                                        Y
+                                              =                fk (xk ) pθ (x) dx .
+                                                      Rn k=1
+
+        Appliquée à fk = 1Ak , Ak ∈ B(R), cette égalité donne Pθ (Z ∈ A1 × · · · × An ) =
+                    p dLeb⊗n ; avec Ak = R pour tout k, elle montre que pθ , positive, est d’in-
+        R
+          A1 ×···×An θ
+        tégrale 1. La loi de Z et la probabilité pθ · Leb⊗n coïncident donc sur la classe des pavés
+        mesurables, stable par intersection finie et engendrant B(Rn ) : elles sont égales (lemme
+        de classe monotone). Le modèle engendré par l’observation Z est
+                                                                             
+                            Rn , B(Rn ), pθ · Leb⊗n , θ = (ϕ, σ 2 ) ∈ R × R∗+
+                                         
+                                                                                 .
+
+        Lecture matricielle. Notons M := In −ϕJ, où J est la matrice de décalage, (Jx)k = xk−1
+        avec x0 = 0 : M est triangulaire inférieure, P
+                                                     avec des 1 sur la diagonale et −ϕ sur la sous-
+                                                       n
+        diagonale, et (M x)k = xk − ϕxk−1 . Ainsi k=1 (xk − ϕxk−1 )2 = ∥M x∥2 = xT M T M x,
+        avec
+                                       1 + ϕ2     −ϕ       0      ···     0
+                                                                            
+                                                                  ..      .. 
+                                                1 + ϕ2 −ϕ             .    . 
+                                     
+                                      −ϕ
+                                                          .       .
+                                                                            
+                              T
+                            M M = 0
+                                     
+                                                  −ϕ        . .     . .   0 
+                                                                             
+                                                                               .
+                                      .
+                                                                            
+                                      ..         ..      ..                 
+                                                     .        . 1 + ϕ2 −ϕ
+                                          0       ···      0      −ϕ      1
+3. LES EXERCICES                                                                                       51
+
+
+       Comme det M = 1, la matrice Σ := (M T M )−1 = M −1 (M −1 )T est symétrique définie
+       positive, de déterminant 1, et pθ (x) = (2πσ 2 )−n/2 exp(−xT (σ 2 Σ)−1 x/2) est la densité
+       de la loi N (0, σ 2 Σ) (Proposition 2.7 du chapitre 1) : sous Pθ , Z est un vecteur gaussien
+       centré, de matrice de covariance σ 2 Σ. La matrice A :=PM −1 se calcule explicitement :
+                                                                       n−1
+       J est nilpotente (J n = 0), donc A = (In − ϕJ)−1 = j=0 ϕj J j , matrice triangulaire
+                                           k−j
+       inférieure de coefficients Akj = ϕ       pour k ≥ j.
+       Seconde lecture : représentation par un bruit gaussien. Soient ξ1 , . . . , ξn i.i.d. de loi
+       N (0, 1), et définissons par récurrence X0 = 0 et Xk = ϕXk−1 + σξk pour k ≥ 1.
+       Comme (X1 , . . . , Xk−1 ) est une fonction de (ξ1 , . . . , ξk−1 ), indépendante de ξk , la loi
+       conditionnelle de Xk sachant (X1 , . . . , Xk−1 ) est N (ϕXk−1 , σ 2 ) : cette récurrence réalise
+                                          Pk
+       le modèle. En itérant, Xk = σ j=1 ϕk−j ξj , soit Z = σA ξ avec ξ = (ξ1 , . . . , ξn )T ∼
+       N (0, In ), et la Proposition 2.4 du chapitre 1 redonne Z ∼ N (0, σ 2 AAT ) = N (0, σ 2 Σ).
+   2. Pour ϑ = (a, v) ∈ Θ, la log-vraisemblance normalisée s’écrit, d’après (8),
+                          1            1
+                ℓn (ϑ) = − log(2πv) −      Q(a) ,
+                          2           2nv
+                         Xn                  Xn            n
+                                                           X              n
+                                                                          X
+                 Q(a) :=    (Xk − aXk−1 )2 =      Xk2 − 2a   Xk Xk−1 + a2    2
+                                                                            Xk−1 .
+                          k=1                      k=1              k=1            k=1
+
+                                                              Pn
+                                                               2
+                                                                            Pn−1
+       On procède comme à l’exercice 1. Posons D := k=1 Xk−1       = k=1 Xk2 . Comme X1 ∼
+              2
+       N (0, σ ) a une densité, X1 ̸= 0 presque sûrement, et D > 0 presque sûrement dès que
+       n ≥ 2. Sur cet événement, à v fixé, maximiser ℓn en a revient à minimiser le trinôme Q,
+       de coefficient dominant D > 0, dont l’unique minimum est atteint en
+                                     Pn                Pn
+                                        k=1 Xk Xk−1      k=2 Xk Xk−1
+                              ϕ̂n := P   n     2    =    Pn−1 2        .
+                                         k=1 Xk−1           k=1 Xk
+
+       Posons S := Q(ϕ̂n )/n. On a Q(ϕ̂n ) = 0 si et seulement si Xk = ϕ̂n Xk−1 pour tout k,
+       ce qui impose X1 = ϕ̂n X0 = 0 : S > 0 presque sûrement. La fonction v 7→ ℓn (ϕ̂n , v) =
+       − 12 log(2πv) − S/(2v) a pour dérivée (S − v)/(2v 2 ), strictement positive pour v < S
+       et strictement négative pour v > S : elle atteint son maximum en v = S seulement.
+       Pour tout (a, v) ∈ Θ, ℓn (a, v) ≤ ℓn (ϕ̂n , v) ≤ ℓn (ϕ̂n , S), avec égalité si et seulement si
+       (a, v) = (ϕ̂n , S). Presque sûrement, l’estimateur du maximum de vraisemblance existe
+       donc, est unique, et vaut
+                                                               n
+                                                             1X              2
+                           ϕ̂n , σ̂n2       avec   σ̂n2 :=
+                                        
+                                                                Xk − ϕ̂n Xk−1 .
+                                                             n
+                                                              k=1
+
+
+       L’estimateur ϕ̂n est le coefficient des moindres carrés de la régression, sans terme
+       constant, de Xk sur Xk−1 : c’est la formule de l’exercice 1, dans laquelle la variable
+       explicative xi est remplacée par l’observation précédente Xk−1 , qui est ici aléatoire.
+       Cette dépendance entre variable explicative et observations distingue les séries tempo-
+       relles du modèle de régression : la loi de ϕ̂n ne s’obtient plus par le théorème de Cochran,
+       et son étude sort du cadre de ce chapitre.
+                                                                                         Pn
+ Note. Le corrigé distribué en 2025 donnait  Pnl’estimateur     ϕ̂n avec le dénominateur k=1 Xk2 ;
+                                                       2
+ l’annulation de la dérivée de Q conduit à k=1 Xk−1        . La représentation par un bruit gaussien
+ y était écrite avec des ξk de loi N (0, 1) puis N (0, σ 2 ) ; on a pris ici ξk ∼ N (0, 1) et fait
+ apparaître le facteur σ.
+

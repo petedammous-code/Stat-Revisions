@@ -1,0 +1,462 @@
+Ecole Polytechnique, promotion 2025                                            PC-7 Cours APM 41033 EP
+
+
+Exercice 1 ((*) puis (***)). L’objectif de ce problème est de comparer la performance
+de deux statistiques de test pour un même test d’hypothèses. Si nous avons deux tests ϕn ,
+ϕ⋆n de fonctions puissance respectives βn et βn⋆ , nous dirons que ϕ⋆n est uniformément le plus
+puissant au niveau α si supθ∈Θ0 βn⋆ (θ) ≤ α et pour tout test ϕn de niveau α, βn⋆ (θ) ≥ βn (θ)
+pour θ ∈ Θ1 . Ces conditions sont difficiles à vérifier en pratique ; on décide donc d’établir la
+comparaison sur les fonctions puissance asymptotiques.
+    Soit Θ un ouvert de R, et {Qθ = qθ · dν, θ ∈ Θ} une famille de lois sur X ∈ B(R) muni
+de sa tribu borélienne X . On suppose que ce modèle est régulier (voir Polycopié Définition
+I-4.16). Soit θ0 ∈ Θ. On souhaite tester
+                                       H0 : θ = θ0 ,        H1 : θ > θ0
+On dispose d’une suite de n-échantillons du modèle (X, X , {Qθ , θ ∈ Θ}). On note
+                                                    n                         n
+                                              1X                         1    X
+                   Pn,θ := Q⊗n
+                            θ ,        X̄n :=    Xk ,             Sn2 :=            (Xk − X̄n )2 .
+                                              n                           n
+                                                   k=1                        k=1
+
+   1. Dans cette question, le modèle statistique est un modèle de translation : soit q · dLeb
+      une loi sur R, on considère la famille de densités qθ : x 7→ q(x − θ). On suppose de plus
+      la densité q symétrique par rapport à l’origine, continue et telle que q(0) > 0 1 et de
+      variance σq2 inconnue. On définit les statistiques
+                                     n
+                                                       !
+                            √     1X                 1                √ (X̄n − θ0 )
+                     Mn := n            1{Xk ≥θ0 } −     ,      Tn := n             .
+                                  n                  2                        Sn
+                                            k=1
+
+       (a) Montrer que l’on peut choisir une suite {tn , n ∈ N} de telle sorte que la suite de
+            tests ϕn,1 := 1{Mn ≥tn } soit de niveau asymptotique α et soit consistante.
+       (b) Construire une suite de tests {ϕn,2 , n ∈ N} basée sur la statistique de test Tn de
+            niveau asymptotique α et consistante.
+L’exemple précédent montre que pour comparer des tests, la consistance du test ne suffit pas.
+Nous considérons ci-dessous l’approche de Pitman, qui consiste à comparer la puissance locale
+des tests : étudier la suite {βn (θn ), n ∈ N} où
+                                                    √
+                     θn > θ0 ,      θn = θ0 + hn / n avec lim hn = h > 0 .                  (1)
+                                                                        n
+
+Soit {Un , n ∈ N} une suite de statistiques. Nous supposons qu’il existe une fonction µ : Θ → R
+et σ > 0 tels que 2
+               √                     Pn,θ                   √                        Pn,θ
+                   n (Un − µ(θn )) =⇒n N(0, σ 2 );              n (Un − µ(θ0 )) =⇒0 N(0, σ 2 ).               (2)
+Nous supposons que µ est dérivable en θ0 de dérivée µ′ (θ0 ) strictement positive. Pour tout
+n > 0, nous considérons le test sur (Xn , X ⊗n , {Pn,θ , θ ∈ Θ}) de zone de rejet
+                                      √
+                             Rn := { n (Un − µ(θ0 )) > Cn z1−α }
+    1. ces conditions entrainent que la médiane est unique et vaut zero, et que la fonction de répartition F est
+strictement croissante dans un voisinage de 0.
+    2. pour toute fonction continue et bornée f , on a
+                                √
+                                                         Z
+                                                                   1
+                                     n (Un − µ(θn )) = f (x) √ exp(−0.5σ −2 x2 )dx.
+                                                     
+                      lim En,θn f
+                        n                                        σ 2π
+
+
+
+                                                                                                         Page 1
+Ecole Polytechnique, promotion 2025                                  PC-7 Cours APM 41033 EP
+
+
+où z1−α est le quantile d’ordre 1 − α d’une loi N(0, 1) et {Cn , n ∈ N} est une suite de
+statistiques telle que
+                          ∀ε > 0,     lim Pn,θ0 (|Cn − σ| > ε) = 0.                   (3)
+                                              n
+
+  2. Montrer que limn Pn,θ0 (Rn ) = α.
+  3. L’objectif de cette question est de montrer que pour toute suite déterministe {θn , n ≥ 0}
+                           √
+     de Θ1 telle que limn n(θn − θ0 ) = h, on a
+
+                                     lim Pn,θn (|Cn − σ| > ε) = 0.
+                                         n
+
+      (a) Montrer que pour toute suite positive {δn , n ≥ 0} telle que limn δn = 0,
+                                     n                        n
+                           "                                                    #
+                     1              X
+                                         2
+                                                              X
+                                                                  2
+                 lim En,θ0 sup          ∂θ log qθ0 +t (Xk ) −   ∂θ log qθ0 (Xk ) = 0.
+                   n n       0≤t≤δn          k=1               k=1
+
+      (b) En utilisant la question précédente, montrer que
+                             n
+                             Y qθn (Xk ) Pn,θ0                  h2
+                                         =⇒ exp(h N(0, I(θ0 )) − I(θ0 ))
+                               qθ0 (Xk )                        2
+                             k=1
+
+          où I(θ0 ) est l’information de Fisher associée à la loi qθ0 · dν. On observera que
+          l’espérance de la loi limite est 1.
+      (c) En déduire que pour tout An ∈ X ⊗n , limn Pn,θ0 (An ) = 0 entraine limn Pn,θn (An ) =
+          0. On dit que la famille de loi {Pn,θn , n ≥ 1} est contiguë à la famille {Pn,θ0 , n ≥
+          1}.
+      (d) Conclure.
+  4. Montrer que
+                                                              µ′ (θ0 )
+                                                                      
+                             lim Pn,θn (Rn ) = 1 − Φ z1−α − h
+                               n                                 σ
+     Ce résultat caractérise le comportement de la fonction puissance à droite de θ0 . Un
+     test sera d’autant meilleur que µ′ (θ0 )/σ est grand, la puissance asymptotique locale
+     augmentant plus rapidement avec h.
+  5. Nous terminons par un jeu de conditions suffisantes pour vérifier la condition (2) dans
+     le cas où
+                               n                      Z
+                            1X
+                     Un :=        g(Xk ),    µ(θ) := g(x)qθ (x) dν(x)
+                            n
+                                   k=1
+     sous les conditions que
+      (a) σg2 (θ) := (g(x) − µ(θ))2 qθ (x)dν(x) existe dans un voisinage de θ0 et est continue
+                    R
+
+          en θ0 ;
+      (b) il existe δ > 0 tel que Dg (θ) := (g(x) − µ(θ))2+δ qθ (x)dν(x) existe dans un
+                                               R
+
+          voisinage de θ0 et est continue en θ0 .
+     En appliquant les conditions de Lindeberg-Feller (voir Polycopié, Théorème IV.5-41),
+     montrer que la condition (2) est vérifiée avec σ 2 = σg2 (θ0 ).
+  6. Appliquons ce résultat à l’exemple du test sur le paramètre de translation (voir ques-
+     tion 1) ; en supposant que la loi q dν possède un moment d’ordre 2 + δ pour δ > 0.
+
+                                                                                          Page 2
+Ecole Polytechnique, promotion 2025                                                  PC-7 Cours APM 41033 EP
+
+
+       (a) Pour le test ϕn,1 , quelle est la pente µ′ (θ0 )/σ ?
+       (b) Pour le test ϕn,2 , quelle est la pente µ′ (θ0 )/σ ?
+      Dans le cas où θ0 = 0, le ratio des pentes (test ϕn,1 divisé par test ϕn,2 ) donne
+                    p
+      Gaussienne 2/π ≈ 0.798
+       (c) Que donne-t-il lorsque q = 21 N(−a, τ 2 ) + 12 N(a, τ 2 ) pour a, τ > 0. Quel test est
+           préférable ? Voir figure 1.
+       (d) Que donne-t-il lorsque q = 21 N(0, 1) + 12 N(0, τ 2 ) pour τ > 0. Quel test est
+           préférable ? Voir figure 2.
+Une autre conséquence du résultat de la question 4 est de donner un ordre de grandeur de
+la taille de l’échantillon nécessaire pour atteindre une puissance β > α donnée en un point
+θ ∈ Θ1 . On peut montrer 3 que si Ni (θ) est la taille de l’échantillon nécessaire pour que le
+test i ait une puissance d’au moins β contre θ ∈ Θ1 , alors
+                                                                       2
+                                                       σ1 µ′2 (θ0 )
+                                                   
+                                        N1 (θ)
+                                   lim         =                            .
+                                   θ↓θ0 N2 (θ)         σ2 µ′1 (θ0 )
+
+
+       0.8                                                0.2
+                                                                                                   a=1.5
+                                                         0.18                                      a=3
+       0.7
+                                                         0.16
+       0.6
+                                                         0.14
+       0.5
+                                                         0.12
+
+       0.4                                                0.1
+
+                                                         0.08
+       0.3
+                                                         0.06
+       0.2
+                                                         0.04
+       0.1
+                                                         0.02
+
+         0                                                  0
+             0   1   2   3    4    5      6   7              -8   -6    -4      -2     0   2   4   6       8
+
+
+
+
+Figure 1 – Exercice 1. Cas du mélange de gaussienne avec a > 0, et τ = 1. A gauche,
+l’évolution du ratio des pentes en fonction de u := a2 /τ 2 ; à droite, deux exemples de densité
+pour des valeurs de a différentes (a = 1.5 et a = 3) et τ 2 = 1.
+
+
+
+Exercice 2 ((*)). Pour (a, b) ∈ R∗+ × R∗+ , on appelle Γ(a, b) la loi de densité par rapport à
+la mesure de Lebesgue donnée par
+                                           1 a a−1 −bx
+                                   x 7→        b x e 1R∗+ (x) .
+                                          Γ(a)
+
+On rappelle que l’espérance d’une loi Γ(a, b) est a/b et que sa variance est a/b2 . Enfin, si
+X ∼ Γ(a, b), Y ∼ Γ(a′ , b) et X, Y sont indépendantes, alors                ′
+                                                           X + Y ∼ Γ(a∗+ a , b).
+   Soit une suite de n-échantillons du modèle R, B(R), Γ(2, θ) : θ ∈ R+ .
+  1. Calculer l’estimateur du maximum de vraisemblance du paramètre θ.
+  3. voir par exemple Chapitre 13, E.L. Lehmann and J.P. Romano, Testing Statistical Hypotheses
+
+
+                                                                                                               Page 3
+Ecole Polytechnique, promotion 2025                                              PC-7 Cours APM 41033 EP
+
+
+   3.5                                                       0.3
+                                                                                           tau=2
+                                                                                           tau=4
+     3                                                      0.25
+
+
+
+   2.5                                                       0.2
+
+
+
+     2                                                      0.15
+
+
+
+   1.5                                                       0.1
+
+
+
+     1                                                      0.05
+
+
+
+   0.5                                                         0
+         0   0.5   1   1.5   2   2.5   3   3.5   4             -10          -5   0     5           10
+
+
+
+
+Figure 2 – Exercice 1. Cas du mélange de gaussiennes centrées et de variances différentes.
+A gauche, l’évolution du ratio des pentes en fonction de τ ; à droite deux exemples de densité
+pour des valeurs de τ différentes (τ 2 = 4 et τ 2 = 16).
+
+
+   2. Calculer le biais et le risque quadratique de l’estimateur du maximum de vraisemblance.
+   3. Montrer que l’estimateur du maximum de vraisemblance est consistant.
+   4. Prouver la normalité asymptotique de l’estimateur du maximum de vraisemblance.
+   5. Donner un intervalle de confiance asymptotique de niveau (1 − α) pour le paramètre θ.
+
+
+Exercice 3 ((*)). Une variable aléatoire X à valeurs dans R∗+ suit une loi log-normale de
+paramètre (µ, σ 2 ) ∈ R × R∗+ si la variable Y = log(X) est normale de moyenne µ et variance
+σ 2 . Cette distribution est très couramment utilisée pour modéliser le prix des actifs financiers
+(c’est la base du modèle très couramment utilisé de Black-Scholes-Merton ; voir PC1).
+      Soit une suite de n-échantillons de la famille de loi log-normale de paramètre (θ, θ), θ ∈
+Θ := R+   ∗.
+   1. Déterminer l’estimateur du maximum de vraisemblance de θ.
+   2. Prouver la normalité asymptotique de l’estimateur du maximum de vraisemblance.
+   3. Construire un intervalle de confiance de probabilité de couverture asymptotique 1 − α.
+
+
+Exercice 4 ((*)). Soit une suite de n-échantillons du modèle (R, B(R), {N(θ, 1) : θ ∈ Θ := R+ }).
+Attention, l’originalité de cet exercice est de contraindre le paramètre à être strictement po-
+sitif.
+   1. Déterminer l’estimateur du maximum de vraisemblance θ̂nMV .
+   2. Montrer que pour tout θ > 0,
+                                                 √                   Pn,θ
+                                                     n(θ̂nMV − θ) =⇒ N(0, 1).
+
+   3. Déterminer la loi limite lorsque θ = 0.
+
+
+
+
+                                                                                                        Page 4
+Ecole Polytechnique, promotion 2025                                     PC-7 Cours APM 41033 EP
+
+
+Exercice 5 ((***)). Soit f une densité par rapport à la mesure de Lebesgue sur R telle
+que f (x) = f (−x) pour tout x ∈ R. Pour θ ∈ R et x ∈ R, nous notons qθ (x) := f (x − θ). Soit
+      H1 γ : R → R une fonction impaire, croissante (au sens large) et telle que
+                            lim γ(x) < 0,     lim γ(x) > 0,                                      (4)
+                        x→−∞                  x→+∞
+                        Z
+                              |γ(x − θ)|f (x)Leb(dx) < +∞ ,     pour tout θ ∈ R .
+                          R
+
+Considérons une suite de n-échantillons du modèle (R, B(R), {Qθ = qθ · Leb : θ ∈ R}) . Nous
+étudions les Z-estimateurs associés à
+                                        ψ(θ, x) = γ(x − θ) .
+Soit une suite de fonctions aléatoires {Ψn , n ≥ 1} définies sur Θ, par :
+                                         n                      n
+                                     1X               1X
+                      θ 7→ Ψn (θ) :=    γ(Xk − θ) = −    γ(θ − Xk ).
+                                     n                n
+                                        k=1                    k=1
+
+La figure 3 montre la fonction Ψn pour différentes valeurs de n, dans le cas où γ est égale à
+γ0 = signe(x) (gauche), γ∞ (x) = x (centre) et γ1 (x) = signe(x) (|x| ∧ 1) (droite), et f est une
+densité gaussienne centrée réduite ; en trait épais, on trace aussi la fonction Ψθ0 (pour θ0 = 2)
+où
+                                                   Z
+               θ 7→ Ψθ0 (θ) := Qθ0 (γ(· − θ)) = γ(x − θ) qθ0 (x) Leb(dx)
+                   Z                                    Z
+                 = γ(x − θ)f (x − θ0 )Leb(dx) = γ(x + θ0 − θ)f (x)Leb(dx) .
+
+Noter que la condition H1 justifie l’existence de Ψθ pour tout θ.
+  1. Montrer que pour tout n ≥ 1, tout θ0 ∈ R,
+                                          i       h              i   h
+               Pn,θ0 ∃θ̂n tq Ψn ≥ 0 sur −∞, θ̂n et Ψn ≤ 0 sur θ̂n , +∞ = 1 .
+
+       (a) Montrer que si γ est continue, il existe θ̂n tel que Ψn (θ̂n ) = 0.
+       (b) Montrer que si γ est strictement croissante et continue, alors θ̂n est unique.
+       (c) Etudier les cas où γ est une des fonctions suivantes :
+                                                                   (
+                                                                     x          |x| ≤ k
+                γ0 (x) = signe(x),      γ∞ (x) = x,       γk (x) =                      .        (5)
+                                                                     k signe(x) |x| > k
+
+Dans la suite, on fait l’hypothèse suivante.
+                                                           R
+     H2 Il existe δ > 0 telle que la fonction θ 7→ Ψ0 (θ) = γ(x − θ)f (x)dLeb(x) soit
+     strictement monotone sur [−δ, δ].
+   2. Montrer que pour tout θ0 ∈ R, θ0 est l’unique solution de l’équation Ψθ0 (θ) = 0.
+   3. Soit θ0 ∈ R et ε ∈ ]0, δ[. Montrer que sous Pn,θ0 ,
+
+                                    θ̂n < θ0 − ε =⇒ Ψn (θ0 − ε) ⩽ 0.
+      En déduire que
+                                       lim Pn,θ0 (θ̂n < θ0 − ε) = 0 .
+                                      n→∞
+
+
+                                                                                             Page 5
+ Ecole Polytechnique, promotion 2025                                              PC-7 Cours APM 41033 EP
+
+
+         4. Montrer que {θ̂n , n ∈ N} est une suite consistante d’estimateurs de θ.
+ On fait maintenant l’hypothèse supplémentaire suivante.
+            H3 γ est C 1 et
+                              Z                                  Z
+                                  2
+                               γ (x)f (x)Leb(dx) < ∞,           γ ′ (x)f (x)Leb(dx) > 0,                   (6)
+                                     Z
+                            ∀δ > 0,      sup |γ ′ (y)|f (x)Leb(dx) < ∞ .                                   (7)
+                                           |y−x|≤δ
+
+
+         5. Montrer que la suite d’estimateurs {θ̂n , n ∈ N} est asymptotiquement normale et
+            déterminer sa distribution asymptotique. Dans la suite, on notera V [γ] la variance limite.
+            Pour la normalité asymptotique, on peut juste supposer que γ est “continue, C 1 par
+            morceaux, et vérifie (6)-(7)”.
+ On compare l’efficacité relative des estimateurs {θ̂n , n ∈ N} obtenus avec γ = γ∞ d’une part,
+ et γ = γk pour k > 0 d’autre part (voir Eq. 5).
+         6. On considère tout d’abord le cas où f est la densité de la loi N(0, σ 2 ). Comparer l’ef-
+            ficacité relative en fonction de k : sur la figure 4(gauche), on représente la variance
+            asymptotique V [γk ] en fonction de k - on a pris σ 2 = 1.
+         7. Déterminer la variance asymptotique dans le cas où
+
+                                          f (x) = (1 − ε)ϕ(x) + ετ −1 ϕ(τ −1 x) ,
+
+            ϕ est la densité d’une Gaussienne centrée réduite (observer que dans ce cas, τ −1 ϕ(τ −1 x)
+            est une Gaussience centrée de variance τ 2 ). Sur la figure 4(droite), on représente la
+            variance asymptotique V [γk ] en fonction de k - on a pris ε = 0.01 et τ = 10.
+            Ce type de modèles est utilisé en statistiques robustes pour modéliser la présence de
+            données aberrantes : ε est la probabilité de contamination, qui est en général très petite
+            et τ est l’écart-type des données “contaminées” que l’on prend très grande. Commenter
+            l’intérêt de prendre la fonction γk , (k < ∞) plutôt que γ∞ .
+  1                                        10                                        1
+                                                                      n=2
+0.8                                                                   n=10         0.8
+                                            8                         n=100
+0.6                                                                                0.6
+
+0.4                                         6                                      0.4
+
+0.2                                                                                0.2
+                                            4
+  0                                                                                  0
+                                            2
+-0.2                                                                               -0.2
+
+-0.4                                        0                                      -0.4
+
+-0.6                                                                               -0.6
+           n=2                              -2                                              n=2
+-0.8       n=10                                                                    -0.8     n=10
+           n=100                                                                            n=100
+  -1                                        -4                                       -1
+    -5               0                5       -5           0                  5        -5           0            5
+
+
+
+
+ Figure 3 – Exercice 5. (gauche) cas γ0 , (centre) cas γ∞ , (droite) cas γk avec k = 1. Pour
+ chacun des cas, on trace θ 7→ Ψn (θ) pour n = 2, 10, 100 et on trace θ 7→ Ψθ0 (θ) en trait épais.
+ On a pris f ≡ N(0, 1) et θ0 = 2.
+
+
+
+
+                                                                                                        Page 6
+Ecole Polytechnique, promotion 2025                                       PC-7 Cours APM 41033 EP
+
+
+
+
+                                                                              tau=10, epsilon=0.01
+                                                            1.6
+         1.5
+
+
+
+
+                                                            1.5
+         1.4
+
+
+
+
+                                                            1.4
+         1.3
+
+
+
+
+                                                 v2bis(k)
+ v2(k)
+
+
+
+
+                                                            1.3
+         1.2
+
+
+
+
+                                                            1.2
+         1.1
+
+
+
+
+                                                            1.1
+         1.0
+
+
+
+
+               0   2   4       6    8      10                     0   2       4                  6   8            10
+
+                           k                                                           k
+
+
+
+
+Figure 4 – Exercice 5. [gauche] : pas de contamination (cas σ 2 = 1). [droite] : ε = 0.01 et
+τ = 10
+
+
+
+
+                                                                                                         Page 7
+

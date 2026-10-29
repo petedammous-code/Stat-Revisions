@@ -1,0 +1,1123 @@
+Ecole Polytechnique, promotion 2025                                                    PC-1 Cours APM 41033 EP
+
+
+2     Solutions
+2.1     Exercice 1
+    1. Plutôt que de considérer ici les temps successifs d’arrivée des clients T1 , . . . , Tn (suite
+       croissante positive), il est plus aisé de manipuler les inter-temps ∆i = Ti − Ti−1 qui eux
+       sont seulement contraints à être positifs par définition. Le modèle statistique est alors
+       défini via :
+         — l’espace des observations : (Rn+ , B(Rn+ )) : vecteur de n coordonnées positives réelles
+           associée à la tribu des boréliens sur Rn+ .
+         — une famille de distributions de probabilités sur (Rn+ , B(Rn+ )). On peut considérer
+           un exemple particulier, noté C, de type paramétrique ET de forme produit :
+
+                                                       C = {Pθ , θ > 0} ,
+
+            où pour tout (δ1 , . . . , δn ) ∈ Rn+ :
+                                                                        n
+                                                                        Y
+                                              pθ (δ1 , . . . , δn ) =         θe−θδi .
+                                                                        i=1
+
+       Ce dernier modèle statistique traduit ainsi une forme paramétrique exponentielle de
+       chaque inter-temps d’arrivée, associé à l’hypothèse forte d’indépendance entre chaque
+       événément d’arrivée d’un nouveau client. Si l’hypothèse de forme exponentielle est rai-
+       sonnable, l’indépendance entre les arrivées successives ainsi que le caractère homogène
+       en temps des distributions des inter-temps d’arrivée pourrait être remis en question.
+    2. On peut simplement proposer l’estimateur suivant basé sur la moyenne empirique des
+       inter-temps
+                                               n
+                                               X
+                                     ∆b n := 1    ∆i =
+                                                        Tn
+                                             n          n
+                                                           i=1
+
+          b n estime alors le temps moyen d’arrivée d’un nouveau client, on peut imaginer que
+       Si ∆
+       le nombre de clients arrivant sur un intervalle de temps de longueur h est simplement
+       h∆b −1
+           n .
+    3. Dans cette seconde modélisation, cette fois la modélisation porte sur le vecteur de comp-
+       tage, noté N = (N1 , . . . , NK ). Par définition, ce vecteur de comptage est un vecteur de
+       K nombres entiers. Le modèle statistique est alors défini via :
+         — l’espace des observations : (NK , P(NK )) : vecteur de K entiers positifs, associée à
+           la tribu des parties de NK .
+         — une famille de distributions de probabilités sur (NK , P(NK )). On peut considérer
+           un exemple particulier, noté D, de type paramétrique ET de forme produit :
+
+                                                       D = {Qλ , λ > 0} ,
+
+            où pour tout (n1 , . . . , nK ) ∈ NK :
+                                                                   K
+                                                                   Y e−(λh) (λh)nj
+                                         qλ (n1 , . . . , nK ) =                          .
+                                                                                nj !
+                                                                   j=1
+
+
+                                                                                                        Page 9
+Ecole Polytechnique, promotion 2025                                              PC-1 Cours APM 41033 EP
+
+
+      Ce dernier modèle statistique traduit ainsi une forme paramétrique Poissonienne du
+      processus de comptage N . Là encore, l’hypothèse de forme Poissonienne peut être rai-
+      sonnable, l’indépendance discutable, et surtout le caractère homogène en temps, i.e. la
+      stationarité de la loi des arrivées au cours du temps, très discutable pour une cafétéria
+      où l’affluence doit clairement dépendre du moment de la journée considéré.
+      Il existe de nombreuses façons de relacher l’hypothèse restrictive de processus de comp-
+      tage homogène. La plus simple étant de proposer alors un second modèle statistique,
+      dit non-paramétrique, où la quantité λ précédente est remplacée par une “intensité” ins-
+      tantanée t 7→ λ(t) et où la famille D est alors généralisée en D′ = {Q′λ , λ ∈ C(R+ , R+ )},
+      avec
+                                                                          R jh
+                                                                         − (j−1)h λ(s)ds) R jh
+                                                                   K e
+                                                                   Y                     ( (j−1)h λ(s)ds))nj
+           ∀(n1 , . . . , nK ) ∈ NK      qλ (n1 , . . . , nK ) =                                               .
+                                                                                        nj !
+                                                                   j=1
+
+      Ce dernier modèle, beaucoup plus flexible, permet d’appréhender des différences sur les
+      moments de la journée des fréquences d’arrivée de nouveaux clients. Il est bien entendu
+      plus sophistiqué et son étude nécessite des outils statistiques plus élaborés que ceux
+      pour le simple processus de comptage Poissonien homogène.
+   4. Dans le cas simple du processus homogène Poissonien, on peut alors proposer comme
+      estimateur du nombre de clients arrivant sur un intervalle de temps de longueur h :
+                                                                   K
+                                                                   X
+                                                 bK,h = 1
+                                                 N                       Nj
+                                                        K
+                                                                   j=1
+
+      Aussi, une approximation raisonnable du temps moyen d’arrivée d’un nouveau client
+                      b −1 .
+      est donné par hN K,h
+   5. On peut démontrer que si les (∆1 , . . . , ∆n , . . .) sont une infinité d’ inter-temps d’arrivées
+      exponentielles, i.e. les (∆i )i≥1 sont i.i.d. E(λ), alors le processus N = (Nh , N2h , . . . , NKh )
+      défini par
+                                       Njh := sup{k ≥ 0 : Tk < jh}
+      suit une distribution de comptage i.i.d. Poissonien de paramètre λh. Le caractère “sans
+      mémoire” des lois exponentielles permet l’indépendance des comptages tandis que l’iden-
+      tification de la loi de Poisson se fait via un calcul exact.
+
+2.2    Exercice 2
+                                       Qn                                             ⊗(n)
+   Posons pn,θ (x1 , · · · , xn ) :=    i=1 pθ (xi ). Sous le modèle pn,θ · Leb             , les v.a. {Xi , i ≤ n}
+sont indépendantes.
+   1. Sous le modèle pn,θ · Leb⊗n , les statistiques {ai + bi Xi , i ≤ n} sont indépendantes ; la loi
+      du vecteur est donc le produit des lois de chaque statistique ai + bi Xi .
+      Déterminons la loi de ai + bi Xi . sous pθ . On fait le changement de variable y = ai + bi x
+      pour un réel bi ̸= 0 ce qui donne pour toute fonction mesurable positive h
+                           Z                          Z                    
+                                                                      y − ai dy
+                              h(ai + bi x) pθ (x)dx = h(y) pθ
+                                                                        bi    |bi |
+
+
+                                                                                                           Page 10
+Ecole Polytechnique, promotion 2025                                                          PC-1 Cours APM 41033 EP
+
+
+      On en déduit que la densité de ai + bi Xi est
+                                                              
+                                               1        y − ai
+                                        y 7→       pθ            .
+                                             |bi |        bi
+      Par suite, sous pn,θ · Leb⊗n , la loi du n-uplet est
+                                                        n
+                                                        Y                                     
+                                                                      −1            yi − a i
+                                (y1 , · · · , yn ) 7→         |bi |        pθ                      .
+                                                                                       bi
+                                                        i=1
+
+
+2.3   Exercice 3
+  1. Sous le modèle pn,θ · dLeb⊗n , le vecteur (X1 , · · · , Xn ) a une densité de forme produit.
+     Donc les composantes sont indépendantes. De plus, il s’agit d’un produit de la même
+     fonction u 7→ g((u − µ)/σ) (à une constante multiplicative près) donc ces composantes
+     ont même loi. La constante Cθ est telle que
+                                         Z            
+                                                u−µ
+                                      Cθ g                 du = 1
+                                                 σ
+      Par suite, Cette loi est donnée par
+                                                                                    
+                                                     1                     u−µ
+                                       u 7→ qθ (u) := g                                  .
+                                                     σ                      σ
+  2. Sous pn,θ · dLeb⊗n , les v.a. {Xi , 1 ≤ i ≤ n} sont i.i.d. de loi qθ · dLeb. En appliquant le
+     résultat de l’exercice 2 avec g ← qθ , ak ← −µ/σ et bk ← 1/σ, on voit que (X1 − µ)/σ a
+     pour densité g.
+  3. Sous pn,θ · dLeb⊗n , les statistiques {(Xi − µ)/σ, i ≤ n} sont i.i.d. de loi gaussienne
+     centrée réduite : µ est donc l’espérance de Xi et σ 2 est sa variance. Par un argument
+     de loi (faible) des grands nombres, on sait que
+                                       1   1      Pn,θ −prob
+                                     ( Sn , Kn ) −→ (µ, σ 2 ).
+                                      n    n
+      Par suite, on peut proposer comme estimateur
+                              n          n
+                                                        !      n        n
+                                                                                       !
+                            1 X       1  X                   1 X      1 X
+                   bn2 ) :=
+            (µ̂n , σ            Xi ,       Xi2 − (µ̂n )2 =       Xi ,     (Xi − µ̂n )2
+                            n         n                      n        n
+                              i=1         i=1                                         i=1              i=1
+                         1    1
+                      = ( Sn , Kn ).
+                         n    n
+
+      On aurait aussi pu proposer l’estimateur de la médiane empirique pour µ. La figure 4
+      compare l’estimateur de µ par la moyenne empirique, et par la médiane empirique. On
+      répète 5000 fois l’algorithme suivant : (i) tirer n réalisations indépendantes de gaus-
+      siennes d’espérance µ = 2 et de variance 1 ; (ii) calculer chacun des deux estimateurs à
+      partir de ces n réalisations. Ensuite, on trace le boxplot des 5000 réalisations de cha-
+      cun des estimateurs. On affiche le résultat dans le cas où n = 50 (gauche) et n = 500
+      (droite).
+      Complément : Estimateur par maximum de vraisemblance (MV) et estimateur par
+      la méthode des moments dans le cas où g est la densité d’une loi gaussienne
+      centrée réduite
+
+                                                                                                             Page 11
+Ecole Polytechnique, promotion 2025                                    PC-1 Cours APM 41033 EP
+
+
+
+
+                       2.6                         2.6
+
+
+
+                       2.4                         2.4
+
+
+
+                       2.2                         2.2
+
+
+
+                         2                           2
+
+
+
+                       1.8                         1.8
+
+
+
+                       1.6                         1.6
+
+
+
+                       1.4                         1.4
+
+                             moy       med               moy         med
+
+
+
+
+Figure 4 – Comparaison des estimateurs : moyenne empirique et médiane empirique, pour
+la distribution gaussienne d’espérance 2 et de variance 1. Boxplot de 5000 réalisations
+indépendantes de l’estimateur, dans le cas où n = 50 (gauche) et n = 500 (droite). On
+peut observer (a) le rôle de n dans la dispersion des estimateurs ; et (b) que la distribution
+de l’estimateur moyenne est plus concentrée que celle de l’estimateur médiane.
+
+
+           Les calculs ci-dessous montrent que pour ce modèle gaussien, les deux approches
+           coı̈ncident ; et que l’estimateur MV (et donc celui des moments) est unique.
+           (a) Maximum de vraisemblance (MV) Sous pn,θ · dLeb⊗n , la vraisemblance
+               des observations (X1 , · · · , Xn ) s’écrit
+                                                                   n
+                                                                              !
+                                                  1             1 X (Xk − µ)2
+                               Ln (θ) :=                  exp −
+                                            (2π)n/2 σ n         2      σ2
+                                                                  k=1
+
+               dont on déduit la log-vraisemblance (à constante C près)
+                                                                 n
+                                                    n          1 X (Xk − µ)2
+                                   ℓn (θ) := C −      ln σ 2 −               .
+                                                    2          2      σ2
+                                                                k=1
+
+               On peut vérifier aisément que cette quantité possède un unique maximum,
+               donné par la solution des équations de vraisemblance ∇ℓn (θ) = 0 et noté θ̂n .
+               On obtient
+                                 "          1 Pn                  #                   
+                                                      Xk                  1 Pn
+                           µ̂n               n   k=1                    P
+                                                                          n   k=1 Xk
+                    θ̂n = 2 := 1 Pn                 1 Pn
+                                                                  2  = 1 n       2     2
+                           σ
+                           bn        n   k=1 Xk − n      j=1 Xj         n   k=1 Xk − µ̂n
+
+
+               qui sont resp. la moyenne empirique et la variance empirique.
+           (b) Estimateur des moments On a deux paramètres inconnus ; on sait que
+
+                                       Eθ [X1 ] = µ        Varθ (X1 ) = σ 2                 (1)
+
+
+                                                                                       Page 12
+Ecole Polytechnique, promotion 2025                                   PC-1 Cours APM 41033 EP
+
+
+               dont on déduit les estimateurs
+                                            "       1 Pn                 #
+                                       µ̂n           n  k=1 Xk        
+                                θ̂n = 2 := 1 Pn            1 Pn
+                                                                         2
+                                       σ
+                                       bn       n k=1 Xk − n    j=1 Xj
+
+
+     Complément: Estimateur MV et estimateur par la méthode des moments dans le
+     cas où g est la densité d’une loi de Laplace
+     On discute les deux mêmes stratégies que précédemment. Cette fois, les deux approches
+     ne conduisent pas au même estimateur ; de plus, l’estimateur des moments n’est pas
+     unique.
+      (a) Estimateur des moments La méthode reste la même que dans le cas précédent,
+          puisque les relations (1) restent vraies quelle que soit la loi g. On a donc
+                              "          1 Pn                 #                       
+                                               k=1 Xk                     1 Pn
+                         µ̂n              n                                     X k
+                                                                       1 Pn
+                 θ̂n = 2 := 1 Pn                                          n   k=1
+                                                  1 Pn
+                                                               2 =
+                                                                                 2     2
+                         σ
+                         bn       n    k=1 Xk − n     j=1 Xj           n    k=1 Xk − µ̂n
+
+
+      (b) Estimateur MV Ici, la log-vraisemblance des observations est donnée par
+                                                                n
+                                                          1X
+                                   ℓn (θ) := C − n ln σ −    |Xk − µ| .
+                                                          σ
+                                                              k=1
+
+          Maximiser cette quantité en σ donne
+                                                       n
+                                                     1X
+                                            σ̂n :=      |Xk − µ| .
+                                                     n
+                                                      k=1
+                                                                              P
+          Maximiser cette quantité en µ est équivalente à minimiser µ 7→ nk=1 |Xk − µ|. Le
+          résultat donne (voir ci-dessous une explication)
+                 
+                    X(n+1)/2:n                                                lorsque n est impair
+          µ̂n =
+                    n’importe quel point de l’intervalle ]Xn/2:n , Xn/2+1:n [ lorsque n est pair
+
+          ici, on a noté X1:n , · · · , Xn:n les statistiques d’ordre. On reconnaı̂t la définition de
+          la médiane.
+                                                               P
+     Détaillons la minimisation de la fonction h : µ 7→ nk=1 |Xk − µ| :
+          Cette fonction est linéaire par morceaux, continue, dérivable partout sauf en µ ∈
+          {X1 , · · · , Xn } :
+                                         P
+           — Sur ] − ∞, X1:n [, h(µ) = nk=1 Xk − nµ, de dérivée −n.
+                                             P
+           — Sur ]Xn:n , +∞[, h(µ) = nµ + nk=1 Xk , de dérivée n.
+                                          P               P
+           — Sur ]Xq:n , Xq+1:n [, h(µ) = qk=1 (µ − Xk ) + nk=q+1 (Xk − µ), de dérivée 2q − n.
+          On voit donc que µ 7→ h(µ) est d’abord décroissante, puis croissante. Elle atteint
+          son minimum en le point µ = Xq⋆ +1:n lorsque n = 2q⋆ + 1 ; et son minimum sur
+          l’intervalle ]Xq⋆ :n , Xq⋆ +1:n [ lorsque n = 2q⋆ .
+  4. Sous pn,θ · dLeb⊗n ,
+      — la loi de Xi est une gaussienne d’espérance µ et de variance σ 2 ,
+
+                                                                                              Page 13
+Ecole Polytechnique, promotion 2025                                         PC-1 Cours APM 41033 EP
+
+
+
+
+                        2.6                          2.6
+
+
+
+                        2.4                          2.4
+
+
+
+                        2.2                          2.2
+
+
+
+                          2                            2
+
+
+
+                        1.8                          1.8
+
+
+
+                        1.6                          1.6
+
+
+
+                        1.4                          1.4
+
+                              moy       med                moy            med
+
+
+
+
+Figure 5 – Comparaison des estimateurs de la moyenne empirique et de la médiane empirique
+pour la distribution Laplace d’espérance 2 et de variance 1. Boxplot de 5000 réalisations
+indépendantes de chacun des deux estimateurs, dans le cas où n = 50 (gauche) et n = 500
+(droite). On peut observer (a) le rôle de n dans la dispersion des estimateurs ; et (b) que la
+distribution de l’estimateur de la médiane est plus concentrée que celle de l’estimateur de la
+moyenne.
+
+       — les v.a. X1 , · · · , Xn sont indépendantes,
+                             P
+       — la loi de Sn := ni=1 Xi est une gaussienne d’espérance nµ et de variance nσ 2 .
+       — la loi de
+                                        Xn                    n
+                                                              X
+                                 Kn :=      (Xi − n−1 Sn )2 =   Xi2 − n−1 Sn2
+                                       i=1                          i=1
+         est une Gamma de paramètres ((n − 1)/2, 1/(2σ 2 )). Par convention, une loi de
+         Gamma de paramètres (a, b) est une loi sur R+ dont la densité est proportionnelle
+         à u 7→ ua−1 exp(−bu).
+      — les v.a. Sn et Kn sont indépendantes.
+     La démonstration de ce résultat se trouve dans le polycopié de cours (théorème de
+     Gosset, Théorème IV-5-24). Par suite, le modèle statistique induit est
+                                                                               
+                  R × R+ , B(R × R+ ), ρn,θ · Leb⊗2 : θ := (µ, σ 2 ) ∈ R × R+ ⋆   ,
+     où
+           ρn,θ (z, y) := Cn exp(−(z − nµ)2 /(2nσ 2 )) exp(−y/(2σ 2 ))y (n−3)/2 1R (z)1R+ (y)
+     en ayant posé
+                                                
+                                       1   1 (n−1)/2      1
+                        Cn := √              2
+                                                                  .
+                                2πnσ 2    2σ         Γ((n − 1)/2)
+     Complément : si on veut aller
+                                P     plus loin sur les modèles induits : quel est
+     le modèle induit par (Sn , ni=1 Xi2 ) ? Remarquons tout d’abord que
+                                           n
+                                           X                     Sn2
+                                                 Xi2 = Kn +          .
+                                                                 n
+                                           i=1
+
+
+                                                                                            Page 14
+Ecole Polytechnique, promotion 2025                                      PC-1 Cours APM 41033 EP
+
+                                                                                           Pn      2
+     Pour identifier le modèle induit, il est nécessaire d’identifier la loi de (Sn ,       i=1 Xi ) sous
+     pn,θ · Leb⊗n . Soit h une fonction continue bornée. On a
+                               
+       En,θ h Sn , Kn + n−1 Sn2
+             Z
+                                    
+       = Cn         h z, y + n−1 z 2 exp(−(z − nµ)2 /(2nσ 2 )) exp(−y/(2σ 2 ))y (n−3)/2 dzdy
+               R×R+
+            Z Z +∞                                                               (n−3)/2
+                                              2       2                  2   u2      2
+     = Cn          h(u, v) exp(−(u−nµ) /(2nσ )) exp(−(v−u /n)/(2σ )) v −                  dudv
+           R u2 /n                                                            n
+                             Z Z +∞                                    (n−3)/2
+                   2     2                            2      2       u2
+     = Cn exp(−nµ /(2σ ))             h(u, v) exp(uµ/σ −v/(2σ )) v −             dudv
+                              R u2 /n                                n
+
+     en ayant fait le changement de variable
+
+                                          z=u     y = v − u2 /n.
+                                                    P         P
+     On en déduit la densité de la statistique ( ni=1 Xi , ni=1 Xi2 ) sous pn,θ · dLeb⊗n ; puis
+     la définition du modèle statistique induit :
+                                                                          
+                              R × R+ , B(R × R+ ), {ρ̃n,θ · dLeb2 , θ ∈ Θ}
+
+     où
+                                                                 (n−3)/2
+                                                             u2
+                                      2
+            ρ̃n,θ (u, v) ∝ exp(uµ/σ − v/(2σ ))    2
+                                                          v−                 1R (u) 1[u2 /n,+∞[ (v).
+                                                             n
+
+                                        ·Leb⊗n , les statistiques (Sn , Kn ) soient indépendantes,
+     On observera que bien que sous pn,θP
+     il n’en est pas de même pour (Sn , ni=1 Xi2 ).
+
+
+
+
+                                                                                                   Page 15
+Ecole Polytechnique, promotion 2025                                       PC-1 Cours APM 41033 EP
+
+
+2.4    Exercice 4
+   1. Soit θ := (β, σ). Sous la loi pn,θ · Leb⊗n , le vecteur aléatoire (Y1 , · · · , Yn ) a la densité
+                                                         n
+                                                         Y                     
+                                                      −n       ui − f (β ′ xi )
+                              (u1 , · · · , un ) 7→ σ      g
+                                                                    σ
+                                                         i=1
+      qui est de forme produit, donc les composantes sont indépendantes. De plus la loi de Yi
+      est                                                         
+                                                  ui − f (β ′ xi )
+                                        ui 7→ g                      ,
+                                                        σ
+      à une constante multiplicative près. Un calcul de constante de normalisation montre
+      que cette constante multiplicative vaut 1/σ.
+   2. En utilisant encore le résultat de l’exercice 2, on montre que sous pn,θ · Leb⊗n , la loi de
+      (Yi − f (β ′ xi ))/σ est g.
+   3. On sait que sous pn,θ · Leb⊗n ,
+                                           ind                     
+                                        Yi ∼ N β1 + β2 xi , σ 2 ,
+      ce qui entraine que pour tout i, Yi a même loi que β1 + β2 xi + Wi où Wi ∼ N (0, σ 2 ). On
+      peut donc comprendre la donnée mesurée yi comme la mesure de β1 +β2 xi entachée d’une
+      perturbation modélisée comme la réalisation d’une loi gaussienne centrée de variance
+      σ2.
+      ▶ On peut chercher le paramètre qui maximise la vraisemblance des observations :
+      la log-vraisemblance est donnée par
+                                                                n
+                                               n          1 X
+                         θ 7→ ℓn (θ) := C −      ln σ 2 − 2   (Yi − β1 − β2 xi )2 ,
+                                               2         2σ
+                                                               i=1
+      où C collecte tous les termes qui ne dépendent pas de θ. En introduisant les notations
+                                                                        
+                         1 x1                                           Y1
+                                                     β
+                 X := · · · · · · ∈ Rn×2     β := 1 ∈ R2        Y := · · · ∈ Rn
+                                                     β2
+                         1 xn                                             Yn
+      on a
+                                            n          1
+                                ℓn (θ) = C − ln σ 2 − 2 ∥Y − Xβ∥2 .
+                                            2         2σ
+      Cette fonction possède un unique maximum obtenu en résolvant les équations de vrai-
+      semblance ∇ℓn = 0. Pour β, on doit minimiser la forme quadratique
+                                      β 7→ β ′ X′ Xβ − 2β ′ X′ Y + Y′ Y,
+      et le minimum est atteint en β̂n solution de X′ Xβ = X′ Y soit (en supposant la matrice
+      X′ X inversible)
+                                                    −1 ′
+                                        β̂n := X′ X    X Y.                               (2)
+      Noter que Xβ̂n est la projection de Y sur l’espace engendré par les colonnes de X 2 . Par
+      suite, le coefficient
+                   Pn         β̂n,0 est le projeté de Y sur le vecteur constant 1n := (1, · · · , 1)′ et
+      il vaut n −1
+                      i=1 yi .
+      Complément: estimation de σ 2
+   2. posons H := X(X′ X)−1 X′ . Alors H 2 = H, c’est le projecteur sur l’espace vectoriel engendré par les
+colonnes de X. Donc HY est le projeté de Y sur cet espace.
+
+
+                                                                                                  Page 16
+Ecole Polytechnique, promotion 2025                                           PC-1 Cours APM 41033 EP
+
+
+          Pour l’estimateur de σ 2 par la méthode du MV, on obtient
+                                                              n 
+                                                              X                               2
+                                  1               1
+                           σ̂n2 := ∥Y − Xβ̂n ∥2 =                     Yi − β̂n,1 − β̂n,2 xi        ;
+                                  n                      n
+                                                               i=1
+
+          cet estimateur est la variance des résidus i.e. la variance de la composante de Y
+          orthogonale à l’espace vectoriel engendré par les colonnes de X (soit en quelque
+          sorte, la ”part” de Y−E [Y] non expliquée par les variables explicatives x1 , · · · , xn ).
+     ▶ On peut aussi chercher à minimiser la dispersion du nuage de points {(xi , yi ), 1 ≤ i ≤
+     n} autour de la droite de régression (s’appuyer sur les graphes) ; cela conduit à définir
+                                         n
+                                         X                    2
+                        β̂n := arg min         Yi − β ′ x i        = arg min ∥Y − Xβ∥2 .
+                                   β     i=1                            β
+
+
+     On aboutit au même résultat : β̂n est tel que Xβ̂n est le projeté de Y sur l’espace
+     engendré par les colonnes de X.
+  4. La figure de gauche représente
+      — un nuage de points de coordonnées (xi , yi ).
+                                                                                 (1)      (1)
+      — une droite horizontale : c’est la droite d’équation y = b1 où b2 est l’évaluation
+                          (1)       P
+        de l’estimateur β̂0 := n−1 ni=1 Yi en les points mesurés (y1 , · · · , yn ). On obtient
+        cet estimateur en considérant un modèle de régression avec f (β ′ xi ) = β1 .
+      — une droite de pente non nulle, d’équation y = b̃1 + b̃2 x où (b̃1 , b̃2 ) est l’évaluation de
+        l’estimateur β̂n (voir equation (2)) en les points mesurés (y1 , · · · , yn ). On obtient
+        cet estimateur en considérant un modèle de régression avec f (β ′ xi ) = β1 + β2 xi .
+     Une fois cette droite de régression estimée (i.e. une fois calculés les coefficients (b̃0 , b̃1 ),
+     on peut évaluer les résidus ei := yi − ŷi i.e. la différence entre la valeur mesurée yi et
+     la valeur ajustée ŷi := b̃1 + b̃2 xi . La figure de droite représente le nuage des n points de
+     coordonnées (ŷi , ei ).
+
+
+
+
+                                                                                                       Page 17
+Ecole Polytechnique, promotion 2025                                PC-1 Cours APM 41033 EP
+
+
+2.5   Exercice 5
+   Complément: densité par rapport à la mesure de comptage sur N
+      La mesure de comptage µ sur N est la mesure qui à toute partie A de N associe son
+      cardinal : µ(A) = Card(A).
+      On dit qu’une loi ξ sur un espace mesurableR (T, T ) possède une densité f par rapport
+      à la mesure ν̌ si pour tout A ∈ T , ξ(A) = A f dν̌.
+      Dans le cas où ν̌ est la mesure de comptage, cette formule devient
+                                                  X
+                                           ξ(A) =    f (a).
+                                                   a∈A
+
+      Par suite, si X est une v.a. à valeur dans N dont la loi est donnée par la suite de réels
+      positifs : p(n) := P(X = n) pour tout n, on dit que ”X possède la densité (p(n))n par
+      rapport à la mesure de comptage µ”.
+
+  1. Notons s 7→ GX (s) la fonction génératrice des moments d’une v.a. X. Lorsque X ∼
+     P(λ), on a pour tout s ∈ R,
+
+                                             X λk
+                      GX (s) := E sX = exp(−λ)  sk    = exp(−λ(1 − s)).
+                                                   k!
+                                                    k≥0
+
+  2. La loi de Poisson possède des moments de tout ordre ; GX est donc en particulier deux
+     fois dérivable. On a
+
+                             G′X (1) = E [X]      G′′X (1) = E [X(X − 1)]
+
+      dont on déduit que E[X] = λ et E [X(X − 1)] = λ2 . Par suite,
+
+                          Var(X) = E [X(X − 1)] + E [X] − (E [X])2 = λ.
+
+  3. Par indépendance des v.a. X1 , X2 , on a GX1 +X2 = GX1 GX2 . On en déduit que
+
+                                GX1 +X2 (s) = exp(−(λ1 + λ2 )(s − 1)).
+
+     La fonction génératrice des moments caractérisant la loi, cette expression prouve que
+     X1 + X2 ∼ P(λ1 + λ2 ).
+                     P
+  4. Posons Tn := ni=1 Xi . Alors Tn est une v.a. à valeur dans N. D’après la question 3,
+     sous le modèle pλ · dµ, Tn suit une loi de Poisson de paramètre nλ. On en déduit que le
+     modèle statistique induit par Tn est le triplet
+                                                               
+                                    N, P (N), pnλ · µ : λ ∈ R+∗   .
+
+  5. ▶ Sous pλ · dµ, Tn est une loi de Poisson de paramètre nλ. On peut opter pour une
+     approche par maximum de vraisemblance : la log-vraisemblance est donnée par (C
+     désigne une quantité indépendante de λ)
+
+                                   λ 7→ ℓn (λ) := C − nλ + Tn ln λ,
+
+
+                                                                                         Page 18
+Ecole Polytechnique, promotion 2025                                       PC-1 Cours APM 41033 EP
+
+
+     qui atteint son maximum sur R+
+                                  ‘ ⋆ en un unique point, donné par
+                                                            n
+                                                        1X
+                                               λ̂n :=      Xk .                                         (3)
+                                                        n
+                                                           k=1
+
+     ▶ En exploitant le fait que (X1 , · · · , Xn ) est un n-échantillon d’un modèle statistique
+     de Poisson, on peut proposer un estimateur par la méthode des moments basé sur le
+     moment d’ordre 1 des v.a. Xi . La relation Eλ [X1 ] == λ définit l’estimateur λ̃n par la
+     solution de l’équation
+                                                 n
+                                              1X
+                                                    Xk = λ
+                                              n
+                                                    k=1
+     ce qui donne le même estimateur que celui identifié en (3).
+     ▶ En exploitant le fait que (X1 , · · · , Xn ) soit un n-échantillon d’un modèle statistique
+     de Poisson, on peut proposer un estimateur par la méthode des moments basé sur le
+     moment d’ordre 2 des v.a. Xi . La relation Eλ [X12 ] = λ(1 + λ) définit l’estimateur λ̌n par
+     la solution de l’équation
+                                                      n
+                                                    1X 2
+                                      λ > 0 t.q.      Xk = λ(1 + λ);
+                                                    n
+                                                     k=1
+     ce qui donne l’unique racine strictement positive de
+                                                                  n
+                                                                1X 2
+                                     λ > 0 t.q.λ2 + λ −           Xk = 0.
+                                                                n
+                                                                 k=1
+
+  6. On collecte les données ℓ1 , v1 , · · · , ℓn , vn où ℓi (resp. vi ) est le nombre de buts marqués
+     par l’équipe locale (resp. visiteuse) lors du i-eme match. Ces données sont une réalisation
+     du vecteur aléatoire (L1 , V1 , · · · , Ln , Vn ) à valeur dans N2n ; cet espace est muni de la
+     tribu de ses parties ; on veut munir l’espace mesurable d’une loi telle que sous cette
+     loi, les variables canoniques soient indépendantes et de loi de Poisson de paramètres
+     adequats, à savoir :
+                                                                         n
+                                                                                                   !
+                                                                         Y λℓ1k λv2k
+     (ℓ1 , v1 , · · · , ℓn , vn ) 7→ p̃θ (ℓ1 , v1 , · · · , ℓn , vn ) :=             exp(−λ1 − λ2 ) , θ := (λ1 , λ2 ).
+                                                                           ℓk ! vk !
+                                                           k=1
+
+     Par suite, le modèle statistique est
+                                                                           
+                                  N2n , P(N2n ), {p̃θ · µ⊗2 , θ ∈ R+    +
+                                                                   ⋆ × R⋆ } .
+
+  7. Par un estimateur des moments (qui coincide avec l’estimateur MV), on peut prendre
+     comme estimateur
+                                       n                    n
+                                     1X                  1X
+                            λ̂1,n :=     Lk     λ̂2,n :=      Vk .
+                                     n                   n
+                                              k=1                      k=1
+     On peut estimer λ1 et λ2 resp. par 1.468 et 1.055. On peut discuter le modèle poissonien
+     en observant que la variance des données est supérieure à la moyenne des données - dans
+     les trois cas (les locaux, les visiteurs, le nombre total par match).
+     Remarque: modèle identifiable
+
+                                                                                                   Page 19
+Ecole Polytechnique, promotion 2025                                      PC-1 Cours APM 41033 EP
+
+
+          Noter que si l’on avait uniquement collecté l’information (x1 + y1 , · · · , xn + yn )
+          - c’est à dire le nombre total de buts marqués par match - on n’aurait pas pu
+          estimer chacun des deux paramètres λ1 , λ2 . En effet, le modèle statistique associé
+          à ces observations aurait été
+               espace des observations : Nn muni de la tribu de ses parties.
+               paramètre θ̃ := (λ1 , λ2 ) à valeur dans Θ̃ := R+  ⋆ × R⋆
+                                                                           +
+
+               la famille de lois {p̌θ̃ · µ, θ̃ ∈ R̃⋆+ × R⋆+ } de densité
+                                                                        n
+                                                                        Y (λ1 + λ2 )sk
+                              (s1 , · · · , sn ) 7→ exp(−(λ1 + λ2 )n)                    .
+                                                                               sk !
+                                                                        k=1
+
+          La loi ne dépend des paramètres inconnus λ1 , λ2 qu’à travers la somme λ1 + λ2 .
+          Ce modèle est dit non identifiable puisqu’on peut trouver plusieurs paires (λ1 , λ2 )
+          de réels strictement positifs dont la somme vaut une valeur donnée : il existe θ̃ ̸= θ̌
+          tels que pθ̃ = pθ̌ . On pourra donc estimer la somme λ1 + λ2 mais on sera incapable
+          d’estimer chacune des quantités λ1 , λ2 .
+  8. Complément: Loi mélange
+         Soit f0 dν0 , f1 dν1 des lois de probabilités, définies sur un espace mesurable (T, T )
+         avec T ⊆ Rd - ce contexte inclut par exemple le cas de deux densités par rapport
+         à la mesure de Lebesgue sur Rd ; de deux lois discrètes sur N ; d’une loi discrète et
+         d’une loi à densité par rapport à Lebesgue.
+         • Soit π ∈]0, 1[. Une v.a. X de loi mélange donnée par
+                                           (1 − π)f0 dν0 + πf1 dν1
+          a même loi que (1 − U ) V + U W où
+              U, V, W sont des v.a. indépendantes.
+              V ∼ f0 dν0 , W ∼ f1 dν1 et U est une v.a. de Bernoulli de paramètre π.
+          En effet, pour toute fonction h mesurable bornée, on a
+          E [h((1 − U )V + U W )] = E [h((1 − U )V + U W )1U =0 ] + E [h((1 − U )V + U W ) 1U =1 ]
+                                    = E [h(V )1U =0 ] + E [h(W ) 1U =1 ]
+                                                 Z                                 Z
+                                    = P(U = 0)       h(v) f0 (v)dν0 (v) + P(U = 1)   h(w) f1 (w)dν1 (w)
+                                              Z                          Z
+                                    = (1 − π) h(x)f0 (x)dν0 (x) + π h(x) f1 (x) dν1 (x).
+
+          • Cela est équivalent à dire que ”avec probabilité (1−π), X = V ; et avec probabilité
+          π, X = W ”.
+          • Pour obtenir une réalisation d’une v.a. ayant cette loi, il suffit de tirer une v.a.
+          de Bernoulli de paramètre π. Si on obtient 0, on retourne la réalisation d’une v.a.
+          de loi f0 dν0 ; et si on obtient 1, on retourne une réalisation d’une v.a. de loi f1 dν1 .
+          • On peut généraliser le modèle de mélange à plus de deux composantes :
+                                                  I
+                                                  X
+                                                        αi fi dνi
+                                                  i=1
+                                                        PI
+          où les poids αi sont positifs et tels que       i=1 αi = 1.
+
+
+                                                                                             Page 20
+Ecole Polytechnique, promotion 2025                                    PC-1 Cours APM 41033 EP
+
+
+     Ici, f0 dν0 est la loi de Dirac en zero : V = 0 avec probabilité 1 ; W est une loi de Poisson
+     de paramètre λ. Par suite, simuler sous cette loi mélange revient à (a) tirer une loi de
+     Bernoulli de paramètre π ; (b) si on obtient 0, retourner 0 et si on obtient 1, retourner
+     le résultat d’un tirage d’une v.a. de Poisson de paramètre λ.
+  9. Notons X une v.a. ayant cette distribution mélange. Puisque X a même loi que (1 −
+     U )V + U W avec U, V, W indépendantes, on a
+
+           E [X] = E [(1 − U )V ] + E [U W ] = E [(1 − U )] E[V ] + E [U ] E [W ] = 0 + π λ.
+
+     De même, on établit
+                                               
+                       E X 2 = E U 2 W 2 = E U 2 E W 2 = πλ(1 + λ).
+
+ 10. On peut déduire de ces relations un estimateur par la méthode des moments pour les
+     paramètres π, λ. Posons
+                                           n                       n
+                                       1X                      1X 2
+                               S1,n :=    Xk           S2,n :=   Xk .
+                                       n                       n
+                                          k=1                     k=1
+
+     Alors on prend pour estimateur de (π, λ), la solution des conditions
+
+                      S1,n = πλ,       S2,n = πλ(1 + λ)       π ∈ ]0, 1[     λ>0
+
+     si elle existe. La résolution des deux premières conditions donne
+                                                                         2
+                                                                        S1,n
+                               S2,n     S2,n − S1,n
+                        λ̌n :=      −1=                      π̂n :=             ,
+                               S1,n         S1,n                    S2,n − S1,n
+
+     mais il fait vérifier que ces quantités sont bien resp. à valeur dans R+
+                                                                               ⋆ et dans ]0, 1[.
+     Puisque les v.a. Xk sont à valeur entière, on a toujours S2,n ≥ S1,n ; de plus,
+
+         Pn,(π,λ) (S2,n = S1,n ) = Pn,(π,λ) (Xi ≤ 1, ∀ i ≤ n) = ((1 − π) + π exp(−λ)(1 + λ))n
+                            P
+     ce qui entraine que n Pn,(π,λ) (S2,n = S1,n ) < ∞ et donc sous pπ,λ · µ, S2,n − S1,n > 0
+     presque-sûrement pour tout n assez grand.
+     Par suite, sous ce modèle, et pour tout n assez grand, λ̌n > 0 et 0 < π̂n < ∞. En
+     revanche, la condition π̂n < 1 est vraie ssi S2,n −S1,n2 >S
+                                                                   1,n i.e. ssi la variance empirique
+     est supérieure à la moyenne empirique. Ce n’est pas toujours le cas, mais ça l’est ici sur
+     les données collectées (c’est justement la raison pour laquelle on a envisagé ce modèle).
+     L’application numérique donne
+
+             s1,n = 1.468      s2,n = 1.617 + 1.4682        λ̌n = 1.5695      π̂n = 0.9353.
+
+      Sur la figure 6, pour k = 0, · · · , 4, on trace (i) la distribution empirique du nombre
+     de buts marqués par l’équipe locale (ii) la probabilité théorique donnée par une loi
+     de Poisson de paramètre λ = 1.468 ; et (iii) la probabilité théorique donnée par la loi
+     mélange (1 − π̂n )δ0 + π̂n P(λ̌n ).
+
+
+
+                                                                                              Page 21
+Ecole Polytechnique, promotion 2025                           PC-1 Cours APM 41033 EP
+
+
+
+
+                         0.35
+
+
+                          0.3
+
+
+                         0.25
+
+
+                          0.2
+
+
+                         0.15
+
+
+                          0.1
+
+
+                         0.05
+
+
+                           0
+                                0     1     2      3      4
+
+
+
+
+Figure 6 – Exercice 5 Distribution empirique (gauche), Loi de Poisson de paramètre 1.468
+(centre) et loi mélange (droite) pour k = 0, 1, · · · , 4.
+
+
+
+
+                                                                                 Page 22
+Ecole Polytechnique, promotion 2025                                                   PC-1 Cours APM 41033 EP
+
+
+2.6   Exercice 6
+   Complément: cumulants, kurtosis, moments
+      Lorsque le coefficient d’asymétrie est positif, les queues de distribution sont plus étalées
+      à droite.
+      Les cumulants (κk )k sont les coefficients dans le développement du log de la transformée
+      de Laplace (appelée fonction génératrice des cumulants) :
+                                                             X κk              X κk
+                                     ln E [exp(tX)] =                   tk =              tk .
+                                                                   k!                k!
+                                                             k≥0               k≥1
+
+      Par dérivation de cette fonction puis évaluation en t = 0, on obtient des relations entre
+      cumulants et moments centrés ; par exemple
+
+              µ1 (= µ) = κ1 ;       µ2 (= σ 2 ) = κ2 ;       µ 3 = κ3 ;        µ4 = κ4 + 3κ22 = κ4 + 3µ22 .
+
+      On a donc une autre expression de l’excès de kurtosis
+                                                          µ4      κ4
+                                                  γ2 =     2 − 3 = 2.
+                                                          µ2      κ2
+
+      Noter que par Cauchy-Schwarz, µ4 > µ22 donc γ2 > −2. Lorsque γ2 = 0 (c’est le cas de
+      la loi gaussienne, voir ci-dessous), la loi de la v.a. X est dite ”à queues plates”. Lorsque
+      γ2 > 0, on parle de ”distribution leptokurtique” / lois à queues épaisses. Lorsque γ2 < 0,
+      on parle de ”distribution platikurtique” / lois à queues légères.
+
+  1. Les données collectées (x1 , · · · , xn ) sont une réalisation du vecteur aléatoire Z :=
+     (X1 , · · · , Xn ), à valeur dans Rn . On munit cet espace des observations de la tribu
+     borélienne B(Rn ) et d’une famille de probabilités {pθ · Leb⊗n , θ ∈ Θ} avec
+           θ := (µ, σ 2 ) ∈ Θ := R × R+
+
+
+                                                                 n                               n
+                                                                                                         !!
+                                                                 Y        1         1 X (xk − µ)2
+                (x1 , · · · , xn ) 7→ pθ (x1 , · · · , xn ) :=          √     exp −                           .
+                                                                          2πσ       2       σ2
+                                                                 k=1                  k=1
+
+
+  2. Dans ce modèle statistique, sous pθ · Leb⊗n , les variables canoniques X1 , · · · , Xn sont
+     i.i.d. de loi gaussienne de paramètres (µ, σ 2 ). Comme dans l’exercice 3, on peut choisir
+     un estimateur des moments basé sur le premier et second moment ; ou un estimateur
+     par maximum de vraisemblance. Les deux approches conduisent au même estimateur
+                                                    −1
+                                                          Pn              
+                                      µ̂n            nP      k=1 Xk
+                                θ̂n = 2 := −1 n                         2
+                                      σ̂n       n       k=1 (Xk − µ̂n )
+
+  3. Ce modèle gaussien est discutable : on observe en effet un histogramme avec des queues
+     plus lourdes que la loi gaussienne. La symétrie de l’histogramme n’est pas non plus
+     convaincante.
+
+
+
+
+                                                                                                          Page 23
+Ecole Polytechnique, promotion 2025                                                          PC-1 Cours APM 41033 EP
+
+
+  4. Si X ∼ N (µ, σ 2 ) alors (X − µ)/σ ∼ N (0, 1). Par symétrie de la loi gaussienne centrée
+     (qui admet des moments d’ordre quelconque), on a
+                                        Z
+                                   γ1 ∝   x3 exp(−x2 )dx = 0.
+                                                       R
+
+     La transformée de Laplace de la loi gaussienne N (µ, σ 2 ) est donnée par
+
+                                        t 7→ E [exp(tX)] = exp(tµ + 0.5t2 σ 2 )
+
+     ce qui donne ln E [exp(tX)] = tµ + 0.5t2 σ 2 dont on déduit les cumulants
+
+                                       κ1 = µ          κ2 = σ 2          κq = 0, q ≥ 3.
+
+     Il vient que l’excès de kurtosis est nul.
+  5. On remplace les moments exacts par les moments empiriques ; on obtient pour estima-
+     teur du coefficient d’asymétrie
+
+                          n
+                                             !−3/2            n
+                                                                                     !                           n
+                     1X                                    1X                                                    X
+         γ̂1,n :=       (Xk − µ̂n )2                          (Xk − µ̂n )3               ,     avec µ̂n := n−1         Xk
+                     n                                     n
+                        k=1                                  k=1                                                 k=1
+
+     et pour estimateur de l’excès de kurtosis
+                                            n
+                                                                  !−2            n
+                                                                                                  !
+                                       1X                                1X
+                          γ̂2,n :=        (Xk − µ̂n )2                      (Xk − µ̂n )4              − 3.
+                                       n                                 n
+                                          k=1                                k=1
+
+  6. L’excès de kurtosis semble signicativement différent de 0, et il est positif ; cela confirme
+     l’observation que la distribution empirique a des queues plus lourdes que la loi gaus-
+     sienne. Il est donc conseillé d’envisager un autre modèle.
+  7. Les données collectées (x1 , · · · , xn ) sont une réalisation du vecteur aléatoire Z = (X1 , · · · , Xn )
+     à valeur dans Rn . On munit cet espace de sa tribu borélienne, et d’une famille de pro-
+     babilités {p̃θ · Leb⊗n , θ ∈ Θ} avec
+           θ := (α0 , α1 ) ; Θ := R⋆+ × R⋆+ .
+
+                                                                                                                      !
+                                                             n
+                                                             Y
+                                                                   √                1                 1     x2k        .
+           (x1 , · · · , xn ) 7→ p̃θ (x1 , · · · , xn ) :=                   q                   exp −
+                                                                        2π       α0 + α1 x2k−1         2 α0 + α1 x2k−1
+                                                             k=1
+
+
+     Pour l’expression de la densité, on a utilisé le fait que
+       — les v.a. (Xk )k ne sont pas indépendantes ; par définition de la loi conditionnelle
+         on a ”la loi de (X1 , · · · , Xn ) est le produit de la loi de (X1 , · · · , Xn−1 ) et de la
+         loi conditionnelle de Xn sachant (X1 , · · · , Xn−1 )” ce qui par récurrence donne
+         (écriture sans rigueur)
+                              n
+                              Y
+                                    ”loi conditionnelle de Xk sachant (X1 , · · · , Xk−1 )”
+                              k=1
+
+
+                                                                                                                  Page 24
+Ecole Polytechnique, promotion 2025                              PC-1 Cours APM 41033 EP
+
+
+      — Les v.a. (Zk )k sont indépendantes et par récurrence, on voit que Xk−1 est une
+        fonction de Z1 , · · · , Zk−1 . Donc Zk est indépendant de Xk−1 .
+      — Vue la relation liant Xk , Zk , Xk−1 , et puisque Zk , Xk−1 sont indépendants, on voit
+        que la loi conditionnelle de Xk sachant (X1 , · · · , Xk−1 ) est la loi conditionnelle
+        de Xk sachant Xk−1 ; et cette loi est une loi gaussienne centrée de variance α0 +
+            2 .
+        α1 Xk−1
+
+
+
+
+                                                                                      Page 25
+Ecole Polytechnique, promotion 2025                                                          PC-1 Cours APM 41033 EP
+
+
+2.7   Exercice 7
+  1. On considère une famille de scalaires β = (β1 , . . . , βK ) tels que
+                                                                  K
+                                                                  X
+                                               ∀t ∈ R                   βk eiµk t = 0.                                     (4)
+                                                                  k=1
+                                                  PK              iµk t . On calcule les dérivées successives de f
+      On définit la fonction f : t 7−→                k=1 βk e
+      en remarquant que
+                                                       K
+                                                       X                                    K
+                                                                                            X
+                                         (j)                            j iµk t         j
+                    ∀j ∈ N           f         (t) =         βk (iµk ) e          =i              βk (µk )j eiµk t .
+                                                       k=1                                  k=1
+
+      Puisque f est la fonction nulle (voir (4)), ses dérivés successives sont nulles ce qui
+      entraine en particulier que
+                                                                          K
+                                                                          X
+                               ∀j ∈ {0, . . . , K − 1}                          βk {µk }j = 0.
+                                                                          k=1
+
+      On reconnaı̂t ainsi un système linéaire en les {βk , 1 ≤ k ≤ K} de Vandermonde V β = 0
+      avec                                                          
+                                              1       ...       1
+                                        µ1           ...      µK 
+                                                                    
+                                V :=         ..                ..   .
+                                              .      ...        .   
+                                                     {µ1 }K−1 . . . {µK }K−1
+      La matrice V est inversible dès que les coefficients {µk , 1 ≤ k ≤ K} sont deux à deux
+      distincts ; puisque µ ∈ M, V est inversible et β est le vecteur nul. La condition (4)
+      implique donc la famille de fonctions est libre.
+  2. Dans ce modèle statistique, les variables canoniques sont indépendantes, de loi gaus-
+     sienne d’espérance µi et de variance 1. X suit une loi mélange gaussien, alors
+                                               K
+                                               X                                  K
+                                                                                  X
+                 Eα,µ [exp(itX)] =                   αk E [exp(itYk )] =                αk exp(itµk − 0.5t2 )
+                                               k=1                                k=1
+
+      en ayant noté Yi une v.a. de loi N (µi , 1). Si deux lois sont identiques, alors elles ont
+      même fonction caractéristique. Considérons deux mélanges gaussiens, de paramètres
+      respectifs (α, µ) et (α̃, µ̃) ; et supposons que fα,µ = fα̃,µ̃ . On obtient donc en passant
+      aux fonctions caractéristiques que
+                         K
+                         X                                              K
+                                                                        X
+                                                              2
+                               αk exp(itµk − 0.5t ) =                         α̃k exp(itµ̃k − 0.5t2 )
+                         k=1                                            k=1
+                                 2
+      En simplifiant par e−0.5t , on obtient que
+                                K
+                                X                                 K
+                                                                  X
+                                         αk exp(itµk ) −                 α̃k exp(itµ̃k ) = 0.
+                                k=1                               k=1
+
+      En utilisant la question précédente, on voit que
+
+                                                                                                                       Page 26
+Ecole Polytechnique, promotion 2025                                              PC-1 Cours APM 41033 EP
+
+
+      — s’il existe 1 ≤ i, j ≤ K tels que µi = µ̃j , alors αi = α̃j
+      — pour tout i tel que ∀j, µi ̸= µ̃j : αi = 0 - ce qui contredit la condition ”les
+        composantes du vecteur α sont strictement positives”.
+     On en déduit que seul le premier cas se produit, ce qui entraine : α = α̃ et µ = µ̃.
+  3. On vérifie la formule de la fonction caractéristique d’une loi de Poisson de paramètre µ
+     par un calcul direct : si X suit une loi de Poisson P(µ), alors :
+                                        +∞
+                                        X                         +∞
+                                                    µk itk X (µeit )k       it
+                       E[eitX ] = e−µ         e−µ      e =            = eµ[e −1] .
+                                                    k!         k!
+                                        k=0                       k=0
+
+     On considère ensuite deux mélanges de Poisson correspondant au même modèle statis-
+     tique :
+                                           qα,µ = qα̃,µ̃ ,
+     pour deux familles de paramètres (α, µ) et (α̃, µ̃) (avec le même nombre de composantes
+     K, et des composantes des vecteurs α, α̃ non nulles). Si les deux lois sont identiques,
+     elles ont alors mêmes fonctions caractéristiques, et on obtient donc que
+                                         K
+                                         X                          K
+                                                                    X
+                                                           it                         it
+                            ∀t ∈ R             αk eµk [e −1] =             α̃k eµ̃k [e −1]
+                                         k=1                        k=1
+
+                                                                                             it
+     On montre alors comme précédemment que la famille de fonctions (eµ[e −1] )µ∈R est une
+     famille libre. Pour ce faire, on considère un nombre fini de paramètres µ1 < . . . < µs
+     ainsi qu’un nombre de paramètres β = (β1 , . . . , βs ) tels que la fonction f définie par
+                                                     s
+                                                     X              it
+                                        f : t 7−→           βk eµk [e −1] ,
+                                                     k=1
+                                                         P                         P
+     est nulle pour tout t. On remarque que f (0) = sk=1 βk , de sorte que sk=1 βk = 0.
+                        P                                             P                  P
+     De même, f ′ (t) = sk=1 βk µk eit eµk [e 1]          f ′ (0) = sk=1 βk µk ; et donc sk=1 βk µk =
+                                              it
+                                                    et
+     0. Puis
+                                                  s
+                                                  X
+                              (2)                                         i
+                                           ′
+                            f (t) = if (t) +         βk {µk }2 e2it eµk [e t−1] ,
+                                                     k=1
+                              Ps
+     de sorte que f (2) (0) = k=1 βk {µk }2 .
+     On démontre ainsi par récurrence sur j que
+                                                                  s
+                                                                  X
+                                                    (j)
+                                   ∀j ≥ 1       f         (0) =         βk {µk }j .
+                                                                  k=1
+
+     Encore une fois, on obtient un système linéaire en les coefficients β de matrice, une ma-
+     trice de Vandermonde. On déduit donc que nécessairement tous les coefficients (β1 , . . . , βs )
+     sont nuls.
+     Cela implique l’identifiabilité du modèle statistique.
+
+
+
+
+                                                                                                  Page 27
+

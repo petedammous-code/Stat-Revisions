@@ -1,0 +1,227 @@
+4. LES COMPLÉMENTS                                                                                           43
+
+4      Les compléments
+    Les contenus de cette partie ne sont pas exigibles. Ils donnent la forme vectorielle du lemme
+de Slutsky et sa démonstration, les lois des grands nombres que le cours n’utilise pas, le contrôle
+de l’erreur d’approximation dans le théorème de la limite centrale, la comparaison des intervalles
+de Wald et de Wilson, et l’estimateur de Hodges.
+
+4.1      Le lemme de Slutsky dans le cas vectoriel
+    Le lemme 1.1 a été énoncé pour des variables aléatoires réelles. Les démonstrations de la
+méthode-δ vectorielle (théorème 1.8) et de la normalité asymptotique d’une suite d’estimateurs à
+valeurs dans Rℓ en utilisent la forme suivante.
+
+     Théorème 4.1: Opérations sur les limites, cas vectoriel
+    Pour tout n ∈ N, soit (Zn , Zn , Pn ) un espace de probabilité et Xn , Yn des vecteurs aléatoires
+    définis sur (Zn , Zn ) et à valeurs respectivement dans Rd et Rp . Soit X un vecteur aléatoire à
+    valeurs dans Rd , de loi µ.
+                            P                    Pn −prob                  P
+      (i) Si d = p, si Xn =⇒
+                           n
+                             µ et si Xn − Yn       −→       0, alors Yn =⇒
+                                                                         n
+                                                                           µ.
+                                P           Pn −prob                           P
+     (ii) Soit c ∈ Rp . Si Xn =⇒
+                               n
+                                 µ et Yn      −→       c, alors (Xn , Yn ) =⇒
+                                                                            n
+                                                                              µ ⊗ δc .
+                                                                                                Pn −prob
+    En particulier, si An est une suite de matrices aléatoires de taille m×d telle que An         −→       A,
+                                                       Pn
+    où A est une matrice déterministe, alors An Xn =⇒      AX.
+
+     Démonstration
+    L’assertion (i) est l’étape 3 de la démonstration du lemme 1.1, dont l’argument ne fait inter-
+    venir que des normes et vaut donc en toute dimension. L’assertion (ii) s’obtient comme aux
+    étapes 1 et 2 de cette même démonstration : on écrit
+                                                      
+                                        Xn         0       Xn
+                                            =           +      ,
+                                         Yn     Yn − c      c
+
+    le premier terme tend vers 0 en probabilité, et pour le second, la fonction caractéristique en
+    (t1 , t2 ) ∈ Rd × Rp vaut exp(it⊤              ⊤
+                                    2 c) En [exp(it1 Xn )], qui converge vers la fonction caractéristique
+    de µ ⊗ δc ; le théorème de Lévy 1.5 en dimension d + p conclut, puis l’assertion (i) permet
+    d’ajouter le premier terme. La dernière affirmation s’obtient en appliquant l’assertion (ii) au
+    couple (Xn , An ), puis le théorème de transformation continue 1.4 à la fonction (x, M ) 7→ M x,
+    qui est continue.                                                                                  □
+
+   La démonstration de la méthode-δ vectorielle est alors celle du cas scalaire : la différentiabilité
+de g au point θ (définition 2.4) donne
+
+                  rn (g(Tn ) − g(θ)) − Jg (θ) {rn (Tn − θ)} = rn ∥Tn − θ∥ R̃(Tn − θ) ,
+
+                                                                Pn −prob                        Pn −prob
+où R̃ est continue en 0 et nulle en 0. Comme Tn − θ               −→       0, on a R̃(Tn − θ)    −→        0, et
+                Pn
+rn ∥Tn − θ∥ =⇒ ∥T∥ par le théorème de transformation continue 1.4 ; le membre de droite tend
+donc vers zéro en probabilité, et l’assertion (i) donne la loi limite annoncée.
+
+4.2      Les autres lois des grands nombres
+    Le chapitre n’utilise que la loi faible des grands nombres 1.2, qui suppose les variables de carré
+intégrable. Deux renforcements sont utiles à connaître.
+44                                             CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+     Théorème 4.2: Loi faible des grands nombres, variables indépendantes de même loi intégrables
+  Soit {Xk , k ∈ N} une suite de variables aléatoires réelles définies sur (Ω, F, P), indépendantes,
+  de même loi et intégrables. Alors
+                                          n
+                                       1X   P−prob
+                                          Xk −→ E[X1 ] .
+                                       n
+                                         k=1
+
+
+
+     Théorème 4.3: Loi forte des grands nombres
+  Sous les mêmes hypothèses, la convergence a lieu presque sûrement :
+                                          n
+                                                         !
+                                       1X
+                              P lim         Xk = E[X1 ] = 1 .
+                                  n→∞ n
+                                               k=1
+
+
+    Les deux énoncés sont admis ici ; ils figurent aux théorèmes IV-5.17 et IV-5.20 du polycopié
+d’origine. Le premier se démontre par troncature des variables, le second par le lemme de Borel-
+Cantelli. Lorsqu’une suite d’estimateurs converge presque sûrement vers g(θ) sous Pθ pour tout
+θ, on dit qu’elle est fortement consistante ; cette propriété ne se formule que dans le cadre du
+produit infini (proposition 1.1), où une seule probabilité gouverne toutes les observations, et non
+dans celui de la définition 1.1, où l’espace change avec n.
+
+
+4.3     La vitesse de convergence dans le théorème de la limite centrale
+    Le théorème de la limite centrale 1.6 donne une convergence, non une erreur d’approximation.
+Comme la fonction de répartition de la loi limite est continue, la convergence des fonctions de
+répartition est en fait uniforme en x : c’est le théorème de Polya. Le théorème suivant contrôle
+l’erreur.
+
+     Théorème 4.4: Berry-Esseen
+  Soit {Xk , k ∈ N} une suite
+                             de variables
+                                          aléatoires réelles définies sur (Ω, F, P), indépendantes,
+  de même loi, telles que E |X1 |3 < ∞. Notons µ := E[X1 ] et σ 2 := Var(X1 ) > 0. Il existe une
+  constante universelle C, ne dépendant pas de la loi de X1 , telle que, pour tout x ∈ R et tout
+  n ∈ N∗ ,                                                                    
+                          √     X̄n − µ                       C E |X1 − µ|3
+                                           
+                      P     n             ≤ x − Φ(x) ≤ √                         ,
+                                   σ                           n        σ3
+  où Φ est la fonction de répartition de la loi N (0, 1).
+
+    L’énoncé est admis. La valeur C = 0.4784 convient, et√l’on sait que le résultat est faux pour
+C < 0.4097. L’erreur d’approximation décroît donc en 1/ n, avec une constante qui dépend du
+troisième moment centré rapporté au cube de l’écart-type. Ce rapport est grand pour des lois très
+dissymétriques, ce qui éclaire les écarts observés ci-dessous sur une proportion voisine de 0.
+
+
+4.4     L’intervalle de Wilson et l’intervalle de Wald
+    Les deux intervalles construits aux exemples 1.11 et 1.12 ont le même niveau asymptotique et ne
+coïncident pas. Les Figure 3 et 4 comparent, sur cinquante vecteurs d’observations indépendants,
+les intervalles obtenus pour n = 100 et pour deux valeurs de la proportion.
+    Pour θ = 0.25, les deux intervalles sont pratiquement confondus, et la proportion d’intervalles
+qui contiennent θ est proche de 0.95 dans les deux cas. Pour θ = 0.025, la situation est différente :
+la probabilité que les cent observations ne contiennent aucun succès vaut (1 − θ)100 ≈ 0.08, et
+dans ce cas X̄n = 0, de sorte que l’intervalle de Wald est réduit au point {0} et ne contient pas
+4. LES COMPLÉMENTS                                                                                      45
+
+                                                                                          2
+θ. L’intervalle de Wilson, lui, reste d’étendue strictement positive, puisque le terme z1−α/2   /(4n2 )
+sous la racine ne s’annule pas.
+    La raison en est visible sur les formules
+                                          √       : la validité des deux intervalles repose sur l’ap-
+proximation gaussienne de la loi de n(X̄n − θ), et nX̄n suit une loi binomiale, dont l’ap-
+proximation gaussienne est d’autant moins bonne que θ est proche de 0 ou de 1. Le théo-
+rème de Berry-Esseen 4.4 le quantifie : pour une loi Ber(θ), le rapport E[|X1 − θ|3 ]/σ 3 vaut
+                                    3/2
+ θ(1 − θ)3 + (1 − θ)θ3 / (θ(1 − θ)) , qui tend vers l’infini quand θ tend vers 0. L’intervalle de
+Wald ajoute à cette première approximation le remplacement de θ(1 − θ) par X̄n (1 − X̄n ), ce qui
+aggrave l’écart ; l’intervalle de Wilson, qui résout l’inégalité du pivot sans estimer la variance, est
+en général préférable.
+
+4.5    L’estimateur de Hodges
+    La comparaison de deux suites d’estimateurs par leurs variances asymptotiques (proposi-
+tion 1.3) a une limite, que l’exercice 6 met en évidence sur le modèle gaussien de variance connue
+                                                                1
+                                                     pθ : x 7→ √ exp − 12 (x − θ)2 .
+                                                                                     
+            (R, B(R), {pθ · Leb : θ ∈ Θ := R}) ,
+                                                                2π
+                                                        √
+L’estimateur du maximum de vraisemblance est X̄n , et n(X̄n − θ) suit exactement la loi N (0, 1)
+sous Pn,θ : la variance asymptotique vaut 1 pour toute valeur du paramètre, et elle atteint la borne
+de Cramér-Rao du chapitre 3.                                                          √
+   Soient b ̸= 1 et {an , n ∈ N} une suite de réels positifs telle que an → 0 et n an → ∞.
+L’estimateur de Hodges est
+
+                                θ̃n := X̄n 1{|X̄n |≥an } + b X̄n 1{|X̄n |<an } ,
+
+c’est-à-dire la moyenne empirique, ramenée vers l’origine par le facteur b lorsqu’elle en est à distance
+inférieure à an . L’exercice 6 établit que cette suite d’estimateurs est asymptotiquement normale,
+de variance asymptotique                       (
+                                                  b2 si θ = 0 ,
+                                        v(θ) =
+                                                  1 si θ ̸= 0 .
+
+Pour |b| < 1, la variance asymptotique de θ̃n est donc partout au plus égale à celle de X̄n , et
+strictement plus petite au point θ = 0. On parle de super-efficacité en ce point.
+                                                                         √
+Intuition. L’explication tient à l’écart entre les deux échelles an et 1/ n. Lorsque θ = 0, la moyenne
+                                           √
+empirique est à distance de l’ordre de 1/ n de l’origine, donc inférieure à an avec une probabilité qui
+tend vers 1 : l’estimateur vaut b X̄n pour n grand, et sa variance asymptotique est b2 . Lorsque θ ̸= 0, la
+moyenne empirique est à distance de l’ordre de |θ| de l’origine, donc supérieure à an avec une probabilité
+qui tend vers 1 : l’estimateur vaut X̄n pour n grand. Chaque valeur du paramètre finit donc par se trouver
+dans l’un des deux régimes, et la variance asymptotique ne voit jamais la transition entre les deux.
+    Cette transition existe pourtant. Pour chaque n, les valeurs de θ de l’ordre de an sont celles pour
+lesquelles les deux régimes se disputent l’estimateur, et l’erreur quadratique moyenne y est bien
+                                                                −1/4
+plus grandehque celle dei X̄n . La Figure 5 montre, pour an = n      et b = 0.25, le comportement de
+                      2
+θ 7→ n En,θ (θ̃n − θ) , à comparer à la valeur constante 1 obtenue pour X̄n : la quantité dépasse
+largement 1 au voisinage de l’origine, et le maximum sur θ croît avec n.
+    La variance asymptotique, prise point par point, ne rend donc pas compte du comportement
+de l’estimateur sur un voisinage du paramètre. Les critères qui le font reposent sur une forme
+d’uniformité
+   √          en θ – borne inférieure locale asymptotique, risque maximal sur un voisinage de taille
+1/ n – et sortent du cadre de ce chapitre.
+46                                          CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+
+
+                       9
+                                                                    n=100
+                       8                                            n=250
+                                                                    n=500
+                                                                    y=1
+                       7
+
+                       6
+
+                       5
+
+                       4
+
+                       3
+
+                       2
+
+                       1
+
+                       0
+                       -0.8   -0.6   -0.4   -0.2   0   0.2   0.4   0.6      0.8
+
+
+
+
+Figureh 5 – Erreuri  quadratique moyenne de l’estimateur de Hodges, multipliée par n : θ 7→
+n En,θ (θ̃n − θ) , pour an = n−1/4 et b = 0.25. Pour l’estimateur du maximum de vraisemblance,
+                2
+
+la même quantité est constante et vaut 1.
+

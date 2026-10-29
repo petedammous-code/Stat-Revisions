@@ -1,0 +1,1330 @@
+Chapitre 2
+
+Estimation ponctuelle
+
+   Ce chapitre est consacré à l’estimation ponctuelle : un modèle statistique étant
+   fixé, comment proposer, à partir des observations, une valeur plausible du
+   paramètre inconnu ? Deux méthodes générales de construction sont étudiées, la
+   méthode des moments et le maximum de vraisemblance. Pour chacune,
+   on suit le même canevas : l’intuition, la définition, des exemples, quelques
+   propriétés, puis une généralisation – les Z-estimateurs pour la première, les M -
+   estimateurs pour la seconde. L’étude du maximum de vraisemblance conduit à
+   la divergence de Kullback-Leibler, qui décrit la limite de la log-vraisemblance
+   normalisée et le point où cette limite atteint son maximum.
+   La partie principale du chapitre suit le déroulé du cours. Elle est suivie d’une
+   partie Outils mathématiques, qui rassemble les prérequis utilisés (inégalités de
+   Jensen et de Bienaymé-Tchebychev, loi faible des grands nombres, fonctions
+   convexes) et rappelle où sont démontrés les résultats empruntés au chapitre
+   précédent, puis de la feuille d’exercices, et enfin d’une partie Compléments,
+   hors programme d’examen, qui traite de modèles moins standards (Cauchy,
+   translation et échelle, censure, régression générale) et donne l’énoncé complet
+   du théorème sur la divergence de Kullback-Leibler.
+
+
+Comment construire un estimateur ?
+    Au chapitre précédent, nous avons proposé quelques estimateurs sans méthode générale : la
+proportion empirique de réponses positives pour le paramètre d’une loi de Bernoulli, une correction
+affine de cette proportion pour le protocole des réponses randomisées, une droite ajustée par
+moindres carrés pour une tendance de température (premiers estimateurs du chapitre 1). Dans
+chaque cas, l’estimateur a été trouvé au cas par cas, en remarquant que le paramètre s’exprimait
+à l’aide d’une moyenne que les observations permettaient d’approcher.
+    Ce chapitre présente deux procédés systématiques, applicables dès que le modèle est écrit. Le
+premier, la méthode des moments, prolonge le raisonnement précédent : on égale des moyennes
+théoriques, fonctions du paramètre, à leurs contreparties empiriques. Le second, le maximum de
+vraisemblance, retient la valeur du paramètre qui rend les observations les plus vraisemblables,
+c’est-à-dire qui maximise la densité des observations vue comme une fonction du paramètre. Les
+deux méthodes ne coïncident pas en général, et aucune des deux ne garantit à elle seule que
+l’estimateur obtenu est bon : la mesure de la qualité d’un estimateur fait l’objet des chapitres
+suivants.
+
+
+
+
+                                                 7
+8                                                       CHAPITRE 2. ESTIMATION PONCTUELLE
+
+1      Les fondamentaux
+1.1      Estimation ponctuelle
+   Le chapitre précédent a distingué quatre tâches de l’inférence statistique (Section 1.3) : l’esti-
+mation ponctuelle, l’estimation par région, le test et la prédiction. Ce chapitre est consacré à la
+première. Estimer ponctuellement, c’est répondre par une seule valeur : on calcule un nombre, ou
+un vecteur, à partir des observations, et on le propose comme valeur plausible de la quantité in-
+connue. Cette quantité n’est pas nécessairement le paramètre lui-même ; ce peut être une fonction
+du paramètre, par exemple la variance 1/θ2 d’une loi exponentielle d’intensité θ.
+
+     Définition 1.1: Estimateur ponctuel
+    Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique et g : Θ → Rq une fonction. Un
+    estimateur ponctuel T de g(θ) est une statistique à valeurs dans un espace mesurable contenant
+    g(Θ), typiquement (Rq , B(Rq )) : une application mesurable T : (Z, Z) → (Rq , B(Rq )) 1 .
+
+    Comme toute statistique (Définition 3), un estimateur ne dépend que des observations : le
+paramètre inconnu n’intervient pas dans son expression. C’est la seule contrainte imposée par la
+définition.
+
+     Exemple 1.1: Qu’est-ce qui est un estimateur ?
+    Considérons  un         n-échantillon
+                                             (X1 , . . . , Xn ) du      modèle      exponentiel
+     R+ , B(R+ ), E(θ) , θ ∈ R∗+ , et cherchons à estimer θ. Parmi les cinq quantités
+
+                                  X1 ,       X̄n ,      θ,      1,       −1 ,
+
+    quatre sont des estimateurs de θ : X1 , X̄n , la constante 1 et la constante −1 sont des fonctions
+    mesurables des observations. La cinquième, θ, n’en est pas un : c’est la quantité inconnue que
+    l’on cherche à estimer, et elle n’est pas calculable à partir des données. En revanche, rien dans
+    la définition n’interdit à −1 d’être un estimateur d’un paramètre strictement positif : c’est un
+    très mauvais estimateur, mais c’en est un.
+
+    Pour départager des estimateurs, il faut donc mesurer leur qualité. Trois mesures seront in-
+troduites dans la suite du cours : le biais Eθ [T
+                                                (Z)] − g(θ), qui
+                                                                compare l’estimateur à sa cible
+en moyenne ; l’erreur quadratique moyenne Eθ ∥T (Z) − g(θ)∥2 ; et, pour une suite d’estimateurs
+indexée par le nombre d’observations, la consistance, c’est-à-dire la convergence de Tn (Z) vers
+g(θ) lorsque n tend vers l’infini. Les deux premières sont étudiées avec la théorie de la décision,
+aux cours 3 et 4, la troisième avec le comportement asymptotique des estimateurs, aux cours 6
+et 7. Nous les rencontrerons néanmoins dès ce chapitre, en particulier dans l’Exercice 2 (PC2), où
+le biais de deux estimateurs concurrents est calculé et comparé.
+Intuition. Un estimateur n’est pas nécessairement « bon ». La définition ne demande qu’une chose, qu’il
+soit calculable à partir des données, et c’est ce qui la rend utile : elle sépare la question de la construction,
+objet de ce chapitre, de celle de l’ évaluation, objet des chapitres suivants. Une méthode de construction
+fournit un candidat ; c’est ensuite l’étude de son biais, de son erreur quadratique et de son comportement
+quand n grandit qui dit s’il faut le retenir.
+
+
+1.2      Méthode des moments
+   La méthode des moments part d’une remarque élémentaire : dans beaucoup de modèles, le
+paramètre s’exprime à l’aide d’une espérance, et une espérance s’approche par une moyenne em-
+   1. On impose parfois à un estimateur de g(θ) de prendre ses valeurs dans g(Θ) lui-même. Cette restriction
+apporte peu sur le plan conceptuel et exclut des estimateurs pourtant parfaitement admissibles dans la théorie
+classique ; nous ne la retenons pas.
+1. LES FONDAMENTAUX                                                                                       9
+
+pirique. L’exemple qui suit, calculé avant toute définition, en montre le principe.
+
+   Exemple 1.2: Modèle de Bernoulli : un premier estimateur des moments
+                                                                                             
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle {0, 1}, P({0, 1}), {Ber(p) , p ∈ [0, 1]} , où l’on
+  note p le paramètre. Le candidat naturel pour     Pnestimer p est la proportion empirique de 1,
+  c’est-à-dire la moyenne empirique X̄n = n−1 i=1 Xi . La raison en est que Ep [X1 ] = p : le
+  paramètre est une espérance, et l’on estime une espérance par sa version empirique, p̂n := X̄n .
+  C’est l’estimateur proposé au chapitre 1 (Section 1.8).
+
+    On a choisi une fonction T des observations (ici T (x) = x), calculé son espérance e(θ) =
+Eθ [T (X1 )] en fonction du paramètre, puis résolu, par rapport à la variable ϑ, l’équation e(ϑ) =
+     Pn
+n−1 i=1 T (Xi ), dont la solution est notée θ̂n . Le cas d’un paramètre réel et d’une seule fonction
+T se formule ainsi.
+
+   Définition 1.2: Méthode des moments, cas simple
+  Soit (X1 , . . . , Xn ) un n-échantillon d’un modèle paramétrique (X, X , {Qθ , θ ∈ Θ}) avec Θ ⊆
+  R, et soit T : X → R une fonction mesurable telle que Eθ [|T (X1 )|] < ∞ pour tout θ ∈ Θ. On
+  appelle moment exact associé àPT la fonction e : θ 7→ e(θ) := Eθ [T (X1 )], et moment empirique
+                                        n
+  associé à T la statistique n−1 i=1 T (Xi ). On considère l’équation, d’inconnue ϑ ∈ Θ,
+                                                      n
+                                                   1X
+                                          e(ϑ) =         T (Xi ) .
+                                                   n i=1
+
+  Lorsqu’elle admet une solution unique, celle-ci est notée θ̂n et appelée l’estimateur des mo-
+  ments associé à T : c’est la valeur du paramètre qui égale le moment exact et le moment
+  empirique.
+
+   Les deux exemples qui suivent appliquent cette définition à des modèles où le paramètre n’est
+pas lui-même une espérance.
+
+   Exemple 1.3: Modèles exponentiel et de Poisson : deux applications
+     1. Modèle    exponentiel.
+                                   Soit    (X1 , . . . , Xn ) un n-échantillon     du     modèle
+         R+ , B(R+ ), E(θ) , θ ∈ R∗+ . Ici Eθ [X1 ] = 1/θ : le paramètre n’est pas lui-même une
+        espérance, mais s’en déduit par une fonction inversible. On retient la valeur θ̂n telle
+        que 1/θ̂n = X̄n , soit θ̂n = 1/X̄n , définie dès que X̄n > 0, ce qui est le cas Pθ -presque
+        sûrement.
+     2. Modèle dePoisson, moment d’ordre 2. Soit (X1 , . . . , Xn ) un n-échantillon du modèle
+         N, P(N), Poi(λ) , λ ∈ R∗+ . Rien n’oblige à utiliser le moment d’ordre 1 : comme
+              2                          2        2                                          2
+             1 ] = Varλ (X1 ) + Eλ [X1 ] = λ + λ , on peut retenir la valeur λ̂n telle que λ̂n + λ̂n =
+        Eλ [XP
+          −1    n    2
+        n       i=1 Xi , c’est-à-dire l’unique racine dans R+ de cette équation du second degré,
+                                                    q
+                                          1                         Pn    2
+                                                                               
+                                  λ̂n =      −1+        1 + 4 n−1     i=1 Xi       .
+                                          2
+        Cette racine vaut 0 exactement lorsque toutes les observations sont nulles, événement
+        de probabilité e−nλ > 0. L’espace des paramètres ayant été pris égal à R∗+ , l’estimateur
+        n’est alors pas défini ; il le serait si l’on adjoignait à Θ la valeur λ = 0, à laquelle
+        correspond la masse de Dirac en 0. Le premier estimateur des moments, X̄n , rencontre
+        exactement la même limite.
+
+   Lorsque le paramètre est de dimension d, une seule équation ne suffit plus : il en faut autant
+que d’inconnues, donc autant de fonctions de moment.
+10                                                     CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+     Méthode 1.1: Méthode des moments
+  Soit (X1 , . . . , Xn ) un n-échantillon d’un modèle paramétrique (X, X , {Qθ , θ ∈ Θ}), où Θ ⊆
+  Rd . Pour tout θ ∈ Θ, on note Pθ := Q⊗n    θ  la loi des observations.
+      1. Choisir d fonctions mesurables Tj : X → R, j ∈ {1, . . . , d}, telles que
+                                             Z
+                           Eθ [|Tj (X1 )|] =   |Tj (x)| Qθ (dx) < ∞ ,       θ∈Θ.
+                                                X
+
+      2. Calculer les moments exacts : pour tout θ ∈ Θ et tout j ∈ {1, . . . , d},
+
+                                              ej (θ) := Eθ [Tj (X1 )] .
+
+      3. Les moments exacts ej (θ) ne P
+                                      sont pas connus, puisque θ ne l’est pas ; on les estime par
+                                        n
+         les moments empiriques n−1 i=1 Tj (Xi ).
+      4. Résoudre, par rapport à la variable ϑ, le système de d équations à d inconnues
+                                                              n
+                                                           1X
+                                 ∀j ∈ {1, . . . , d}             Tj (Xi ) = ej (ϑ) .
+                                                           n i=1
+
+  En supposant que ce système admette une solution unique θ̂n dans Θ, on appelle θ̂n
+  l’estimateur des moments de θ associé aux fonctions Tj , j = 1, . . . , d.
+
+
+
+    L’estimateur des moments est donc égal à la valeur du paramètre pour laquelle les moments
+exacts et les moments empiriques sont égaux. Deux points méritent d’être soulignés dès maintenant.
+D’une part, la méthode ne produit un estimateur que si le système admet une solution unique : ni
+l’existence ni l’unicité ne sont automatiques, et la solution peut exister sans appartenir à l’espace
+des paramètres, comme dans le modèle de Poisson lorsque toutes les observations sont nulles.
+D’autre part, le résultat dépend des fonctions Tj choisies ; un même modèle admet donc en général
+plusieurs estimateurs des moments, comme le montre l’exemple qui suit.
+
+
+     Exemple 1.4: Modèle exponentiel : deux estimateurs des moments
+  Le modèle exponentiel est le modèle de base des systèmes à événements discrets : arrivées
+  à un service, occurrences de panne, durées de survie. Soit (X1 , . . . , Xn ) un n-échantillon du
+  modèle                                                       
+                               R+ , B(R+ ), E(θ) , θ ∈ Θ := R∗+    ,
+  où la loi exponentielle d’intensité θ > 0 admet, par rapport à la mesure de Lebesgue Leb sur
+  R, la densité
+                                       qθ (x) := θe−θx 1R+ (x) .                           (1)
+  Cette loi est sans mémoire : pour tous a, b > 0 et tout θ ∈ Θ,
+
+                                                           e−(a+b)θ
+                        Pθ ( X1 ≥ a + b | X1 ≥ a) =                 = Pθ (X1 ≥ b) ,
+                                                             e−aθ
+  et ses moments se calculent par intégrations par parties successives, ou par la fonction géné-
+  ratrice des moments (lemme des moments de la loi exponentielle, chapitre 1) :
+
+                                                    k!
+                                      Eθ [X1k ] =      ,       k ∈ N∗ .
+                                                    θk
+1. LES FONDAMENTAUX                                                                                                11
+
+
+  Considérons les deux fonctions T (x) = x et T̃ (x) = x2 . Les moments exacts associés sont
+                                                      Z +∞
+                                                                   1
+                        e(θ) = Eθ [T (X1 )] =                        ,
+                                                                x θ exp(−θx) dx =
+                                              0                    θ
+                                  h        i Z +∞                     2
+                        ẽ(θ) = Eθ T̃ (X1 ) =     x2 θ exp(−θx) dx = 2 .
+                                               0                     θ
+
+  Les estimateurs des moments associés sont les solutions respectives des équations
+                                          n                                         n
+                                   1   1X                                   2    1X 2
+                        e(ϑ) =       =       Xi            et    ẽ(ϑ) =       =      X .
+                                   ϑ   n i=1                                ϑ2   n i=1 i
+
+  Sous la contrainte ϑ > 0, et dès que les observations ne sont pas toutes nulles – ce qui est vrai
+  Pθ -presque sûrement –, chacune de ces équations a une solution unique :
+                                                                                                     1/2
+                                     1                                                  2
+                  θ̂n,1 :=       −1
+                                    Pn            ,   et         θ̂n,2 :=           −1
+                                                                                       Pn         2          .   (2)
+                             n       i=1 Xi                                     n            i=1 Xi
+
+
+  Remarque. Il y a donc, ici, deux estimateurs des moments, et il y en aurait autant que de
+  fonctions T admissibles. On ne dit pas « l’estimateur des moments » du modèle exponentiel,
+  mais un estimateur des moments, ou l’estimateur des moments associé au moment T . Les deux
+  estimateurs de (2) ne se valent pas : la figure ci-dessous compare leurs lois sur des échantillons
+  simulés. Le biais et l’erreur quadratique moyenne de θ̂n,1 sont calculés au chapitre 1 à l’aide des
+  lois Gamma (Section 4) : Eθ [θ̂n,1 ] = nθ/(n − 1) pour n ≥ 2 et Eθ [(θ̂n,1 − θ)2 ] = (n + 2)θ2 /((n −
+  1)(n − 2)) pour n ≥ 3.
+
+                                                       Comparaison
+                  2.0
+                  1.5
+                  1.0
+                  0.5
+
+
+
+
+                                         theta1                                     theta2
+
+
+
+
+                                                                                      2 1/2
+    Comparaison des estimateurs θ̂n,1 = 1/(n−1 n                             −1 Pn
+                                                  P                                       
+                                                    i=1 Xi ) et θ̂n,2 = 2/(n     i=1 Xi )    : boîtes à
+   moustaches des valeurs prises par chacun des deux estimateurs sur un grand nombre d’échantillons
+simulés de taille n sous Pθ , pour θ = 1. Les deux estimateurs se concentrent autour de la vraie valeur du
+                        paramètre, mais θ̂n,2 est nettement plus dispersé que θ̂n,1 .
+
+  Remarque. Une boîte à moustaches résume une série de valeurs par cinq nombres calculés
+  sur la série ordonnée. La boîte s’étend du premier quartile q1 au troisième quartile q3 , et le
+  trait qui la coupe marque la médiane : elle contient donc la moitié centrale des valeurs, et sa
+12                                                    CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  hauteur est l’écart interquartile IQR = q3 − q1 . Les moustaches ne vont pas jusqu’au minimum
+  et au maximum : suivant la convention de Tukey, la moustache supérieure s’arrête à la plus
+  grande valeur inférieure à q3 + 1,5 IQR, la moustache inférieure à la plus petite valeur supérieure
+  à q1 − 1,5 IQR, et les valeurs situées au-delà sont tracées une à une. Pour des observations
+  gaussiennes, la boîte couvre environ 50 % des valeurs et les moustaches environ 99,3 %. Ici,
+  chaque boîte résume les valeurs prises par un estimateur sur un grand nombre d’échantillons
+  simulés sous la même loi : la position de la médiane par rapport à la vraie valeur du paramètre
+  renseigne sur le biais, la hauteur de la boîte et la longueur des moustaches sur la dispersion.
+
+    Le modèle uniforme sur un intervalle inconnu demande, lui, deux fonctions de moment, puisque
+le paramètre est de dimension 2.
+
+     Exemple 1.5: Loi uniforme sur [a, b] : deux moments nécessaires
+  La loi uniforme est le modèle simple d’une variable aléatoire bornée dans un intervalle. Soit
+  (X1 , .. . , Xn ) un n-échantillon de la loi uniforme sur [a, b], où le paramètre est θ = (a, b) ∈
+  Θ := (a, b) ∈ R2 , a < b , de densité par rapport à la mesure de Lebesgue Leb
+
+                                                      1
+                                         qθ (x) =        1 (x) .
+                                                    b − a [a,b]
+
+  Avec T (x) = x et T̃ (x) = x2 , les moments exacts valent
+
+                                 a+b                                b3 − a 3   a2 + ab + b2
+             e(θ) = Eθ [X1 ] =       ,        ẽ(θ) = Eθ [X12 ] =            =              .
+                                  2                                 3(b − a)        3
+
+  L’estimateur des moments est la solution du système
+                                                                      n
+                        a+b                  a2 + ab + b2    2
+                                                                   1X 2
+                            = X̄n ,                       = X n :=      X .
+                         2                        3                n i=1 i
+
+  Le système n’est pas linéaire, mais le changement d’inconnues s = a + b et p = ab le résout :
+  comme a2 + ab + b2 = s2 − p, il vient
+
+                                  ŝn = 2X̄n ,       p̂n = ŝ2n − 3 X 2 n ,
+
+  et ân , b̂n sont les Pracines de t2 − ŝn t + p̂n = 0. Ces racines sont réelles : en notant Vn :=
+              2       −1    n              2
+  X 2 n − X̄n = n           i=1 (Xi − X̄n ) ≥ 0 la variance empirique non corrigée, le discriminant
+  vaut                                                                   
+                  ŝ2n − 4p̂n = 4X̄n2 − 4 4X̄n2 − 3X 2 n = 12 X 2 n − X̄n2 = 12 Vn ≥ 0 ,
+  de sorte que                             p                           p
+                            ân = X̄n −     3Vn ,        b̂n = X̄n +       3Vn .
+  Pour n ≥ 2, les observations ne sont pas toutes égales Pθ -presque sûrement, donc Vn > 0,
+  ân < b̂n et (ân , b̂n ) ∈ Θ : le système admet une solution unique dans Θ, la contrainte a < b
+  imposant l’ordre des deux racines. Ici, plusieurs moments sont nécessaires pour identifier les
+  deux paramètres a et b : le nombre d’équations doit être au moins égal au nombre d’inconnues.
+
+
+  Remarque. L’intervalle [ân , b̂n ] ne
+                                      √ contient pas nécessairement toutes les observations : cela
+  se produit dès que Xn:n − X̄n > 3Vn , où Xn:n est la plus grande observation. Par exemple,
+  pour un échantillon de taille 10 dont neuf observations√sont proches de 0 et la dixième proche
+  de 1, on trouve X̄n ≃ 0,1, Vn ≃ 0,09 et b̂n ≃ 0,1 + 0,27 ≃ 0,62, alors que la plus grande
+  observation vaut environ 1. La méthode des moments n’utilise que les deux premiers moments
+  empiriques, et ne tient pas compte de la contrainte a ≤ Xi ≤ b imposée par chaque observation.
+1. LES FONDAMENTAUX                                                                                  13
+
+
+  Le maximum de vraisemblance, lui, retiendra [X1:n , Xn:n ] (Exemple 1.11).
+
+
+
+
+   Illustration / animation : L’intervalle des moments ne contient pas toujours
+   toutes les observations
+   On illustre ici, pour un échantillon uniforme sur [a, b], l’intervalle [ân , b̂n ] ob-
+   tenu par la méthode des moments, à comparer à l’intervalle [X1:n , Xn:n ], qui
+   contient nécessairement toutes les observations ; les répétitions permettent              link
+   d’observer la fréquence à laquelle le premier échoue.
+
+
+
+
+Convergence des moments empiriques. Une fois l’estimateur construit, la première question
+est de savoir s’il se rapproche du paramètre lorsque le nombre d’observations augmente. Pour la
+méthode des moments, la réponse repose sur un fait de probabilités : une moyenne empirique se
+concentre autour de l’espérance qu’elle estime.
+
+   Proposition 1.1: Convergence des moments empiriques
+  Soient (X1 , . . . , Xn ) un n-échantillon du modèle (X, X , {Qθ , θ ∈ Θ}) et T : X → R une
+  fonction mesurable telle que Eθ [|T (X1 )|] < ∞ pour tout θ ∈ Θ ; on note e(θ) = Eθ [T (X1 )].
+                                                                                     R
+    (i) Si de plus Eθ [T (X1 )2 ] < ∞, alors, en notant σ 2 (θ) := Varθ (T (X1 )) = X {T (x) −
+        e(θ)}2 Qθ (dx), pour tout ε > 0,
+                                            n
+                                                                !
+                                        1X                           σ 2 (θ)
+                                  Pθ          T (Xi ) − e(θ) ≥ ε ≤           .
+                                        n i=1                         n ε2
+
+                                 Pn               Pθ −prob
+   (ii) Dans tous les cas, n−1      i=1 T (Xi )    −→ e(θ) (loi faible des grands nombres).
+  En particulier, si pour tout nPl’estimateur des moments θ̂n associé à T est défini Pθ -presque
+                                  n
+  sûrement, alors e(θ̂n ) = n−1 i=1 T (Xi ) presque sûrement, de sorte que Pθ (|e(θ̂n ) − e(θ)| ≥
+                                                             Pθ −prob
+  ε) ≤ σ 2 (θ)/(nε2 ) sous l’hypothèse de (i), et e(θ̂n ) −→ e(θ).
+
+
+   Démonstration
+  Sous Pθ , les variables T (X1 ), . . . , T (Xn ) sont indépendantes, de même loi, d’espérance e(θ).
+  Le point (i) est l’inégalité de Bienaymé-Tchebychev (Proposition 2.1) appliquée à la moyenne
+  empirique, dont la variance vaut σ 2 (θ)/n par indépendance. Le point (ii) est la loi faible des
+  grands nombres pour des variables i.i.d. intégrables (Théorème 2.1) ; sous l’hypothèse de (i),
+  il découle aussi directement de la borne de (i). La dernière affirmation résulte de la définition
+  de θ̂n .                                                                                         □
+
+
+  Remarque. La proposition porte sur e(θ̂n ) et non sur θ̂n . Pour conclure sur l’estimateur lui-
+  même, il faut pouvoir inverser e : si e est injective
+                                                       et si son inverse e−1 : e(Θ) → Θ est continue au
+                            −1   −1
+                                    Pn
+  point e(θ), alors θ̂n = e    n      i=1 T (Xi ) converge en probabilité vers θ (Lemme 2.1). C’est
+  le cas, par exemple, lorsque Θ est un intervalle et que e est continue et strictement monotone :
+                                                                  Pθ −prob
+  dans le modèle exponentiel, e(θ) = 1/θ et θ̂n,1 = 1/X̄n −→ θ. La consistance et la vitesse
+  de convergence des estimateurs des moments, qui découlent de la loi des grands nombres et du
+  théorème central limite, sont étudiées dans la suite du cours.
+14                                                    CHAPITRE 2. ESTIMATION PONCTUELLE
+
+Généralisation : les Z-estimateurs. Résumons. L’estimateur des moments associé aux fonc-
+tions T = (T1 , . . . , Td ) est la solution du système de d équations à d inconnues
+                    n
+                 1X
+                       ψ(ϑ, Xi ) = 0 ,        avec     ψ(ϑ, x) := T(x) − Eϑ [T(X1 )] .             (3)
+                 n i=1
+Très souvent, pour un paramètre réel, une seule fonction de moment suffit. Il est cependant intéres-
+sant de considérer des estimateurs définis comme solutions de systèmes d’équations de la forme (3)
+pour des fonctions d’estimation ψ plus générales, qui ne s’écrivent pas comme la différence entre
+une statistique et son espérance. La seule propriété de ψ utilisée est que son espérance s’annule
+au vrai paramètre.
+
+     Définition 1.3: Z-estimateur
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle (X, X , {Qθ , θ ∈ Θ}), avec Θ ⊆ Rd . Soient
+  ψj : Θ × X → R, j ∈ {1, . . . , d}, des fonctions mesurables telles que, pour tout θ ∈ Θ et tout
+  j, Eθ [|ψj (θ, X1 )|] < ∞ et
+                                        
+                             Eθ ψ(θ, X1 ) = 0d×1 ,     ψ := (ψ1 , . . . , ψd )⊤ .
+
+  On appelle Z-estimateur associé à ψ tout estimateur θ̂n vérifiant
+                                                                    n
+                                                                 1X
+                        Ψn (θ̂n ) = 0 ,       où     Ψn (ϑ) :=         ψ(ϑ, Xi ) .
+                                                                 n i=1
+
+    Un estimateur des moments est un Z-estimateur, associé à la fonction d’estimation (3). La lettre
+Z rappelle que l’estimateur est un zéro de la fonction aléatoire Ψn . Une partie des propriétés de
+convergence des estimateurs des moments se démontre directement pour les Z-estimateurs, avec
+les mêmes outils (loi des grands nombres et théorème central limite) ; ce sera l’objet de la suite du
+cours. L’exemple qui suit montre un Z-estimateur qui n’est pas un estimateur des moments.
+
+     Exemple 1.6: Modèle de translation : moyenne empirique et médiane empirique
+  Soit f une densité de probabilité sur R, par rapport à la mesure de Lebesgue Leb, paire :
+  f (x) = f (−x) pour tout x ∈ R. Soit (X1 , . . . , Xn ) un n-échantillon du modèle de translation
+                                                         
+                    R, B(R), {qθ · Leb , θ ∈ Θ = R} ,           qθ (x) := f (x − θ) ,
+                                                                                               2
+  par exemple la loi gaussienne centrée réduite translatée de θ, pour f (x) = (2π)−1/2 e−x /2 .
+  Deux choix de fonction d’estimation sont possibles.
+                                        R
+    1. Moyenne empirique. Supposons R |x|f (x) dx < ∞ et posons ψ(θ, x) = x − θ. Par le
+       changement de variable z = x − θ et la parité de f ,
+                                     Z                       Z
+                       Eθ [X1 − θ] = (x − θ)f (x − θ) dx =      zf (z) dz = 0 .
+                                          R                             R
+
+                     −1
+                        Pn
+        L’équation n       i=1 (Xi − ϑ) = 0 a pour unique solution θ̂n = X̄n : la moyenne em-
+        pirique est le Z-estimateur associé à ψ. C’est aussi l’estimateur des moments associé à
+        T (x) = x, puisque Eθ [X1 ] = θ.
+      2. Médiane empirique. Posons ψ(θ, x) = signe(x − θ), où signe(z) = −1 si z < 0, signe(0) =
+         0 et signe(z) = 1 si z > 0. Aucune hypothèse de moment n’est nécessaire, la fonction
+         signe étant bornée, et
+                                    Z                    Z +∞            Z 0
+               Eθ [signe(X1 − θ)] =   signe(z)f (z) dz =      f (z) dz −     f (z) dz = 0 ,
+                                      R                      0                  −∞
+1. LES FONDAMENTAUX                                                                                             15
+
+
+         toujours par parité de f . Notons X1:n ≤ · · · ≤ Xn:n les statistiques d’ordre de l’échan-
+         tillon, notées X
+                        P(1) ≤ · · · ≤ X(n) au chapitre 1 (Section 1.5). Pour ϑ distinct de toutes les
+                          n
+         observations, i=1 signe(Xi − ϑ) est la différence entre le nombre d’observations stricte-
+         ment supérieures à ϑ et le nombre d’observations strictement inférieures à ϑ. Supposons
+         les observations deux à deux distinctes, ce qui estPnPθ -presque sûr puisque leur loi a une
+         densité. Si n = 2m + 1 est impair, l’équation i=1 signe(Xi − ϑ) = 0 a pour unique
+         solution ϑ = Xm+1:n , la médiane empirique ; si n = 2m est pair, ses solutions sont tous
+         les points de l’intervalle ouvert ]Xm:n , Xm+1:n [, parmi lesquels la médiane empirique
+         1
+         2 (Xm:n + Xm+1:n ). Dans les deux cas, la médiane empirique med(X1 , . . . , Xn ) est un
+         Z-estimateur associé à ψ.
+  Ainsi, la moyenne empirique est un estimateur des moments, tandis que la médiane empirique
+  est un Z-estimateur qui n’est pas un estimateur des moments : on vérifie que la fonction
+  (θ, x) 7→ signe(x − θ) ne s’écrit pas sous la forme T (x) − Eθ [T (X1 )].
+
+
+
+1.3     Maximum de vraisemblance
+    La seconde méthode retient la valeur du paramètre pour laquelle les observations obtenues
+avaient la plus grande probabilité, ou, pour un modèle à densité, la plus grande densité. Le terme de
+vraisemblance est transparent : on se demande quelle valeur du paramètre rendrait nos observations
+les plus vraisemblables. Avant de donner la définition, commençons par deux exemples pour se
+fixer les idées.
+Intuition.
+    Considérons le modèle gaussien N (µ, 1)⊗n , µ ∈ R pour des tailles, en centimètres, et les observa-
+                                        
+
+tions 180, 170, 155, 172, 183, 194, 164, . . . Est-il vraisemblable que µ = 10 ? que µ = 200 ? Sous N (10, 1),
+une taille de 170 est à 160 écarts-types de la moyenne, et la densité y vaut (2π)−1/2 e−12 800 . Ces valeurs
+de µ sont possibles au sens strict, la densité gaussienne ne s’annulant jamais, mais si peu vraisemblables
+qu’on ne les retiendrait pas. Avec une seule observation X1 , la densité µ 7→ (2π)−1/2 exp(−(X1 − µ)2 /2)
+est maximale en µ = X1 : la valeur la plus vraisemblable est l’observationQelle-même. Avec plusieurs obser-
+vations indépendantes,   la densité du vecteur est le produit des densités, n  i=1 (2π)
+                                                                                        −1/2
+                                                                                             exp(−(Xi − µ)2 /2),
+maximal lorsque n                 2
+                  P
+                    i=1 (X i − µ)   est minimal,  c’est-à-dire en µ = X̄ n : c’est le calcul de l’Exemple 1.10.
+
+
+Intuition. Considérons maintenant le modèle uniforme U ([0, θ])⊗n , θ ∈ R∗+ et les observations 8, 7,
+                                                                
+
+11, 17, 2, 5, 14, . . . La valeur θ = 5 est impossible : une observation vaut 17 > 5, et la densité θ−1 1[0,θ] (17)
+est nulle. La valeur θ = 100 est possible, mais chaque observation a alors la densité 1/100, et le vecteur
+des n observations la densité 100−n . La valeur θ = 17, la plus grande observation, est possible et donne
+la densité 17−n , la plus grande de toutes : toute valeur inférieure à 17 annule la densité, toute valeur
+supérieure la diminue. Ici, une seule observation renseigne déjà, puisque θ est au moins égal à cette
+observation. Dans les deux exemples, le raisonnement ne fait intervenir que la densité des observations,
+vue comme une fonction du paramètre : c’est cette fonction que l’on appelle vraisemblance.
+
+
+
+Définitions. Le modèle est supposé dominé : chaque loi Qθ admet une densité qθ par rapport
+à une même mesure σ-finie µ (Définition 1). La vraisemblance est la densité du n-échantillon,
+produit des densités individuelles (Section 1.7), évaluée aux observations et considérée comme une
+fonction du paramètre.
+
+    Définition 1.4: Vraisemblance et estimateur du maximum de vraisemblance
+  Soient (X, X ) un espace mesurable, µ une mesure σ-finie sur (X, X ) et (X1 , . . . , Xn ) un n-
+  échantillon du modèle dominé (X, X , {qθ · µ , θ ∈ Θ}), où, pour tout θ ∈ Θ, qθ est la densité
+  de Qθ par rapport à µ. On appelle fonction de vraisemblance (ou vraisemblance) associée au
+16                                                           CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  n-échantillon (X1 , . . . , Xn ) l’application
+                                                                         n
+                                                                         Y
+                                 ϑ ∈ Θ 7→ Ln (ϑ, X1 , . . . , Xn ) :=          qϑ (Xi ) .
+                                                                         i=1
+
+
+  On appelle estimateur du maximum de vraisemblance tout estimateur θ̂nMV vérifiant
+
+                              Ln (θ̂nMV , X1 , . . . , Xn ) = max Ln (ϑ, X1 , . . . , Xn ) ,
+                                                             ϑ∈Θ
+
+  c’est-à-dire
+                                      θ̂nMV ∈ arg max Ln (ϑ, X1 , . . . , Xn ) .
+                                                  ϑ∈Θ
+
+  Quand il n’y a pas de risque de confusion, on note Ln (ϑ) pour Ln (ϑ, X1 , . . . , Xn ).
+
+   La variable ϑ de la vraisemblance parcourt Θ : c’est un paramètre libre, distinct de la valeur
+inconnue du paramètre sous laquelle les observations ont été tirées. Cette distinction sera rendue
+explicite par la notation à la Section 1.4. La vraisemblance dépend du choix de la mesure dominante
+µ, mais deux mesures dominantes conduisent à des densités qui diffèrent d’un facteur multiplicatif
+indépendant du paramètre (Section 2) : les points de maximum, donc l’estimateur, n’en dépendent
+pas 2 .
+
+     Définition 1.5: Log-vraisemblance normalisée
+  Sous les hypothèses de la Définition 1.4, la log-vraisemblance normalisée est l’application
+                                                                                        n
+                                                    1                                1X
+             ϑ ∈ Θ 7→ ℓn (ϑ, X1 , . . . , Xn ) :=     log Ln (ϑ, X1 , . . . , Xn ) =       log qϑ (Xi ) ,
+                                                    n                                n i=1
+
+  avec la convention log 0 = −∞.
+
+  Remarque. Dans tout ce cours, log désigne le logarithme népérien, de base e, et non le loga-
+  rithme décimal. On écrit log plutôt que ln parce que cette dernière notation se confond à la
+  lecture avec celles de la vraisemblance Ln et de la log-vraisemblance normalisée ℓn .
+
+    Le logarithme étant strictement croissant sur R∗+ , et la convention log 0 = −∞ prolongeant
+cette monotonie à R+ , les fonctions Ln et ℓn ont les mêmes points de maximum :
+
+                                      θ̂nMV ∈ arg max ℓn (ϑ, X1 , . . . , Xn ) .
+                                                   ϑ∈Θ
+
+Le passage au logarithme transforme le produit en somme, ce qui simplifie les calculs ; la norma-
+lisation par n fait de ℓn une moyenne empirique, ce qui servira à comprendre le comportement de
+l’estimateur lorsque n augmente (Section 1.4).
+
+Exemples.
+
+
+
+
+   2. Pour des versions fixées des densités. Une densité n’est définie qu’à un ensemble négligeable près, et la vrai-
+semblance s’évalue aux points observés : en modifiant chaque densité sur un ensemble négligeable qui dépend du
+paramètre, on peut déplacer les points de maximum, au point de faire perdre sa consistance à l’estimateur du
+maximum de vraisemblance dans un modèle gaussien (Y. Baraud et L. Birgé, Annals of Statistics, 2018, proposi-
+tion 1). Ce point est précisé dans les compléments du chapitre 1 (Section 4) ; les versions continues utilisées dans ce
+cours écartent la difficulté. Remarque experte, et pas du tout au programme ; merci à Matthieu Lerasle pour cette
+référence.
+1. LES FONDAMENTAUX                                                                                     17
+
+  Exemple 1.7: Modèle exponentiel
+                                                                                               
+ Soit (X1 , . . . , Xn ) un n-échantillon du modèle exponentiel R+ , B(R+ ), E(θ) , θ ∈ Θ = R∗+ ,
+ dont la densité par rapport à la mesure de Lebesgue est qθ (x) = θe−θx 1R+ (x). Les observations
+ étant positives, la vraisemblance s’écrit, pour tout ϑ > 0,
+                     n
+                     Y                         n
+                                                X   
+          Ln (ϑ) =         ϑ e−ϑXi = ϑn exp − ϑ   Xi > 0 ,                   ℓn (ϑ) = log ϑ − ϑ X̄n .
+                     i=1                                i=1
+
+ La fonction ℓn est dérivable sur R∗+ , de dérivée ℓ′n (ϑ) = 1/ϑ − X̄n et de dérivée seconde
+ −1/ϑ2 < 0 : elle est strictement concave. Dès que X̄n > 0, ce qui est Pθ -presque sûr, elle
+ admet un unique point critique, ϑ = 1/X̄n , qui est son maximum global : la dérivée ℓ′n étant
+ strictement décroissante et nulle en ce point, elle est strictement positive avant et strictement
+ négative après, de sorte que ℓn croît puis décroît. Ainsi
+                                                         1
+                                              θ̂nMV =       = θ̂n,1 :
+                                                        X̄n
+ l’estimateur du maximum de vraisemblance coïncide avec le premier estimateur des moments
+ de l’Exemple 1.4.
+
+
+  Exemple 1.8: Modèle de Bernoulli
+                                                                                                 
+ Soit (X1 , . . . , Xn ) un n-échantillon du modèle {0, 1}, P({0, 1}), {Ber(p) , p ∈ Θ = [0, 1]} , où
+ l’on note p le paramètre ; ce modèle est dominé par la mesure de comptageP        sur {0, 1}, avec la
+                                                                                    n
+ densité qp (x) = px (1 − p)1−x , en convenant que 00 = 1. En notant Sn := i=1 Xi = nX̄n le
+ nombre de 1 observés, la vraisemblance s’écrit, pour ϑ ∈ [0, 1],
+                                       n
+                                       Y
+                            Ln (ϑ) =         ϑXi (1 − ϑ)1−Xi = ϑSn (1 − ϑ)n−Sn .
+                                       i=1
+
+ Trois cas se présentent. Si Sn = 0, alors Ln (ϑ) = (1 − ϑ)n est strictement décroissante et
+ atteint son maximum en ϑ = 0 seulement. Si Sn = n, Ln (ϑ) = ϑn atteint son maximum
+ en ϑ = 1 seulement. Si 0 < Sn < n, alors Ln (0) = Ln (1) = 0 et Ln > 0 sur ]0, 1[, où la
+ log-vraisemblance normalisée vaut
+
+                   ℓn (ϑ) = X̄n log ϑ + (1 − X̄n ) log(1 − ϑ) ,
+                               X̄n   1 − X̄n                            X̄n    1 − X̄n
+                   ℓ′n (ϑ) =       −         ,           ℓ′′n (ϑ) = −       −          <0.
+                                ϑ     1−ϑ                               ϑ2    (1 − ϑ)2
+
+ La fonction ℓn est strictement concave sur ]0, 1[, et son unique point critique ϑ = X̄n est son
+ maximum global. Dans les trois cas, l’estimateur du maximum de vraisemblance existe, est
+ unique, et vaut
+                                         θ̂nMV = X̄n ,
+ qui est aussi l’estimateur des moments associé à T (x) = x. Le comportement de la log-
+ vraisemblance lorsque n augmente est étudié en détail sur cet exemple dans les compléments
+ (Section 4).
+
+
+  Exemple 1.9: Loi de Poisson : à vous
+ Avant de lire la suite, reprenez sur ce modèle la démarche des deux exemples précédents : écrire
+ la vraisemblance, passer à la log-vraisemblance normalisée, isoler les termes qui dépendent du
+ paramètre, puis étudier la fonction obtenue. La version en ligne du cours propose le même
+18                                                      CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  exercice à trois niveaux de difficulté, sur les modèles de Poisson, uniforme et de Pareto.
+  Pour θ ∈ Θ = R∗+ , la loi de Poisson de paramètre θ est la loi sur N de densité, par rapport à
+  la mesure de comptage µ sur N,
+                                                      θx
+                                       qθ (x) = e−θ      ,     x∈N.
+                                                      x!
+  Soit (X1 , . . . , Xn ) un n-échantillon de cette loi. La vraisemblance s’écrit, pour tout ϑ > 0,
+                               n
+                               Y           ϑX i      1                           
+                    Ln (ϑ) =         e−ϑ        = Qn        exp − nϑ + nX̄n log ϑ ,
+                               i=1
+                                           Xi !    i=1 Xi !
+
+                                  1     Y   n   
+                     ℓn (ϑ) = −     log      Xi ! − ϑ + X̄n log ϑ .
+                                  n      i=1
+
+  En isolant ce qui ne dépend pas de ϑ, et en considérant ℓn plutôt que Ln , on constate que
+  la fonction à maximiser est ϑ 7→ −ϑ + X̄n log ϑ. Si X̄n > 0, elle est strictement concave sur
+  R∗+ , de dérivée −1 + X̄n /ϑ, qui s’annule en ϑ = X̄n seulement : l’estimateur du maximum de
+  vraisemblance est
+                                                        Xn
+                                      θ̂nMV = X̄n = n−1    Xi .
+                                                             i=1
+
+  Si X̄n = 0, c’est-à-dire si toutes les observations sont nulles, événement de probabilité
+  e−nθ > 0, la fonction ϑ 7→ −ϑ n’a pas de maximum sur R∗+ et l’estimateur du maximum
+  de vraisemblance n’est pas défini.
+
+
+  Remarque. Sur les modèles de Bernoulli et de Poisson, l’estimateur du maximum de vraisem-
+  blance coïncide, lorsqu’il est défini, avec l’estimateur des moments associé à T (x) = x, puisque
+  le paramètre y est l’espérance d’une observation. C’est un phénomène typique des familles ex-
+  ponentielles, étudié dans l’Exercice 3 (PC2).
+
+
+Équations de vraisemblance. Dans les trois exemples précédents, l’estimateur a été obtenu
+en annulant la dérivée de la log-vraisemblance. Cette démarche a une portée générale, sous deux
+conditions : que le maximum soit atteint en un point intérieur de Θ, et que la log-vraisemblance
+y soit différentiable.
+
+     Définition 1.6: Équations de vraisemblance
+  Soit Θ ⊆ Rd . On suppose que la fonction ϑ 7→ ℓn (ϑ, X1 , . . . , Xn ) est différentiable sur l’inté-
+  rieur de Θ. Le système de d équations
+
+                               ∇ϑ ℓn (ϑ, X1 , . . . , Xn ) = 0 ,   ϑ ∈ Θ̊ ,
+
+  est appelé équation de vraisemblance si d = 1 et système d’équations de vraisemblance si d > 1.
+  Tout estimateur θ̂nrv solution de ce système est appelé racine de l’équation de vraisemblance.
+
+    Si le maximum de ℓn , ou ce qui revient au même celui de Ln , est atteint en un point intérieur
+de Θ où ℓn est différentiable, alors l’estimateur du maximum de vraisemblance est une racine
+de l’équation de vraisemblance : en un point de maximum intérieur, le gradient s’annule. Là
+où Ln > 0, les fonctions Ln et ℓn = n−1 log Ln ont d’ailleurs les mêmes points critiques, puisque
+∇ ℓn = ∇ Ln /(n Ln ). La réciproque est fausse : résoudre le système fournit tous les points critiques
+de ℓn , c’est-à-dire ses maxima et minima locaux, et une racine de l’équation de vraisemblance n’est
+pas nécessairement un maximum global. L’estimateur du maximum de vraisemblance est donc
+obtenu soit en résolvant un problème d’optimisation, soit en résolvant un système d’équations, le
+1. LES FONDAMENTAUX                                                                             19
+
+plus souvent non linéaires, puis en vérifiant que la solution retenue est bien un maximum. Sauf
+dans les modèles simples, comme le modèle de Poisson, ces estimateurs ne sont pas explicites (voir
+le modèle de Cauchy, Section 4).
+
+
+   Exemple 1.10: Moyenne et variance d’une gaussienne
+  Soit (X1, . . . , Xn ), avec n          ≥      2,  un n-échantillon du modèle gaussien
+   R, B(R), N (µ, σ 2 ) , (µ, σ 2 ) ∈ Θ = R × R∗+ , de densité par rapport à la mesure de
+  Lebesgue
+                                                             (x − µ)2 
+                             q(µ,σ2 ) (x) = (2πσ 2 )−1/2 exp −           .
+                                                                2σ 2
+  La log-vraisemblance normalisée s’écrit, pour ϑ = (m, v) ∈ R × R∗+ ,
+                                                                   n
+                                                 1            1 X
+                    ℓn (m, v), X1 , . . . , Xn = − log(2πv) −         (Xi − m)2 ,
+                                                  2           2nv i=1
+
+  et les équations de vraisemblance sont
+                                                              n
+               
+                  ∂ ℓn                                  1 X
+               
+                       (m, v), X1 , . . . , Xn     =           (Xi − m) = 0 ,
+                ∂m                                      nv i=1
+                                                                       n
+                
+                
+                 ∂ ℓn                                       1   1 X
+                 ∂v (m, v), X1 , . . . , Xn
+                                                   =    −      +         (Xi − m)2 = 0 .
+                                                             2v 2nv 2 i=1
+                                                                   Pn
+  Elles admettent une unique solution, m = X̄n et v = n−1 i=1 (Xi − X̄n )2 , dès que les
+  observations ne sont pas toutes égales, ce qui est Pθ -presque sûr pour n ≥ 2. Il reste
+  à vérifier que ce point critique est le maximum global. À v fixé, m 7→ ℓn ((m, v)) est
+  une fonction quadratique strictement concave de m, maximale
+                                                          Pn          en m = X̄n . En reportant,
+                                        S
+  v 7→ ℓn ((X̄n , v)) = − 21 log(2πv) − 2v , avec S := n−1 i=1 (Xi − X̄n )2 > 0, a pour dérivée
+  (S − v)/(2v 2 ), strictement positive pour v < S et strictement négative pour v > S : elle
+  atteint son maximum en v = S seulement. Comme ℓn ((m, v)) ≤ ℓn ((X̄n , v)) ≤ ℓn ((X̄n , S))
+  pour tout (m, v), avec égalité si et seulement si (m, v) = (X̄n , S), l’estimateur du maximum
+  de vraisemblance existe, est unique et vaut
+                                                 1X
+                                                     n              
+                                    θ̂nMV = X̄n ,       (Xi − X̄n )2 .
+                                                  n i=1
+
+
+
+  Remarque. P   L’estimateur du maximum de vraisemblance de σ 2 est la variance empirique non
+             −1   n              2  n−1 2                                          2
+  corrigée n      i=1 (Xi − X̄n ) = n Sn , et non la variance empirique corrigée Sn du théorème
+                                                       2     n−1 2
+  de Gosset (Section 1.5) ; d’après ce théorème, Eθ [σ̂MV ] = n σ , de sorte que l’estimateur du
+  maximum de vraisemblance est biaisé. Le modèle de régression linéaire gaussienne de l’Exercice 1
+  (PC2) conduit au même calcul, avec n − 2 à la place de n − 1.
+
+   Exemple 1.11: Modèle uniforme : une vraisemblance non dérivable
+                                                                                               
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle uniforme R, B(R), U ([0, θ]) , θ ∈ Θ = R∗+ ,
+  de densité par rapport à la mesure de Lebesgue
+                                                        1
+                                            qθ (x) =      1 (x) .
+                                                        θ [0,θ]
+  Les observations sont positives Pθ -presque sûrement, de sorte que la condition « Xi ∈ [0, ϑ]
+20                                                              CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+    pour tout i » équivaut à Xn:n ≤ ϑ, où Xn:n = max1≤i≤n Xi . La vraisemblance s’écrit donc
+                                             n
+                                         1 Y
+                       Ln (ϑ) =               1 (Xi ) = ϑ−n 1[0,ϑ] (Xn:n ) = ϑ−n 1[Xn:n ,+∞[ (ϑ) .
+                                        ϑn i=1 [0,ϑ]
+
+    Elle est nulle pour ϑ < Xn:n , et strictement décroissante sur [Xn:n , +∞[ : sa valeur maximale,
+      −n
+    Xn:n , est atteinte en ϑ = Xn:n seulement, et
+
+                                                         θ̂nMV = Xn:n .
+
+    La fonction Ln n’est pas dérivable en Xn:n , et la log-vraisemblance vaut −∞ sur ]0, Xn:n [ :
+    l’équation de vraisemblance n’a pas de sens ici, et le maximum se détermine directement. Pour
+    n = 5 et n = 10 observations, la figure ci-dessous montre le saut de la vraisemblance en Xn:n ,
+    puis sa décroissance en ϑ−n , d’autant plus rapide que n est grand.
+
+
+
+
+                                                                              1.5
+    8
+
+
+
+
+                                                                              1.0
+    6
+L
+
+
+
+
+                                                                          L
+    4
+
+
+
+
+                                                                              0.5
+    2
+
+
+
+
+                                                                              0.0
+    0
+
+
+
+
+           0.2   0.4     0.6           0.8   1.0   1.2                              0.5      1.0     1.5
+
+                               theta                                                        theta
+
+
+
+Vraisemblance ϑ 7→ Ln (ϑ) du modèle uniforme U ([0, θ]) pour un échantillon de taille n = 5 (à gauche) et
+n = 10 (à droite) : la fonction est nulle à gauche de la plus grande observation Xn:n , puis décroît comme
+                              ϑ−n . Le maximum est atteint au point de saut.
+
+
+
+
+        Illustration / animation : La vraisemblance uniforme se raidit en Xn:n
+        bien plus vite que la vraisemblance exponentielle en Ȳn
+        L’animation accessible par le QR code ci-contre permet de comparer, sur le
+        même échantillon uniforme sur [0, θ⋆ ], le saut de la vraisemblance du modèle
+        uniforme en Xn:n et le pic lisse de la vraisemblance du modèle exponentiel en                link
+        Ȳn , à mesure que n augmente.
+1. LES FONDAMENTAUX                                                                                21
+
+   Méthode 1.2: Explicitation de l’estimateur du maximum de vraisemblance
+  Lorsque c’est possible, l’estimateur s’explicite en suivant les étapes ci-dessous.
+        1. Q
+           Écrire la densité qϑ par rapport à la mesure dominante, puis la vraisemblance Ln (ϑ) =
+             n
+             i=1 qϑ (Xi ).
+        2. Cas 1, modèles « réguliers » (gaussien, Poisson, exponentiel, Gamma, Bernoulli) : la
+           vraisemblance est strictement positive et dérivable sur l’intérieur de Θ.
+            a. Écrire la log-vraisemblance ℓn (ϑ) = n−1 log Ln (ϑ).
+            b. Trouver les points critiques, c’est-à-dire résoudre les équations de vraisemblance,
+               un système si d > 1.
+            c. Vérifier que le point critique retenu est un maximum global (par concavité, ou par
+               une étude directe), et traiter les valeurs des observations pour lesquelles il n’y a
+               pas de point critique.
+        3. Cas 2, modèles non réguliers (uniforme, par exemple) : la vraisemblance n’est pas dé-
+           rivable, ou s’annule sur une partie de Θ. Déterminer le maximum directement, par une
+           étude de la fonction ; ne pas essayer de différencier.
+
+
+   Les exemples précédents illustrent chacun des deux cas : les modèles exponentiel, de Bernoulli,
+de Poisson et gaussien (Exemples 1.7 à 1.10) relèvent du cas 1, le modèle uniforme (Exemple 1.11)
+du cas 2. Les deux exemples qui suivent montrent que l’estimateur du maximum de vraisemblance
+peut ne pas exister, ou ne pas être unique.
+
+
+Propriétés : existence, unicité, invariance.
+  Exemple 1.12: L’estimateur du maximum de vraisemblance n’est pas toujours défini
+  Soit q0 la densité, par rapport à la mesure de Lebesgue, définie par
+
+                                          e−|x|/2
+                                 q0 (x) = p       ,          x ∈ R \ {0} ,
+                                         2 2π|x|
+
+  Ret   prolongée par
+                    R +∞ 0 en−1/2x −x/2= 0 ; c’est une densité de probabilité, puisque
+   R
+     q 0 dLeb  =     0
+                          (2πx)     e    dx = 1 (c’est l’intégrale de la densité de la loi
+  χ2 (1), Section 2). Considérons un n-échantillon
+                                                      (X1 , . . . , Xn ) du modèle de translation
+   R, B(R), {q0 (· − θ) · Leb , θ ∈ Θ = R} . La vraisemblance s’écrit
+                                                  n
+                                                  Y
+                                       Ln (ϑ) =         q0 (Xi − ϑ) .
+                                                  i=1
+
+  Les observations sont Pθ -presque sûrement deux à deux distinctes. Pour tout i, lorsque ϑ tend
+  vers Xi , le facteur q0 (Xi − ϑ) tend vers +∞, tandis que les autres facteurs q0 (Xj − ϑ), j ̸= i,
+  tendent vers q0 (Xj − Xi ) ∈ ]0, +∞[ : ainsi limϑ→Xi Ln (ϑ) = +∞. La vraisemblance n’est pas
+  majorée, l’ensemble arg maxϑ∈Θ Ln (ϑ) est vide, et l’estimateur du maximum de vraisemblance
+  n’est pas défini pour ce modèle.
+
+
+   Exemple 1.13: Modèle de Laplace : non-unicité du maximum de vraisemblance
+                                                                                               
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle de Laplace R, B(R), {qθ · Leb , θ ∈ Θ = R} ,
+  de densité par rapport à la mesure de Lebesgue
+                                          1              
+                               qθ (x) =     exp − |x − θ| ,             x∈R.
+                                          2
+22                                                                CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+    La log-vraisemblance normalisée s’écrit
+                                                                       n
+                                                                    1X
+                                               ℓn (ϑ) = − log 2 −         |Xi − ϑ| ,
+                                                                    n i=1
+                                                                  Pn
+    et maximiser ℓn revient à minimiser la fonction φ : ϑ 7→        i=1 |Xi − ϑ|. Cette fonction
+    est continue, convexe et affine par morceaux ; elle est dérivable en tout point distinct des
+    observations, de dérivée
+                                               n
+                                               X
+                                    φ′ (ϑ) = −   signe(Xi − ϑ) ,
+                                                            i=1
+
+    constante par morceaux. Avec les notations de l’Exemple 1.6, pour ϑ ∈ ]Xk:n , Xk+1:n [, la
+    dérivée vaut k −(n−k) = 2k −n : elle est strictement négative tant que k < n/2 et strictement
+    positive dès que k > n/2.
+           — Si n = 2m + 1 est impair, φ décroît strictement sur ]−∞, Xm+1:n ] et croît strictement
+             sur [Xm+1:n , +∞[ : son minimum est atteint en un point unique, θ̂nMV = Xm+1:n , la
+             médiane empirique.
+           — Si n = 2m est pair, φ décroît strictement sur ]−∞, Xm:n ], est constante sur
+             [Xm:n , Xm+1:n ] (la dérivée y vaut 2m − n = 0) et croît strictement sur [Xm+1:n , +∞[ :
+             il y a une infinité de solutions, tout point de l’intervalle fermé [Xm:n , Xm+1:n ] est un
+             estimateur du maximum de vraisemblance, et la médiane empirique 21 (Xm:n + Xm+1:n )
+             en est un parmi d’autres.
+    59.2
+
+
+
+
+                                                                               45.2
+    59.1
+
+
+
+
+                                                                               45.0
+    59.0
+l
+
+
+
+
+                                                                           l
+    58.9
+
+
+
+
+                                                                               44.8
+    58.8
+
+
+
+
+                                                                               44.6
+
+
+
+
+           0.90   0.95   1.00   1.05   1.10   1.15   1.20                             0.90   0.95   1.00   1.05   1.10   1.15   1.20
+
+                                 a                                                                          a
+
+
+
+Fonction ϑ 7→ n
+              P
+                 i=1 |Xi − ϑ|, dont les minimiseurs sont les estimateurs du maximum de vraisemblance,
+ pour un échantillon du modèle de Laplace de paramètre θ = 1 de taille n = 50 (à gauche) et n = 51 (à
+droite). Pour n pair, la fonction présente un plateau de minimiseurs ; pour n impair, le minimiseur est
+                                                 unique.
+1. LES FONDAMENTAUX                                                                                                       23
+
+
+   Illustration / animation : Un nombre pair d’observations laisse un plateau
+   de maximiseurs de vraisemblance, un nombre impair n’en laisse qu’un
+   Vous pouvez comparer ici, pour deux échantillons de même loi       P de Laplace,
+   l’un de taille paire et l’autre de taille impaire, la fonction ϑ 7→ i |Xi − ϑ| et
+   l’ensemble de ses minimiseurs.                                                                           link
+
+
+    Reparamétrer un modèle, c’est décrire la même famille de lois avec un autre paramètre, image
+du premier par une bijection : le modèle gaussien peut être paramétré par la variance ou par
+l’écart-type. L’estimateur du maximum de vraisemblance suit ce changement de paramètre.
+
+   Proposition 1.2: Invariance par reparamétrisation
+  Soient {Pθ , θ ∈ Θ} un modèle paramétrique dominé, G : Θ → Ξ := G(Θ) une bijection de Θ
+  sur son image, et {Qξ , ξ ∈ Ξ} le modèle reparamétré, défini par Qξ := PG−1 (ξ) pour tout ξ ∈
+  Ξ. Si θ̂nMV est un estimateur du maximum de vraisemblance pour le modèle {Pθ , θ ∈ Θ}, alors
+  ξˆn := G(θ̂nMV ) est un estimateur du maximum de vraisemblance pour le modèle {Qξ , ξ ∈ Ξ}.
+  De plus, l’ensemble des estimateurs du maximum de vraisemblance du modèle reparamétré
+  est l’image par G de celui du modèle initial.
+
+   Démonstration
+  Notons L fn la vraisemblance du modèle reparamétré. Pour tout ξ ∈ Ξ, la loi Qξ a pour densité
+                           fn (ξ, X1 , . . . , Xn ) = Ln (G−1 (ξ), X1 , . . . , Xn ). Ainsi, pour tout ξ ∈ Ξ,
+  celle de PG−1 (ξ) , donc L
+                     −1
+  en posant ϑ = G (ξ) ∈ Θ,
+                                                                                                                     
+  fn (ξ, X1 , . . . , Xn ) = Ln (ϑ, X1 , . . . , Xn ) ≤ Ln (θ̂nMV , X1 , . . . , Xn ) = L
+  L                                                                                     fn G(θ̂nMV ), X1 , . . . , Xn ,
+
+                                       fn . La même chaîne d’inégalités, lue dans l’autre sens
+  ce qui montre que G(θ̂nMV ) maximise L
+               −1
+  à l’aide de G , montre que tout maximum de L  fn est l’image par G d’un maximum de Ln . □
+
+
+   Exemple 1.14: Reparamétrisations des modèles gaussien et exponentiel
+
+      1. Considérons le modèle gaussien paramétré en moyenne et variance, θ = (µ, σ 2 ) ∈ Θ =
+         R × R∗+ , dont                                                                      2
+                     Pn l’estimateur2 du maximum de vraisemblance est, pour n ≥ 2, (µ̂n , σ̂n ) =
+                  −1
+          X̄n , n      i=1 (Xi − X̄n )  (Exemple 1.10). Le même modèle paramétré en moyenne
+         et écart-type, ξ = (µ, σ) ∈ Ξ = R × R∗+ , est l’image du premier par la bijection G :
+                         √
+         (µ, σ 2 ) 7→ (µ, σ 2 ) de Θ sur Ξ. Sans nouveau calcul, son estimateur du maximum de
+         vraisemblance est
+                                                              1 X
+                                                                 n                     1/2
+                                   µ̂n = X̄n ,        σ̂n =             (Xi − X̄n )2          .
+                                                                n i=1
+
+      2. Dans le modèle exponentiel, l’estimateur du maximum de vraisemblance de l’intensité θ
+         est 1/X̄n (Exemple 1.7). Le modèle paramétré par l’espérance τ = 1/θ ∈ R∗+ est l’image
+         du premier par la bijection G : θ 7→ 1/θ ; l’estimateur du maximum de vraisemblance de
+         τ est donc τ̂n = X̄n .
+
+
+1.4     Comprendre le maximum de vraisemblance
+    Pourquoi maximiser la vraisemblance conduit-il vers la vraie valeur du paramètre ? La réponse
+tient en deux faits : la log-vraisemblance normalisée est une moyenne empirique, donc elle converge
+vers une fonction limite ; et cette fonction limite atteint son maximum au vrai paramètre, ce qui
+s’exprime à l’aide de la divergence de Kullback-Leibler.
+24                                                  CHAPITRE 2. ESTIMATION PONCTUELLE
+
+Deux paramètres à ne pas confondre. Soit (X1 , . . . , Xn ) un n-échantillon du modèle dominé
+(X, X , {qθ · µ , θ ∈ Θ}). Dans la suite, pour ne pas se perdre, on distingue deux rôles :
+   — θ⋆ ∈ Θ est le paramètre « hypothèse », la valeur du paramètre sous laquelle les observations
+       sont tirées : on travaille sous Pθ⋆ ;
+   — ϑ ∈ Θ est le paramètre libre, la variable par rapport à laquelle on exprime Ln (ϑ) et on
+       maximise.
+Les espérances sont prises sous la loi des observations, c’est-à-dire sous Pθ⋆ , dont la densité est
+qθ ⋆ .
+                                                                                  Pn
+La log-vraisemblance normalisée converge. Pour ϑ fixé, ℓn (ϑ) = n−1 i=1 log qϑ (Xi ) est
+la moyenne empirique des variables aléatoires log qϑ (Xi ), qui sont indépendantes et de même loi
+sous Pθ⋆ . La loi faible des grands nombres s’applique dès qu’elles sont intégrables, et donne la
+limite Eθ⋆ [log qϑ (X1 )]. Il reste à comprendre où cette limite, vue comme fonction de ϑ, atteint son
+maximum. En écrivant log qϑ = log(qϑ /qθ⋆ ) + log qθ⋆ , on fait apparaître l’espérance sous Pθ⋆ du
+logarithme d’un rapport de densités : c’est, au signe près, la divergence de Kullback-Leibler entre
+Qθ⋆ et Qϑ .
+
+     Définition 1.7: Divergence de Kullback-Leibler
+  Soient P0 et P1 deux probabilités sur un espace mesurable (X, X ), admettant des densités f0
+  et f1 par rapport à une mesure σ-finie µ sur (X, X ). On appelle divergence de Kullback-Leibler
+  entre les lois P0 et P1 la quantité
+                                        Z
+                                                                      f0 (x)
+                        KL(P0 , P1 ) :=                    f0 (x) log        µ(dx) ,
+                                          {x∈X : f0 (x)>0}            f1 (x)
+
+  avec la convention log(1/0) = +∞.
+
+    Cette intégrale est toujours bien définie, à valeurs dans ]−∞, +∞] : la partie négative de
+l’intégrande est µ-intégrable, ce qui est démontré dans les compléments (Section 4), où l’on montre
+aussi que KL(P0 , P1 ) ne dépend pas du choix de la mesure dominante µ. Si X est une variable
+aléatoire de loi P0 , alors f0 (X) > 0 presque sûrement et la divergence s’écrit comme une espérance,
+                                                      h    f0 (X) i
+                                      KL(P0 , P1 ) = E log          .
+                                                           f1 (X)
+La divergence n’est pas une distance : elle n’est pas symétrique en (P0 , P1 ) et ne vérifie pas
+l’inégalité triangulaire. Elle en a cependant la propriété essentielle.
+
+     Théorème 1.1: Positivité de la divergence de Kullback-Leibler
+  Soient P0 et P1 deux probabilités sur (X, X ), de densités f0 et f1 par rapport à une mesure σ-
+  finie µ. Alors KL(P0 , P1 ) ∈ [0, +∞], et KL(P0 , P1 ) = 0 si et seulement si P0 = P1 , c’est-à-dire
+  si et seulement si f0 = f1 µ-presque partout.
+
+     Démonstration
+                                                       R
+  Notons A := {x ∈ X : f0 (x) > 0} ; on a P0 (A) = A f0 dµ = 1. Soit X une variable aléatoire
+  de loi P0 : presque sûrement X R∈ A, et l’on peut poser Y := f1 (X)/f0 (X) ∈ [0, +∞[. Par le
+  théorème de transfert, E[Y R ] = A f1 dµ = P1 (A) ≤ 1, de sorte que Y est intégrable, et, par
+  définition, KL(P0 , P1 ) = A f0 log(f0 /f1 ) dµ = E[− log Y ], avec − log 0 = +∞.
+  Premier cas : P(Y = 0) > 0. L’intégrande de la définition vaut +∞ sur l’ensemble {f0 >
+  0, f1 = 0}, qui est de P0 -probabilité P(Y = 0) > 0, donc de µ-mesure strictement positive. Sa
+  partie négative étant µ-intégrable, KL(P0 , P1 ) = +∞, et l’inégalité est vraie.
+  Second cas : P(Y = 0) = 0. Alors Y est presque sûrement à valeurs dans l’intervalle ouvert
+1. LES FONDAMENTAUX                                                                                    25
+
+
+  ]0, +∞[, sur lequel la fonction − log est strictement convexe, et Y est intégrable. L’inégalité
+  de Jensen (Théorème 2.2) donne
+
+                      KL(P0 , P1 ) = E[− log Y ] ≥ − log E[Y ] = − log P1 (A) ≥ 0 ,
+
+  la dernière inégalité venant de P1 (A) ≤ 1.                                       R
+  Cas d’égalité. Si P0 = P1 , alors f0 = f1 µ-presque partout, et KL(P0 , P1 ) = A f0 log 1 dµ = 0.
+  Réciproquement, supposons KL(P0 , P1 ) = 0. On est nécessairement dans le second cas, et les
+  deux inégalités ci-dessus sont des égalités : d’une part P1 (A) = 1, donc E[Y ] = 1 ; d’autre part
+  l’inégalité de Jensen est une égalité, ce qui, la fonction − log étant strictement convexe, impose
+  que Y soit presque sûrement constante, égale à E[Y    R ] = 1. Ainsi f1R = f0 P0 -presque
+                                                                                         R sûrement,
+  c’est-à-dire µ-presque partout sur A. Il en résulte Ac f1 dµ = 1 − A f1 dµ = 1 − A f0 dµ = 0,
+  donc f1 = 0 = f0 µ-presque partout sur Ac . Finalement f0 = f1 µ-presque partout, et P0 = P1 .
+  □
+
+   Proposition 1.3: Limite de la log-vraisemblance normalisée
+                                                                                             ⋆
+  Soient (X1 , . . . , Xn ) un n-échantillon
+                                            du modèle dominé (X, X , {qθ · µ , θ ∈ Θ}) et θ ∈ Θ. On
+  suppose que, pour tout ϑ ∈ Θ, Eθ⋆ | log qϑ (X1 )| < ∞, et l’on pose
+                                                                             
+                              Mθ ⋆ : Θ → R ,     Mθ⋆ (ϑ) := Eθ⋆ log qϑ (X1 ) .
+
+                                                    Pθ⋆ −prob
+    (i) Pour tout ϑ ∈ Θ, ℓn (ϑ, X1 , . . . , Xn )     −→        Mθ⋆ (ϑ).
+    (ii) Pour tout ϑ ∈ Θ, la divergence KL(Q , Qϑ ) est finie et
+                                                     θ⋆
+
+                               Mθ⋆ (ϑ) = Mθ⋆ (θ⋆ ) − KL(Qθ⋆ , Qϑ ) ≤ Mθ⋆ (θ⋆ ) .
+
+   (iii) Si le modèle (X, X , {qθ · µ , θ ∈ Θ}) est identifiable (Définition 2), alors Mθ⋆ (ϑ) <
+         Mθ⋆ (θ⋆ ) pour tout ϑ ̸= θ⋆ : la fonction Mθ⋆ admet un maximum unique, atteint en
+         θ⋆ .
+
+   Démonstration
+  (i) Sous Pθ⋆ , les variables aléatoires log qϑ (Xi ), i = 1, . . . , n, sont indépendantes, de même
+  loi et intégrables par hypothèse ; la loi faible des grands nombres (Théorème 2.1) donne la
+  convergence de leur moyenne empirique ℓn (ϑ) vers leur espérance commune          R Mθ⋆ (ϑ).
+  (ii) Sous Pθ⋆ , on a qθ⋆ (X1 ) > 0 presque sûrement, car Pθ⋆ (qθ⋆ (X1 ) = 0) = {qθ⋆ =0} qθ⋆ dµ = 0,
+  et de même qϑ (X1 ) > 0 presque sûrement, sans quoi | log qϑ (X1 )| vaudrait +∞ avec proba-      
+  bilité strictement positive, contredisant l’intégrabilité. La variable log qθ⋆ (X1 )/qϑ (X1 ) =
+  log qθ⋆ (X1 ) − log qϑ (X1 ) est donc presque sûrement finie et intégrable,
+                                                                           R     d’espérance Mθ⋆ (θ⋆ ) −
+  Mθ⋆ (ϑ). Or, par le théorème de transfert, cette espérance est {qθ⋆ >0} qθ⋆ log(qθ⋆ /qϑ ) dµ =
+  KL(Qθ⋆ , Qϑ ), qui est donc finie, et positive d’après le Théorème 1.1.
+  (iii) Si le modèle est identifiable et ϑ ̸= θ⋆ , alors Qϑ ̸= Qθ⋆ , donc KL(Qθ⋆ , Qϑ ) > 0 d’après le
+  cas d’égalité du Théorème 1.1, et (ii) donne Mθ⋆ (ϑ) < Mθ⋆ (θ⋆ ).                                    □
+                             R
+    La quantité Mθ⋆ (θ⋆ ) = X qθ⋆ log qθ⋆ dµ est notée Ent(Qθ⋆ ) dans le chapitre d’origine du poly-
+copié, qui l’appelle entropie de la loi Qθ⋆ ; c’est l’opposé de l’entropie de Shannon, et, contrairement
+à la divergence, elle dépend de la mesure dominante. La décomposition du point (ii) s’écrit alors
+Mθ⋆ = − KL(Qθ⋆ , Q· ) + Ent(Qθ⋆ ) : la fonction limite de la log-vraisemblance est, à une constante
+près, l’opposé de la divergence de Kullback-Leibler entre la vraie loi et la loi candidate.
+Intuition. La suite des estimateurs du maximum de vraisemblance θ̂nMV maximise ℓn , qui converge vers
+Mθ⋆ , dont le maximum est atteint en θ⋆ et en θ⋆ seulement. On s’attend donc à ce que θ̂nMV converge vers
+θ⋆ : c’est la consistance de l’estimateur du maximum de vraisemblance. Ce raisonnement est heuristique :
+26                                                        CHAPITRE 2. ESTIMATION PONCTUELLE
+
+la proposition donne la convergence de ℓn (ϑ) pour chaque ϑ fixé, alors que la convergence du point de
+maximum demande que l’approximation soit uniforme en ϑ, au moins au voisinage de θ⋆ , ce qui requiert
+des hypothèses supplémentaires (loi uniforme des grands nombres). Ces hypothèses et la démonstration
+font l’objet des cours 6 et 7. Le modèle de Bernoulli, pour lequel Mθ⋆ et la divergence sont explicites, est
+traité en détail dans les compléments (Section 4), avec une figure qui montre ℓn se rapprocher de Mθ⋆
+lorsque n augmente.
+
+
+
+
+     Illustration / animation : La log-vraisemblance normalisée converge vers
+     une fonction dont l’écart au maximum est la divergence de Kullback-Leibler
+     On illustre ici, pour θ⋆ et n choisis dans le modèle de Bernoulli, la log-
+     vraisemblance normalisée et sa limite, dont l’écart vertical en ϑ est la di-
+     vergence KL(Ber(θ⋆ ), Ber(ϑ)).                                                             link
+
+
+
+
+Résumé et généralisation : les M -estimateurs. L’estimateur du maximum de vraisemblance
+est défini commePn la solution d’un problème de maximisation : on maximise la moyenne empirique
+ℓn (ϑ) = n−1 i=1 log qϑ (Xi ), qui converge vers une fonction limite Mθ⋆ dont le maximum est
+atteint en θ⋆ . Rien, dans ce mécanisme, n’est propre au logarithme de la densité : on peut remplacer
+log qϑ (x) par une autre fonction m(ϑ, x), pourvu que la fonction limite correspondante atteigne
+son maximum au vrai paramètre. C’est une très vaste classe de méthodes, celle des M -estimateurs.
+
+     Définition 1.8: M -estimateur
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle (X, X , {Qθ , θ ∈ Θ}). Soit m : Θ × X → R,
+  (ϑ, x) 7→ m(ϑ, x), une fonction mesurable en x telle que Eθ⋆ [|m(ϑ, X1 )|] < ∞ pour tous
+  ϑ, θ⋆ ∈ Θ. Pour tout θ⋆ ∈ Θ, on pose
+
+                            Mθ ⋆ : Θ → R ,          Mθ⋆ (ϑ) := Eθ⋆ [m(ϑ, X1 )] ,
+
+  et l’on suppose que, pour tout θ⋆ ∈ Θ, la fonction Mθ⋆ atteint son maximum au point θ⋆ . La
+  fonction Mθ⋆ n’est pas connue, mais on peut l’estimer par la moyenne empirique
+                                                n
+                                            1X
+                                  Mn (ϑ) :=       m(ϑ, Xi ) ,       ϑ∈Θ,
+                                            n i=1
+
+                      P ⋆ −prob
+  qui vérifie Mn (ϑ) θ −→ Mθ⋆ (ϑ) pour tous ϑ, θ⋆ ∈ Θ, par la loi faible des grands nombres.
+  On appelle M -estimateur associé à m toute solution du problème d’optimisation
+
+                                          θ̂n ∈ arg max Mn (ϑ) .
+                                                    ϑ∈Θ
+
+
+    Sous l’hypothèse d’intégrabilité de la Proposition 1.3, l’estimateur du maximum de vrai-
+semblance est le M -estimateur associé à m(ϑ, x) = log qϑ (x), la fonction limite étant Mθ⋆ =
+Mθ⋆ (θ⋆ ) − KL(Qθ⋆ , Q· ), dont le maximum est atteint en θ⋆ par positivité de la divergence. Dans
+de très nombreux cas, le problème d’optimisation n’admet pas de solution explicite, et un M -
+estimateur s’obtient en pratique par une procédure numérique. Dans certains cas, il est plus
+naturel de considérer un problème de minimisation, ce qui revient à changer m en −m. En-
+fin, si Θ est ouvert et si ϑ 7→ m(ϑ, x) est différentiable pour tout x, un M -estimateur vérifie
+     Pn
+n−1 i=1 ∇ϑ m(θ̂n , Xi ) = 0 : c’est un Z-estimateur associé à la fonction d’estimation ψ = ∇ϑ m,
+sous réserve que Eθ⋆ [∇ϑ m(θ⋆ , X1 )] = 0, ce qui est le cas lorsque l’on peut dériver sous l’espérance,
+puisque Mθ⋆ est maximale en θ⋆ . Il existe des Z-estimateurs qui ne dérivent d’aucun problème
+1. LES FONDAMENTAUX                                                                                       27
+
+d’optimisation, et des M -estimateurs associés à des fonctions m non différentiables, qui ne sont
+donc pas des Z-estimateurs au sens ci-dessus.
+
+   Exemple 1.15: Moindres carrés et médiane pour le paramètre de translation
+  Reprenons le modèle de translation de l’Exemple 1.6 : f est une densité paire sur R et qθ (x) =
+  f (x − θ), θ ∈ Θ = R. Sous Pθ⋆ , la variable X1 − θ⋆ a pour densité f , donc a une loi symétrique.
+                                              R
+     1. Moindres carrés. Supposons σ 2 := R x2 f (x) dx < ∞ et posons m(ϑ, x) := −(x − ϑ)2 .
+         Pour tous ϑ, θ⋆ ∈ R, comme Eθ⋆ [X1 ] = θ⋆ et Varθ⋆ (X1 ) = σ 2 ,
+                                                        
+                            Mθ⋆ (ϑ) = −Eθ⋆ (X1 − ϑ)2 = −(θ⋆ − ϑ)2 − σ 2 ,
+
+         fonction qui admet un maximum Pn      unique au point θ⋆ . Le M -estimateur associé à m
+                                   −1                2
+         maximise Mn (ϑ) = −n            i=1 (Xi − ϑ) , fonction quadratique strictement concave,
+         dont l’unique
+                 Pn maximum est θ̂n = X̄n . Il est plus naturel ici de parler de minimisation
+         de n−1 i=1 (Xi − ϑ)2 : l’estimateur obtenu est appelé estimateur des moindres carrés.
+         La fonction ϑ 7→ m(ϑ, x) est dérivable, de dérivée 2(x − ϑ), et la moyenne empirique
+         est aussi le Z-estimateur associé à ψ(ϑ, x) = x − ϑ : elle est à la fois un estimateur des
+         moments, un Z-estimateur et un M -estimateur.
+                                R
+      2. Médiane. Supposons R |x|f (x) dx < ∞ et posons m(ϑ, x) := −|x − ϑ|. La fonction
+         g : ϑ 7→ Eθ⋆ |X1 − ϑ| vérifie g(ϑ) = g(2θ⋆ − ϑ), par symétrie de la loi de X1 − θ⋆ , et, pour
+         θ⋆ ≤ ϑ,
+                                    hZ ϑ                        i    Z ϑ
+                                                                                        
+              g(ϑ) − g(θ⋆ ) = Eθ⋆          1{X1 <t} − 1{X1 >t} dt =         2Fθ⋆ (t) − 1 dt ≥ 0 ,
+                                      θ⋆                               θ⋆
+
+         où Fθ⋆ (t) = Pθ⋆ (X1 ≤ t) est la fonction de répartition de X1 , continue puisque X1
+         a une densité, et vérifie Fθ⋆ (t) ≥ Fθ⋆ (θ⋆ ) = 1/2 pour t ≥ θ⋆ ; on a utilisé l’identité
+                              Rϑ
+         |x − ϑ| − |x − θ⋆ | = θ⋆ (1{x<t} − 1{x>t} ) dt, valable pour tout réel x, puis le théorème
+                                                                    ⋆
+         de Fubini. Ainsi Mθ⋆ = −g  Pnatteint son maximum en θ . Le M -estimateur associé à m
+                                −1
+         maximise Mn (ϑ) = −n          i=1 |Xi − ϑ|, dont les points de maximum ont été déterminés
+         à l’Exemple 1.13 : la médiane empirique est un M -estimateur, unique si n est impair.
+         La fonction ϑ 7→ |x − ϑ| n’étant pas dérivable en x, ce M -estimateur ne s’obtient pas en
+         annulant un gradient ; c’est cependant un Z-estimateur, associé à ψ(ϑ, x) = signe(x−ϑ),
+         comme on l’a vu à l’Exemple 1.6.
+
+
+1.5     En pratique : programme des exercices
+   Les notions de ce chapitre sont mises en œuvre dans la feuille d’exercices (PC 2), intégrée au
+chapitre (Section 3). Exercices traités en petite classe :
+  Exercice                           Notions du cours             Rappels
+  Exo 1 – Modèle linéaire gaus-      EMV, équations de vrai-      Vecteurs gaussiens, th. de Cochran,
+  sien                               semblance                    loi du χ2
+  Exo 2 – Coefficient de mélange     EMV et EMM comparés          Loi binomiale, biais
+  Exo 3 – Famille exponentielle      EMV = EMM, invariance        Dérivation      sous     l’intégrale,
+                                                                  convexité
+
+    L’Exercice 1 (PC2) poursuit l’Exercice 4 (PC1) sur le modèle de régression linéaire gaussienne,
+sujet récurrent du cours : on y calcule l’estimateur du maximum de vraisemblance des coefficients
+et de la variance, puis la loi de ces estimateurs. Pour les questions 5 et 6, la loi de σ̂ 2 et son
+indépendance avec (β̂1 , β̂2 ) résultent du théorème de Cochran, énoncé et démontré au chapitre 1
+(Théorème 1.1) : le vecteur Y − Xβ suit la loi N (0, σ 2 In ), l’estimateur β̂ est une fonction de
+la projection orthogonale de Y sur l’image de X, sous-espace de dimension 2, tandis que nσ̂ 2 =
+∥Y−Xβ̂∥2 est le carré de la norme de la projection sur l’orthogonal de ce sous-espace, de dimension
+28                                                 CHAPITRE 2. ESTIMATION PONCTUELLE
+
+n − 2 ; le théorème donne l’indépendance des deux projections et la loi χ2 (n − 2) de nσ̂ 2 /σ 2 . La
+question 7 demande un intervalle de confiance pour σ 2 , notion définie a minima dans les outils
+(Section 2) et développée au chapitre suivant.
+    L’Exercice 2 (PC2) compare, sur un modèle de mélange de deux lois uniformes, l’estimateur
+du maximum de vraisemblance et un estimateur des moments : les deux méthodes donnent des
+estimateurs différents, dont le biais et la dispersion sont comparés sur des simulations. L’Exercice 3
+(PC2) étudie les familles exponentielles, pour lesquelles l’estimateur du maximum de vraisemblance
+est un estimateur des moments, comme on l’a observé pour les lois de Bernoulli et de Poisson.
+
+
+
+     Illustration / animation : L’estimateur seuillé du mélange prend souvent
+     la valeur 0 quand n est petit
+     L’animation accessible par le QR code ci-contre permet de comparer, pour les
+     quatre estimateurs du modèle de mélange, les boîtes à moustaches obtenues sur
+     des échantillons répétés à mesure que n augmente, et d’observer la fréquence         link
+     à laquelle l’estimateur seuillé vaut exactement 0.
+
+
+   Les exercices bonus (durée de vie, qui ne mobilise que le chapitre 1, et modèle auto-régressif,
+première vraisemblance hors du cadre du n-échantillon) sont accompagnés d’un guide de lecture
+dans le fascicule.
+Notions de probabilités clés utilisées cette semaine, à revoir : espérance et variance,
+indépendance, loi des grands nombres, inégalité de Bienaymé-Tchebychev, fonctions convexes et
+inégalité de Jensen, vecteurs gaussiens et théorème de Cochran (voir la partie Outils mathématiques
+ci-dessous).
+

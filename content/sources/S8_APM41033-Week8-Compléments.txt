@@ -1,0 +1,395 @@
+34                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+4      Les compléments
+    Les contenus de cette partie ne sont pas exigibles. Ils donnent deux modèles où tout se calcule
+à la main, la propriété d’optimalité quadratique de la fonction de régression, la notion de risque
+empirique et le phénomène de sur-apprentissage qu’elle entraîne, la distinction entre probabilité
+d’erreur conditionnelle et risque moyen, la définition de la consistance d’une suite de classifieurs, le
+compromis entre risque d’approximation et risque d’estimation, la démonstration de la majoration
+employée à la proposition 1.5, et une présentation des perceptrons et des réseaux de neurones.
+
+4.1      Un modèle jouet
+   Le modèle suivant est le plus simple sur lequel la fonction de régression, la règle bayésienne et
+son risque se calculent entièrement.
+
+     Exemple 4.1: Attribut uniforme et classe à deux niveaux
+    L’attribut X est scalaire, de loi uniforme sur [−1, 1] ; étant donné un attribut x ∈ [0, 1],
+    l’individu est de la classe 1 dans 90 % des cas, et dans 10 % des cas lorsque x ∈ [−1, 0[.
+    Autrement dit,
+                                 (                                      Z
+                                   0,9 si x ∈ [0, 1] ,                1
+                 qY |X (1 | x) =                        P(X ∈ A) =               dx .
+                                   0,1 si x ∈ [−1, 0[ ,               2 A∩[−1,1]
+
+    Le couple (X, Y ) admet alors, par rapport à Leb ⊗ c, la densité
+                     0,9             0,1                                 0,1         0,9
+     pX,Y (x, 1) =        1 (x) +        1      (x) ,     pX,Y (x, −1) =     1 (x) +     1     (x) ,
+                       2 [0,1]        2 [−1,0[                            2 [0,1]     2 [−1,0[
+                                           R1             R0
+    de sorte que p = P(Y = 1) = 21 0 0,9 dx + 21 −1 0,1 dx = 1/2. La fonction de régression
+    vaut η(x) = 0,9 sur [0, 1] et η(x) = 0,1 sur [−1, 0[, et la règle bayésienne est la règle à seuil
+    g ⋆ (x) = 2 1[0,1] (x) − 1. Son risque se calcule directement :
+
+             P(g ⋆ (X) ̸= Y ) = P(X ≥ 0, Y = −1) + P(X < 0, Y = 1)
+                                Z 1                   Z 0
+                                                                           0,1 0,1
+                              =     pX,Y (x, −1) dx +     pX,Y (x, 1) dx =    +    = 0,1 ,
+                                 0                     −1                   2   2
+
+    ce que la formule (5) redonne : E[min(η(X), 1 − η(X))] = 0,1.
+
+
+
+4.2      La fonction de régression comme meilleure approximation quadra-
+         tique
+    Le théorème 1.1 dit que l’espérance conditionnelle minimise l’erreur quadratique. Appliqué à
+la classification binaire, il prend la forme suivante, où l’on compare non plus des règles à valeurs
+dans {−1, 1} mais des fonctions à valeurs dans [0, 1].
+
+
+     Proposition 4.1: Optimalité quadratique de la fonction de régression
+    Soit η la fonction de régression du modèle de classification binaire avec Y ∈ {0, 1} et soit
+    g : Rd → [0, 1] une fonction mesurable. Alors
+                                                               
+                                 E (η(X) − Y )2 ≤ E (g(X) − Y )2 .
+4. LES COMPLÉMENTS                                                                                35
+
+
+
+
+Figure 7 – Quarante réalisations indépendantes (xk , yk ) du modèle de l’exemple 4.1. Le trait
+plein noir représente la fonction de régression η, le trait pointillé la droite d’équation y = 1/2.
+La figure code les deux classes par les ordonnées 0 et 1, là où le chapitre les note −1 et 1 : la
+règle bayésienne prédit la classe supérieure sur l’ensemble des x où η(x) dépasse 1/2, et quatre
+des quarante points sont mal classés.
+
+
+
+   Démonstration
+  En développant (g(X) − Y )2 = (g(X) − η(X))2 + 2(g(X) − η(X))(η(X) − Y ) + (η(X) − Y )2
+  et en prenant l’espérance, le terme croisé vaut
+
+        E [(g(X) − η(X)) E [ η(X) − Y | X]] = E [(g(X) − η(X)) (η(X) − E [ Y | X])] = 0 ,
+
+  par la propriété du produit (proposition 2.3) et par η(X) = E [ Y | X], qui est la définition de
+  η lorsque Y est à valeurs dans {0, 1}. Il reste E[(g(X) − Y )2 ] = E[(g(X) − η(X))2 ] + E[(η(X) −
+  Y )2 ] ≥ E[(η(X) − Y )2 ].                                                                      □
+
+   Le lemme de décomposition selon la fonction de régression (lemme 2.2) appartient au même
+cercle d’idées : il figure dans la partie « Les outils mathématiques » parce que la démonstration
+du théorème 1.2 le mobilise.
+
+4.3    Risque empirique et sur-apprentissage
+  À défaut de connaître la loi de (X, Y ), on peut songer à remplacer le risque par sa version
+empirique, calculée sur l’ensemble d’apprentissage.
+
+   Définition 4.1: Risque empirique
+  Pour la perte 0–1, le risque empirique associé à l’ensemble d’apprentissage Dn = {(Xk , Yk ), 1 ≤
+  k ≤ n} est
+                                                 Xn
+                                    b n (g) := 1
+                                    R                1{g(Xk )̸=Yk } .
+                                               n
+                                               k=1
+36                    CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+                                                                                     b n (g) converge
+   La loi des grands nombres montre que, pour toute règle de classification g fixée, R
+                                           b
+en probabilité vers R(g). Mais minimiser Rn sur l’ensemble de toutes les règles ne donne rien :
+considérons la règle
+                                   (
+                                     Yk si x = Xk pour un k ∈ {1, . . . , n} ,
+                      gbad,n (x) =
+                                     −1 sinon .
+
+Son risque empirique est nul, donc elle minimise R   b n ; pourtant elle prédit la classe −1 pour tout
+attribut qui n’a pas été observé pendant l’apprentissage, ce qui n’a aucune raison d’être une bonne
+décision. On peut d’ailleurs modifier gbad,n en tout point hors de {X1 , . . . , Xn } sans changer son
+risque empirique : il existe donc une infinité de règles de risque empirique nul, dont la plupart sont
+mauvaises.
+
+     Exemple 4.2: Sur-apprentissage
+  La Figure 8 montre un ensemble d’apprentissage en dimension d = 2 engendré par un mélange
+  de deux lois gaussiennes de même matrice de covariance, et une frontière de décision qui se
+  contorsionne pour étiqueter correctement tous les points de l’ensemble d’apprentissage. Si
+  la loi des observations était connue, le classifieur bayésien serait, d’après la Section 1.3, un
+  hyperplan. La frontière de la figure classe mieux les données d’apprentissage et moins bien les
+  données nouvelles : c’est le sur-apprentissage.
+
+
+
+
+Figure 8 – Un exemple de sur-apprentissage. La frontière de décision du classifieur s’adapte de
+façon à étiqueter correctement toutes les données d’apprentissage, alors que le classifieur bayésien
+est ici un hyperplan.
+
+
+4.4    Probabilité d’erreur conditionnelle et risque moyen
+    Lorsque la règle est construite sur l’ensemble d’apprentissage, elle est aléatoire, et son risque
+l’est aussi. Il faut alors distinguer deux quantités.
+    La règle s’écrit gbn : x 7→ gbn (x) := g(x; X1 , Y1 , . . . , Xn , Yn ), que l’on note aussi g(x; Dn ).
+Sa performance est mesurée par la probabilité d’erreur conditionnelle, ou risque de classification
+conditionnel,
+                                     R(b
+                                       gn ) := P ( gbn (X) ̸= Y | Dn ) ,
+où (X, Y ) est un couple de même loi que les paires de Dn et indépendant de Dn . C’est une variable
+aléatoire, fonction de Dn : le conditionnement par Dn sépare l’aléa de l’échantillon d’apprentissage
+4. LES COMPLÉMENTS                                                                                  37
+
+de celui du couple de test. Cette quantité s’interprète comme l’erreur de généralisation : on a appris
+une règle sur Dn , et l’on évalue en moyenne la perte 1{bgn (X)̸=Y } sur un exemple nouveau. Son
+calcul repose sur la proposition 2.5, appliquée avec U = (X, Y ) et V = Dn , qui sont indépendants.
+    L’espérance de cette variable, appelée risque moyen, est
+
+                                  E [R(b
+                                       gn )] = P (b
+                                                  gn (X; Dn ) ̸= Y ) ,
+
+la moyenne étant cette fois prise sur la loi des n paires qui constituent l’ensemble d’apprentissage.
+C’est cette quantité qui apparaît dans la proposition 1.5, sous le nom En,θ⋆ [R01 (bgn )].
+
+4.5    Consistance d’une suite de classifieurs
+    Le risque bayésien est la meilleure performance accessible. À défaut de savoir calculer une règle
+bayésienne, on peut espérer construire une suite de règles dont le risque s’en approche quand la
+taille de l’ensemble d’apprentissage croît.
+
+   Définition 4.2: Consistance d’une suite de classifieurs
+  Soit {(Xk , Yk ), k ∈ N∗ } une suite de variables aléatoires i.i.d. de même loi que (X, Y ), et
+  soit {b
+        gn , n ≥ 1} une suite de classifieurs construite à partir des ensembles d’apprentissage
+  {Dn , n ≥ 1}, gbn (·) = g(· ; Dn ). La suite est dite faiblement consistante si
+                                                  P−prob
+                                            gn ) −→ R⋆ .
+                                          R(b                                                   (15)
+
+    Comme R(b   gn ) ≥ R⋆ par définition du risque bayésien, cela revient à dire que pour tout ε > 0,
+limn P(R(b gn ) > R⋆ + ε) = 0. Pour la perte 0–1, le risque est majoré par 1, de sorte que R⋆ ≤
+R(bgn ) ≤ 1 et que (15) équivaut à la convergence en espérance
+
+                                                  gn )] = R⋆ .
+                                         lim E [R(b                                               (16)
+                                        n→∞
+
+Démontrons cette équivalence. Si (16) a lieu, l’inégalité de Markov donne, pour tout δ > 0,
+
+                            gn ) − R⋆ ≥ δ) ≤ δ −1 {E[R(b
+                       P (R(b                          gn )] − R⋆ } −−−−→ 0 .
+                                                                         n→∞
+
+Réciproquement, si (15) a lieu, alors, puisque R⋆ ≤ R(b
+                                                      gn ) ≤ 1,
+
+                                  gn )] − R⋆ ≤ P (R(b
+                             E [R(b                 gn ) − R⋆ ≥ δ) + δ
+
+pour tout δ > 0, en séparant selon que R(b  gn ) − R⋆ dépasse δ ou non ; le premier terme tend vers
+zéro et δ est arbitraire.
+    Une suite de classifieurs est jugée bonne lorsque son risque moyen converge vers le risque
+bayésien quelle que soit la loi du couple (X, Y ) ; on parle alors de consistance universelle. C’est le
+sujet du chapitre 6 de A Probabilistic Theory of Pattern Recognition de L. Devroye, L. Györfi et
+G. Lugosi.
+
+4.6    Compromis entre risque d’approximation et risque d’estimation
+   La Section 4.3 a montré que minimiser le risque empirique sur l’ensemble de toutes les règles
+ne mène à rien. On restreint donc la recherche à une famille C de classifieurs, et l’on prend
+                                                     n
+                                                  1X
+                                  gbn ∈ arg min      1{g(Xk )̸=Yk } .
+                                          g∈C     n
+                                                    k=1
+
+L’écart entre le risque moyen de gbn et le risque bayésien,
+
+                                                gn )] − R⋆ ,
+                                           E [R(b
+38                      CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+se décompose alors en deux termes :
+                            E [R(b
+                                 gn )] − inf R(g) +               inf R(g) − R⋆       .
+                                         g∈C                      g∈C
+                            |         {z        }                 |     {z    }
+                              risque d’estimation          risque d’approximation
+
+Le risque d’estimation mesure à quel point gbn , construit sur les données, approche le meilleur
+classifieur de la classe C ; il dépend de la taille de C et de l’algorithme employé. Le risque d’ap-
+proximation quantifie la perte due au choix de C ; il ne dépend pas des données d’apprentissage,
+mais seulement de C et de la loi de (X, Y ).
+    Les deux cas extrêmes éclairent le compromis. Si C est petite – à la limite, un singleton –, le
+risque d’estimation est faible, voire nul, et le risque d’approximation est grand. Si C est l’ensemble
+de toutes les règles de classification, le risque d’approximation est nul et le risque d’estimation est
+grand.
+               10
+               8
+               6
+               4
+               2
+               0
+
+
+
+
+                    0           2              4                    6             8           10
+
+                                                     complexite
+
+
+
+
+Figure 9 – Le compromis entre le risque d’approximation et le risque d’estimation : le premier
+décroît et le second croît avec la taille de la classe C, et leur somme passe par un minimum.
+
+
+     Exemple 4.3: Classifieurs linéaires
+  Avec Y = {−1, 1}, la classe des classifieurs linéaires sur Rd est
+                                                           
+                         C = x 7→ gw (x) := signe w⊤ x : w ∈ Rd                           ,
+
+  où signe(t) = 2 heaviside(t) − 1. Minimiser le risque empirique dans cette classe revient à
+  résoudre
+                                             n
+                                          1X
+                            wn⋆ ∈ arg min       1{signe(w⊤ Xk )̸=Yk } ,
+                                    w∈Rd n          k=1
+
+  problème qui n’admet pas en général de solution unique. L’algorithme du perceptron travaille
+  directement sur le vecteur de poids w. Dans sa version stochastique, les attributs sont d’abord
+  normalisés de sorte que ∥Xk ∥ = 1, le vecteur de poids est initialisé à w0 = 0, et, à chaque
+  itération t, un indice Kt est tiré uniformément dans {1, . . . , n} et le vecteur de poids est mis
+  à jour par
+                          wt+1 = wt + γ YKt XKt 1{signe(wt⊤ XKt )̸=YKt } ,
+4. LES COMPLÉMENTS                                                                                   39
+
+
+  où γ ∈ ]0, 1] est un pas. La règle est donc inchangée lorsque l’exemple tiré est bien classé ;
+  lorsqu’il est mal classé, on ajoute au vecteur de poids l’attribut XKt si son label vaut 1 et on le
+  retranche si son label vaut −1. Lorsqu’il existe un hyperplan qui sépare parfaitement les deux
+  classes de l’ensemble d’apprentissage, cet algorithme converge ; lorsqu’il n’en existe pas, on
+  peut montrer que la complexité de la minimisation du risque empirique croît exponentiellement
+  avec le nombre d’observations.
+
+   Deux stratégies permettent de régler ce compromis. La première restreint la classe C pour
+contrôler le risque d’estimation : on se limite par exemple aux discriminateurs linéaires, ou à des
+architectures de réseaux de neurones simples. La seconde ajoute au risque empirique une pénalité,
+dépendant éventuellement des données, qui mesure la complexité du modèle. Le chapitre 10 en
+étudie plusieurs. Mentionnons-en deux dès maintenant, de façon informelle.
+
+La méthode du crible (method of sieves). On ajuste la complexité de la classe au nombre
+d’exemples disponibles. On se donne une collection de classes {Ck }K k=1 de complexité croissante –
+par exemple Ck l’ensemble des classifieurs de la forme g(x) = 2 1{a(x)≥0} − 1 où a est un polynôme
+de degré au plus k, de sorte que C1 est la classe des discriminateurs linéaires et C2 celle des
+discriminateurs quadratiques. On calcule, pour chaque classe, la règle gbk qui minimise le risque
+empirique sur Ck , puis on choisit un indice Kn , dépendant de l’ensemble d’apprentissage, de façon
+que l’excès de risque de la règle retenue soit proche du meilleur excès de risque accessible dans la
+collection.
+
+La méthode de validation simple (hold-out). On partage les données disponibles en un
+ensemble d’apprentissage DT := {(Xk , Yk ), 1 ≤ k ≤ m} et un ensemble de validation DV :=
+{(Xk , Yk ), m + 1 ≤ k ≤ n}. Pour chaque classe Ck , on calcule une règle gbk⋆ en n’utilisant que DT ,
+puis on évalue ces règles sur les données de validation au moyen de l’erreur
+                                                n
+                                                X
+                                             1
+                                bV (g) :=
+                                R                         1{g(Xk )̸=Yk } ,
+                                            n−m
+                                                  k=m+1
+
+et l’on retient la règle qui la minimise. Les données d’apprentissage servent à construire une famille
+de règles, les données de validation à en choisir une.
+
+4.7    Excès de risque d’une règle par substitution
+    La majoration suivante, qui est celle de l’exercice 7, est le point d’appui de la proposition 1.5 :
+elle ramène le contrôle d’un excès de risque à celui d’une erreur d’estimation de la fonction de
+régression.
+
+
+   Proposition 4.2: Excès de risque d’une règle par substitution
+  Soit η ⋆ la fonction de régression, g ⋆ := 2 1{η⋆ ≥1/2} − 1 le classifieur bayésien pour la perte
+  0–1, η : Rd → [0, 1] une fonction mesurable et g := 2 1{η≥1/2} − 1 la règle associée. Alors
+                                                                    
+           R01 (g) − R01 (g ⋆ ) = 2 E 1{g(X)̸=g⋆ (X)} |η ⋆ (X) − 1/2| ≤ 2 E [|η ⋆ (X) − η(X)|] .
+
+
+
+   Démonstration
+  La première égalité est la formule d’excès de risque (4), où l’on a écrit |2η ⋆ (X)−1| = 2 |η ⋆ (X)−
+  1/2|.
+40                    CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+
+  Pour l’inégalité, plaçons-nous sur l’événement {g(X) ̸= g ⋆ (X)}. Les deux règles étant à valeurs
+  dans {−1, 1} et données par le même seuil appliqué à η et à η ⋆ , cet événement s’écrit comme la
+  réunion des deux événements disjoints {η ⋆ (X) ≥ 1/2, η(X) < 1/2} et {η ⋆ (X) < 1/2, η(X) ≥
+  1/2}. Sur le premier,
+                                                      1
+                 |η ⋆ (X) − 1/2| = η ⋆ (X) −            ≤ η ⋆ (X) − η(X) = |η ⋆ (X) − η(X)| ,
+                                                      2
+  puisque η(X) < 1/2 ≤ η ⋆ (X). Sur le second, de même,
+                                     1
+                 |η ⋆ (X) − 1/2| =     − η ⋆ (X) ≤ η(X) − η ⋆ (X) = |η ⋆ (X) − η(X)| .
+                                     2
+  Dans les deux cas |η ⋆ (X) − 1/2| ≤ |η ⋆ (X) − η(X)|, et en reportant dans la première égalité,
+                                                                  
+        R01 (g) − R01 (g ⋆ ) ≤ 2 E 1{g(X)̸=g⋆ (X)} |η ⋆ (X) − η(X)| ≤ 2 E [|η ⋆ (X) − η(X)|] ,
+
+  la dernière majoration tenant à ce que l’indicatrice est majorée par 1 et l’intégrande positif.
+  □
+
+
+4.8    Perceptrons et réseaux de neurones
+    Un discriminateur linéaire partage l’espace des attributs par un hyperplan et attribue une
+classe différente à chaque demi-espace. C’est le classifieur
+                                                                                                     
+                                                !                                   1                   a0
+                             d
+                             X                                                 x(1)                 a1 
+                                          (i)               ⊤                                        
+           g(x) := σ a0 +          ai x             =σ a x ,               x :=  .  ,          a :=  .  ,
+                             i=1
+                                                                                 ..                  .. 
+                                                                                  x(d)                 ad
+
+où a est le vecteur des poids synaptiques, a0 le biais, et σ la fonction d’activation, prise ici égale à
+la fonction de Heaviside, heaviside(t) = 0 si t ≤ 0 et 1 sinon. Pour obtenir une sortie dans {−1, 1}
+plutôt que dans {0, 1}, on remplace σ par t 7→ 2 heaviside(t) − 1. La décision est facile à mettre en
+œuvre : son coût est proportionnel à d. Rosenblatt a nommé ces règles perceptrons et proposé de
+modifier le vecteur de poids au fur et à mesure que de nouvelles données arrivent, ce qui en fait le
+premier algorithme d’apprentissage séquentiel.
+    Le perceptron est un réseau de neurones sans couche cachée. Dans un réseau à une couche
+cachée, chaque neurone i ∈ {1, . . . , k} calcule une valeur ui = σ(ψi (x)) avec ψi (x) = bi +
+Pd           (j)
+   j=1 ai,j x , et le neurone de sortie combine ces valeurs et applique la fonction de Heaviside :
+
+                                                                    k
+                                                                                         !
+                                                                    X
+                             g(x) = heaviside c0 +                        ci σ(ψi (x))       .
+                                                                    i=1
+
+La fonction d’activation σ est supposée croissante, de limites 0 en −∞ et 1 en +∞ ; les choix usuels
+sont la fonction signe, la fonction logistique σ = sigm de la Section 2.9 et l’arc tangente normalisé
+t 7→ 21 π2 arctan(t) + 1 . En itérant le procédé, on intercale plusieurs couches de neurones cachés
+entre l’entrée et la sortie.
+    L’analyse théorique de ces réseaux s’appuie sur un théorème de Kolmogorov (1957) et Lorentz
+                                                          d
+(1976), selon lequel toute fonction continue f sur [0, 1] s’écrit
+                                                                             
+                                                    2d+1
+                                                    X          Xd
+                                   f (x) =                 Fi    Gi,j (x(j) ) ,
+                                                    i=1         j=1
+4. LES COMPLÉMENTS                                                                                41
+
+où Fi et Gi,j sont des fonctions continues qui dépendent de f . En pratique, les réseaux multicouches
+approchent toute fonction mesurable avec une précision arbitraire, même à fonction d’activation
+fixée.
+
+
+
+
+Figure 10 – Un réseau de neurones à une couche cachée. Les d entrées transmettent les coordon-
+nées du vecteur d’attributs, les neurones de la couche cachée calculent σ(ψi (x)), et le neurone de
+sortie en forme une combinaison linéaire à laquelle il applique la fonction d’activation.
+

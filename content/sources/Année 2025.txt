@@ -1,0 +1,391 @@
+APM_41033_EP                                                                             Examen 2025
+
+
+
+
+                                     APM 41033
+                                         -
+                                      Statistiques
+
+
+Ce sujet est composé de 4 exercices indépendants.
+   1. L’exercice 1 correspond à des questions liées au cours.
+   2. Les exercices 2 et 3 suivants correspondent à des problèmes
+   3. L’exercice 4 est un QCM / questions à réponses courtes, portant sur les DM et EN
+
+La durée de cet examen est de 3h. A titre très indicatif, il est recommandé de ne pas passer plus de
+∼20 min sur l’exercice 1 (cours) et 15-20 min sur l’exercice 4 (DM / EN).
+
+Si vous trouvez une erreur dans le sujet, merci de l’indiquer sur le sujet et de poursuivre votre compo-
+sition.
+
+Toutes les réponses doivent être justifiées, sauf dans l’exercice 4, dans lequel des réponses courtes
+et simples sont attendues.
+
+
+
+
+                                                                                                 Page 1
+APM_41033_EP                                                                                  Examen 2025
+
+
+Rappels / notations :
+  — Tout vecteur u ∈ R p est identifié au vecteur colonne de ses coordonnées dans la base canonique.
+  — Pour toute matrice M, on note M T sa transposée et, quand M est inversible, M −1 son inverse.
+    La matrice identité est notée I.
+  — Pour tout couple de vecteurs u, v de R p , on note ⟨u, v⟩ := uT v leur produit scalaire canonique.
+  — L’ensemble des matrices symétriques définies positives est noté S+ .
+  — Pour tout a > 0 et b > 0, on appelle Γ(a, b) la loi sur R+ de densité par rapport à la mesure de
+    Lebesgue
+                                                   ba a−1
+                                      γa,b (x) :=      x exp(−bx) .
+                                                  Γ(a)
+    Son espérance vaut a/b, sa variance a/b2 . Si X1 , . . . , Xn sont indépendants et de même loi
+    Γ(a, b), alors ∑ni=1 Xi suit la loi Γ(na, b).
+  — Pour tout entier p ⩾ 1, la loi χ 2 (p) à p degrés de liberté est la loi Γ(p/2, 1/2).
+  — De la même façon, la loi Beta de paramètre (a, b) a pour densité sur ]0, 1[ :
+                                                           xa−1 (1 − x)b−1
+                                         x 7→ qa,b (x) =                   ,
+                                                               B(a, b)
+                                           a
+      dont l’espérance est donnée par a+b    . Par ailleurs, on rappelle le lien entre loi Binomiale et loi
+      Beta : pour tout entiers n, p, k, on a
+                                P (Bin(n, p) ≥ k) = P (Beta(k, n − k + 1) ≤ p) .
+
+  — On rappelle que la transformée de Laplace d’une variable aléatoire Gaussienne standard ξ ∼
+    N(0, 1) est donnée par :
+                                                                  t2
+                                                t 7→ E[etξ ] = e 2 .
+  — Enfin, on rappelle que si ξ suit une loi N(0, 1), alors Var(ξ 2 ) = 2.
+  — Pour un n-échantillon i.i.d. X1 , . . . , Xn , de densité f continue strictement positive sur R, et fonc-
+    tion de répartition F, on rappelle le théorème central limite satisfait par l’estimateur empirique
+    du quantile q̂α pour α ∈ (0, 1) :
+                                      √             d      α(1 − α)
+                                                    − N (0, 2
+                                       n(q̂α − qα ) →               ),
+                                                            f (qα )
+      où qα = F −1 (α) et q̂α = X⌊nα⌋ est la statistique d’ordre ⌊nα⌋ de l’échantillon X1 , . . . , Xn , c’est
+      à dire la ⌊nα⌋ valeur dans l’ordre croissant.
+               d
+  — on note →− la convergence en distribution d’une suite de variables aléatoires.
+  — Théorème central limite multivarié. Soient (Xi ,Yi )i⩾1 une suite de variables     aléatoires
+                                                                                             in-  
+                                                                                        X1       µX
+    dépendantes et identiquement distribuées (i.i.d.), admettant une espérance E            =
+                                                                                        Y1       µY
+                                                 
+                                                   X
+    finie et une matrice de covariance Var 1 = Σ finie. On définit les moyennes empiriques
+                                                   Y1
+           1 n                 1 n
+    X n = n ∑i=1 Xi , et Y n = n ∑i=1 Yi . Alors, le théorème central limite multivarié donne que :
+                                            !
+                             √ X n − µX d
+                                                        
+                                                         0
+                              n               − N
+                                              →             , Σ , quand n → ∞.
+                                  Y n − µY               0
+
+
+                                                                                                      Page 2
+APM_41033_EP                                                                               Examen 2025
+
+
+1    Exercice 1 : Questions de cours
+   On observe un n-échantillon (X1 , . . . , Xn ) du modèle statistique {R+ , B(R+ ), (pθ · dLeb, θ > 0)},
+où Leb est la mesure de Lebesgue sur R+ et
+
+                                  ∀x ⩾ 0,       pθ (x) := θ exp(−θ x) .
+
+On admet que ce modèle est régulier.
+    1. Donner la borne de Cramer-Rao sur le risque quadratique d’un estimateur régulier sans biais de
+       θ calculé à partir de X1 , . . . , Xn .
+    2. Soient θ0 , θ1 deux réels strictement positifs tels que θ1 > θ0 . Déterminer le test de Neyman-
+       Pearson de niveau α ∈]0, 1[ de H0 : θ = θ0 contre H1 : θ = θ1 . On explicitera en particulier la
+       valeur du seuil en fonction d’un quantile d’une loi Gamma bien choisie.
+    3.   (a) Donner la définition de la p-valeur ainsi que son expression dans le cadre ci dessus.
+         (b) Expliquer en des termes simples l’intérêt et l’interprétation de la p-valeur. Par exemple,
+             qu’indiquerait une p-valeur de 3% ?
+         (c) Peut elle s’interpréter comme “la probabilité d’être sous Θ0 ”, “la probabilité d’être sous
+             Θ1 ", autre chose ?
+
+
+2    Exercice 2 : Statistique pour la loi log-normale
+    On dit qu’une variable aléatoire X suit une loi log-normale de paramètres µ ∈ R et σ 2 > 0, si
+ln X est distribuée comme une loi normale N(µ, σ 2 ) de moyenne µ et de variance σ 2 . On écrit alors
+X ∼ LN(µ, σ 2 ). On a alors, de manière équivalente, X = eµ+σ ξ , où ξ ∼ N(0, 1) suit la loi Gaussienne
+standard. On admet que le modèle est régulier.
+    On observe un n-échantillon (X1 , . . . , Xn ) du modèle
+
+                        (R, B(R), {LN(µ, σ 2 ), θ := (µ, σ 2 ) ∈ Θ := R × R∗+ }) .
+
+    1. Soit µ ∈ R, σ 2 > 0 et X ∼ LN(µ, σ 2 ). Déterminer le support S de X et montrer que sa densité
+       par rapport à la mesure de Lebesgue sur R est donnée par :
+                                                                 2    2
+                                                        e−(ln x−µ) /2σ
+                                      x 7→ pµ,σ (x) =       √          1S (x).
+                                                          x 2πσ 2
+
+    2. Déterminer l’estimateur du maximum de vraisemblance (µ     c2 ML ) de (µ, σ 2 ).
+                                                            bML , σ
+    3. Déterminer le biais et la variance de µ
+                                             bML .
+                                             c2 ML .
+    4. Déterminer le biais et la variance de σ
+    5. Soit α ∈ (0, 1). Déterminer un intervalle de confiance non-asymptotique bilatéral pour σ 2 de
+       niveau 1 − α.
+    6. Démontrer que l’estimateur (µ      c2 ML ) est consistant.
+                                    bML , σ
+    7. Montrer que le vecteur d’estimateurs (µ      c2 ML ) est asymptotiquement normal et préciser la
+                                              bML , σ
+       valeur de la moyenne et de la matrice de covariance limite, en fonction de µ et σ 2 .
+
+
+
+                                                                                                  Page 3
+APM_41033_EP                                                                                    Examen 2025
+
+
+     8. On note pour n impair X̃n la médiane de l’échantillon (X1 , . . . , Xn ) . Donner un estimateur naturel
+        de µ noté µ
+                  bMed dans ce contexte. Démontrer le théorème central limite
+                                        √                d
+                                             bMed − µ) →
+                                          n (µ          − N (0,Cσ 2 ),
+
+        où C est une constante que l’on explicitera.
+     9. On définit
+                                              1 n                         1 n 2
+                                     b 1 :=
+                                     m          ∑ Xi
+                                              n i=1
+                                                          et     b 2 :=
+                                                                 m          ∑ Xi .
+                                                                          n i=1
+
+          (a) Construire l’estimateur par la méthode des moments de (µ, σ 2 ), noté (µ        c2 Mom ), as-
+                                                                                       bMom , σ
+              socié aux statistiques T1 (X) = X et T2 (X) = X . 2
+
+         (b) Montrer que (m         b 2 ) est un estimateur asymptotiquement normal de (Eθ [X], Eθ [X 2 ]).
+                               b1 , m
+              Calculer l’expression de la matrice de covariance limite en fonction de σ 2 , m1,θ := Eθ [X]
+              et m2,θ := Eθ [X 2 ].
+          (c) Montrer que µ  bMom est un estimateur asymptotiquement normal de µ.
+              On donnera une formule exacte et un développement limité de la variance limite quand
+              σ 2 → 0.
+    10. Discuter de l’intérêt de µ   bML , µ
+                                           bMed , µ
+                                                  bMom . Asymptotiquement (par rapport à n), comment se
+        classent les trois estimateurs, en particulier selon que σ → 0 ou σ → ∞ ?
+
+
+3      Exercice 3 : apprentissage statistique
+On considère un problème de classification binaire. On observe un échantillon i.i.d. Dn := {(X1 ,Y1 ), . . . , (Xn ,Yn )},
+où Xi ∈ X ⊂ Rd et Yi ∈ {−1, 1}. La loi jointe de (X,Y ) est notée P tandis que E est l’espérance asso-
+ciée. La fonction de régression η est donnée par :
+
+                                   ∀x ∈ X         η(x) := P(Y = 1|X = x).
+
+      On suppose :
+(H1 ) Le support de X, noté X , est compact.
+(H2 ) La distribution de X possède une densité pX par rapport à la mesure de Lebesgue qui est minorée
+      et majorée sur son support :
+
+                               ∃(c− , c+ ),      ∀x ∈ X :        0 < c− ≤ pX (x) ≤ c+
+
+        et on note
+                 R
+                   pour x ∈ X et B(x,t) la boule de centre x et de rayon t la fonction Fx définie par
+        Fx (t) := B(x,t) pX (u)du = P(X ∈ B(x,t)).
+(H3 ) La fonction de régression η est L-Lipschitzienne.
+On observe que la probabilité d’obtenir deux observations égales Xi = X j pour i ̸= j dans l’échantillon
+Dn est nulle. Pour tout classifieur g : x 7→ g(x) ∈ {−1, 1}, on définit le risque de classification en
+
+                                              R(g) = P(g(X) ̸= Y ).
+
+     1. Démontrer que le classifieur bayésien est
+
+                                               g∗ (x) := 21{η(x)≥1/2} − 1.
+
+        On notera R∗ := R(g∗ ) le risque de ce classifieur bayésien.
+
+                                                                                                       Page 4
+APM_41033_EP                                                                                  Examen 2025
+
+
+  2. Montrer que pour tout classifieur g,
+
+                                  R(g) − R∗ = E |2η(X) − 1| 1{g(X)̸=g∗ (X)} .
+                                                                          
+
+
+  3. On introduit un estimateur η̂ de la fonction de régression et le classifieur obtenu par plug-in :
+
+                                           ĝ(x) := 21{η̂(x)≥1/2} − 1.
+
+     Démontrer que
+                                       R(ĝ) − R∗ ≤ 2E[|η(X) − η̂(X)|] .
+
+     Dans les questions 4 à 7, le point x ∈ X est fixé. En notant Pn la loi sur l’ensemble d’appren-
+     tissage Dn , et En l’espérance associée, pour un classifieur ĝn calculé à partir de Dn , on définit le
+     risque de classification de ĝn par R(ĝn ) et le risque de classification moyen de ĝn par En [R(ĝn )].
+  4. On note Nk (x) l’ensemble des indices des k plus proches voisins de x dans l’ensemble d’appren-
+     tissage {X1 , . . . , Xn } (pour la distance euclidienne). On définit alors
+                 (
+                  1 si le nombre de voisins dans Nk (x) contient au moins la moitié de labels Y = 1
+     ĝn,k (x) =
+                  -1 sinon.
+
+     Démontrer que ĝn,k est la méthode plug-in obtenue lorsque l’estimateur de la fonction de ré-
+     gression est définie par :
+                                                   1
+                                      η̂n,k (x) :=     ∑ 1Yi =1 .
+                                                   k i∈N (x)k
+
+
+  5. Proposer une illustration graphique de cette méthode, avec k = 3, n = 10, et d = 2, ainsi que la
+     valeur de la prédiction en quelques points de votre choix.
+  6. On définit Rk (x) le rayon de la boule contenant les k plus proches voisins. démontrer que :
+                                                              n  
+                                                                  n
+                 ∀x ∈ X ∀t > 0 :          Pn (Rk (x) ≤ t) = ∑        Fx (t) j (1 − Fx (t))n− j .
+                                                             j=k j
+
+     En utilisant les rappels, identifier la loi de Uk (x) := Fx (Rk (x)).
+  7. En déduire via l’hypothèse (H2 ) que :
+
+                                    1      k                      1      k
+                                               ≤ En [Rk (x)d ] ≤             ,
+                                   c+ vd n + 1                   c− vd n + 1
+
+     où vd := B(0,1) dx est la mesure de Lebesgue de la boule unité Euclidienne de Rd .
+               R
+
+  8. En utilisant une décomposition biais/variance, démontrer qu’il existe une constante Cd telle
+     que :                                                             !
+                                                         2/d
+                                                           k        1
+                           En (η̂n,k (x) − η(x))2 ≤ Cd
+                                                
+                                                                 +       .
+                                                           n         k
+     On donnera une expression de la constante Cd .
+  9. En déduire une borne sur risque moyen du classifieur des k plus proches voisins, c’est à dire une
+     majoration de En [R(ĝn,k )] − R∗ . Déterminer la valeur minimale de cette borne en k. Comment
+     se comporte cette borne en grande dimension ?
+
+                                                                                                      Page 5
+  APM_41033_EP                                                                                                 Examen 2025
+
+
+  4      Exercice 4 : QCM & questions aux réponses courtes sur ENs / DMs
+  1. Exceptionnellement, dans cet exercice, on ne demande pas de raisonnement détaillé, uniquement
+     d’indiquer la bonne réponse. ou une explication claire et concise d’un phénomène. Les réponses
+     libres doivent être en 1 ou 2 phrases maximum par question. (1 phrase → environ 20 mots au plus)
+  2. NE PAS RENDRE LE SUJET. Indiquer vos réponses sur votre copie, par exemple "Q0 - (a)"
+  3. Pour le QCM, une unique réponse par question est valide. Toute réponse erronée au QCM
+     rapportera −0.5.
+
+  Sur l’Exploration Numérique 1. On considère t1 , . . . ,tn des réels tels que ∃i ̸= j,ti ̸= t j , ainsi que
+  le modèle statistique
+                           (                                                                                   )!
+                                               n
+                 Rn , B(Rn ), pθ · dLeb⊗n :=         N (β1 + β2ti , σ 2 ) : θ := (β1 , β2 , σ 2 ) ∈ R2 × R∗+
+                                               O
+                                                                                                                    .
+                                               i=1
+
+        Question 1. L’expression correcte de l’EMV β̂2 de β2 est :
+         ∑i Xi                                                        ∑i (ti − t¯)(Xi − X̄)
+(a) β̂2 =                                                   (b) β̂2 =
+         ∑i ti                                                            ∑ni=1 (ti − t¯)2
+         ∑ (ti − X̄)(Xi − t¯)                                         X̄
+(c) β̂2 = i                                                 (d) β̂2 =
+                ∑i ti2                                                 t¯
+      Question 2. Le nombre de degrés de liberté de l’estimateur σ̂ 2 (défini par la somme des carrés
+  des résidus renormalisée) est :
+(a) n                       (b) n − 1                       (c) n − 2                       (d) n + 1
+     Question 3. Que doit-on attendre des résidus standardisés si le modèle linéaire simple est bien
+  adapté ? Décrivez brièvement ce qui, sur les graphiques de résidus, indiquerait un mauvais ajustement
+  du modèle.
+
+  Sur l’Exploration Numérique 2. On considère des observations (X1 , . . . , Xn ,Y1 , . . . ,Yp ) issues du
+  modèle statistique
+                   n                                                                                                o
+   Rn+p , B(Rn+p ), pθ · dLeb⊗(n+p) := N (µ0 , σ02 )⊗n ⊗ N (µ1 , σ12 )⊗p : θ := (µ0 , µ1 , σ02 , σ12 ) ∈ R2 × (R∗+ )2 ,
+
+     Question 4. Le test de l’égalité des variances σ02 = σ12 , qui utilise le rapport de vraisemblance
+  généralisé, repose sur :
+(a) Une loi du χ 2 .        (b) Un test de Student. (c) Une loi de Fisher.                  (d) Un test de Kolmogorov-
+                                                                                                Smirnov.
+       Question 5. Pour comparer les moyennes sous hypothèse de variances égales, la statistique du test
+  est :
+         X̄n − Ȳp                                        X̄n − Ȳp
+(a) z =                                          (b) t = q            avec s2X , sY2 les variances empi-
+             σ                                               2
+                                                            s +s    2
+                                                                            X     Y
+                                                                  riques respectives de (X1 , . . . , Xn ) et (Y1 , . . . ,Yp ).
+          s2X − sY2                                                    X̄n − Ȳp
+(c) t =                                                     (d) t =     q          avec s2p la variance empirique com-
+          X̄n − Ȳp                                                        1
+                                                                      sp n + p   1
+
+                                                                  binée.
+
+                                                                                                                        Page 6
+  APM_41033_EP                                                                                Examen 2025
+
+
+     Question 6. Expliquer pourquoi, lorsque l’on effectue plusieurs tests, une correction peut être
+  nécessaire. Donner (en justifiant) un exemple de telle correction.
+
+  Sur l’exploration Numérique 3.
+
+     Question 7. Analyse en Composantes Principales (ACP)
+  On considère un ensemble de données X ∈ Rn×d , supposé centré colonne par colonne.
+     1. Expliquer brièvement (une phrase) l’objectif de l’Analyse en Composantes Principales (ACP).
+     2. Donner la clé de la formulation mathématique de ce procédé (une phrase).
+
+
+      Question 8. Comparaison entre LDA, QDA et Régression Logistique
+  Les modèles LDA, QDA et régression logistique peuvent tous être utilisés pour la classification bi-
+  naire.
+     1. Indiquer les principales différences d’hypothèses entre ces trois méthodes.
+     2. Donner une situation (forme des données ou nature du bruit) où la QDA devrait mieux fonc-
+        tionner que la LDA.
+
+
+
+  Sur le Devoir Maison 1. On se place dans le modèle de régression linéaire multiple
+
+                                      Y = Zβ + ε,      ε ∼ N (0, σ 2 In ),
+
+  où Z ∈ Rn×p , β ∈ R p , σ 2 > 0,
+
+
+      Question 9. Sous les hypothèses adéquates, l’estimateur des moindres carrés de β s’écrit :
+
+(a) β̂ = (Z T Z)−1 Z T Y                              (b) β̂ = Z T (ZZ T )−1Y
+(c) β̂ = (ZZ T )−1Y                                   (d) β̂ = Z −1Y
+
+      Question 10. Dans le cas gaussien, sous Pθ , la loi de l’estimateur β̂ est :
+
+(a) β̂ ∼ N (Zβ , σ 2 In )                             (b) β̂ ∼ N (β , σ 2 (Z T Z)−1 )
+(c) β̂ ∼ χ 2 (n − p)                                  (d) β̂ ∼ N (β , σ 2 Ip )
+
+
+      Question 11. Que peut on dire de β̂ parmi les estimateurs sans biais ?
+
+      Question 12. Dans la partie pratique (O3, T12, Vx, Ne12), expliquer comment tester :
+    — si le vent V x influence significativement O3,
+    — s’il existe un effet de la nébulosité,
+    — si O3 dépend conjointement de V x et T 12.
+  Décrire les hypothèses nulle/alternative et la nature de la statistique de test utilisée.
+
+
+
+                                                                                                   Page 7
+

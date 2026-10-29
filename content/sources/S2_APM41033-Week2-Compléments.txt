@@ -1,0 +1,471 @@
+52                                                    CHAPITRE 2. ESTIMATION PONCTUELLE
+
+4      Les compléments
+    Les contenus de cette partie ne sont pas exigibles ; ils prolongent les fondamentaux sur des
+modèles moins standards et donnent les énoncés complets de résultats dont seule une partie a été
+utilisée dans le cours.
+
+Méthode des moments sans moments : le modèle de Cauchy
+   La méthode des moments n’exige pas que les observations aient des moments : il suffit de
+trouver une fonction T bornée dont l’espérance dépende du paramètre de façon inversible. Le
+modèle de Cauchy, qui n’a pas d’espérance, en est l’exemple.
+
+     Exemple 4.1: Estimateur des moments du modèle de Cauchy
+    Soit (X1 , . . . , Xn ) un n-échantillon du modèle de Cauchy R, B(R), {Cauchy(θ) , θ ∈ Θ = R} ,
+                                                                                                     
+
+    où la loi de Cauchy de paramètre de translation θ et d’échelle 1 a pour densité par rapport à
+    la mesure de Lebesgue
+                                                     1
+                                     qθ (x) =                ,    x∈R.
+                                              π 1 + (x − θ)2
+    Cette loi n’a pas de moment d’ordre k ≥ 1, puisque R |x|k qθ (x) dx = +∞ : le choix T (x) = xk
+                                                             R
+
+    est exclu. Prenons T (x) = signe(x), fonction bornée, avec la convention signe(0) = 0, sans
+                                                                Rt
+    incidence puisque la loi a une densité. Notons F (t) = π1 −∞ 1+x dx     1            1
+                                                                        2 = π arctan(t)+ 2 la fonction
+
+    de répartition de la loi de Cauchy de paramètre 0 ; celle de X1 sous Pθ est t 7→ F (t − θ), et
+
+            e(θ) = Eθ [signe(X1 )] = Pθ (X1 > 0) − Pθ (X1 < 0)
+                                                                       2
+                                   = 1 − F (−θ) − F (−θ) = 1 − 2F (−θ) = arctan(θ) ,
+                                                                        π
+    où l’on a utilisé arctan(−θ) = − arctan(θ). La fonction e est une bijection continue et stric-
+    tement croissante de R sur ]−1, 1[, d’inverse y 7→ tan(πy/2). En posant Yi := signe(Xi ),
+    l’équation e(ϑ) = Ȳn admet une solution unique dès que Ȳn ∈ ]−1, 1[, c’est-à-dire dès que les
+    observations ne sont pas toutes de même signe,
+                                           π          π X n            
+                              θ̂n := tan      Ȳn = tan         signe(Xi ) .
+                                            2            2n i=1
+
+                                     Pθ −prob
+    D’après la Proposition 1.1, Ȳn −→ e(θ) ; l’événement {|Ȳn | = 1}, de probabilité F (−θ)n +
+    (1 − F (−θ))n , devient négligeable lorsque n croît, et l’argument du Lemme 2.1, la fonction
+                                                      Pθ −prob
+    e−1 étant continue sur ]−1, 1[, montre que θ̂n      −→       θ, quelle que soit la valeur, arbitraire,
+    donnée à θ̂n sur cet événement.
+
+
+Modèle de translation et d’échelle : estimateur des moments
+    Le modèle de translation et d’échelle décrit une observation obtenue à partir d’une loi de
+référence connue par un décalage et un changement d’unité inconnus ; les modèles gaussien et de
+Laplace en sont des cas particuliers. Il demande deux fonctions de moment, et le système obtenu
+se résout explicitement.
+
+     Exemple 4.2: Estimateur des moments du modèle de translation et d’échelle
+    Soit q une densité de probabilité sur R, par rapport à la mesure de Lebesgue, vérifiant
+                        Z                            Z
+                           x q(x) dx = 0 ,    m2 :=     x2 q(x) dx ∈ ]0, +∞[ .
+                          R                              R
+4. LES COMPLÉMENTS                                                                                 53
+
+
+  On peut prendre pour q la densité gaussienne centrée réduite, q(x) = (2π)−1/2 exp(−x2 /2),
+  auquel cas m2 = 1, ou la densité de Laplace q(x) = 21 exp(−|x|), auquel cas m2 = 2. Considé-
+  rons un n-échantillon (X1 , . . . , Xn ) du modèle (X, X , {qθ · µ , θ ∈ Θ}) avec
+                                  1 x − m
+                     qθ (x) :=      q       ,       θ = (m, σ 2 ) ∈ Θ := R × R∗+ ,
+                                  σ    σ
+         √
+  où σ = σ 2 . Par la formule de changement de variable (Section 2), sous Pθ , X1 a même loi
+  que m + σZ où Z a pour densité q ; donc
+
+                 Eθ [X1 ] = m ,      Varθ (X1 ) = σ 2 m2 ,     Eθ [X12 ] = σ 2 m2 + m2 .
+
+  Avec T1 (x) = x et T2 (x) = x2 , l’estimateur des moments est solution du système
+                                                        n
+                            
+                                       2             1X
+                             e
+                             1
+                                (m,  σ   ) = m   =        Xi ,
+                                                     n i=1
+                            
+                                                                n
+                                       2       2         2    1X 2
+                              e  (m,  σ   ) = σ   m   + m   =     Xi .
+                            
+                             2                     2
+                            
+                                                              n
+                            
+                                                                i=1
+
+  L’application e : (m, σ 2 ) 7→ (m, σ 2 m2 + m2 ) est injective sur R × R∗+ , d’inverse explicite
+  (e1 , e2 ) 7→ e1 , (e2 − e21 )/m2 ; sa matrice jacobienne
+                                                         
+                                                   1    0
+                                                  2m m2
+
+  est inversible en tout point, de déterminant m P2n > 0. Le système admet donc une solution
+  unique, qui appartient à Θ dès que Vn := n−1 i=1 (Xi − X̄n )2 > 0, ce qui est Pθ -presque sûr
+  pour n ≥ 2 :
+                                  n                       n
+                               1X                     1 X
+                         m̂n =       Xi ,    σ̂n2 =          (Xi − m̂n )2 .
+                               n i=1                n m2 i=1
+
+  Dans le cas gaussien (m2 = 1), cet estimateur des moments coïncide avec          R l’estimateur du
+  maximum de vraisemblance de l’Exemple 1.10. L’hypothèse supplémentaire R x4 q(x) dx < ∞,
+  faite dans le chapitre d’origine et dans les slides, n’intervient pas dans la construction ; elle
+  sert à l’étude de la loi limite de σ̂n2 , par le théorème central limite appliqué aux Xi2 .
+
+
+Estimateurs robustes de translation et d’échelle : médiane et MAD
+   Les fonctions d’estimation d’un Z-estimateur ne sont pas tenues d’être des différences de mo-
+ments : on peut les choisir bornées, ce qui rend l’estimateur peu sensible aux observations aber-
+rantes. La médiane et l’écart absolu médian en sont l’exemple de base.
+
+   Exemple 4.3: Médiane et écart absolu médian comme Z-estimateurs
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle (X, X , {qθ · µ , θ ∈ Θ}) avec
+                                   1 x − m
+                           qθ (x) = q          ,     θ = (m, σ) ∈ Θ = R × R∗+ ,
+                                   σ      σ
+                                                                                      Rx
+  où q est une densité de probabilité paire sur R, de fonction de répartition Q(x) = −∞ q(z) dz,
+  continue, avec Q(0) = 1/2 par parité. Soit a > 0 un réel tel que Q(a) = 3/4 ; si q est la densité
+  gaussienne centrée réduite, a ≃ 0,6745. Considérons les fonctions d’estimation
+                                                                        |x − m|   
+               ψ1 (θ, x) := signe(x − m)     et     ψ2 (θ, x) := signe           −a ,
+                                                                            σ
+54                                                            CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  avec signe(0) = 0. Sous Pθ , la variable Z := (X1 − m)/σ a pour densité q, et
+                                                Z
+                             Eθ [ψ1 (θ, X1 )] =   signe(z) q(z) dz = 0 ,
+                                                         R
+
+  par parité de q ; de même,
+                                   Z                                  Z +∞
+              Eθ [ψ2 (θ, X1 )] =  signe(|z| − a) q(z) dz = 2       signe(z − a) q(z) dz
+                                       R                      0
+                                  Z a             Z +∞          
+                              =2 −      q(z) dz +        q(z) dz
+                                      0             a
+                              = 2 − (Q(a) − 12 ) + (1 − Q(a)) = 3 − 4Q(a) = 0 .
+                                                              
+
+
+  Les Z-estimateurs associés à ψ = (ψ1 , ψ2 )⊤ sont les solutions du système
+                      n                                        n          |X − m|
+                   1X                                        1X              i
+                                                                                     
+                         signe(Xi − m) = 0 ,                       signe           −a =0.
+                   n i=1                                     n i=1             σ
+
+  Supposons, pour simplifier, n impair et les observations deux à deux distinctes. La première
+  équation ne fait intervenir que m et a pour unique solution la médiane empirique, m̂n =
+  med(X1 , . . . , Xn ) (Exemple 1.6). La seconde exprime que le nombre d’indices i tels que |Xi −
+  m̂n | > aσ égale le nombre d’indices tels que |Xi − m̂n | < aσ ; si les écarts |Xi − m̂n | sont deux
+  à deux distincts, ce qui est presque sûr, elle a pour unique solution
+                                           1                                     
+                              σ̂n =          med |X1 − m̂n |, . . . , |Xn − m̂n | .
+                                           a
+  L’estimateur σ̂n est appelé estimateur MAD (median absolute deviation, écart absolu mé-
+  dian) ; il est très utilisé en statistique robuste, car remplacer une observation par une valeur
+  arbitrairement grande ne le modifie que de façon bornée, contrairement à l’écart-type empi-
+  rique.
+
+
+Le modèle de Bernoulli au microscope
+   Le modèle de Bernoulli permet de suivre en détail, avec des formules explicites, ce que la
+Proposition 1.3 affirme en général : la log-vraisemblance normalisée converge vers une fonction
+limite, strictement concave, dont le maximum est atteint au vrai paramètre, et l’écart entre les
+deux se contrôle par l’inégalité de Bienaymé-Tchebychev.
+
+     Exemple 4.4: Log-vraisemblance et divergence dans le modèle de Bernoulli
+  Reprenons le modèle de l’Exemple 1.8, et fixons θ⋆ ∈ ]0, 1[. Pour ϑ ∈ ]0, 1[, la log-vraisemblance
+  normalisée s’écrit
+                      n
+                   1 X
+        ℓn (ϑ) =         Xi log ϑ + (1 − Xi ) log(1 − ϑ) = X̄n log ϑ + (1 − X̄n ) log(1 − ϑ) .
+                   n i=1
+
+  La variable log qϑ (X1 ) = X1 log ϑ + (1 − X1 ) log(1 − ϑ) est bornée, donc intégrable, et comme
+  Eθ⋆ [X1 ] = θ⋆ ,
+
+                     Mθ⋆ (ϑ) = Eθ⋆ [log qϑ (X1 )] = θ⋆ log ϑ + (1 − θ⋆ ) log(1 − ϑ) .
+
+  Cette fonction est deux fois dérivable sur ]0, 1[, de dérivée θ⋆ /ϑ − (1 − θ⋆ )/(1 − ϑ), nulle en
+  ϑ = θ⋆ , et de dérivée seconde −θ⋆ /ϑ2 − (1 − θ⋆ )/(1 − ϑ)2 < 0 : elle est strictement concave
+4. LES COMPLÉMENTS                                                                                         55
+
+
+  et atteint son maximum unique en θ⋆ (Lemme 2.3). La divergence de Kullback-Leibler est ici
+  explicite,
+                                                              θ⋆                 1 − θ⋆
+           KL Ber(θ⋆ ), Ber(ϑ) = Mθ⋆ (θ⋆ ) − Mθ⋆ (ϑ) = θ⋆ log    + (1 − θ⋆ ) log
+                              
+                                                                                        ,
+                                                              ϑ                  1−ϑ
+  strictement positive pour ϑ ̸= θ⋆ . L’écart entre ℓn (ϑ) et Mθ⋆ (ϑ) se contrôle quantitativement :
+                                           ϑ                                                ϑ
+                                                                                              2
+  la variable log qϑ (X1 ) s’écrit X1 log 1−ϑ + log(1 − ϑ), de variance θ⋆ (1 − θ⋆ ) log 1−ϑ     , et
+  l’inégalité de Bienaymé-Tchebychev donne, pour tout δ > 0,
+                                                                             ϑ
+                                                                                  2
+                                                          θ⋆ (1 − θ⋆ ) log 1−ϑ
+                         Pθ⋆ | ℓn (ϑ) − Mθ⋆ (ϑ)| ≥ δ ≤                                 .
+                                                                      n δ2
+  Pour ϑ fixé, cette probabilité tend vers 0 ; la borne se dégrade lorsque ϑ s’approche de 0 ou
+  de 1, et l’on verra dans la suite du cours que la convergence est en fait uniforme en ϑ sur tout
+  intervalle [a, b] avec 0 < a < b < 1.
+
+
+
+
+On dispose de 50 mesures binaires (x1 , . . . , x50 ), obtenues comme la réalisation de variables de Bernoulli
+indépendantes de paramètre θ⋆ = 1/3, telles que la moyenne empirique x̄n vaut 0,4 pour n = 5, 0,3 pour
+  n = 10 et 0,32 pour n = 50. On trace les fonctions ϑ 7→ x̄n log ϑ + (1 − x̄n ) log(1 − ϑ) sur ]0, 1[ pour
+ n = 5, n = 10 et n = 50, ainsi que la fonction limite Mθ⋆ : ϑ 7→ θ⋆ log ϑ + (1 − θ⋆ ) log(1 − ϑ), en trait
+       plein noir. Les traits verticaux sont placés en θ⋆ , 0,3, 0,32 et 0,4 : le maximum de chaque
+             log-vraisemblance est atteint en x̄n , et se rapproche de θ⋆ lorsque n augmente.
+
+
+Vraisemblance d’un modèle censuré
+
+    Lorsque les observations sont censurées, la loi d’une observation n’a pas de densité par rapport
+à la mesure de Lebesgue, mais le modèle reste dominé par une mesure bien choisie, et la vraisem-
+blance s’écrit sans difficulté. Cet exemple poursuit celui du contrôle de qualité du chapitre 1.
+
+   Exemple 4.5: Estimateur du maximum de vraisemblance pour des durées de vie censurées
+  Reprenons l’exemple du modèle exponentiel censuré du chapitre 1 (Section 4) : les observations
+  sont des durées de vie censurées à droite,
+
+                                  Xi∗ := min(Xi , τ ) ,      i = 1, . . . , n ,
+56                                                    CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  où τ > 0 est un instant de censure connu et (X1 , . . . , Xn ) est un n-échantillon du modèle
+  exponentiel R+ , B(R+ ), E(θ) , θ ∈ Θ = R∗+ . Les mesures dont on dispose sont modélisées
+  par le modèle induit par (X1∗ , . . . , Xn∗ ), et non par celui des Xi . On a vu au chapitre       1 que
+  (X1∗ , . . . , Xn∗ ) est un n-échantillon du modèle [0, τ ] , B([0, τ ]), {qθ∗ · µ , θ ∈ Θ} , dominé par
+                                                                                             
+
+  la mesure µ := Leb + δτ , somme de la mesure de Lebesgue et de la masse de Dirac en τ , avec
+  la densité
+                                    qθ∗ (x) := θe−θx 1{x<τ } + e−θτ 1{x=τ } .
+  Notons Nn− := {i ≤ n : Xi∗ < τ } l’ensemble des indices des pannes observées avant l’instant
+  de censure et Nn+ := {i ≤ n : Xi∗ = τ } celui des observations censurées. La vraisemblance
+  s’écrit, pour ϑ > 0,
+                                                                X               +
+                  Ln (ϑ, X1∗ , . . . , Xn∗ ) = ϑ card Nn exp − ϑ   Xi∗ e−ϑτ card Nn
+                                                       −
+
+
+
+                                                                i∈Nn
+                                                                   −
+
+                                                               Xn       
+                                        = ϑ card Nn exp − ϑ           Xi∗ ,
+                                                  −
+
+
+                                                                i=1
+
+  puisque Xi∗ = τ pour i ∈ Nn+ . Elle est à comparer avec la vraisemblance du modèle sans
+                      Pn                                                  card Nn
+                                                                                −
+  censure, ϑn exp(−ϑ i=1 Xi ). Si card Nn− ≥ 1, la log-vraisemblance ϑ 7→    n    log ϑ − ϑ X̄n∗
+  est strictement concave et son unique point critique est le maximum global :
+
+                                                   card N −
+                                           θ̂nMV = Pn n∗ ,
+                                                     i=1 Xi
+
+  le nombre de pannes observées divisé par la durée totale de fonctionnement observée, censurée
+  ou non. Si card Nn− = 0, c’est-à-dire si toutes les observations sont censurées, événement de
+  probabilité e−nθτ > 0, la vraisemblance ϑ 7→ e−nϑτ est strictement décroissante sur R∗+ et
+  l’estimateur du maximum de vraisemblance n’est pas défini.
+
+
+
+Estimateur du maximum de vraisemblance du modèle de Cauchy
+
+    Dans la plupart des modèles, l’équation de vraisemblance n’a pas de solution explicite, et
+l’estimateur du maximum de vraisemblance s’obtient par une procédure numérique. Le modèle de
+Cauchy en donne un exemple simple à écrire.
+
+     Exemple 4.6: Équation de vraisemblance du modèle de Cauchy et méthode de gradient
+  Reprenons le modèle de Cauchy de l’Exemple 4.1. La vraisemblance et la log-vraisemblance
+  normalisée s’écrivent
+                       n                                                 n
+                    1 Y          1                                     1X
+                                                                             log 1 + (Xi − ϑ)2 .
+                                                                                              
+        Ln (ϑ) =                         ,       ℓn (ϑ) = − log π −
+                   π n i=1 1 + (Xi − ϑ)2                               n i=1
+
+  La fonction ℓn est continue sur R et tend vers −∞ lorsque |ϑ| → +∞ : elle atteint son
+  maximum, de sorte qu’un estimateur du maximum de vraisemblance existe. L’équation de
+  vraisemblance,
+                                           n
+                                        2X       Xi − ϑ
+                              ℓ′n (ϑ) =                     =0,
+                                        n i=1 1 + (Xi − ϑ)2
+  n’admet pas de solution explicite et peut admettre plusieurs solutions, qui ne sont pas toutes
+  des maxima. Pour maximiser la vraisemblance, on a recours à une procédure numérique, par
+  exemple une méthode de gradient : en notant ϑ(k) la valeur du paramètre à la k-ième itération,
+4. LES COMPLÉMENTS                                                                                                        57
+
+
+  on pose
+                                            ϑ(k+1) = ϑ(k) + γ ℓ′n ϑ(k) ,
+                                                                      
+
+  où γ > 0 est un pas. La suite ℓn (ϑ(k) ) croît pour un pas assez petit, mais la limite peut n’être
+  qu’un maximum local ; le choix du point de départ, par exemple la médiane empirique, qui
+  est un Z-estimateur consistant de θ, est déterminant.
+
+
+
+
+ On dispose de n = 25 mesures réelles x1 , . . . , xn , obtenues comme la réalisation de n variables aléatoires
+i.i.d. de loi de Cauchy de paramètre θ⋆ = 2. À gauche, une réalisation de la log-vraisemblance normalisée
+                               P
+              ϑ 7→ − log π − n1 ni=1 log(1 + (xi − ϑ) ) ; à droite, une réalisation de la fonction
+                                                         2
+          Pn
+     ϑ 7→ i=1 (xi − ϑ)/(1 + (xi − ϑ) ), proportionnelle à sa dérivée, dont les zéros sont les racines de
+                                       2
+
+l’équation de vraisemblance. Le trait vertical en pointillé est la droite d’équation ϑ = θ⋆ : le maximum de
+                                         vraisemblance n’est pas θ⋆ .
+
+Régression linéaire gaussienne à p + 1 coefficients
+   La vraisemblance a été définie pour un n-échantillon, mais sa définition s’étend à tout modèle
+dominé : c’est la densité de l’observation, évaluée aux données et vue comme fonction du paramètre.
+Le modèle de régression linéaire gaussienne, dont les observations sont indépendantes mais pas
+identiquement distribuées, en est l’exemple le plus important.
+
+   Exemple 4.7: Régression linéaire gaussienne et moindres carrés
+  Soient x1 , . . . , xn ∈ Rd des variables explicatives connues et φ0 , . . . , φp : Rd → R des fonctions
+  connues. On considère le modèle
+                                     Rn , B(Rn ), pθ · Leb⊗n , θ ∈ Θ ,
+                                                                      
+
+  où
+                                                                    n         p                 o2 
+                                              1               1 Xn          X
+                 pθ (y1 , . . . , yn ) :=             exp   −          y k −     β ℓ φ ℓ (x k )      ,
+                                          (2πσ 2 )n/2         2σ 2
+                                                                   k=1       ℓ=0
+                                βp , σ 2 ) ∈ Θ := Rp+1
+  de paramètre θ = (β0 , . . . ,P                                 ∗
+                                                             ×R+ : sous Pθ , les observations         Y1 , . . . , Yn sont
+                                  p                       2                                     ⊤
+  indépendantes, Yk ∼ N           ℓ=0  β  ℓ φ ℓ (x k ), σ    . Notons Y = (Y  1 , . . . , Y n )   , β = (β0 , . . . , βp )⊤
+  et Φ la matrice de régression, de taille n × (p + 1), de coefficients Φk,ℓ = φℓ (xk ). La log-
+  vraisemblance normalisée s’écrit, pour (b, v) ∈ Rp+1 × R∗+ ,
+                                               1            1
+                                  ℓn (b, v) = − log(2πv) −     ∥Y − Φb∥2 .
+                                               2           2nv
+  À v fixé, maximiser ℓn en b revient à minimiser
+                                                            n n
+                                                            X             p
+                                                                          X                   o2
+                              Jn (b) := ∥Y − Φb∥2 =                Yk −         bℓ φℓ (xk )        ,
+                                                            k=1           ℓ=0
+58                                                   CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  quelle que soit la valeur de v : pour le paramètre de régression, l’estimateur du maximum
+  de vraisemblance coïncide avec l’estimateur des moindres carrés. La fonction Jn est convexe
+  et différentiable, de gradient ∇Jn (b) = −2Φ⊤ (Y − Φb) ; ses minima sont les solutions des
+  équations normales
+                                         Φ ⊤ Φ b = Φ⊤ Y .
+  Si la matrice Φ⊤ Φ est inversible, ce qui équivaut à ce que Φ soit de rang p + 1 et impose
+  n ≥ p + 1, la fonction Jn est strictement convexe et l’estimateur des moindres carrés est
+  unique,
+                                      β̂n := (Φ⊤ Φ)−1 Φ⊤ Y .
+  Le vecteur Φβ̂n est la projection orthogonale de Y sur l’image de Φ. En reportant, v 7→
+  ℓn (β̂n , v) atteint son maximum, par le même argument que dans l’Exemple 1.10, en
+                                   n         p             o2
+                                 1 Xn      X                  1
+                       σ̂n2 :=        Yk −   β̂n,ℓ φℓ (xk ) = ∥Y − Φβ̂n ∥2 ,
+                                 n                            n
+                                  k=1       ℓ=0
+
+  pourvu que cette quantité soit strictement positive, ce qui est Pθ -presque sûr dès que n > p+1,
+  puisque Y − Φβ̂n est la projection orthogonale de Y sur l’orthogonal de l’image de Φ, sous-
+  espace de dimension n − p − 1 ≥ 1. Le théorème de Cochran (Théorème 1.1) donne alors
+  les lois : β̂n ∼ N β, σ 2 (Φ⊤ Φ)−1 , nσ̂n2 /σ 2 ∼ χ2 (n − p − 1), et ces deux estimateurs sont
+  indépendants. Le cas p = 1, φ0 = 1, φ1 (x) = x est celui de la tendance linéaire du chapitre 1
+  (Section 4) et de l’Exercice 1 (PC2).
+
+
+La divergence de Kullback-Leibler : énoncé complet
+    Les fondamentaux n’ont utilisé que la positivité de la divergence et son cas d’égalité. On établit
+ici que l’intégrale qui la définit a toujours un sens, que sa finitude force l’absolue continuité, et
+que sa valeur ne dépend pas de la mesure dominante choisie.
+
+L’intégrale est bien définie. Reprenons les notations de la Définition 1.7 : P0 = f0 ·µ et
+P1 = f1 · µ. La partie négative de l’intégrande, f0 log(f0 /f1 ) − := max − f0 log(f0 /f1 ), 0 , est
+µ-intégrable sur {f0 > 0}. En effet, elle est nulle sauf lorsque 0 < f0 < f1 , et, en utilisant log y ≤ y
+pour y ≥ 1,
+                                          f1                        f
+Z                               Z                              Z                           Z
+                                             1{0<f0 <f1 } dµ ≤ f0 1 1{0<f0 <f1 } dµ ≤ f1 dµ = 1 .
+                         
+          f0 log(f0 /f1 ) − dµ = f0 log
+  {f0 >0}                                 f0                        f0
+
+L’intégrale KL(P0 , P1 ) est donc toujours définie, et KL(P0 , P1 ) > −∞ ; le Théorème 1.1 montre
+qu’elle est en fait positive.
+
+     Théorème 4.1: Propriétés de la divergence de Kullback-Leibler
+  Soient (X, X ) un espace mesurable, P0 et P1 deux probabilités sur (X, X ), et µ une mesure σ-
+  finie dominant P0 et P1 , de densités respectives f0 et f1 (on peut toujours prendre µ = P0 +P1 ).
+      (i) Si KL(P0 , P1 ) < +∞, alors P0 ≪ P1 .
+     (ii) KL(P0 , P1 ) ∈ [0, +∞], et KL(P0 , P1 ) = 0 si et seulement si P0 = P1 .
+     (iii) KL(P0 , P1 ) ne dépend pas du choix de la mesure dominante µ.
+
+     Démonstration
+  (i) Supposons qu’il existe A ∈ X tel que P1 (A) = 0 et P0 (A)R> 0. Alors f1 = 0 µ-presque
+  partout sur A, tandis que µ(A∩{f0 > 0}) > 0, puisque P0 (A) = A f0 dµ > 0. Sur A∩{f0 > 0},
+4. LES COMPLÉMENTS                                                                                     59
+
+
+ l’intégrande f0 log(f0 /f1 ) vaut +∞ µ-presque partout, par la convention log(1/0) = +∞ : sa
+ partie positive est d’intégrale infinie, et, la partie négative étant intégrable, KL(P0 , P1 ) = +∞.
+ Par contraposée, KL(P0 , P1 ) < +∞ entraîne que P1 (A) = 0 implique P0 (A) = 0, c’est-à-dire
+ P0 ≪ P1 .
+ (ii) C’est le Théorème 1.1.
+ (iii) Si KL(P0 , P1 ) = +∞ pour une mesure dominante, alors, d’après (i), P0 n’est pas abso-
+ lument continue par rapport à P1 , propriété qui ne fait pas intervenir µ ; pour toute autre
+ mesure dominante, la divergence est donc encore infinie, par (i) à nouveau. Supposons main-
+ tenant P0 ≪ P1 . Par le théorème de Radon-Nikodym (Section 2), P0 admet une densité f˜0 par
+ rapport à P1 , unique à un ensemble P1 -négligeable près. Comme P1 = f1 · µ et P0 = f˜0 · P1 , on
+ a P0 = f˜0 f1 · µ, et l’unicité de la densité par rapport à µ donne f0 = f˜0 f1 µ-presque partout.
+ Sur l’ensemble {f0 > 0} = {f˜0 f1 > 0} (à un ensemble µ-négligeable près), on a f1 > 0 et
+ f0 /f1 = f˜0 , donc
+                    Z                            Z                         Z
+    KL(P0 , P1 ) =             ˜         ˜
+                               f0 f1 log f0 dµ =         ˜      ˜
+                                                         f0 log f0 f1 dµ =         f˜0 log f˜0 P1 (dx) ,
+                    {f˜0 f1 >0}                 {f˜0 >0}                    {f˜0 >0}
+
+ la deuxième égalité venant de ce que l’ensemble {f1 = 0} ne contribue pas à l’intégrale contre
+ f1 dµ. Le membre de droite ne fait plus intervenir µ : avec la convention 0 log 0 = 0,
+                                                                   dP0
+                                       Z
+                        KL(P0 , P1 ) =     f˜0 log f˜0 dP1 , f˜0 =     ,
+                                         X                         dP1
+
+ ce qui montre que la divergence ne dépend pas de la mesure dominante.                                □
+
+
+ Remarque. Le point (i) éclaire le cas « P(Y = 0) > 0 » de la démonstration du Théorème 1.1 :
+ la divergence vaut +∞ dès que la loi P1 attribue une probabilité nulle à un événement de P0 -
+ probabilité strictement positive. Dans un modèle statistique, KL(Qθ⋆ , Qϑ ) = +∞ signifie que
+ certaines observations possibles sous θ⋆ sont impossibles sous ϑ : la vraisemblance en ϑ est alors
+ nulle avec une probabilité qui tend vers 1 lorsque n croît, et une telle valeur ϑ est éliminée
+ par le maximum de vraisemblance. C’est le cas du modèle uniforme U ([0, θ]) pour ϑ < θ⋆ , où
+ l’hypothèse d’intégrabilité de la Proposition 1.3 n’est pas satisfaite.
+

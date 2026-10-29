@@ -1,0 +1,430 @@
+Ecole Polytechnique, promotion 2025                                      PC-9 Cours APM 41033 EP
+
+
+Exercice 1 (Erreur de validation (⋆⋆)). Nous cherchons à estimer l’erreur
+
+                                   R(gn ) := P(gn (X) ̸= Y |Dn )
+
+d’une règle de classification gn calculée à partir d’un ensemble d’apprentissage Dn = {(Xi , Yi )}ni=1
+indépendant de (X, Y ).
+     Nous disposons pour cela d’un ensemble de test Tm = {(Xn+i , Yn+i )}m       i=1 de m variables
+aléatoires indépendantes, indépendantes de Dn et distribuées suivant la loi du couple (X, Y ).
+Nous notons
+                                                 m
+                                              1 X
+                                  R̂n,m :=          1{gn (Xn+j )̸=Yn+j } .
+                                             m
+                                             j=1
+
+   1. Montrer que                        h        i
+                                        E R̂n,m Dn = R(gn ) .
+
+   2. Quelle est la distribution conditionnelle de mR̂n,m sachant Dn ?
+   3. Montrer que
+                            h                    i R(g )(1 − R(g ))
+                                                      n         n
+                           E (R̂n,m − R(gn ))2 Dn =                 ,
+                                                          m
+      et en déduire une majoration de P(|R̂n,m − R(gn )| ≥ ε) pour tout ε > 0. on pourra
+      utiliser la majoration p(1 − p) ≤ 1/4 pour tout p ∈ [0, 1].
+   4. En utilisant une inégalité exponentielle, montrer que pour tout ε > 0,
+                                                                         2
+                                   P(|R̂n,m − R(gn )| ≥ ε) ≤ 2e−2mε .
+
+Exercice 2 (Variables sous-gaussiennes (⋆⋆)). Une variable aléatoire centrée X est dite
+sous-gaussienne avec un facteur de variance v (v > 0) si
+
+                                                   λ2 v
+                       ψX (λ) := log E[eλX ] ≤              pour tout     λ ∈ R.
+                                                    2
+Nous notons G(v) la collection de telles variables aléatoires.
+La fonction λ 7→ E[eλX ] est la transformée de Laplace de la v.a. X ; et ψX est la fonction
+génératrice des cumulants.
+Notons que cette définition n’exige pas que la variance de X soit égale à v mais simplement
+qu’elle soit bornée par v.
+   1. Soit X une variable aléatoire gaussienne centrée de variance v. Montrer que X ∈ G(v).
+   2. Soit X une variable de Rademacher : X ∈ {−1, +1}, P(X = 1) = P(X = −1) = 1/2.
+      Montrer que X ∈ G(1).
+   3. Supposons que X1 , . . . , Xn sont des variables
+                                                   P      aléatoires
+                                                                  P indépendantes et pour tout
+      i ∈ {1, . . . , n}, Xi ∈ G (vi ). Montrer que ni=1 Xi ∈ G ( ni=1 vi ).
+   4. (inégalité de Chernoff ) Montrer que pour tout t ≥ 0,
+
+                     P(Z ≥ t) ≤ exp(−ψZ∗ (t)) ,       où   ψZ∗ (t) := sup (λt − ψZ (λ))
+                                                                        λ≥0
+
+      La fonction t 7→ ψZ∗ (t) est la transformée de Legendre de ψZ .
+
+
+                                                                                              Page 1
+Ecole Polytechnique, promotion 2025                                       PC-9 Cours APM 41033 EP
+
+
+  5. Montrer que si X ∈ G(v), alors pour tout t > 0,
+                                                                      2
+                                  P(X > t) ∨ P(−X > t) ≤ e−t /(2v)
+                                                                                        2
+     où a ∨ b = max(a, b). On pourra commencer par prouver que P(X > t) ≤ e−t /(2v) ; puis
+     observer que l’on a le même majorant pour P(−X > t).
+
+Exercice 3 (Lemme d’Hoeffding (⋆⋆)). R Soit X une variable aléatoire de loi µ à support
+[a, b] i.e. µ([a, b]) = 1. On note m := E[X] = xµ(dx) son espérance. L’objectif des questions 2
+à 5 est de montrer que pour tout λ ∈ R,
+                                                                Z
+                                  λ2
+                 ψX (λ) ⩽ λm + (b − a)2 ,      où ψX (λ) := log exp(λx)µ(dx).               (1)
+                                  8
+
+                                                                                P pour tout 1 ≤ k ≤
+  1. Soit Z1 , . . . , Zn , n variables aléatoires indépendantes. Supposons que
+     n, il existe ak < bk tels que P(Zk ∈ [ak , bk ]) = 1. Posons Sn := nk=1 Zk . En utilisant
+     les questions 3 et 5 de l’exercice 2, et la relation (1), montrer que pour tout t ≥ 0
+                                                                                           
+                                                2t2                                       2t2
+           P (Sn − E [Sn ] ≥ t) ≤ exp −               ,     P (Sn − E [Sn ] ≤ −t) ≤ exp −
+                                                Dn                                        Dn
+                 Pn              2
+     où Dn :=     k=1 (bk − ak ) .
+
+Nous allons maintenant établir (1).
+  2. Pour tout λ ∈ R nous définissons la loi de probabilité µλ par
+
+                                            eλx µ(dx)    eλx µ(dx)
+                                µλ (dx) := R λu       =             .
+                                             e µ(du)    E [exp(λX)]
+
+     Notons que µ0 = µ. Montrer que pour tout λ ∈ R,
+                         Z                           Z
+                 ′                            ′′           ′
+                ψX (λ) = xµλ (dx),          ψX (λ) = (x − ψX (λ))2 µλ (dx).
+
+  3. En déduire que pour tout λ ∈ R,
+
+                                                         λ2
+                                      ψX (λ) ≤ λE[X] +      sup ψ ′′ (u).
+                                                         2 u∈R X
+
+  4. Il ne reste qu’à montrer que supλ∈R ψX′′ (λ) ≤ (b − a)2 /4. Soit λ ∈ R et Y ∼ µ . En
+                                                                                     λ
+     remarquant que
+                                                                             
+                E[Y ] = argminc∈R E (Y − c)2 ,      Var(Y ) = minc∈R E (Y − c)2 ,
+
+     montrer que                            "             2 #
+                                                     a+b              (b − a)2
+                              Var(Y ) ≤ E        Y −              ≤            .
+                                                      2                   4
+                             ′′ (u) ≤ (b − a)2 /4.
+     En déduire que supu∈R ψX
+  5. Conclure.
+
+
+                                                                                            Page 2
+Ecole Polytechnique, promotion 2025                                            PC-9 Cours APM 41033 EP
+
+
+Exercice 4 (Inégalité de Pisier (⋆⋆)).          1. Soient m variables aléatoires réelles Z1 , . . . , Zm
+    définies sur (Ω, A, P) vérifiant la propriété : il existe σ > 0 tel que pour tout λ ≥ 0,
+                                                   2 2
+                                   E[eλZi ] ≤ eλ σ /2 ,        i ∈ {1, · · · , m} .
+                                                                                2 2
+      On remarquera que lorsque Z ∼ N (0, σ 2 ), on a E[eλZ ] = eλ σ /2 pour tout λ ∈ R.
+       (a) Montrer que pour tout λ > 0,
+                                                                                      2 2
+                               eλE[max1≤i≤m Zi ] ≤ E[eλ max1≤i≤m Zi ] ≤ m eλ σ /2 .
+
+       (b) En déduire que                                       p
+                                            E[ max Zi ] ≤ σ       2 log(m) .
+                                                1≤i≤m
+
+      On suppose de plus que pour tout λ > 0,
+                                                    2 2
+                                  E[e−λZi ] ≤ eλ σ /2 ,         i ∈ {1, · · · , m}.
+
+       (c) Montrer que                                    
+                                                                  p
+                                        E       max |Zi | ≤ σ      2 log(2m) .
+                                                1≤i≤m
+
+Soit un ensemble d’apprentissage Dn := {(Xi , Yi )}ni=1 , contenant n observations indépendantes
+de même loi que (X, Y ). On définit le risque et le risque empirique d’un classifieur g par
+                                                                        n
+                                                                     1 X
+                     R(g) := P(g(X) ̸= Y ),              Rn (g) :=       1{g(Xi )̸=Yi } .
+                                                                     n
+                                                                       i=1
+
+   2. (a) Montrer que pour tout classifieur g et pour tout λ ∈ R,
+                                                             2
+                                                             λ
+                                  E[eλ{Rn (g)−R(g)} ] ≤ exp       .
+                                                             8n
+                                                                   ∗ le classifieur de C qui minimise
+       (b) Soit C := {g1 , . . . , gM }, M classifieurs. On note ĝn,C
+                                         ⋆
+           le risque empirique et gC le classifieur de C qui minimise le risque. Déduire de la
+           question précédente une borne pour le risque moyen E[R(ĝn,C     ∗ ) − R(g ∗ )].
+                                                                                         C
+On considère un problème de classification binaire. On suppose que l’ensemble des attributs X
+est un ensemble de cardinal fini K. On note C l’ensemble de toutes les règles de classification.
+   3. Montrer que la règle de classification minimisant le risque empirique est donnée, pour
+      tout x ∈ X par
+                                (      P                    P
+                       ∗          1 si ni=1 Yi2+1 1{Xi =x} ≥ ni=1 1−Y
+                                                                    2 1{Xi =x} ,
+                                                                      i
+                     ĝn (x) :=
+                                  0 sinon
+
+   4. (a) Montrer que inf g∈C R(g) = R⋆ où R⋆ est le risque du classifieur bayésien. Montrer
+          que                                              !
+                       ∀ε > 0,       P sup |Rn (g) − R(g)| > ε               ≤ 2K+1 exp(−2nε2 ) .
+                                         g∈C
+
+
+
+                                                                                                    Page 3
+Ecole Polytechnique, promotion 2025                                           PC-9 Cours APM 41033 EP
+
+
+       (b) En déduire que pour tout x > 0,
+                                                                          2   p
+                                    E[R(ĝn∗ )] − R∗ ≤ x + 2K−1 e−2nx          2π/n.
+
+            Le majorant est de la forme x + exp(A − 2nx2 ) pour tout x ; etpen prenant x tel
+            que 2nx2 = A −p  0.5 ln(A/(2n)), nous obtenons un majorant en 2 A/(2n). Soit un
+                                                                       √
+            majorant en O( K/n). En particulier, il décroı̂t comme 1/ n ; et croı̂t comme la
+            racine carrée du logarithme du cardinal de C.
+
+Exercice 5 (⋆ ⋆ ⋆). Considérons un ensemble de n points de Rd notés P = {x1 , . . . , xn }.
+                                     (1)          (d)
+Pour tout i ∈ {1, . . . , n}, xi = (xi , . . . , xi ). Notons R l’ensemble des hyper-rectangles de
+Rd .         nh             i h          i            h       i                             o
+        R = a(1) , b(1) × a(2) , b(2) × · · · × a(d) , b(d) : a(i) ≤ b(i) , i = 1, . . . , d .
+
+Pour un ensemble de point P, on note |P| le nombre de points qui le composent qu’ils soient
+distincts ou non et pour R ∈ R, on note P ∩ R l’ensemble de points composés des points de P
+qui appartiennent à R.
+    Soient S = (X1 , . . . , Xk ), k variables aléatoires indépendantes et de même loi uniforme sur
+P et soit ε > 0.
+   1. Montrer que, pour tout R ∈ R 1 ,
+                                                
+                              |R ∩ S| |R ∩ P|
+                          P            −      ≥ ε ≤ 2 exp(−2ε2 k) .
+                                |S|      |P|
+
+   2. Soit γ ∈ ]0, 1[. Montrer que si k ≥ (1/2ε2 ) ln(2/γ), alors avec probabilité supérieure à
+      1 − γ,
+                                       |R ∩ S| |R ∩ P|
+                                              −           ≤ε.
+                                         |S|        |P|
+                                        (j)      (j)             (j)
+Pour j ∈ {1, . . . , d}, notons par x1:n ≤ x2:n ≤ · · · ≤ xn:n l’échantillon ordonné de la j-ème
+               (j)         (j)
+coordonnée (x1 , . . . , xn ). On note
+                 nh              i       h            i                                   o
+                       (1)   (1)           (d)   (d)
+        RS = xi1 :n , xj1 :n × · · · × xid :n , xjd :n : 1 ≤ iℓ ≤ jℓ ≤ n, ℓ = 1, . . . , d .
+
+   3. Montrer que
+                               |R ∩ S| |R ∩ P|        |R ∩ S| |R ∩ P|
+                           sup        −        = sup         −        .
+                           R∈R   |S|     |P|     R∈RS   |S|     |P|
+
+   4. Soit δ ∈ ]0, 1[. Montrer que si |S| = k ⩾ (d/ε2 ) log(n/δ 1/2d ), alors avec une probabilité
+      supérieure à 1 − δ, pour tout R ∈ R,
+
+                                              |R ∩ S| |R ∩ P|
+                                                     −        ≤ε.
+                                                |S|     |P|
+
+
+
+    1. Par exemple, P peuvent représenter les utilisateurs d’une boutique, d est le nombre d’attributs pour
+chaque consommateur, et R est le profil désiré, les consommateurs qui ont fait entre 10 et 1000 achats, qui
+effectuent en moyenne entre 2.5 et 10 achats par semaine, qui dépensent en moyenne entre 10 et 50 euros par
+achat.
+
+
+                                                                                                     Page 4
+Ecole Polytechnique, promotion 2025                                               PC-9 Cours APM 41033 EP
+
+
+Exercice 6 (⋆ ⋆ ⋆). Nous considérons un problème de classification binaire. Nous supposons
+que le cardinal de l’ensemble des attributs, |X|, est infini. Nous munissons X d’une σ-algèbre
+X telle que les singletons de {x} soient mesurables. Nous notons Dn := {(Xi , Yi )}ni=1 l’en-
+semble des variables aléatoires d’apprentissage, que nous supposons, sous Pn , indépendantes
+et identiquement distribuées de même loi que (X, Y ) sous P. Nous allons démontrer pour
+toute règle de classification x 7→ gn (x; Dn ),
+
+                           sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP∗ } ≥ 1/2 ,                                   (2)
+                            P
+
+où le sup est pris sur l’ensemble des mesures de probabilité sur X ⊗ P({0, 1}) et
+
+                                    RP∗ :=      inf       P(g(X) ̸= Y ) .
+                                             g:X→{0,1}
+
+On dit qu’une règle de classification gn est uniformément universellement consistante lorsque
+le membre de gauche dans l’équation (2) tend ers 0 avec n. On va donc montre qu’aucune
+règle de classification ne peut être uniformément universellement consistante lorsque X est
+infini. Ce résultat important est souvent appelé le “no free lunch theorem”.
+     Soit n, K ∈ N, gn : X 7→ {0, 1} un classifieur. L’espace X étant infini, il contient au moins
+K points distincts a1 , . . . , aK . Dans la suite ces K points sont fixés. On considère l’ensemble
+des lois (Pq )q∈{0,1}K sur X ⊗ P({0, 1}), où, pour tout q := (q1 , . . . , qK ), y := (y1 , . . . , yK ) ∈
+{0, 1}K ,
+                   Pq (X = aj , Y = yj ) = K −1 δqj ,yj pour tout j ∈ {1, . . . , K}.
+   1. Montrer que pour tout q ∈ {0, 1}K , Pq (X = aj ) = 1/K pour tout j ∈ {1, . . . , K}. En
+      déduire que, pour tout q ∈ {0, 1}K , sous Pn,q , les variables X1 , . . . , Xn sont distribuées
+      suivant une loi uniforme sur {a1 , . . . , aK }.
+   2. Calculer Pq (g(X) ̸= Y ) pour un classifieur g.
+   3. Montrer que RP∗ q := inf g:X→{0,1} Pq (g(X) ̸= Y ) = 0 et que l’inf est atteint par toute
+      fonction gq : X → {0, 1}, vérifiant, pour tout x ∈ {a1 , . . . , aK }
+                                                          K
+                                                          X
+                                             gq (x) =           qi 1{ai } (x) .
+                                                          i=1
+
+   4. Montrer que
+
+      sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP∗ } ⩾           sup       En,q [Pq (Y ̸= gn (X; Dn )|Dn )]
+        P                                                 q∈{0,1}K
+                                                           1       X
+                                                      ⩾                    En,q [Pq (Y ̸= gn (X; Dn )|Dn )]
+                                                          2K
+                                                                q∈{0,1}K
+                                                           1       X
+                                                      ⩾                    En,q [Eq [Pq (Y ̸= gn (X; Dn )|X, Dn )1{X ∈{X
+                                                                                                                     / 1 ,...,Xn }} ] .
+                                                          2K
+                                                                q∈{0,1}K
+
+
+   5. Montrer que, pour tout x ∈     / {X1 , . . . , Xn }, il existe 2K−1 valeurs de q ∈ {0, 1}K telles que
+      Eq [1{Y ̸=gn (x;Dn )} |Dn ] = 0 et 2K−1 valeurs de q ∈ {0, 1}K telles que Eq [1{Y ̸=gn (x;Dn )} |Dn ] =
+      1.
+
+
+                                                                                                          Page 5
+Ecole Polytechnique, promotion 2025                                       PC-9 Cours APM 41033 EP
+
+
+   6. Montrer que, pour tout q ∈ {0, 1}K et pour tout x ∈ {a1 , . . . , aK },
+
+                               Eq [1{X1 ̸=x,X2 ̸=x,...,Xn ̸=x} ] = (1 − 1/K)n .
+
+   7. Montrer (2).
+Exercice 7 (⋆ ⋆ ⋆). On considère le problème de classification binaire. On dispose d’un
+ensemble d’apprentissage {(Xi , Yi )}ni=1 de variables aléatoires i.i.d. définies sur un espace de
+probabilité (Ω, F, P). La loi de l’attribut X ∈ Rd , conditionnellement au label Y = i, i ∈ {0, 1}
+est absolument continue par rapport à la mesure de Lebesgue Leb sur Rd , de densité notée fi .
+On note p = P(Y = 1). On considère la famille C des classifieurs par hyperplan, définie par
+
+                         C = {ga,b (x) = 1{a⊤ x+b≥0} , (a, b) ∈ Rd × R} .                       (3)
+
+Pour un classifieur g : Rd → {0, 1}, nous notons le risque associé à la perte 0-1 par
+
+                                      R(g) = P(g(X) ̸= Y ) .
+
+Le risque empirique est défini par
+                                                 n
+                                                 X
+                                   b n (g) = 1
+                                   R                   1{g(Xi )̸=Yi } .
+                                             n
+                                                 i=1
+
+Nous notons
+  — L⋆ = inf g∈C R(g) le minimum du risque 0-1 sur la classe C.
+  — g ⋆ ∈ C un classifieur atteignant le minimum (nous admettrons que le minimum est
+    atteint pour au moins un classifieur), L⋆ = L(g ⋆ ).
+                                 
+  — Fi,a (z) = P a⊤ X ≤ z Y = i , i ∈ {0, 1}.
+   1. Démontrer que, pour tout (a, b) ∈ Rd+1 ,
+
+                            R(ga,b ) = pF1,a (−b) + (1 − p){1 − F0,a (−b)} .
+
+   2. Démontrer que, pour tout (a, b) ∈ Rd+1 ,
+
+                           R(g−a,−b ) = p{1 − F1,a (−b)} + (1 − p)F0,a (−b) .
+
+   3. En déduire que, pour tout (a, b) ∈ Rd+1 ,
+                                           1
+             min(R(ga,b ), R(g−a,−b )) =     − |pF1,a (−b) − (1 − p)F0,a (−b) + (1/2 − p)| .
+                                           2
+      [indication : on pourra utiliser min(u, v) = (1/2)(u + v − |u − v|).]
+   4. Montrer que si p ̸= 1/2, R⋆ ≤ min(a,b)∈Rd+1 R(ga,b ) < 1/2.
+   5. Montrer que si p = 1/2, min(a,b)∈Rd+1 R(ga,b ) < 1/2 si et seulement si
+                                  n                           o
+                              Leb( x ∈ Rd : f1 (x) ̸= f0 (x) ) > 0 .
+
+Nous supposons dans la suite que d < n. Pour tout ensemble (z1 , z2 , . . . , zd ) ∈ Rn de d points.
+Nous notons Πz1d le projecteur (affine) orthogonal sur le sous-espace affine engendré par les
+points (z1 , . . . , zd ) : pour tout z ∈ Rn ,
+
+                                                                                            Page 6
+Ecole Polytechnique, promotion 2025                                                PC-9 Cours APM 41033 EP
+
+
+  — Πz1 ,...,zd (z) est un élément de l’espace affine engendré par les points (z1 , . . . , zd )
+  — z − Πz1 ,...,zd (z) est orthogonal au sous-espace linéaire (z2 − z1 , . . . , zd − z1 ).
+Pour tout d-uplets 1 ≤ i1 < · · · < id ≤ n et z ∈ {−1, 1}, nous considérons le classifieur
+                               ĝn,i1d ,z (x) = 1{z({x−Πi        (x)}⊤ Πi1d (0n×1 ))≥0}                         (4)
+                                                            1d
+
+où nous avons posé i1d = (i1 , . . . , id ) et
+                                              Πi1d = ΠXi1 ,...,Xid
+est le projecteur orthogonal sur le sous-espace affine engendré par les points (Xi1 , . . . , Xid ).
+On pourra vérifier que ĝn,i1d ,1 est le classifieur de C dont l’hyperplan aT x + b est l’unique
+hyperplan affine passant par les points (Xi1 , . . . , Xid ). Nous notons Cn l’ensemble de ces
+classifieurs et
+                                                     b n (g) .
+                                          ĝn⋆ = min R
+                                                     g∈Cn
+
+Il est possible de montrer que, pour tout g ∈ C, où C est défini dans (3), nous avons
+
+                                                         b n (g) + d .
+                                           b n (ĝn⋆ ) ≤ R
+                                           R
+                                                                   n
+Nous admettrons ce résultat pour la suite de l’exercice.
+                                                                                               
+  6. Montrer que le nombre de classifieurs distincts de l’ensemble Cn est au plus égal à 2 nd .
+  7. Montrer que
+
+                                                   b n (g)} + R
+                                                              b n (g ⋆ ) − R(g ⋆ ) +           d
+                        R(ĝn⋆ ) − R⋆ ≤ max{R(g) − R                                             .
+                                          g∈Cn                                                 n
+   8. Montrer que, pour tout ε > 0,
+                                X                     X                                                    
+       P (R(ĝn⋆ ) − R⋆ ≥ ε) ≤                                                        b n (ĝn,i ,z ) ≥ ε/2
+                                                                   P R(ĝn,i1d ,z ) − R         1d
+                                    z∈{−1,+1} 1≤i1 <···<id ≤n
+                                                                                                         
+                                                                      +P Rb n (g ⋆ ) − R(g ⋆ ) + d/n ≥ ε/2 .
+
+   9. Montrer que, pour tout ε ∈ ]0, 1[ et n tel que 2d/n ≤ ε ≤ 1, nous avons
+                                                           
+                        P R b n (g ⋆ ) − R(g ⋆ ) ≥ ε/2 − d/n ≤ e2dε e−nε2 /2 .
+
+  10. Montrer que, pour tout ε ∈ ]0, 1[, n tel que 2d/n ≤ ε ≤ 1, 1 ≤ i1 < · · · < id ≤ n et
+      z ∈ {−1, 1}, nous avons
+                                                                          
+                                    b n (ĝn,i ,z ) ≥ ε/2 Xi , . . . , Xi ≤ e2dε e−nε2 /2 .
+                 P R(ĝn,i1d ,z ) − R         1d            1            d
+
+
+  11. Montrer que, pour tout δ ∈ ]0, 1[ et ε ∈ ]0, 1[, il existe n0 (ε, δ, d) tel que, pour tout
+      n ≥ n0 (ε, δ, d), on a, avec une probabilité supérieure à 1 − δ,
+                                                   R(ĝn⋆ ) − R⋆ ≤ ε .
+
+  12. Déterminer une borne de l’excès de risque moyen du classifieur
+                                                   E[R(ĝn⋆ )] − R⋆ .
+
+
+                                                                                                            Page 7
+

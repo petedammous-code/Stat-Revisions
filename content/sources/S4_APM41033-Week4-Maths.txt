@@ -1,0 +1,236 @@
+3. LES OUTILS MATHÉMATIQUES                                                                           35
+
+3      Les outils mathématiques
+    Vous retrouverez ci-dessous les éléments mathématiques ou probabilistes nécessaires pour com-
+prendre cette partie du cours : la fonction de répartition et le quantile, dont dépend toute lecture
+d’un intervalle de confiance ou d’une valeur critique ; la loi de Student non centrale et la loi de
+Fisher, qui apparaissent dans les fonctions puissance et dans les exercices ; l’inégalité de Hoeffding,
+qui remplace le pivot lorsqu’il n’y en a pas ; et le couplage de variables de Bernoulli, qui sert à éta-
+blir la croissance de la fonction puissance dans le modèle binomial. La fin de cette partie rappelle
+où trouver, aux chapitres 1 à 3, les résultats utilisés sans être redémontrés.
+
+Fonction de répartition, quantile et fonction quantile
+                                                                                          (n−1)
+    Tout ce chapitre se lit à travers des quantiles : z1−α/2 pour la loi gaussienne, t1−α/2 pour la
+loi de Student, χ2α/2 (n − 1) pour la loi du χ2 , cα pour la valeur critique d’un test. Il vaut donc la
+peine de dire précisément ce qu’est un quantile, y compris lorsque la fonction de répartition n’est
+pas inversible.
+
+     Définition 3.1: Fonction de répartition et fonction quantile
+    Soit Q une loi de probabilité sur (R, B(R)). Sa fonction de répartition est
+                                                            
+                                        F : t 7−→ Q ]−∞, t] .
+
+    C’est une fonction croissante, continue à droite, de limite 0 en −∞ et 1 en +∞. Sa fonction
+    quantile, ou inverse généralisée, est définie pour β ∈ ]0, 1[ par
+
+                                   F ← (β) := inf {t ∈ R , F (t) ≥ β} ,
+
+    et F ← (β) est appelé le quantile d’ordre β de Q.
+
+
+     Proposition 3.1: Propriété caractéristique du quantile
+    Avec les notations de la Définition 3.1, pour tous t ∈ R et β ∈ ]0, 1[,
+
+                                   F ← (β) ≤ tif andonlyif β ≤ F (t) .
+
+    En particulier, si U ∼ U([0, 1]), alors F ← (U ) a pour loi Q.
+
+
+     Démonstration
+    Posons Eβ := {s ∈ R , F (s) ≥ β} et a := F ← (β) = inf Eβ . L’ensemble Eβ est non vide et
+    majoré à gauche, puisque F tend vers 1 en +∞ et vers 0 en −∞, et il est stable par passage à
+    un point plus grand puisque F est croissante. Il existe donc une suite (sk ) de Eβ décroissant
+    vers a, et la continuité à droite de F donne F (a) = limk F (sk ) ≥ β, c’est-à-dire a ∈ Eβ .
+    Si β ≤ F (t), alors t ∈ Eβ , donc a ≤ t. Réciproquement, si a ≤ t, la croissance de F donne
+    F (t) ≥ F (a) ≥ β. La seconde assertion en découle : U appartient presque sûrement à ]0, 1[,
+    et pour tout t ∈ R,
+                                P F ← (U ) ≤ t = P U ≤ F (t) = F (t) .
+                                                            
+
+                                                                                                    □
+
+     Lorsque F est continue et strictement croissante sur l’intervalle où elle prend ses valeurs dans
+]0, 1[ (ce qui est le cas des lois gaussienne, de Student, du χ2 et de Fisher), la fonction quantile est
+l’inverse de F au sens usuel, et F (F ← (β)) = β pour tout β ∈ ]0, 1[.
+     Un quantile se lit de deux façons, sur la fonction de répartition ou sur la densité, et il est utile
+d’avoir les deux lectures en tête.
+36                                                          CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+                                     Fonction de répartition F                                Densité
+        (0, 1)           1
+
+
+
+
+                         0,5                                                  aire = α
+
+
+                          α                      F ← (α)
+                          0
+                                        −2            0          2                  −2           0           2
+
+                          1
+        Student, k = 5
+
+
+
+
+                         0,5                                                  aire = α
+
+
+                          α                      F ← (α)
+                          0
+                                 −4         −2        0      2         4      −4         −2      0       2         4
+
+                          1
+        χ 2, k = 4
+
+
+
+
+                         0,5
+
+
+
+                          α          F ← (α)                                              aire = α
+                          0
+                               0.0    2.5      5.0    7.5   10.0     12.5   0.0    2.5    5.0    7.5    10.0     12.5
+                                                      t                                          t
+Quantile d’ordre α = 0,10 de la loi N (0, 1), de la loi de Student à 5 degrés de liberté et de la loi du χ2 à
+4 degrés de liberté. À gauche, la fonction de répartition : on part de l’ordre α porté en ordonnée et on lit
+en abscisse le point F ← (α) où la courbe atteint cette hauteur, ce qui est la lecture inverse de F . À droite,
+  la densité : l’aire située à gauche de ce même point vaut α. Les deux lectures coïncident ici, les trois
+    fonctions de répartition étant continues et strictement croissantes. Sur la loi du χ2 , qui n’est pas
+                symétrique, le quantile d’ordre α et celui d’ordre 1 − α ne sont pas opposés.
+
+
+
+Conventions d’écriture retenues dans ce chapitre.
+
+     — Loi gaussienne centrée réduite. Sa fonction de répartition est notée Φ, et son quantile d’ordre
+       β est noté zβ : Φ(zβ ) = β. La loi N (0, 1) étant symétrique, z1−β = −zβ . Valeurs usuelles :
+       z0,95 = 1,645, z0,975 = 1,96, z0,99 = 2,326, z0,995 = 2,576, z0,999 = 3,090.
+     — Loi de Student à k degrés de liberté. Sa fonction de répartition est notée Ft(k) , et son quantile
+                           (k)                                   (k)        (k)
+       d’ordre β est noté tβ . La densité de t(k) étant paire, t1−β = − tβ .
+
+     — Loi du χ2 à k degrés de liberté. Sa fonction de répartition est notée Fχ2 (k) , et son quantile
+       d’ordre β est noté χ2β (k). Cette loi est portée par R+ et n’est pas symétrique : les deux
+       quantiles d’un intervalle bilatéral ne sont pas opposés.
+
+La notation Φ−1 n’est pas employée ; on écrit zβ .
+3. LES OUTILS MATHÉMATIQUES                                                                               37
+
+Loi de Student non centrale et loi de Fisher
+                                                                                           2
+                         p définie au chapitre 1 (Définition 12) : si N ∼ N (0, 1) et U ∼ χ (k) sont
+    La loi de Student a été
+indépendantes, alors N/ U/k suit la loi t(k). Deux variantes servent dans ce chapitre et dans la
+feuille d’exercices.
+
+   Définition 3.2: Loi de Student non centrale, loi de Fisher
+  Soient k, k1 , k2 des entiers strictement positifs et δ ∈ R.
+                                                                    p
+    — Si N ∼ N (δ, 1) et U ∼ χ2 (k) sont indépendantes, la loi de N/ U/k est appelée loi de
+      Student non centrale à k degrés de liberté et de paramètre de non-centralité δ. Pour
+      δ = 0, on retrouve la loi t(k).
+    — Si U1 ∼ χ2 (k1 ) et U2 ∼ χ2 (k2 ) sont indépendantes, la loi de (U1 /k1 )/(U2 /k2 ) est appelée
+      loi de Fisher de paramètres (k1 , k2 ) et notée F(k1 , k2 ).
+
+    La loi de Student non centrale donne la fonction puissance du test de Student (Exemple 2.11) ;
+la loi de Fisher donne le pivot pour le rapport de deux variances gaussiennes, à la question 7 de
+l’Exercice 5 (PC4). Si T ∼ t(k), alors T 2 ∼ F(1, k), ce qui se lit directement sur les définitions.
+
+Inégalité de Hoeffding
+   L’inégalité de Bienaymé-Tchebychev, rappelée au chapitre 2 (inégalité de Bienaymé-Tchebychev),
+majore une probabilité de déviation à l’aide de la seule variance. Lorsque les observations sont
+bornées, on dispose d’une majoration exponentielle, bien plus fine pour les petites probabilités.
+
+   Théorème 3.1: Inégalité de Hoeffding
+  Soient X1 , . . . , Xn des variables aléatoires réelles indépendantes
+                                                                Pn           telles que, pour tout i, Xi ∈
+  [ai , bi ] presque sûrement, avec ai < bi . Posons Sn := i=1 Xi − E [Xi ] . Alors, pour tout
+  t > 0,
+                                                              2t2          
+                                 P(Sn ≥ t) ≤ exp − Pn                     2
+                                                                              .
+                                                           i=1 (bi − ai )
+
+
+    Ce théorème est démontré dans l’annexe du polycopié consacrée aux inégalités de concentra-
+tion ; la démonstration repose sur l’inégalité de Chernoff (Section 5) et sur le lemme de Hoeffding,
+qui majore la transformée de Laplace d’une variable centrée bornée. On en tire le corollaire employé
+dans les fondamentaux.
+
+   Corollaire 3.1: Cas d’un n-échantillon borné
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes et de même loi, à valeurs dans [a, b]
+  presque sûrement, d’espérance m. Alors, pour tout δ > 0,
+                                                                 2nδ 2 
+                               P |X̄n − m| ≥ δ ≤ 2 exp −                   .
+                                                                 (b − a)2
+
+  En particulier, pour des variables de Bernoulli, où [a, b] = [0, 1], la majoration est
+  2 exp(−2nδ 2 ).
+
+
+   Démonstration
+                                                        Pn                              Pn
+  On applique le Théorème 3.1 avec t = nδ : comme i=1 (Xi − m) = n(X̄n − m) et i=1 (bi −
+  ai )2 = n(b − a)2 , il vient P(X̄n − m ≥ δ) ≤ exp − 2nδ 2 /(b − a)2 . En appliquant le même
+  théorème aux variables −X1 , . . . , −Xn , à valeurs dans [−b, −a] et d’espérance −m, on obtient
+  la même majoration pour P(X̄n − m ≤ −δ). La sous-additivité conclut.                          □
+38                                        CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+Couplage de variables de Bernoulli
+   Coupler deux lois, c’est construire sur un même espace de probabilité deux variables aléatoires
+ayant ces lois, de façon à pouvoir les comparer trajectoire par trajectoire. Le lemme suivant,
+employé à l’Exemple 2.5, en est le cas le plus simple.
+
+      Lemme 3.1: Couplage de deux lois binomiales
+  Soient 0 ≤ θ ≤ ϑ ≤ 1 et n ≥ 1. Il existe, sur un même espace de probabilité, deux variables
+  aléatoires A et B telles que A ∼ Bin(n, θ), B ∼ Bin(n, ϑ) et A ≤ B presque sûrement. En
+  conséquence, pour tout c ∈ R,
+                                                              
+                             P Bin(n, θ) ≥ c ≤ P Bin(n, ϑ) ≥ c .
+
+
+      Démonstration
+          U1 , . . . , Un des variables indépendantes de loi U ([0, 1]). Posons A := i=1 1{Ui ≤θ} et
+                                                                                    Pn
+  SoientP
+  B := i=1 1{Ui ≤ϑ} . Les variables 1{Ui ≤θ} , i ∈ {1, . . . , n}, sont indépendantes de loi Ber(θ),
+           n
+
+  donc A ∼ Bin(n, θ), et de même B ∼ Bin(n, ϑ). Comme θ ≤ ϑ, on a 1{Ui ≤θ} ≤ 1{Ui ≤ϑ} pour
+  tout i, d’où A ≤ B presque sûrement, et {A ≥ c} ⊂ {B ≥ c}.                                      □
+
+
+Résultats des chapitres 1 à 3 utilisés dans ce chapitre
+    Les résultats suivants sont utilisés sans être redémontrés ; ils sont énoncés et démontrés dans
+les chapitres précédents.
+     — Statistique et estimateur ponctuel (chapitre 1, Section 1.5 ; chapitre 2, définition de l’esti-
+       mateur ponctuel) : les bornes d’un intervalle de confiance et la statistique de test sont des
+       statistiques au sens de ces définitions.
+     — Intervalle de confiance, définition minimale (chapitre 2, Section 2) : la Définition 1.1 l’étend
+       aux régions de Rp .
+     — Loi du χ2 , loi de Student, théorèmes de Cochran et de Gosset (chapitre 1, Section 2 et
+       Section 1.9) : ce sont les lois des trois pivots gaussiens du chapitre.
+     — Loi Gamma (chapitre 1, Section 2) : la loi χ2 (2n) du pivot de l’Exercice 1 (PC4) en est un
+       cas particulier.
+     — Régression linéaire gaussienne (chapitre 1, Section 4 ; chapitre 2, Section 4) : c’est le modèle
+       de l’Exemple 2.15.
+     — Statistiques d’ordre et loi de Xn:n dans le modèle uniforme (chapitre 1, Section 1.5 ; cha-
+       pitre 3, Exemple 1.9) : pivot de l’Exercice 3 (PC4).
+     — Inégalité de Bienaymé-Tchebychev (chapitre 2, Section 2), pour l’intervalle de confiance
+       d’une proportion et pour le test de rangs de l’Exercice 7 (PC4).
+     — Loi des grands nombres (chapitre 2, Section 2), pour l’interprétation fréquentiste du niveau
+       de couverture.
+     — Variance empirique et sa normalisation (chapitre 3, Exemple 1.4) : c’est l’estimateur Sn2 qui
+       intervient dans les pivots de Student et du χ2 .
+     — Le test comme règle de décision (chapitre 3, Section 4) : espace d’actions {0, 1}, perte à deux
+       constantes, et expression du risque à l’aide de la fonction puissance. Le cadre général de la
+       théorie de la décision n’est pas répété ici.
+     — Ordre partiel sur les risques et admissibilité (chapitre 3, Section 1.5) : le préordre sur les
+       tests du Section 2.3 en est la transposition.
+

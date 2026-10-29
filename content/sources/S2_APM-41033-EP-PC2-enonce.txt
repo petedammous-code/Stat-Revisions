@@ -1,0 +1,357 @@
+Ecole Polytechnique, promotion 2025                                      PC-2 Cours APM 41033 EP
+
+
+1     Exercices
+    Leb et Leb⊗n désignent respectivement la mesure de Lebesgue sur R et celle sur Rn .
+N (µ, σ 2 ) désigne la loi Gaussienne de moyenne µ et de variance σ 2 . Par convention, les
+vecteurs sont des vecteurs colonne ; et aT désigne la transposée de a
+
+Objectif : Modèle Lineaire Gaussien
+Exercice 1 ((⋆⋆)). Soient x1 , . . . , xn des réels. On considère le modèle statistique
+                                     n
+                (                                                                                )!
+                                  O
+    Rn , B(Rn ), pθ · dLeb⊗n :=         N (β1 + β2 xi , σ 2 ) : θ := (β1 , β2 , σ 2 ) ∈ R2 × R∗+    .
+                                       i=1
+
+On note 1 et x les vecteurs de Rn définis par 1 := (1, . . . , 1)T et x := (x1 , . . . , xn )T . Dans la
+suite, on suppose qu’il existe au moins deux indices i ̸= j tels que xi ̸= xj . Nous utiliserons
+les notations matricielles suivantes
+                    
+                     Y1                                                    
+                    ..                                                   β
+              Y :=  .  ∈ Rn ,      X := 1 x ∈ Rn×2 ,              β := 1 ∈ R2 .
+                                               
+                                                                           β2
+                     Yn
+
+    1. Montrer que la matrice XT X est inversible.
+       Remarque : Puisque uT XT Xu ≥ 0 pour tout u ∈ R2 , on en déduit que la matrice est
+       définie positive.
+    2. Déterminer les estimateurs du maximum de vraisemblance (β̂1 , β̂2 , σ̂ 2 ) de (β1 , β2 , σ 2 ).
+    3. Déterminer la loi de (β̂1 , β̂2 ) sous pθ · dLeb⊗n .
+    4. Montrer que, sous pθ ·dLeb⊗n , β̂1 et β̂2 sont indépendants si et seulement si n−1 ni=1 xi =
+                                                                                          P
+       0.
+       Remarque : le modèle dépend de x1 , · · · , xn via les quantités β1 + β2 xi pour tout 1 ≤
+       i≤n  Psoit encore, les lignes de Xβ. Sans ”pré-traitement”, il n’y a pas de raisons que
+         −1  n
+       n     i=1 xi = 0. Néanmoins, en écrivant
+                                                
+                                         X n                        Xn
+                                     −1                          −1
+            β1 1 + β2 x = β1 + β2 n
+                                             xj 1 + β2 (x − n
+                                                                       xj 1)
+                                             j=1                      j=1
+                                                                              n
+                                                                                                 1T x
+                                                       
+                                                 β̃1                         X
+                                                               x̃ = x − n−1
+                                          
+                         = β̃1 1 + β2 x̃ = 1 x̃                                     xj 1 = x −        1
+                                                  β2                                             1T 1
+                                                                              j=1
+
+       on peut paramétrer le modèle                                      2
+                                 de façon équivalente par (β̃1 , β2 , σ ), tout en introduisant
+           matrice d’expérience 1 x̃ dont les colonnes sont orthogonales (c’est le sens de
+       une P
+       n−1 ni=1 x̃i = 0).
+    5. Déterminer la loi de σ̂ 2 sous pθ · dLeb⊗n .
+    6. Montrer que sous pθ · dLeb⊗n , σ̂ 2 et (β̂1 , β̂2 ) sont indépendants.
+    7. Soit α ∈ ]0, 1[. Proposer un intervalle de confiance de niveau (1 − α) pour σ 2 .
+
+Objectif : Modèles de mélanges uniformes, estimation
+
+                                                                                                     Page 1
+Ecole Polytechnique, promotion 2025                                                  PC-2 Cours APM 41033 EP
+
+
+Exercice 2 (Estimation d’un coefficient de mélange (⋆)). Soit un n-échantillon (X1 , . . . , Xn )
+du modèle (R, B(R), {fθ · Leb, θ ∈ ]0, 1[}) où
+
+                                                  θ               (1 − θ)
+                               fθ (x) =             1       (x) +         1{[0,b]} (x).
+                                                  a {[0,a]}          b
+On suppose que a et b sont connus et que 0 < a < b. La fonction de répartition associée à la
+densité fθ vaut
+                                                       x≤0
+                                    
+                                    
+                                             0 
+                                     θ + (1−θ) x 0 ≤ x ≤ a
+                                    
+                              x 7→        a      b
+                                              (1−θ)
+                                    
+                                    
+                                         θ +    b x a≤x≤b
+                                               1       x≥1
+                                    
+
+  1. Exprimer la fonction de vraisemblance à l’aide de Na := ni=1 1Xi ∈[0,a] le nombre d’ob-
+                                                             P
+      servations à valeur dans [0, a].
+                                                                                                         (1)
+   2. En déduire l’estimateur du maximum de vraisemblance de θ, noté θ̂n .
+                                                                                                                          (2)
+   3. En utilisant la méthode des moments (d’ordre 1), proposer un estimateur θ̂n de θ.
+   ▶ Analyses numériques. Pour les analyses numériques ci-dessous, on se donne des
+mesures x1 , · · · , xn obtenues comme la réalisation de tirages indépendants sous la loi f0.2
+dans le cas a = 1 et b = 3.
+
+   0.4                                                  0.4                                                     0.1
+                                      n=10                                                 n=10                                                        n=10
+                                      n=200                                                n=200               0.09                                    n=200
+  0.35                                                  0.2
+                                                                                           y =0
+                                                                                                               0.08
+   0.3                                                    0
+                                                                                                               0.07
+  0.25                                                  -0.2
+                                                                                                               0.06
+
+   0.2                                                  -0.4                                                   0.05
+
+
+  0.15                                                  -0.6                                                   0.04
+
+                                                                                                               0.03
+   0.1                                                  -0.8
+                                                                                                               0.02
+  0.05                                                    -1
+                                                                                                               0.01
+
+     0                                                  -1.2                                                      0
+         0   0.2   0.4   0.6    0.8           1                0   0.2   0.4   0.6   0.8           1                  0     0.2     0.4    0.6   0.8           1
+
+
+
+
+Figure 1 – [gauche] Tracé de deux réalisations de la fonction de vraisemblance θ 7→
+L(θ, X1 , · · · , Xn ) : une pour n = 10 puis une pour n = 200. [centre] Tracé de deux réalisations
+de la fonction (aléatoire) dont l’estimateur des moments est un zero : une dans le cas n = 10
+                                                                                  (1)
+et l’autre dans le cas n = 200. [droite] Evolution du biais de l’estimateur θ̂n en fonction de
+θ. Dans le cas n = 10 et n = 200.
+                                                                                       (1)         (2)
+    Sur la figure 2, on visualise la loi de différents estimateurs : θ̂n , θ̂n et
+
+                                                          b − 2n−1 ni=1 Xi
+                                                                  P
+                              b(Na /n) − a
+                       θ̂n :=               ,      θ̃n :=                     .
+                                  b−a                           b−a
+
+
+
+Objectif : modèle exponentiel général
+
+
+
+                                                                                                                                  Page 2
+Ecole Polytechnique, promotion 2025                                                 PC-2 Cours APM 41033 EP
+
+
+
+             1.2
+                                                                0.4
+               1
+                                                               0.35
+             0.8
+                                                                0.3
+             0.6
+
+             0.4                                               0.25
+
+             0.2                                                0.2
+
+               0
+                                                               0.15
+             -0.2
+                                                                0.1
+             -0.4
+                                                               0.05
+             -0.6
+                                                                  0
+             -0.8
+
+                    MV-1     MV-2      Mom-1    Mom-2                 MV-1   MV-2     Mom-1   Mom-2
+
+
+
+
+Figure 2 – Boxplot de la réalisation de N = 5000 estimateurs dans le cas n = 10 (gauche)
+                                                                                  (1)
+et n = 200 (droite). Les boxplots MV-1 et MV-2 correspondent resp. à θ̂n et θ̂n ; ceux de
+                                         (2)
+Mom-1 et Mom-2 correspondent à θ̃n et θ̂n . On fera attenton aux échelles en ordonnées pour
+comparer les schémas de gauche et de droite.
+
+Exercice 3 (Famille exponentielle de densités (⋆ ⋆ ⋆)). Beaucoup de lois (dont des
+usuelles) ont une structure particulière pour lesquelles elles sont dites dans la famille expo-
+nentielle. Soit (X, X ) un espace mesurable (nous prendrons X = Rk ou X = Nk ) et µ une
+mesure σ-finie sur (X, X ). Soit T : X → R et h : X → R+ deux fonctions mesurables.
+    On appelle modèle exponentiel canonique associé au couple (T, h), une famille de
+lois ayant une densité par rapport à µ de la forme
+
+                           x 7→ qη (x) = h(x) exp (ηT (x) − A(η)) ,                 x∈X,                 (1)
+
+où A(η) est défini par :
+                                                  Z
+                                    A(η) := log         h(x) exp (ηT (x)) µ(dx) .                        (2)
+
+L’espace des paramètres naturels de la famille canonique associée à (T, h) est l’ensemble
+
+                                         Ξ := {η ∈ R : |A(η)| < ∞} .
+
+Plus généralement on appelle famille exponentielle toute famille de loi de densité
+
+                                    x 7→ pθ (x) = h(x) exp(φ(θ)T (x) − B(θ))
+
+par rapport à une mesure µ σ-finie sur R ou N. Les valeurs admissibles de θ sont les éléments
+de                                  Z
+                     Θ := {θ ∈ R : h(x) exp(φ(θ)T (x)) µ(dx) < ∞}.
+
+   1. Les lois suivantes sont-elles dans la famille exponentielle, et si oui, sont-elles canoniques ?
+       (a) La loi exponentielle de densité
+
+                                               x 7→ pη (x) = η exp(−ηx)1R+ (x)
+
+           sur X = R ? Si oui, précisez l’espace des paramètres naturels.
+       (b) La loi gaussienne N (η, 1) sur R. Si oui, précisez l’espace des paramètres naturels.
+
+                                                                                                      Page 3
+Ecole Polytechnique, promotion 2025                                   PC-2 Cours APM 41033 EP
+
+
+       (c) Soit α > 0 fixé. La loi de Weibull sur ]0, +∞[ de paramètre d’échelle λ > 0 et de
+           densité
+                                            α  x α−1
+                              x 7→ qλ (x) =            exp(−(x/λ)α )   x > 0.
+                                            λ λ
+           Si oui, précisez l’espace des paramètres naturels.
+       (d) Montrer que la loi de Poisson définit un modèle exponentiel avec
+
+                          φ(θ) = log(θ),    B(θ) = θ,    T (x) = x,    h(x) = 1/x!.
+
+           Préciser le modèle exponentiel canonique associé.
+       (e) Montrer que la loi binomiale définit un modèle exponentiel avec
+                                                                              
+                                θ                                               n
+                φ(θ) = log           , B(θ) = −n log(1 − θ), T (x) = x, h(x) =     .
+                              1−θ                                               x
+
+           Préciser le modèle exponentiel canonique associé.
+  2. Nous allons tout d’abord établir certaines propriétés des modèles exponentiels cano-
+     niques.
+       (a) Supposons que l’espace des paramètres est ouvert, que A est régulière et que l’on
+           peut permuter dérivée et intégrale. Quelle relation a-t-on entre A′ (η), A′′ (η) et
+           l’espérance et la variance de T (X) sous qη ?
+       (b) Montrer que la fonction η 7→ A(η) est convexe et que l’espace des paramètres
+           naturels est un sous-ensemble convexe de R.
+       (c) On suppose dans la suite que Ξ est un intervalle ouvert. Pour η ∈ Ξ, on pose
+                                             Z
+                                    G(η) := h(x) exp (ηT (x)) µ(dx) .
+
+           Montrer que G est infiniment différentiable sur Ξ et que, pour tout k ∈ N∗ et η ∈ Ξ,
+                                        Z
+                                (k)
+                              G (η) = h(x) T k (x) exp (ηT (x)) µ(dx) .
+
+       (d) Soit (X1 , . . . , Xn ) un n-échantillon du modèle exponentiel canonique associé à
+           (T, h).
+             i. Déterminer l’estimateur des moments associé à la fonction T .
+            ii. Déterminer l’estimateur du maximum de vraisemblance. Que remarque-t-on ?
+  3. Considérons dorénavant le modèle exponentiel général. On supposera que Θ est un
+     intervalle ouvert de R. On suppose que la fonction φ définit un difféomorphisme de Θ sur
+     Ξ l’espace des paramètres naturels associé. On dispose d’un n-échantillon (X1 , . . . , Xn )
+     du modèle
+                                    (X, X , {pθ · µ : θ ∈ Θ}) .
+      Déterminer l’estimateur du paramètre θ, solution des équations de vraisemblance [on
+      pensera à utiliser la paramétrisation canonique].
+
+
+    En conclusion de l’ exercice précédent : (i) les modèles exponentiels s’écrivent sous forme
+de facteurs séparables en la variable x et le paramètre de la famille ϕ(θ) (ou η dans le modèle
+
+                                                                                            Page 4
+Ecole Polytechnique, promotion 2025                                      PC-2 Cours APM 41033 EP
+
+
+canonique). (ii) Il n’y a pas unicité de la représentation, y compris du paramètre canonique :
+on a en effet ηT (x) = (λη) (T (x)/λ) pour tout λ ∈ R par exemple. (iii) On a ici présenté
+une version simplifiée de la définition de ces modèles, mais en toute généralité le paramètre
+du modèle peut être vectoriel, et le Pproduit ϕ(θ)T (x) peut être un produit scalaire entre des
+fonctions ϕ, T à valeur dans Rq i.e. qi=1 ϕi (θ)Ti (x). Par exemple, la loi gaussienne Nd (µ, Σ)
+pour une matrice de covariance Σ inversible, a une densité proportionnelle à
+                                                                               
+                     1        T −1                        1 T −1          T −1
+            exp − (x − µ) Σ (x − µ) ∝ exp − (x Σ x − 2µ Σ x)
+                     2                                    2
+                                                                                   
+                                                          1
+                                               = exp − Tr Σ−1 xxT + µT Σ−1 x
+                                                                       
+                                                          2
+                                                                                    
+                                                          1 −1       T      −1
+                                               = exp − Σ , xx + Σ µ, x
+                                                          2
+
+et est donc un exemple de famille exponentielle canonique de dimension q > 1. (iv)
+Une grande partie des modèles utilisés en pratique sont des modèles exponentiels (modèle
+gaussien, log-normal, exponentiel, gamma, Bernoulli, Poisson, etc). Ils sont traités dans le
+Chapitre IV-6 du polycopié.
+
+Objectif : Modélisation de durées de vie exponentielles
+
+Exercice 4 (Durée de vie (⋆⋆)). On considère un système ne fonctionnant que si deux
+machines sont toutes les deux en état de marche. On observe les durées de vie des deux
+machines, que l’on modélise comme des lois exponentielles de paramètres λ0 et λ1 , λi > 0 ; et
+des lois indépendantes.
+   1. Montrer qu’une variable aléatoire X suit la loi exponentielle E(λ) si et seulement si
+
+                                     ∀x > 0 : P(X > x) = exp(−λx).
+
+Le modèle statistique associé à cette expérience est
+
+                    R2+ , B(R2+ ), {Pθ = E(λ0 ) ⊗ E(λ1 ), θ = (λ0 , λ1 ) ∈ (R⋆+ )2 }. .
+                                                                                     
+
+
+   2. Calculer la probabilité pour que le système ne tombe pas en panne avant la date t. En
+      déduire la loi de la durée de vie Z du système. Le système tombe en panne ; calculer la
+      probabilité pour que la panne soit due à une défaillance de la machine 1.
+   3. Soit I = 1 si la panne du système est due à une défaillance de la machine 1, I = 0 sinon.
+      Calculer Pθ (Z > t; I = δ) pour tout t ≥ 0 et δ ∈ {0, 1}. En déduire que Z et I sont
+      indépendantes.
+   4. On dispose de n systèmes identiques et fonctionnant indépendamment les uns des autres
+      dont on observe les durées de vie Z1 , . . . , Zn .
+       (a) Écrire le modèle statistique correspondant. Les paramètres λ0 et λ1 sont-ils iden-
+           tifiables ?
+       (b) Supposons maintenant que l’on observe à la fois les durées de vie des systèmes
+           Z1 , . . . , Zn et les causes de la défaillance correspondantes I1 , . . . , In , Ii ∈ {0, 1}.
+           Écrire le modèle statistique dans ce cas. Les paramètres λ0 et λ1 sont-ils identi-
+           fiables ?
+
+                                                                                                  Page 5
+Ecole Polytechnique, promotion 2025                                  PC-2 Cours APM 41033 EP
+
+
+Objectif : Série temporelle
+
+Exercice 5 (Modèle auto-régressif (⋆⋆)). Soit θ := (ϕ, σ 2 ) ∈ Θ := R × R⋆+ . On considère
+l’observation Z = (X1 , . . . , Xn ), qui sous le modèle statistique pθ · dLeb⊗n , a la loi sui-
+vante : pour tout 1 ≤ k ≤ n, la loi conditionnelle de Xk sachant (X1 , · · · , Xk−1 ) est une loi
+N (ϕ Xk−1 , σ 2 ). Par convention, X0 = 0.
+  1. Écrire le modèle statistique engendré par l’observation Z.
+  2. Déterminer l’estimateur du maximum de vraisemblance de θ = (ϕ, σ 2 ).
+
+
+
+
+                                                                                         Page 6
+

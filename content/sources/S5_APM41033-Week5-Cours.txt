@@ -1,0 +1,1075 @@
+Chapitre 5
+
+Optimalité en théorie des tests
+
+   Le chapitre précédent a construit des tests et défini leur fonction puissance,
+   leur taille et leur niveau, sans dire lequel choisir. Or, à niveau α fixé, il existe
+   en général une infinité de tests, et rien n’oblige à s’en tenir au premier venu.
+   Ce chapitre pose la question de l’existence d’un test optimal, l’optimalité étant
+   définie comme celle d’un test uniformément plus puissant (U. P. P.) : un
+   test de niveau α dont la puissance domine, en chaque point de l’hypothèse
+   alternative, celle de tout autre test de niveau α.
+   Dans le cas d’un test entre deux hypothèses simples, le théorème de
+   Neyman-Pearson construit un tel test et montre qu’il est essentiellement
+   unique : on rejette lorsque le rapport de vraisemblance dépasse une valeur
+   critique, choisie de sorte que la taille du test soit exactement α. Lorsque le
+   paramètre est scalaire et que les hypothèses sont unilatérales, la méthode
+   du rapport de vraisemblance monotone étend ce résultat. Enfin, sur le
+   cas d’une hypothèse bilatérale, on montre qu’il n’existe pas nécessairement de
+   test U. P. P. : la notion d’optimalité retenue ici a ses limites, et le chapitre se
+   termine sur ce constat et sur l’interprétation qu’il faut donner à la décision
+   d’un test.
+   Les prérequis mobilisés – fonction de répartition et fonction quantile, lemme de
+   monotonie, loi binomiale négative – sont rassemblés dans la partie Outils ma-
+   thématiques, qui suit la partie principale, et la feuille d’exercices vient ensuite.
+   La partie Compléments, hors programme d’examen, donne la démonstration
+   du théorème unilatéral, le critère qui reconnaît les familles à rapport de vrai-
+   semblance monotone parmi les familles exponentielles, les tests randomisés et
+   la forme générale du théorème de Neyman-Pearson, le test sans biais, le rapport
+   de vraisemblance généralisé et les exemples que le cours n’a pas traités.
+
+
+Quel est le meilleur test de niveau α ?
+    Un test de niveau α est un test dont la probabilité de rejeter l’hypothèse nulle, lorsque celle-ci
+est vraie, ne dépasse pas α (chapitre 4). Cette contrainte laisse une grande liberté : le test qui
+ne rejette jamais est de niveau α, et il est sans intérêt ; le test qui rejette lorsque la statistique
+dépasse un seuil et celui qui rejette lorsqu’elle sort d’un intervalle central peuvent tous deux être
+de niveau α, et ils ne prennent pas les mêmes décisions. Il faut donc un second critère pour les
+départager, et l’approche de Neyman-Pearson dit lequel : à niveau fixé, on retient le test dont la
+puissance est la plus grande sous l’hypothèse alternative.
+    Encore faut-il que cette puissance soit maximale en tout point de l’hypothèse alternative, et
+non seulement en l’un d’eux. C’est la définition du test uniformément plus puissant, et le chapitre
+montre qu’un tel test existe dans deux situations : celle de deux hypothèses simples, où le théorème
+
+                                                   7
+8                                    CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+de Neyman-Pearson le construit explicitement, et celle d’hypothèses unilatérales dans un modèle
+à rapport de vraisemblance monotone. Il montre aussi qu’un tel test n’existe pas toujours.
+    Le vocabulaire suivant, introduit au chapitre 4, structure tout ce qui suit. Une hypothèse
+est dite simple lorsqu’elle ne contient qu’une seule valeur du paramètre, de la forme θ = θ0 , et
+composite dans le cas contraire, par exemple θ ≤ θ0 ou θ ̸= θ0 . Une hypothèse simple détermine
+complètement la loi de l’observation ; une hypothèse composite ne la détermine pas, et c’est ce qui
+rend le problème plus difficile.
+1. LES FONDAMENTAUX                                                                                           9
+
+1      Les fondamentaux
+1.1      Ce que l’on attend d’une fonction puissance
+     Reprenons le cadre du chapitre précédent. On se donne un modèle statistique
+
+                                           (Z, Z, {Pθ , θ ∈ Θ}) ,
+
+une partition Θ = Θ0 ∪ Θ1 de l’espace des paramètres, et l’on considère le test d’hypothèses
+
+                                  H0 : θ ∈ Θ 0 ,     contre     H1 : θ ∈ Θ 1 .
+
+Un test pur est une fonction mesurable ϕ : Z → {0, 1} : on rejette l’hypothèse nulle lorsque
+ϕ(Z) = 1, et l’on échoue à la rejeter lorsque ϕ(Z) = 0. Dans tout ce chapitre, on autorise plus
+généralement la fonction critique ϕ à prendre ses valeurs dans [0, 1], ce qui permet d’écrire une
+seule fois les énoncés ; la procédure correspondante, appelée test randomisé, est décrite dans les
+compléments (Section 4), et les tests construits dans cette partie sont tous des tests purs.
+
+     Définition 1.1: Fonction puissance, taille, niveau
+    Soit ϕ : Z → [0, 1] la fonction critique d’un test de H0 : θ ∈ Θ0 contre H1 : θ ∈ Θ1 . Sa fonction
+    puissance est
+                                     βϕ : θ ∈ Θ 7−→ Eθ [ϕ(Z)] ∈ [0, 1] ,
+    sa taille est α(ϕ) := supθ∈Θ0 βϕ (θ), et le test est dit de niveau α ∈ [0, 1] si α(ϕ) ≤ α. On note
+    Kα (Θ0 ) l’ensemble des tests de niveau α de l’hypothèse nulle H0 : θ ∈ Θ0 .
+
+    Pour un test pur, Eθ [ϕ(Z)] = Pθ (ϕ(Z) = 1) = Pθ (Z ∈ R) où R := {z ∈ Z : ϕ(z) = 1} est la
+région de rejet : la définition ci-dessus généralise donc celle du chapitre précédent.
+Intuition. La fonction puissance résume à elle seule le comportement d’un test. Sur Θ0 , elle donne la
+probabilité de rejeter à tort, que l’on voudrait la plus petite possible ; sur Θ1 , elle donne la probabilité de
+rejeter à bon droit, que l’on voudrait la plus grande possible. On aimerait donc une fonction puissance nulle
+sur Θ0 et égale à 1 sur Θ1 . Ce n’est pas possible : le seul test dont la fonction puissance est identiquement
+nulle sur Θ0 est en général le test qui ne rejette jamais, dont la puissance est nulle partout. Les deux
+souhaits sont contradictoires, et l’approche de Neyman-Pearson les hiérarchise : on impose d’abord une
+borne α sur Θ0 , puis on maximise sur Θ1 sous cette contrainte.
+
+                                   Θ0
+                     1
+
+
+
+
+                                                            fonction puissance souhaitée
+                                                            fonction puissance du test UPP(α)
+
+
+                                                        βϕ(μ0) = α
+                                                                          Θ1
+                     α
+                     0
+                                                μ0
+                                                        μ
+
+Fonction puissance souhaitée et fonction puissance atteignable, pour le test de µ ≤ µ0 contre µ > µ0 dans
+ le modèle gaussien de variance connue. La première, en pointillés, est nulle sur Θ0 et vaut 1 sur Θ1 ; la
+seconde est celle du test uniformément plus puissant de niveau α, qui vaut α en µ0 et croît ensuite vers 1.
+
+   Ce partage entre une contrainte et un objectif appelle une remarque, qui est le point de départ
+de tout le chapitre : le fait qu’un test soit de niveau α ne dépend que des lois indexées par Θ0 , et
+pas de celles indexées par Θ1 . Dans le cas de deux hypothèses simples Θ = {θ0 , θ1 }, la contrainte
+de niveau s’écrit Pθ0 (Z ∈ Rα ) ≤ α et ne fait intervenir que pθ0 ; on peut donc construire une
+10                                         CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+infinité de régions de rejet de niveau α, en changeant leur forme sans changer leur probabilité sous
+Pθ0 . Toutes ces régions n’ont pas la même probabilité sous Pθ1 , c’est-à-dire pas la même puissance,
+et la question est de savoir laquelle la maximise.
+
+
+
+
+                                                    R = {z > z1 − α}
+                                        taille = α = 0,10 ; puissance = 0,76
+                                     pθ0                                   p θ1
+
+
+
+
+                                                     R = {z < zα}
+                                        taille = α = 0,10 ; puissance = 0,00
+                                     pθ0                                   p θ1
+
+
+
+
+                                                     R = {|z| < c}
+                                        taille = α = 0,10 ; puissance = 0,01
+                                     pθ0                                   p θ1
+
+
+
+
+                                       zα         0      z1 − α   θ1
+                                                         z
+
+Trois régions de rejet de même taille α = 0,10 sous pθ0 = N (0, 1), et les trois puissances qu’elles donnent
+sous pθ1 = N (2, 1). La contrainte de niveau ne distingue pas ces trois tests ; leurs puissances, elles, vont
+                                             de 0,00 à 0,76.
+
+
+
+
+     Définition 1.2: Test uniformément plus puissant
+  Soit α ∈ ]0, 1[. Un test de fonction critique ϕ est dit uniformément plus puissant au niveau α,
+  en abrégé U. P. P.(α), s’il est de niveau α, c’est-à-dire ϕ ∈ Kα (Θ0 ), et si sa fonction puissance
+  vérifie
+                          βϕ (θ) = sup βψ (θ) ,           pour tout θ ∈ Θ1 .
+                                     ψ∈Kα (Θ0 )
+
+
+
+
+Intuition. La définition demande beaucoup : la puissance doit être maximale en chaque point de Θ1 ,
+et par le même test. C’est la borne supérieure du préordre sur les tests introduit au chapitre précédent,
+restreint à Θ1 : deux tests dont les fonctions puissance se croisent sur Θ1 ne sont pas comparables, et
+aucun des deux n’est uniformément plus puissant. La situation est celle rencontrée au chapitre 3 pour les
+estimateurs (Section 1.5) : comparer des fonctions du paramètre ne donne qu’un ordre partiel, et l’existence
+d’un maximum n’a rien d’automatique. C’est pourquoi le chapitre 3 restreignait la classe des estimateurs ;
+ici, la classe est déjà restreinte à Kα (Θ0 ), et l’on va voir que cela suffit dans deux situations, mais pas
+dans toutes.
+1. LES FONDAMENTAUX                                                                                        11
+
+                      1
+
+
+
+                                                                 ϕ ⋆ : rejet si √ n X̄n > z1 − α
+
+                     0,5                                         rejet si |√ n X̄n| > z1 − α/2
+                                                                 rejet si √ n X̄n < zα
+
+
+
+                      α
+                      0
+                                  0                 0,5                    1
+                                                          μ
+
+  Fonctions puissance de trois tests de taille α = 0,10 de H0 : µ = 0 contre H1 : µ > 0, dans le modèle
+   gaussien de variance connue. Celle du test ϕ⋆ , qui rejette pour les grandes valeurs de la moyenne
+          empirique, domine les deux autres en chaque point de Θ1 : c’est le test U. P. P.(α).
+
+
+1.2    Une énigme : quels terrains acheter ?
+    Avant d’énoncer le théorème, voici l’énigme posée à la fin du chapitre précédent (Section 2.10).
+Elle n’a l’air d’avoir aucun rapport avec les tests, et sa solution est pourtant celle du théorème de
+Neyman-Pearson.
+Intuition. On considère une zone de terrains, décrite par une grille G de pixels. Chaque pixel z ∈ G
+porte un coût d’achat c0 (z) ≥ 0 et rapporte, si on l’achète, un gain r1 (z) ≥ 0. On dispose d’un budget total
+α. Quels pixels acheter pour maximiser le bénéfice ?
+    Le passage au cadre continu se fait en remplaçant la grille par R2 , ou plus généralement par l’espace
+Z des observations : on achète alors un sous-ensemble R ⊆ Z, dont le coût et le gain s’écrivent comme les
+intégrales de deux fonctions positives sur R.
+    Enfin, quel rapport avec les tests, et quel est le meilleur test de niveau α ? La réponse est donnée à la
+Section 1.5, une fois le théorème démontré. Il vaut la peine de chercher d’abord.
+
+
+
+1.3    Deux hypothèses simples : le rapport de vraisemblance
+    Plaçons-nous dans la situation la plus simple, celle où le paramètre ne peut prendre que deux
+valeurs. On dispose d’une observation Z, éventuellement de la forme Z = (X1 , . . . , Xn ), de loi
+Pθ = pθ · ν où ν est une mesure σ-finie sur (Z, Z) et θ appartient à Θ := {θ0 , θ1 } avec θ0 ̸= θ1 . On
+considère le test
+                              H0 : θ = θ0 , contre H1 : θ = θ1 .
+
+   La statistique de test sera le rapport des deux densités.
+
+   Définition 1.3: Rapport de vraisemblance
+  Soient pθ0 et pθ1 les densités de l’observation sous les deux hypothèses. Le rapport de vrai-
+  semblance est la statistique
+
+                                       pθ1 (z)
+                             r(z) :=           ,    z ∈ Z tel que pθ0 (z) > 0 .
+                                       pθ0 (z)
+
+    Cette quantité n’est définie que là où pθ0 ne s’annule pas. Comme Pθ0 (pθ0 (Z) > 0) = 1, cela
+suffit pour parler de la loi de r(Z) sous Pθ0 . Dans les énoncés qui suivent, on prendra garde d’écrire
+les régions sous la forme {pθ1 (z) > c pθ0 (z)}, qui a un sens en tout point de Z, et l’on n’utilisera
+l’écriture {r(z) > c} que là où le quotient est défini.
+Intuition. Le rapport de vraisemblance compare la vraisemblance des observations sous les deux hypo-
+thèses. La vraisemblance a été introduite au chapitre 2 pour être maximisée en θ ; ici, on ne la maximise
+12                                      CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+pas, on l’évalue en deux points et on en prend le quotient. Une grande valeur de r(z) signifie que l’ob-
+servation z était bien plus probable sous θ1 que sous θ0 , donc qu’elle plaide contre l’hypothèse nulle. Le
+théorème dit que c’est le bon critère, et qu’il n’y en a pas de meilleur.
+     Dans toute cette section, on suppose que le rapport de vraisemblance n’a pas d’atome.
+
+     Cadre 1.1: Absence d’atome du rapport de vraisemblance
+  Pour tout c ≥ 0 et tout θ ∈ Θ,
+                                                            
+                                      Pθ pθ1 (Z) = c pθ0 (Z) = 0 .
+
+    Cette hypothèse est vérifiée dès que r(Z) est une variable aléatoire à densité par rapport à la
+mesure de Lebesgue, ce qui est le cas des exemples gaussiens de cette partie. Elle est en revanche
+mise en défaut dès que l’observation est discrète, par exemple dans un modèle de Bernoulli ou
+de Poisson : la statistique de test ne prend alors qu’un nombre dénombrable de valeurs et charge
+chacune d’elles. Ce cas est traité dans les compléments (Section 4), au prix de l’introduction des
+tests randomisés.
+
+1.4     Le théorème de Neyman-Pearson
+    Le théorème comporte deux affirmations : on peut choisir la valeur critique de sorte que la
+taille du test soit exactement α, et le test ainsi obtenu est uniformément plus puissant.
+
+
+     Théorème 1.1: Neyman-Pearson, cas de deux hypothèses simples
+  Soit ν une mesure σ-finie sur (Z, Z) et soit le modèle
+                                                               
+                           Z, Z, {pθ · ν , θ ∈ Θ := {θ0 , θ1 }} ,       θ0 ̸= θ1 ,
+
+  sous l’hypothèse d’absence d’atome du rapport de vraisemblance. Soit α ∈ ]0, 1[.
+      (i) Il existe une constante cα > 0 telle que le test pur de fonction critique
+
+                                          ϕ⋆ (z) := 1{pθ1 (z)>cα pθ0 (z)}
+
+         soit de taille exactement α, c’est-à-dire vérifie
+                                                Z
+                                 Eθ0 [ϕ⋆ (Z)] =    ϕ⋆ (z) pθ0 (z) ν(dz) = α .
+                                                   Z
+
+     (ii) Le test de fonction critique ϕ⋆ est U. P. P.(α) pour le test de H0 : θ = θ0 contre
+          H1 : θ = θ1 , et sa puissance vérifie Eθ1 [ϕ⋆ (Z)] ≥ α.
+
+
+
+     Démonstration
+  (i) Existence de cα . Considérons la fonction
+                                                                      
+                               F̄ : c ∈ R+ 7−→ Pθ0 pθ1 (Z) > c pθ0 (Z) .
+
+  Elle est décroissante. Comme pθ0 (Z) > 0 Pθ0 -presque sûrement, on a F̄ (c) = Pθ0 (r(Z) > c)
+  pour tout c ≥ 0 ; en particulier F̄ est la fonction de survie de la variable aléatoire réelle positive
+  r(Z) sous Pθ0 , donc continue à droite et pourvue de limites à gauche, avec
+
+                             F̄ (c− ) − F̄ (c) = Pθ0 (r(Z) = c) ,      c≥0.
+1. LES FONDAMENTAUX                                                                                      13
+
+
+  L’hypothèse d’absence d’atome annule tous ces sauts : F̄ est continue sur R+ . Elle vérifie de
+  plus F̄ (0) = Pθ0 (r(Z) > 0) = 1, puisque Pθ0 (r(Z) = 0) = 0, et limc→+∞ F̄ (c) = Pθ0 (r(Z) =
+  +∞) = 0, la variable r(Z) étant finie Pθ0 -presque sûrement. Le théorème des valeurs inter-
+  médiaires fournit donc, pour tout α ∈ ]0, 1[, une constante cα > 0 telle que F̄ (cα ) = α,
+  c’est-à-dire Eθ0 [ϕ⋆ (Z)] = α.
+  (ii) Optimalité. Soit ϕ ∈ Kα (Θ0 ), c’est-à-dire Eθ0 [ϕ(Z)] ≤ α. La démonstration repose sur
+  l’inégalité clé suivante : pour tout z ∈ Z,
+                               ⋆             
+                                ϕ (z) − ϕ(z) pθ1 (z) − cα pθ0 (z) ≥ 0 .                      (1)
+
+  En effet, si pθ1 (z) − cα pθ0 (z) > 0, alors ϕ⋆ (z) = 1 ≥ ϕ(z) et les deux facteurs sont positifs ou
+  nuls ; si pθ1 (z) − cα pθ0 (z) < 0, alors ϕ⋆ (z) = 0 ≤ ϕ(z) et les deux facteurs sont négatifs ou
+  nuls ; et si pθ1 (z) − cα pθ0 (z) = 0, le produit est nul. Dans les trois cas, le produit est positif
+  ou nul.
+  En intégrant (1) par rapport à ν, il vient
+                           Z
+                                ⋆             
+                                 ϕ (z) − ϕ(z) pθ1 (z) − cα pθ0 (z) ν(dz) ≥ 0 ,
+                           Z
+
+  c’est-à-dire, en séparant les deux termes,
+                                                                               
+                       Eθ1 [ϕ⋆ (Z)] − Eθ1 [ϕ(Z)] ≥ cα Eθ0 [ϕ⋆ (Z)] − Eθ0 [ϕ(Z)] .
+
+  Or, le test ϕ⋆ étant de taille α et le test ϕ de niveau α,
+
+                            Eθ0 [ϕ⋆ (Z)] − Eθ0 [ϕ(Z)] = α − Eθ0 [ϕ(Z)] ≥ 0 ,
+
+  et cα > 0 ; on en déduit Eθ1 [ϕ⋆ (Z)] ≥ Eθ1 [ϕ(Z)]. Comme ϕ était un test quelconque de niveau
+  α, le test ϕ⋆ est U. P. P.(α).
+  Enfin, le test randomisé de fonction critique constante ψ ≡ α est de niveau α, puisque
+  Eθ0 [ψ(Z)] = α, et sa puissance vaut βψ (θ1 ) = α. L’optimalité de ϕ⋆ donne donc Eθ1 [ϕ⋆ (Z)] ≥
+  α.                                                                                            □
+
+Intuition. Deux remarques sur cette démonstration, qui furent faites en amphi. D’abord, elle est courte
+et le résultat est intuitif : on rejette là où l’observation plaide le plus contre H0 , et l’on dépense tout
+le budget α. Ensuite, son point de départ, l’inégalité (1), reste un peu astucieux : rien ne dit d’où elle
+sort. Elle s’éclaire si l’on remarque que le problème posé est un problème d’optimisation linéaire sous
+                                   R                              R
+contrainte linéaire – maximiser ϕ pθ1 dν sous la contrainte ϕ pθ0 dν ≤ α et 0 ≤ ϕ ≤ 1 –, dont la
+dualité lagrangienne, vue en cours d’optimisation, donne une démonstration plus naturelle ; la constante
+cα y apparaît comme le multiplicateur associé à la contrainte de budget.
+   Le test de Neyman-Pearson n’est pas seulement optimal : il est essentiellement le seul à l’être.
+
+
+   Théorème 1.2: Caractérisation des tests U. P. P.
+  Sous les hypothèses du Théorème 1.1, si ϕ⋆⋆ est la fonction critique d’un test U. P. P.(α), alors
+                                       (
+                               ⋆⋆        1 si pθ1 (z) > cα pθ0 (z) ,
+                             ϕ (z) =
+                                         0 si pθ1 (z) < cα pθ0 (z) ,
+
+  pour ν-presque tout z ∈ Z. En particulier, ϕ⋆⋆ = ϕ⋆ Pθ0 -presque sûrement et Pθ1 -presque
+  sûrement, de sorte que les deux tests ont la même fonction puissance.
+14                                       CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+     Démonstration
+  Les tests ϕ⋆ et ϕ⋆⋆ étant tous deux U. P. P.(α), leurs puissances coïncident en θ1 :
+
+                                     Eθ1 [ϕ⋆ (Z)] − Eθ1 [ϕ⋆⋆ (Z)] = 0 .
+
+  Par ailleurs, ϕ⋆ est de taille α et ϕ⋆⋆ de niveau α, donc
+                                                                         
+                    cα Eθ0 [ϕ⋆ (Z)] − Eθ0 [ϕ⋆⋆ (Z)] = cα α − Eθ0 [ϕ⋆⋆ (Z)] ≥ 0 .
+
+  En soustrayant, il vient
+                       Z
+                           ⋆              
+                           ϕ (z) − ϕ⋆⋆ (z) pθ1 (z) − cα pθ0 (z) ν(dz) ≤ 0 .
+                           Z
+
+  Comme l’inégalité clé (1) s’applique à ϕ = ϕ⋆⋆ , l’intégrande est positif ou nul en tout point ;
+  son intégrale étant négative ou nulle, il est nul ν-presque partout. Le produit ne peut donc
+  être non nul que là où pθ1 (z) = cα pθ0 (z), ce qui donne l’écriture annoncée.
+  Notons enfin A := {z ∈ Z : pθ1 (z) = cα pθ0 (z)}. L’hypothèse d’absence d’atome donne
+  Pθ0 (Z ∈ A) = 0, et comme pθ1 = cα pθ0 sur A,
+                          Z                       Z
+            Pθ1 (Z ∈ A) =      pθ1 (z) ν(dz) = cα     pθ0 (z) ν(dz) = cα Pθ0 (Z ∈ A) = 0 .
+                               A                             A
+
+  Les deux fonctions critiques coïncident donc Pθ0 -presque sûrement et Pθ1 -presque sûrement.
+  □
+
+
+
+1.5     Retour sur l’énigme
+     Le théorème répond à l’énigme de la Section 1.2, et l’énigme éclaire le théorème.
+
+Intuition. Choisir un test de niveau α, c’est choisir une région de rejet Rα telle que
+
+                                           Z
+                                                    pθ0 (z) ν(dz) ≤ α ,
+                                               Rα
+
+
+c’est-à-dire acheter une portion de l’espace en respectant un budget α, le coût du terrain étant donné par
+la densité pθ0 . Maximiser la puissance, c’est rendre
+
+                                                Z
+                                                         pθ1 (z) ν(dz)
+                                                    Rα
+
+
+le plus grand possible, c’est-à-dire maximiser le gain, celui-ci étant donné par la densité pθ1 . Le théorème
+de Neyman-Pearson dit alors deux choses. D’une part, la stratégie optimale consiste à acheter les zones
+où le rapport du gain au coût, r(z) = pθ1 (z)/pθ0 (z), est le plus grand : la région de rejet est de la forme
+{z : r(z) > cα }. D’autre part, elle consiste à dépenser tout le budget : la constante cα est choisie de sorte
+que le coût vaille exactement α. Ce second point est la partie (i) du théorème, et c’est lui qui explique
+pourquoi la construction insiste sur la taille et non seulement sur le niveau.
+
+   L’analogie s’arrête là où l’énigme, dans sa version discrète, se résout par un tri des pixels par
+rapport gain sur coût décroissant, quitte à ne pas dépenser exactement le budget lorsque les pixels
+sont indivisibles. C’est ce qui arrive lorsque le rapport de vraisemblance a des atomes : on ne peut
+plus atteindre la taille α avec un test pur, et il faut « couper un pixel en deux », ce que fait la
+randomisation (Section 4).
+1. LES FONDAMENTAUX                                                                                     15
+
+1.6     En pratique : la marche à suivre
+
+
+   Méthode 1.1: Détermination du test U. P. P.(α), cas de deux hypothèses simples
+  On teste H0 : θ = θ0 contre H1 : θ = θ1 .
+      1. Calculer le rapport de vraisemblance r(z) = pθ1 (z)/pθ0 (z).
+      2. Vérifier que r(Z) n’a pas d’atome sous Pθ0 . Si ce n’est pas le cas, se reporter à la forme
+         générale du théorème (Section 4).
+      3. On rejette lorsque r(Z) est grand : la région de rejet est {z : r(z) > cα }.
+      4. Identifier cα par la condition de taille Pθ0 (r(Z) > cα ) = α, l’égalité étant exacte.
+  Le test ϕ⋆ (Z) = 1{r(Z)>cα } est alors U. P. P.(α), et tout autre test U. P. P.(α) lui est égal Pθ0 -
+  et Pθ1 -presque sûrement.
+
+   En pratique, la quatrième étape n’est presque jamais menée sur r(Z) directement, mais sur
+une statistique plus simple, comme le montrent les exemples de la sous-section suivante.
+
+   Méthode 1.2: Passer par une statistique monotone
+  Très souvent, le rapport de vraisemblance est une fonction strictement monotone d’une sta-
+  tistique T (Z), c’est-à-dire r(Z) = r̃(T (Z)) avec r̃ strictement monotone.
+      1. Si r̃ est croissante, r(Z) > cα équivaut à T (Z) > dα ; si elle est décroissante, à T (Z) < dα .
+      2. Au lieu de chercher cα tel que Pθ0 (r(Z) > cα ) = α, on identifie directement dα tel que
+         Pθ0 (T (Z) > dα ) = α (respectivement Pθ0 (T (Z) < dα ) = α).
+  Il suffit donc de connaître la loi de T (Z) sous Pθ0 .
+
+
+
+1.7     Trois exemples gaussiens
+
+   Exemple 1.1: Une observation gaussienne, variances égales
+  On observe une seule variable X de loi N (µ, 1), où µ ∈ {−1, 1}, et l’on teste
+
+                                  H0 : µ = −1,     contre   H1 : µ = 1 .
+                                                  2                                 2
+  Les densités sont p−1 (x) = (2π)−1/2 e−(x+1) /2 et p1 (x) = (2π)−1/2 e−(x−1) /2 , d’où
+
+                                p1 (x)        −(x − 1)2 + (x + 1)2 
+                      r(x) =           = exp                          = exp(2x) ,
+                               p−1 (x)                  2
+
+  puisque −(x − 1)2 + (x + 1)2 = 4x. La fonction x 7→ e2x est strictement croissante, donc
+
+                                  r(x) > cα if andonlyif x > 21 log(cα ) .
+
+  Il reste à déterminer le seuil par la condition de taille. Sous P−1 , la variable X suit la loi
+  N (−1, 1), de sorte que X + 1 ∼ N (0, 1) et
+
+                               P−1 (X > t) = αif andonlyif t = −1 + z1−α ,
+
+  où z1−α désigne le quantile d’ordre 1 − α de la loi N (0, 1). Le test U. P. P.(α) est donc
+
+               ϕ⋆α (X) = 1{X>z1−α −1} ,
+                                                                                  
+                                             c’est-à-dire cα = exp 2(z1−α − 1) .
+16                                              CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+                     0.4
+
+                                      H                                                    H1
+                                       0
+                     0.3
+
+
+                     0.2
+
+
+                     0.1
+
+
+                      0
+                      −10      −8          −6   −4       −2         0          2      4         6   8   10
+                                                          densité de probabilité
+
+
+                      10
+
+
+                       5
+
+
+                       0
+
+
+                      −5
+
+
+                     −10
+                      −10      −8          −6   −4        −2        0          2       4        6   8   10
+                                                  Logarithme du rapport de vraisemblance
+
+Densités de deux variables gaussiennes de moyenne et de variance (µ0 , σ02 ) = (−1, 1) et (µ1 , σ12 ) = (1, 1)
+ (panneau du haut) et logarithme du rapport de vraisemblance z 7→ pθ1 (z)/pθ0 (z) (panneau du bas). Le
+     rapport est une fonction strictement croissante de z : la région de rejet est une demi-droite.
+
+
+
+
+Intuition. Le point à retenir de cet exemple est le décalage de −1 dans le seuil. Il est tentant d’écrire
+directement ϕ⋆α (X) = 1{X>z1−α } , en oubliant que le quantile gaussien z1−α se rapporte à la loi N (0, 1)
+alors que la condition de taille doit être évaluée sous Pθ0 , ici N (−1, 1). Le seuil se lit toujours sous la loi
+de l’hypothèse nulle, jamais sous une gaussienne centrée par défaut.
+
+
+
+     Exemple 1.2: Une observation gaussienne, variances différentes
+  Reprenons une observation unique X, mais avec cette fois Θ = {θ0 , θ1 } où θi = (µi , σi2 ), et le
+  test de θ = θ0 contre θ = θ1 . En notant
+                                                     1                       2      2
+                                                                                        
+                                    pθi (z) := p          2
+                                                            exp − (z − µ i )   /(2σ i )   ,
+                                                     2πσi
+
+  le rapport de vraisemblance vaut
+                             s
+                               σ02      1              1           
+                      r(z) =     2 exp − 2 (z − µ1 )2 + 2 (z − µ0 )2 ,
+                               σ1       2σ1            2σ0
+
+  et la région de rejet {r(z) > cα } s’écrit
+
+                             1                   1                              1      σ2 
+                                            2                   2                        1
+                       −         (z − µ 1 )   +      (z − µ 0 )   > log(c α ) +   log        .
+                            2σ12                2σ02                            2       σ02
+
+  Le membre de gauche        est un trinôme du second degré en z, dont le coefficient dominant
+  vaut 21 σ0−2 − σ1−2 . Lorsque σ12 < σ02 , ce coefficient est strictement négatif et la région de
+  rejet est un intervalle ]m, M [ ; lorsque σ12 > σ02 , il est strictement positif et la région de rejet
+  est le complémentaire d’un intervalle. La figure ci-dessous correspond au premier cas, avec
+  (µ0 , σ02 ) = (−1, 1) et (µ1 , σ12 ) = (1, 0,5).
+1. LES FONDAMENTAUX                                                                                          17
+
+                        0.8
+                                                                             H
+                                     H                                            1   H
+                                      0                                                   0
+                        0.6
+
+
+                        0.4
+
+
+                        0.2
+
+
+                         0
+                         −10   −8     −6       −4       −2         0          2       4       6   8   10
+                                                         Densité de probabilité
+
+
+                         50
+
+
+
+                          0
+
+
+
+                        −50
+
+
+
+                       −100
+                         −10   −8     −6       −4        −2        0          2       4       6   8   10
+                                                 Logarithme du rapport de vraisemblance
+
+           Densités de deux variables gaussiennes de moyenne et de variance (µ0 , σ02 ) = (−1, 1) et
+         2
+  (µ1 , σ1 ) = (1, 0,5) (panneau du haut) et logarithme du rapport de vraisemblance (panneau du bas). Le
+              rapport n’est plus monotone : la région où il dépasse un seuil est un intervalle.
+
+Intuition. Cet exemple contredit une idée reçue commode : la région de rejet n’est pas toujours une queue
+de distribution. Elle est ce que le rapport de vraisemblance en fait, et lorsque les deux variances diffèrent,
+ce rapport n’est pas monotone. Retenir « on rejette quand la statistique est grande » est une abréviation
+qui ne vaut que lorsque le rapport est une fonction croissante d’une statistique ; le critère exact est toujours
+« on rejette quand le rapport de vraisemblance est grand ».
+   L’exemple suivant est celui que l’on retrouvera dans toute la suite du chapitre.
+
+    Exemple 1.3: Moyenne d’un échantillon gaussien, variance connue
+                                                                                              
+  Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), N (µ, σ 2 ) , µ ∈ {µ0 , µ1 } , où
+  la variance σ 2 > 0 est connue et µ0 < µ1 . On teste
+                                    H0 : µ = µ 0 ,          contre         H1 : µ = µ 1 .
+  Quitte à remplacer Xi par Xi − µ0 , on peut supposer µ0 = 0 et poser m := µ1 > 0. Le rapport
+  de vraisemblance vaut alors
+                                   n                   n
+                              1 X                  1 X 2           nm         nm2 
+            r(z) = exp − 2           (xi − m)2 + 2        xi = exp        x̄ n −       ,
+                              2σ i=1               2σ i=1             σ2         2σ 2
+                  Pn
+  où x̄n := n−1 i=1 xi . Il ne dépend donc de l’observation
+                                                               que par la moyenne empirique :
+  r(z) = r̃(x̄n ) avec r̃(t) = exp nmt/σ 2 − nm2 /(2σ 2 ) , fonction strictement croissante de t
+  puisque m > 0. La méthode de la statistique monotone s’applique : la condition r(Z) > cα
+  équivaut à X̄n > dα , et le seuil dα est solution de
+                                                    P0 (X̄n > dα ) = α .
+                   √                                                           √
+  Sous P0 , on a       n X̄n /σ ∼ N (0, 1), d’où l’unique solution dα = z1−α σ/ n. Le test U. P. P.(α)
+  est donc
+                                           ϕ⋆ (Z) = 1{X̄n >µ0 +z1−α σ/√n} ,
+  en revenant à la moyenne µ0 générale. Sa puissance vaut
+                                              √               √     
+                  βϕ⋆ (µ1 ) = Pm X̄n > z1−α σ/ n = 1 − Φ z1−α − n m/σ ,
+  où Φ est la fonction de répartition de la loi N (0, 1) et m = µ1 − µ0 .
+18                                                                       CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+                                                     1
+
+
+
+                                                    0.9
+
+
+
+                                                    0.8
+
+
+
+
+                        Puissance du test α= 0.95
+                                                    0.7
+
+
+
+                                                    0.6
+
+
+
+                                                    0.5
+
+
+
+                                                    0.4
+
+
+
+                                                    0.3
+
+
+
+                                                    0.2
+                                                          0   10    20    30   40      50         60   70   80   90   100
+                                                                               nombre d’échantillons
+
+  Puissance du test U. P. P.(α) de H0 : µ = 0 contre H1 : µ = 1, au niveau α = 0,05, en fonction de la
+                                         taille de l’échantillon.
+
+                                                                                √
+Intuition. Le point remarquable de cet exemple est que le seuil dα = z1−α σ/ n ne dépend pas de µ1 , la
+valeur de la moyenne sous l’hypothèse alternative. Le même test est donc U. P. P.(α) contre chacune des
+alternatives µ = µ1 , pour tout µ1 > µ0 , et par conséquent contre l’alternative composite µ > µ0 . C’est un
+accident heureux, et non une règle générale : il tient à la forme particulière du rapport de vraisemblance,
+qui se factorise à travers une statistique dont le seuil ne dépend que de θ0 . La section suivante identifie
+exactement la classe de modèles où cet accident se produit.
+
+   L’Exercice 5 (PC5) reprend ce modèle en détail : test du rapport de vraisemblance dans les
+deux sens, test U. P. P.(α) contre µ > µ0 , puis hypothèse bilatérale.
+
+1.8     Hypothèses unilatérales et rapport de vraisemblance monotone
+   L’exemple gaussien de la moyenne fournit un test U. P. P.(α) de µ = µ0 contre µ > µ0 . On
+voudrait davantage : un test U. P. P.(α) de l’hypothèse nulle composite µ ≤ µ0 contre µ > µ0 . Le
+cadre qui le permet est celui des familles à rapport de vraisemblance monotone.
+   On considère désormais un modèle statistique (Z, Z, {Pθ , θ ∈ Θ}) de paramètre scalaire, Θ ⊆
+R, et un test d’hypothèses unilatérales : une hypothèse est dite unilatérale lorsqu’elle est de la
+forme θ ≤ θ0 ou θ > θ0 .
+
+   Définition 1.4: Famille à rapport de vraisemblance monotone croissant
+                                                                       
+  Soient µ une mesure σ-finie sur (Z, Z) et Z, Z, {Pθ = pθ · µ , θ ∈ Θ} un modèle statistique
+  où Θ ⊆ R. La famille est dite à rapport de vraisemblance monotone croissant si
+      (i) il existe des fonctions mesurables ψ : R2 → R+ , T : Z → R et h : Z → R+ telles que
+
+                                                              pθ (z) = h(z) ψ(T (z); θ) ,              θ∈Θ,      z∈Z;       (2)
+
+     (ii) pour tous θ, θ′ ∈ Θ tels que θ > θ′ , la fonction
+
+                                                                                           ψ(t; θ)
+                                                                                t 7−→
+                                                                                           ψ(t; θ′ )
+
+         est strictement croissante.
+
+
+Intuition. La condition (2) dit que la densité ne dépend de l’observation, en ce qui concerne le paramètre,
+qu’à travers la statistique T (z) : le facteur h(z) ne porte aucune information sur θ et disparaît dans tout
+1. LES FONDAMENTAUX                                                                                      19
+
+rapport de vraisemblance. La seconde condition dit que ce rapport, vu comme fonction de T , est strictement
+croissant dès qu’on augmente le paramètre. Autrement dit, plus T est grand, plus les observations plaident
+pour les grandes valeurs de θ : la statistique T ordonne les observations de la même façon que le paramètre
+ordonne les lois. C’est ce qu’il faut pour que la région de rejet {r > c} soit toujours de la forme {T > d},
+avec un seuil qui ne dépend pas de la valeur θ1 retenue sous l’alternative.
+
+
+
+
+   Exemple 1.4: Modèle gaussien N (θ, 1)
+                                                                                       
+  Soit Z = (X1 , . . . , Xn ) un n-échantillon
+                                        P         du modèle R, B(R), {N (θ, 1) , θ ∈ R} . En posant
+                                          n
+  z = (x1 , . . . , xn ) et T (z) := n−1 i=1 xi , la vraisemblance s’écrit
+                                              1X    n      
+                                   1                      2
+                                                                                   
+                     pθ (z) =        n/2
+                                         exp    −       x i   exp nθ T (z) − nθ2 /2 ,
+                                (2π)              2 i=1       |         {z         }
+                                |            {z             }       ψ(T (z);θ)
+                                            h(z)
+
+
+  et pour θ > θ′ ,
+                                 ψ(t; θ)                                     2 
+                         t 7−→         ′
+                                          = exp (θ − θ′ ) n t − (n/2)(θ2 − θ′ )
+                                 ψ(t; θ )
+  est strictement croissante. Le modèle est donc à rapport de vraisemblance monotone croissant
+  en la moyenne empirique.
+
+
+
+   Exemple 1.5: Modèle de Bernoulli
+  Soit       Z          =           (X1 , . . . , Xn) un   n-échantillon  du    modèle
+   {0, 1}, P({0, 1}), {Ber(θ) , θP∈ Θ := ]0, 1[} , dominé par la mesure de comptage sur
+                                  n
+  {0, 1}n . En posant T (z) := i=1 xi ,
+                                                           θ T (z)
+                                      pθ (z) = (1 − θ)n              ,
+                                                           1−θ
+                                                                  t
+  c’est-à-dire (2) avec h(z) := 1 et ψ(t; θ) := (1 − θ)n θ/(1 − θ) . Pour θ > θ′ ,
+
+                                         ψ(t; θ)     (1 − θ)n  θ(1 − θ′ ) t
+                                 t 7−→             =
+                                         ψ(t; θ′ )   (1 − θ′ )n θ′ (1 − θ)
+
+  est strictement croissante,
+                             car θ 7→ θ/(1 − θ) est strictement croissante sur ]0, 1[, de sorte que
+  θ(1 − θ′ )/ θ′ (1 − θ) > 1.
+
+
+
+   Ces deux exemples sont des cas particuliers d’un énoncé général portant sur les familles expo-
+nentielles, donné dans les compléments (Section 4), qui couvre d’un seul calcul tous les modèles
+rencontrés dans ce chapitre.
+
+   Le théorème suivant est le résultat central de cette section. Il est énoncé sous une hypothèse
+de continuité qui joue le même rôle que l’absence d’atome dans le cas de deux hypothèses simples.
+20                                        CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+
+
+     Théorème 1.3: Test U. P. P. pour une hypothèse unilatérale, cas croissant
+  Soit un modèle à rapport de vraisemblance monotone croissant en la statistique T au sens
+  de la Définition 1.4, et l’on suppose que, pour tout θ ∈ Θ, la variable T (Z) est à densité par
+  rapport à la mesure de Lebesgue sous Pθ . Soient θ0 ∈ Θ et α ∈ ]0, 1[.
+     (i) Il existe un test U. P. P.(α) de
+
+                                      H0 : θ ≤ θ 0 ,    contre      H1 : θ > θ 0 ,
+
+         dont la fonction critique est
+                                              ϕθ0 (z) := 1{T (z)>dα } ,
+         où la constante dα est l’unique solution de Pθ0 (T (Z) > dα ) = α.
+     (ii) La fonction puissance θ 7→ βϕθ0 (θ) est croissante sur Θ.
+
+
+
+    La démonstration procède en trois temps. Le test ϕθ0 est d’abord reconnu comme le test de
+Neyman-Pearson de θ = θ0 contre θ = θ1 , pour chaque θ1 > θ0 , et l’on observe que le seuil dα ,
+déterminé par la seule loi de T (Z) sous Pθ0 , ne dépend pas de θ1 . La croissance de la fonction
+puissance est ensuite établie par le lemme de monotonie des outils (Lemme 2.1). Elle permet
+enfin de passer de l’hypothèse nulle simple θ = θ0 à l’hypothèse nulle composite θ ≤ θ0 . La
+démonstration est écrite en entier dans les compléments (Section 4).
+Intuition. La croissance de la fonction puissance est le point central de cette section. C’est elle qui permet
+de ne contrôler la taille qu’ en θ0 , la borne extrémale de l’hypothèse nulle, et de l’obtenir gratuitement pour
+toutes les valeurs θ < θ0 . Sans elle, la contrainte de niveau devrait être vérifiée en chaque point de Θ0 , et
+rien ne garantirait que le même test la respecte partout.
+    On peut dire davantage au point (ii) : la fonction puissance βϕθ0 est strictement croissante sur
+l’ensemble                          
+                                      θ ∈ Θ : βϕθ0 (θ) < 1 .
+Ce raffinement n’est pas démontré ici, et il n’est utilisé nulle part dans la suite.
+    Il arrive que le rapport de vraisemblance décroisse avec la statistique T au lieu de croître. La
+définition et le théorème s’énoncent alors de la même façon, au sens de la monotonie près, et la
+région de rejet est renversée.
+
+   Définition 1.5: Famille à rapport de vraisemblance monotone décroissant
+                                                                       
+  Soient µ une mesure σ-finie sur (Z, Z) et Z, Z, {Pθ = pθ · µ , θ ∈ Θ} un modèle statistique où
+  Θ ⊆ R. La famille est dite à rapport de vraisemblance monotone décroissant si la factorisation
+  (2) a lieu et si, pour tous θ, θ′ ∈ Θ tels que θ > θ′ , la fonction
+
+                                                        ψ(t; θ)
+                                                t 7−→
+                                                        ψ(t; θ′ )
+
+  est strictement décroissante.
+
+
+     Théorème 1.4: Test U. P. P. pour une hypothèse unilatérale, cas décroissant
+  Soit un modèle à rapport de vraisemblance monotone décroissant en la statistique T au sens
+  de la Définition 1.5, et l’on suppose que, pour tout θ ∈ Θ, la variable T (Z) est à densité par
+  rapport à la mesure de Lebesgue sous Pθ . Soient θ0 ∈ Θ et α ∈ ]0, 1[.
+1. LES FONDAMENTAUX                                                                                         21
+
+
+
+    (i) Il existe un test U. P. P.(α) de
+
+                                     H0 : θ ≤ θ 0 ,    contre    H1 : θ > θ 0 ,
+
+         dont la fonction critique est
+                                              ϕθ0 (z) := 1{T (z)<dα } ,
+
+
+         où la constante dα est l’unique solution de Pθ0 (T (Z) < dα ) = α.
+    (ii) La fonction puissance θ 7→ βϕθ0 (θ) est croissante sur Θ.
+
+
+
+    La démonstration se ramène à celle du Théorème 1.3 en remplaçant la statistique T par −T ,
+et elle est donnée avec elle dans les compléments (Section 4).
+
+Les régions de rejet des tests unilatéraux. Les deux théorèmes précédents portent sur
+l’hypothèse nulle θ ≤ θ0 . L’hypothèse nulle θ ≥ θ0 s’en déduit en renversant les inégalités, et il
+vaut la peine d’écrire explicitement les quatre régions de rejet, puisque c’est ce qu’il faut savoir
+produire.
+  — Rapport croissant en T , pour H0 : θ ≤ θ0 ,              contre       H1 : θ > θ0 : on rejette lorsque
+    T (Z) > dα , avec Pθ0 (T (Z) > dα ) = α.
+  — Rapport croissant en T , pour H0 : θ ≥ θ0 ,              contre       H1 : θ < θ0 : on rejette lorsque
+    T (Z) < dα , avec Pθ0 (T (Z) < dα ) = α.
+  — Rapport décroissant en T , pour H0 : θ ≤ θ0 ,               contre     H1 : θ > θ0 : on rejette lorsque
+    T (Z) < dα , avec Pθ0 (T (Z) < dα ) = α.
+  — Rapport décroissant en T , pour H0 : θ ≥ θ0 ,               contre     H1 : θ < θ0 : on rejette lorsque
+    T (Z) > dα , avec Pθ0 (T (Z) > dα ) = α.
+Dans les quatre cas, le seuil se lit sous Pθ0 , c’est-à-dire à la borne extrémale de l’hypothèse nulle.
+Intuition. Une règle simple dispense d’apprendre ces quatre lignes par cœur : on rejette du côté où la
+statistique rend l’hypothèse alternative plus vraisemblable. Si le rapport croît avec T , les grandes valeurs
+de T plaident pour les grandes valeurs de θ, et l’on rejette θ ≤ θ0 lorsque T est grand ; si le rapport décroît
+avec T , ce sont les petites valeurs de T qui plaident pour les grandes valeurs de θ, et tout est renversé.
+
+
+   Méthode 1.3: Test U. P. P.(α) pour une hypothèse unilatérale
+  Il n’existe pas de test U. P. P.(α) en général. On sait en construire un lorsque les trois condi-
+  tions suivantes sont réunies.
+     1. Le paramètre θ est scalaire, Θ ⊆ R.
+     2. L’hypothèse est unilatérale, par exemple H0 : θ ≤ θ0 ,             contre   H1 : θ > θ 0 .
+     3. La famille de densités est à rapport de vraisemblance monotone en une statistique T ,
+        c’est-à-dire pθ (z) = h(z) ψ(T (z); θ) avec t 7→ ψ(t; θ)/ψ(t; θ′ ) strictement monotone pour
+        θ > θ′ .
+  Alors, pour θ > θ′ , le rapport de vraisemblance rθ′ ,θ (Z) = ψ(T (Z); θ)/ψ(T (Z); θ′ ) est une
+  fonction monotone de T (Z) ; et si T (Z) est à densité, le test U. P. P.(α) est ϕ(Z) = 1{T (Z)>dα }
+  ou ϕ(Z) = 1{T (Z)<dα } selon le sens de la monotonie, la constante dα étant choisie pour que
+  la taille soit exactement α en θ0 .
+
+    L’Exercice 1 (PC5) met cette marche à suivre en œuvre dans le modèle exponentiel, de la
+vérification de l’hypothèse de monotonie jusqu’au calcul du seuil. Les compléments en donnent
+22                                     CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+trois autres applications : la variance et la précision d’une gaussienne de moyenne nulle (Section 4),
+puis le modèle uniforme (Section 4), où le test U. P. P.(α) existe sans être unique.
+
+1.9     Quand il n’existe pas de test uniformément plus puissant
+    Le chapitre a construit des tests U. P. P.(α) dans deux situations. La construction ne s’étend
+pas aux hypothèses bilatérales, c’est-à-dire de la forme θ ̸= θ0 , et l’on peut montrer qu’il n’existe
+alors pas de test uniformément plus puissant. C’est un point important : il dit que la notion
+d’optimalité retenue dans ce chapitre est trop exigeante pour le test le plus courant en pratique.
+
+     Proposition 1.1: Absence de test U. P. P. pour une hypothèse bilatérale
+  Soit Z = (X1 , . . . , Xn ) un n-échantillon d’une famille exponentielle de densité
+                                                                      
+                                   pθ (x) = h(x) exp φ(θ)T (x) − ψ(θ)
+
+  par rapport à une mesure de domination µ, où P     h, φ, T, ψ sont àvaleurs scalaires et θ 7→ φ(θ)
+                                                       n
+  est strictement croissante. On suppose que Pθ        i=1 T (Xi ) = c = 0 pour tout θ ∈ Θ et tout
+  c ∈ R. Alors, pour α ∈ ]0, 1[, il n’existe pas de test U. P. P.(α) pour
+
+                                H0 : θ = θ 0 ,    contre   H1 : θ ̸= θ0 .                                (3)
+
+   Démonstration
+                  Pn
+  Notons Tn (z) := i=1 T (xi ). Pour θ1 ̸= θ0 , le rapport de vraisemblance entre θ1 et θ0 vaut
+                                                                        
+                      exp (φ(θ1 ) − φ(θ0 )) Tn (z) − n(ψ(θ1 ) − ψ(θ0 )) ,
+
+  fonction strictement croissante de Tn (z) si θ1 > θ0 et strictement décroissante si θ1 < θ0 .
+  Le Théorème 1.1 donne donc, pour le test simple H0′ : θ = θ0 contre H1′ : θ = θ1 , un test
+  U. P. P.(α) de la forme
+
+             ϕ+ (z) = 1{Tn (z)>d+
+                                α}
+                                     si θ1 > θ0 ,      ϕ− (z) = 1{Tn (z)<d−
+                                                                          α}
+                                                                               si θ1 < θ0 ,
+
+  les deux seuils étant déterminés par la condition de taille α sous Pθ0 , l’hypothèse d’absence
+  d’atome assurant que ces tests sont purs.
+  Supposons qu’il existe un test U. P. P.(α), de fonction critique ϕ⋆ , pour le test bilatéral (3). Il
+  est de niveau α et sa puissance domine celle de tout test de niveau α en chaque point θ ̸= θ0 ;
+  il est donc en particulier U. P. P.(α) pour chacun des tests simples H0′ contre H1′ , et ceci quelle
+  que soit la valeur θ1 ̸= θ0 . Le Théorème 1.2, appliqué avec θ1 > θ0 , donne ϕ⋆ = ϕ+ Pθ0 -presque
+  sûrement, et appliqué avec θ1 < θ0 , il donne ϕ⋆ = ϕ− Pθ0 -presque sûrement. Or ϕ+ et ϕ−
+  diffèrent sur les ensembles {Tn > d+                 −
+                                        α } et {Tn < dα }, qui sont tous deux de probabilité α > 0
+  sous Pθ0 : c’est une contradiction.                                                               □
+
+     Exemple 1.6: Le cas gaussien
+                                               
+  Prenons le modèle R, B(R), {N (θ, 1) , θ ∈ R} , dont la densité s’écrit
+                                          1   2                 
+                                pθ (z) = √ e−z /2 exp θz − θ2 /2 ,
+                                          2π
+                                                                        2
+  c’est-à-dire une famille exponentielle avec h(z) = (2π)−1/2 e−zP/2 , T (z) = z, φ(θ) = θ et
+  ψ(θ) = θ2 /2 ; la P
+                    fonction φ est strictement croissante, et Pθ ( i Xi = c) = 0 pour tout c
+  puisque la loi de i Xi est à densité. Les deux tests de Neyman-Pearson sont
+      ϕ+ (Z) = 1{Pn                  √
+                                         n z1−α } ,    ϕ− (Z) = 1{Pn                    √
+                                                                                            n z1−α } ,
+                    i=1 Xi > nθ0 +                                     i=1 Xi < nθ0 −
+1. LES FONDAMENTAUX                                                                                       23
+
+
+  et ils diffèrent : il n’existe pas de test U. P. P.(α) pour θ = θ0 contre θ ̸= θ0 .
+
+
+Intuition. La raison de fond est simple à énoncer : le meilleur test contre une alternative située à droite
+de θ0 rejette pour les grandes valeurs de la statistique, et le meilleur test contre une alternative située à
+gauche rejette pour les petites. Aucun test ne peut faire les deux à la fois sans perdre en puissance de
+chaque côté. Le test bilatéral usuel, qui rejette lorsque |X̄n − θ0 | est grand, n’est donc pas uniformément
+plus puissant : il est un compromis, et il faut affaiblir la notion d’optimalité pour pouvoir en dire quelque
+chose. Deux affaiblissements sont possibles : se restreindre à la classe des tests sans biais, ce qui conduit
+à l’optimalité U. M. P. U. étudiée dans les compléments (Section 4) et à l’Exercice 5 (PC5) ; ou changer
+de point de vue et mesurer la performance d’un test par la vitesse de séparation à laquelle il détecte une
+alternative, ce qui est évoqué en clôture des compléments.
+
+
+1.10     Comment interpréter la décision d’un test
+    Le chapitre se termine par un retour sur ce que dit, et surtout sur ce que ne dit pas, la décision
+d’un test. Le chapitre précédent en a dressé la liste (Section 2.8) ; deux questions méritent d’être
+reprises ici, parce qu’elles portent sur la décision elle-même et non sur la façon de la construire.
+    Si j’accepte H0 , ai-je prouvé H0 ? Certainement pas. On a seulement échoué à rejeter H0 : on
+n’a pas assez d’information statistique pour la rejeter. Il n’y a d’ailleurs aucune contradiction à
+ce que l’on échoue à rejeter H0 en testant H0 : µ ≤ µ0 , contre H1 : µ > µ0 et que l’on échoue
+également à rejeter H0 en testant H0 : µ > µ0 , contre H1 : µ ≤ µ0 : les deux tests ne sont
+pas construits sur la même hypothèse nulle, et ils ne se contredisent pas.
+    Si je rejette H0 , ai-je prouvé H1 ? Non, mais on a tiré une conclusion statistique : on a établi
+que, sous H0 , la probabilité d’observer ce que l’on a observé est inférieure à α. On a donc des
+raisons de croire que l’on n’est pas sous H0 . Il se peut néanmoins que le modèle lui-même ne soit
+pas correct, ou que θ ̸= θ0 n’implique pas θ = θ1 .
+
+La p-valeur du test U. P. P.
+   La p-valeur a été définie au chapitre 4, pour une famille de tests dont les régions de rejet sont
+emboîtées (Définition 2.4), et calculée dans le modèle gaussien de variance connue (Exemple 2.13).
+Le test U. P. P.(α) de l’Exemple 1.3 en fournit une famille explicite :
+
+                                     ϕ⋆α (Z) = 1{X̄n >µ0 +σz1−α /√n} .
+                                                                                      √
+Lorsque α décroît vers 0, le quantile z1−α croît vers +∞ et le seuil µ0 + σz1−α / n croît : les
+régions de rejet sont emboîtées, la définition du chapitre précédent s’applique, et la valeur de α à
+laquelle la décision bascule est celle qui égalise le seuil et la moyenne observée,
+                                                σ z1−α̂(Z)
+                                         µ0 +      √       = X̄n ,
+                                                     n
+c’est-à-dire                                      √n (X̄ − µ ) 
+                                                         n   0
+                                   α̂(Z) = 1 − Φ                  .
+                                                         σ
+La p-valeur du test uniformément plus puissant est donc celle qui a déjà été calculée au chapitre
+précédent. L’optimalité ne change pas la façon de lire une p-valeur : elle dit seulement de quelle
+famille de tests cette p-valeur est issue.
+
+Statistiquement significatif, et taille d’effet
+   Le caractère statistiquement significatif d’un résultat et l’importance de l’effet mesuré sont
+deux choses différentes. Le chapitre précédent l’a montré sur deux jeux de données de l’exemple
+du bruit d’aéroport (Exemple 2.14) : un dépassement de 8 dB mesuré sur n = 4 observations ne
+24                                        CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+conduit pas à rejeter, tandis qu’un dépassement de 0,2 dB mesuré sur n = 104 observations y
+conduit. La fonction puissance du test U. P. P.(α) dit pourquoi, et c’est ce point qui appartient à
+ce chapitre.
+
+
+
+
+                          Le problème de la taille d’effet (source : Nature, 2019).
+
+
+     La confusion des deux notions conduit à des énoncés faux. Ainsi, en 2020, devant les députés :
+
+       Moins il y a de gens quand c’est significatif, et plus c’est significatif. Tout essai qui comporte
+       plus de 10 000 personnes est un essai qui cherche à démontrer des choses qui n’existent pas.
+
+
+
+                                                                         D. Raoult, devant les députés, 2020.
+
+
+    L’énoncé correct est le suivant : moins il y a de participants lorsqu’un résultat est statistique-
+ment significatif, plus l’effet doit être de grande taille pour qu’on ait pu le détecter ; et tout essai
+qui nécessite plus de 10 000 personnes est un essai qui cherche à détecter des effets petits. C’est la
+lecture directe de la fonction puissance
+
+                                                     √        
+                        βϕ⋆ (µ1 ) = 1 − Φ z1−α −         n m/σ ,       m = µ1 − µ0 ,
+
+de l’Exemple 1.3 : à niveau et puissance fixés, la taille d’effet m détectable décroît en n−1/2 .
+
+Intuition. Les tests sont un outil précieux et dangereux. Précieux, parce qu’ils donnent une règle de
+décision dont on contrôle le risque d’erreur de première espèce, et que le chapitre a montré comment
+la rendre optimale. Dangereux, parce que la décision qu’ils produisent est binaire, qu’elle ne dit rien de
+l’ampleur de l’écart mesuré, et qu’elle se prête à des lectures erronées. La conclusion d’un test se lit toujours
+avec la taille d’effet à côté.
+
+
+   Ce chapitre clôt la première séquence du cours, qui aura parcouru le modèle statistique, l’es-
+timation, l’estimation optimale, les tests et les tests optimaux.
+
+
+
+1.11      En pratique : programme des exercices
+
+   Les notions de ce chapitre sont mises en œuvre dans la feuille d’exercices (PC 5), intégrée au
+chapitre (Section 3).
+1. LES FONDAMENTAUX                                                                                        25
+
+  Exercice                           Notions du cours               Rappels
+  Exo 1 – Modèle exponentiel         rapport de vraisemblance       Loi Gamma, additivité
+                                     monotone, test unilatéral
+  Exo 2 – Monotonie en le niveau     fonction     critique    de    Fonctions monotones, cas d’éga-
+                                     Neyman-Pearson,       taille   lité
+                                     et puissance
+  Exo 3 – Temps d’attente            rapport de vraisemblance       Loi géométrique, loi binomiale né-
+                                     monotone, statistique dis-     gative
+                                     crète
+  Exo 4 – Exponentielle translatée   test U. P. P. non unique,      Statistiques d’ordre, loi de X1:n
+                                     puissance égale à 1
+  Exo 5 – Modèle gaussien            absence de test U. P. P.       Loi gaussienne, quantiles
+                                     bilatéral, test sans biais,
+                                     U. M. P. U.
+  Exo 6 – Rapport généralisé         rapport de vraisemblance       Modèle linéaire gaussien, loi de Fi-
+                                     généralisé                     sher
+  Exo 7 – Modèle uniforme            rapport croissant sans être    Statistiques d’ordre, loi de Xn:n
+                                     strictement croissant, test
+                                     U. P. P. non unique
+
+    L’Exercice 1 (PC5) est l’application directe du Théorème 1.3 dans le modèle exponentiel :
+on y vérifie l’hypothèse de rapport de vraisemblance monotone, on construit le test U. P. P.(α)
+de θ ≤ θ0 contre θ > θ0 avec le calcul explicite des constantes, puis on compare avec le test
+d’hypothèses simples et avec l’exercice correspondant de la PC 4. L’Exercice 2 (PC5) est le seul
+exercice purement théorique de la feuille : on y montre que la valeur critique cα décroît avec α et
+que le risque de seconde espèce décroît lui aussi, propriété qui fonde la définition de la p-valeur.
+L’Exercice 3 (PC5) traite un plan d’expérience de durée aléatoire, où l’observation n’est pas un
+n-échantillon d’une loi usuelle et où la statistique de test est discrète.
+    L’Exercice 4 (PC5) est l’exception à la règle selon laquelle un test U. P. P.(α) doit être de taille
+exactement α : dans le modèle exponentiel translaté, la puissance du test vaut 1 sur tout Θ1 , ce qui
+rend la contrainte de taille inutile. L’Exercice 5 (PC5) est le plus long de la feuille : il reprend la
+Proposition 1.1 dans le cas gaussien, construit le test bilatéral et démontre qu’il est U. M. P. U.(α).
+L’Exercice 6 (PC5) porte sur le rapport de vraisemblance généralisé (Section 4) dans le modèle
+linéaire gaussien, et débouche sur l’analyse de la variance. L’Exercice 7 (PC5), enfin, reprend le
+modèle uniforme des trois premières semaines : la recette du cours ne s’y applique pas telle quelle,
+et l’on y retrouve, en la démontrant, la non-unicité du test U. P. P.(α) établie en complément
+(Section 4).
+Notions de probabilités clés utilisées cette semaine, à revoir : fonction de répartition et
+fonction quantile, loi Gamma et loi du χ2 , statistiques d’ordre, loi géométrique et loi binomiale
+négative, loi de Fisher (voir la partie Outils mathématiques ci-dessous).
+

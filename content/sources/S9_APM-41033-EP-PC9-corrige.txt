@@ -1,0 +1,855 @@
+Ecole Polytechnique, promotion 2025                                              PC-9 Cours APM 41033 EP
+
+
+1     Solutions
+Solution Exercice 1. Rappels : pour toute paire de v.a. (X, Y ), nous avons
+
+           E [ϕ(X, Y )] = E [E [ϕ(X, Y )|Y ]] = E [Ψ(Y )] ,           Ψ(Y ) := E [ϕ(X, Y )|Y ] .
+
+Dans le cas où la loi du couple (X, Y ) est de la forme p(x, y)dµ(x)dν(y), le terme de gauche
+s’écrit                                Z
+                         E [ϕ(X, Y )] =       ϕ(x, y) p(x, y)dµ(x)dν(y);
+                                                X×Y
+L’espérance conditionnelle vaut
+                        Z                                                Z
+                                    p(x, y)
+                Ψ(y) =      ϕ(x, y)         dµ(x);           pY (y) :=           p(u, y)dµ(u),
+                          X         pY (y)                                   X
+
+il s’agit de l’intégration en la variable x sous la loi conditionnelle de X sachant Y . Et donc,
+nous avons                                      Z
+                                 E [ϕ(X, Y )] =    Ψ(y) pY (y) dν(y).
+                                                      Y
+Lorsque X, Y sont indépendantes, la loi conditionnelle de X sachant Y est égale à la loi de
+X ; et nous avons donc
+                       Z                                    Z
+               Ψ(y) =    ϕ(x, y) pX (x)dµ(x);     pX (x) :=    p(x, y)dν(y) .
+                             X                                           Y
+
+Par suite, dans le cas de v.a. indépendantes, conditionner par rapport à Y , s’interprète comme
+(a) ”geler” la variable Y et considérer le calcul d’intégration par rapport à la variable x sous
+la loi de X ; (b) puis intégrer la quantité par rapport à la variable y sous la loi de Y .
+    1. Par linéarité de l’espérance
+                            h        i  1 X h
+                                          m                          i
+                           E R̂n,m Dn =     E 1{gn (Xn+j )̸=Yn+j } Dn .
+                                        m
+                                                      j=1
+
+       Comme la fonction aléatoire gn dépend des données Dn , et que les v.a. {(Xn+j , Yn+j )}j
+       sont indépendantes de Dn , on en déduit que (voir le rappel, cas indépendant)
+                          h                      i
+                        E 1{gn (Xn+j )̸=Yn+j } Dn = P(g(Xn+j ) ̸= Yn+j )|g=gn ;
+
+       puis, comme {(Xn+j , Yn+j )}j ont même loi que (X, Y ), il vient pour tout j ≥ 1,
+
+                                 P(g(Xn+j ) ̸= Yn+j ) = P(g(X) ̸= Y ) = R(g).
+
+       Ainsi, pour tout j ≥ 1,
+                                         h                        i
+                                     E       1{gn (Xn+j )̸=Yn+j } Dn = R(gn )
+
+       dont nous déduisons que pour tout n, m,
+                                       h        i
+                                      E R̂n,m Dn = R(gn ) .
+
+                                                                                                   Page 8
+Ecole Polytechnique, promotion 2025                                     PC-9 Cours APM 41033 EP
+
+
+   2. mR̂n,m est la somme des variables aléatoires 1{gn (Xn+j )̸=Yn+j } , j = 1, . . . , m. Attention :
+      il y a deux sources d’aléa, l’une via les données d’apprentissage au travers de gn , et
+      l’autre via les données de test au travers des {(Xn+j , Yn+j )}j . Puisque les données de
+      test et celles d’apprentissage sont indépendantes, conditionner par Dn permet de ”geler”
+      l’aléa contenu dans gn (et le voir comme une fonction déterministe) puis faire tous les
+      calculs d’espérance par rapport à la loi des données de test uniquement. Ces variables
+      sont, conditionnellement à Dn , indépendantes et de même loi de Bernoulli de paramètre
+      R(gn ), donc L(mR̂n,m |Dn ) = Bin(m, R(gn )).
+   3. On déduit de la question précédente que
+           h                    i  1               R(g ) (1 − R(g ))    1
+                                                        n          n
+          E (R̂n,m − R(gn ))2 Dn = 2 Var mR̂n,m |Dn =                  ⩽    .
+                                  m                          m           4m
+      La propriété
+                          h                 i   h h                     ii
+                         E (R̂n,m − R(gn ))2 = E E (R̂n,m − R(gn ))2 Dn
+
+      entraine                          h                 i  1
+                                      E (R̂n,m − R(gn ))2 ≤    .
+                                                            4m
+      Par application de l’inégalité de Markov, il vient
+                                                                     1
+                                     P(|R̂n,m − R(gn )| ≥ ε) ≤
+                                                                  ε2 4m
+   4. Les variables aléatoires {1{gn (Xn+j )̸=Yn+j } − R(gn )}mj=1 sont, conditionnellement à Dn ,
+      des variables aléatoires indépendantes à valeurs dans [−R(gn ), 1 − R(gn )] ; la taille de
+      cet intervalle vaut 1. L’inégalité de Hoeffding assure que
+                                                                
+                          Xm
+                        1
+      ∀ε > 0,      P         (1{gn (Xn+j )̸=Yn+j } − R(gn )) > ε
+                       m
+                          j=1
+                                                                     
+                           m
+                           X                                                    h        i
+                =E P  (1{gn (Xn+j )̸=Yn+j } − R(gn )) > mε Dn  ⩽ E e−2mε = e−2mε .
+                                                                                       2         2
+
+
+                           j=1
+
+      En appliquant le même raisonnement aux variables Rn − 1{gn (Xn+j )̸=Yn+j } , on trouve
+                                                                       
+                                  m
+                                  X
+                               1
+                                    (1{gn (Xn+j )̸=Yn+j } − R(gn )) < −ε ⩽ e−2mε .
+                                                                                   2
+               ∀ε > 0,     P
+                               m
+                                      j=1
+
+      On conclut avec une borne d’union :
+
+                                  P(|Z| ≥ ε) = P(Z ≥ ε) + P(Z ≤ −ε).
+
+Solution Exercice 2.     1. La transformée de Laplace d’une variable gaussienne centrée est de
+      variance σ 2 est exp(λ2 σ 2 /2). On en déduit que
+
+                                                              λ2 2
+                                            ln E[exp(λX)] =     σ .
+                                                              2
+
+                                                                                                Page 9
+Ecole Polytechnique, promotion 2025                                        PC-9 Cours APM 41033 EP
+
+
+     Nous avons en effet
+                                   Z                     
+                                           1           x2
+                 E[exp(λX)] = exp(λx)     √    exp − 2 dx
+                                         σ 2π         2σ
+                                    Z                        
+                                1              1    2      2
+                            = √        exp − 2 (x − 2λσ x) dx
+                              σ 2π            2σ
+                                         2 2Z                      
+                                1         λ σ               1     2 2
+                            = √ exp                exp − 2 (x − λσ ) dx
+                              σ 2π          2             2σ
+                                   2 2
+                                   λ σ
+                            = exp         × 1.
+                                     2
+                                                                                 P
+  2. Nous avons : E[exp(λX)] = (1/2){eλ + e−λ }. Puisque exp(u) =                         k
+                                                                                     k≥0 u /k!, il vient
+                                                        (∞                               )
+                        h     i     1 n −λ   o 1         X (−λ)k               ∞
+                                                                               X (λ)k
+                      E eλX       =    e + eλ =                           +
+                                    2           2                   k!              k!
+                                                            k=0            k=0
+                                                         X                 ∞
+                                                                           X
+                                                                    λk         λ2q
+                                                  =                    =
+                                                                    k!           (2q)!
+                                                      k≥0,k paire          q=0
+                                                          X∞      2k
+                                                                  λ         2
+                                                  ≤1+                   = eλ /2 .
+                                                                  2k k!
+                                                            k=1
+
+     L’inégalité résulte du fait que pour q ≥ 1,
+
+          (2q)! = 1 × 2 × · · · × (2q − 2) (2q − 1) 2q ≥ 2 × 4 × · · · × 2(q − 1) 2q = 2q q!.
+                                   
+     On en déduit que ln P E eλX ≤ λ2 /2.
+  3. Puisque les v.a. Xi sont indépendantes, nous avons
+                                        h Pn      i Yn  h     i
+                                       E eλ i=1 Xi =   E eλXi
+                                                        i=1
+                                           Pn
+     ce qui entraine que ψPni=1 Xi (λ) =     i=1 ψXi (λ). On en déduit le résultat demandé.
+  4. Soit Z une variable aléatoire à valeur réelle. Pour λ ≥ 0, l’inégalité de Markov implique
+
+                            P(Z ≥ t) ≤ e−λt E[eλZ ] = exp (−λt + ψZ (λ)) .
+
+     Puisque cette inégalité est valable pour toutes les valeurs de λ ≥ 0, elle est vraie en
+     considérant la valeur minimale en λ ce qui donne
+                                                                                !
+                 P(Z ≥ t) ≤ inf exp (−λt + ψZ (λ)) = exp − sup{λt − ψZ (λ)} .
+                              λ≥0                                        λ≥0
+
+
+  5. Considérons maintenant le cas où Z est une v.a. sous-gaussienne. Alors ψZ (λ) ≤ λ2 /2v
+     ce qui entraine                                              !
+                               P(Z ≥ t) ≤ exp − sup{λt − λ2 /2v} .
+                                                      λ≥0
+
+
+                                                                                                  Page 10
+Ecole Polytechnique, promotion 2025                                                 PC-9 Cours APM 41033 EP
+
+
+      Il suffit d’optimiser λ 7→ λt − λ2 v/2. Cette fonction a un maximum au point λ⋆ := t/v.
+      On en déduit que                                 2
+                                                            t
+                                       P(Z ≥ t) ≤ exp −         .
+                                                           2v
+      Enfin, en observant que si Z est sous-gaussienne, alors −Z l’est aussi, nous avons
+                                                      2
+                                                          t
+                                    P(−Z ≥ t) ≤ exp −         .
+                                                          2v
+      Les deux probabilités admettent le même majorant, donc le maximum des deux aussi.
+
+Solution Exercice 3.         1. Nous écrivons
+                                        n
+                                        X                       n
+                                                                X
+                        Sn − E[Sn ] =         (Zi − E[Zi ]) =         Xi       Xi := Zi − E[Zi ].
+                                        i=1                     i=1
+
+      Les v.a. (Xi )1≤i≤n sont centrées et indépendantes. P(Zi ∈ [ai , bi ]) = 1 entraine que
+      P(Xi ∈ [ai − E[Zi ], bi − E[Zi ]]) = 1. On peut donc appliquer (1) et l’on a
+
+                                                                 λ2 (bi − ai )2
+                                         ψXi (λ) ≤ λ × 0 +
+                                                                 2       4
+      dont on déduit que Xi ∈ G((bi − ai )2 /4).
+      On utilise alors la question 3 de l’exercice 2 pour en déduire que
+                                                           n
+                                                           X
+                                        Sn − E[Sn ] ∈ G(         (bi − ai )2 /4).
+                                                           i=1
+
+      On conclut ensuite en appliquant la question 5 de l’exercice 2.
+   2. La dérivée de t 7→ ln ϕ(λ) est donnée par ϕ′ (λ)/ϕ(λ). Puisque la dérivée de λ 7→
+      E [exp(λX)] vaut E [X exp(λX)], nous en déduisons que
+                                               Z                   Z
+                     ′       E [X exp(λX)]        exp(λx)µ(dx)
+                    ψX (λ) =                = x                  = xµλ (dx).
+                               E [exp(λX)]         E [exp(λX)]
+      De même,
+                                                                                      Z                Z              2
+       ′′       E       X 2 exp(λX) E [exp(λX)] − (E [X exp(λX)])2                           2
+      ψX  (λ) =                                                                     =       x µλ (dx)−        xµλ (dx)        .
+                                        (E [exp(λX)])2
+                            ′′ (λ) s’interprète comme la variance d’une v.a. de loi µ .
+      La dérivée seconde ψX                                                         λ
+   3. Soit λ ∈ R. La relation vient de l’inégalité de Taylor-Lagrange à l’ordre 2, et des relations
+                                                         Z            Z
+                                               ′
+               ψX (0) = ln 1 = 0,             ψX (0) = x µ0 (dx) = x µ(dx) = E[X].
+
+
+      Remarque. Par hypothèse
+                                                                   Z b
+                                         P(X ∈ [a, b]) = 1 =               µ(dx).
+                                                                      a
+
+
+                                                                                                              Page 11
+Ecole Polytechnique, promotion 2025                                                 PC-9 Cours APM 41033 EP
+
+
+      Soit Y ∼ µλ . Pour tout ensemble C ⊂ R \ [a, b],
+                        Z b
+                                  exp(λx)              exp(|λ| (|b| ∨ |a|))
+            P(Y ∈ C) =      1x∈C            µ(dx) ≤                         µ(C ∩ [a, b]) = 0.
+                         a       E[exp(λX)]               E[exp(λX)]
+      On en déduit que si Y ∼ µλ alors P(Y ∈ [a, b]) = 1.
+   4. D’après la remarque, nous avons
+                                                                         "               2 #
+                                              h                i                  a+b
+                                                           2
+                        Var(Y ) = minc∈R E (Y − c)                 ≤E         Y −                .
+                                                                                   2
+
+      Puisque Y ∈ [a, b],
+                                      a+b            a+b        a+b
+                                  a−        ≤Y −          ≤b−          ,
+                                        2              2          2
+      dont on déduit que (Y − (a + b)/2)2 ≤ (b − a)2 /4. Par suite, Var(Y ) ≤ (b − a)2 /4. La
+      question 2 entraine que ψZ′′ (λ) ≤ (b − a)2 /4. La majoration étant vraie pour tout λ ∈ R,
+      on a supλ∈R ψZ′′ (λ) ≤ (b − a)2 /4.
+                                       ′′ (u) ≤ (b − a)2 /4. Ainsi
+   5. La question 4 montre que supu∈R ψX
+
+                                                            λ2 (b − a)2
+                                       ψX (λ) ≤ λm +                    .
+                                                            2      4
+Solution Exercice 4.   1. (a) La fonction x 7→ eλx étant convexe, l’inégalité de Jensen as-
+          sure que, pour toute variable aléatoire X, eλE[X] ⩽ E[eλX ]. Cette inégalité appliquée
+          à X = maxi∈{1,...,m} Zi donne la première inégalité.
+          Pour la seconde, on utilise que
+                                                                     m
+                                                                     X
+                                       eλ maxi∈{1,...,m} Zi ≤              exp(λZi )
+                                                                     i=1
+
+           puis on applique l’espérance, et on utilise l’hypothèse sur la majoration de chaque
+           transformée de Laplace.
+       (b) D’après la question précédente, on a, pour tout λ > 0,
+                                                                            2 2
+                                         eλE[max1≤i≤m Zi ] ⩽ meλ σ /2 .
+
+           En prenant le logarithme et en divisant par λ (qui est strictement positif), on en
+           déduit
+                                                     log m     σ2
+                                   E[ max Zi ] ⩽           +λ     .
+                                     i∈{1,...,m}       λ       2
+           On prend la valeur de    √
+                                        λ qui équilibre les deux termes (ou celui qui minimise la
+                                      2 log m
+           fonction de λ) : λ =         σ     , et on obtient le résultat.
+       (c) On considère les variables aléatoires Z1′ , . . . , Z2m
+                                                                  ′  avec Zi′ = Zi pour tout 1 ⩽ i ⩽ m
+                                                                                            ′      2 2
+           et Zi′ = −Zi−m pour tout m + 1 ⩽ i ⩽ 2m. Ces variables satisfont E[eλZi ] ≤ eλ σ /2
+           pour tout i ∈ {1, . . . , 2m} et tout λ > 0. On a
+
+                                          max         |Zi | =         max         Zi′ .
+                                        i∈{1,...,m}                1∈{1,...,2m}
+
+           En appliquant la question précédente aux variables Zi′ , on obtient le résultat.
+
+                                                                                                     Page 12
+Ecole Polytechnique, promotion 2025                                         PC-9 Cours APM 41033 EP
+
+
+  2. (a) Nous écrivons
+                                                        n
+                                                   1X                                
+                             Rn (g) − R(g) =          1{g(Xk )̸=Yk } − P(g(X) ̸= Y )
+                                                   n
+                                                       k=1
+
+          Les variables aléatoires 1{g(Xi )̸=Yi } −P(g(X) ̸= Y ) sont indépendantes, de même loi,
+          et à valeurs dans [−R(g), 1 − R(g)], donc d’après le lemme d’Hoeffding (Polycopié
+          VI-3.8.), pour tout classifieur g et tout λ ∈ R,
+            "             n
+                                                     !#
+                       1X                                                                    
+          E exp λ{           1{g(Xi )̸=Yi } − R(g)} = E exp (λ/n) 1{g(Xi )̸=Yi } − R(g) n
+                       n
+                         i=1
+                                                                 2 n            2
+                                                                    λ               λ
+                                                        ≤ exp                = exp        .
+                                                                   8n2              8n
+
+      (b) Puisque gC⋆ et ĝn,C
+                           ∗ sont des éléments de C, nous avons par définition (de chacun)
+
+                                        ∗
+                                  Rn (ĝn,C ) ≤ Rn (gC⋆ ),        R(gC⋆ ) ≤ R(ĝn,C
+                                                                                ∗
+                                                                                    ).
+
+          Par suite,
+                  ∗
+          0 ≤ R(ĝn,C                   ∗
+                      ) − R(gC∗ ) = R(ĝn,C           ∗
+                                            ) − Rn (ĝn,C           ∗
+                                                          ) + Rn (ĝn,C ) − Rn (gC∗ ) + Rn (gC∗ ) − R(gC∗ )
+                                         ∗             ∗
+                                   ⩽ R(ĝn,C ) − Rn (ĝn,C ) + Rn (gC∗ ) − R(gC∗ ) .
+
+          Il s’en suit que
+                ∗
+                                                                                                            
+          E[R(ĝn,C                    ∗
+                    )] ⩽ R(g⋆∗ )+E R(ĝn,C           ∗
+                                           ) − Rn (ĝn,C                                    ∗
+                                                         ) +E [Rn (gC∗ ) − R(gC∗ )] = E R(ĝn,C           ∗
+                                                                                                ) − Rn (ĝn,C ) .
+
+          On notera en effet que
+                                           n
+                                           X
+                                       1
+                       E [Rn (gC∗ )] =           P(gC⋆ (Xk ) ̸= Yk ) = P(gC⋆ (X) ̸= Y ) = R(gC⋆ ).
+                                      n
+                                           k=1
+
+                                         ∗ )−R (ĝ ∗ ) n’est pas si simple puisqu’il y a un double
+          travailler l’espérance de R(ĝn,C     n n,C
+          aléa (qui n’est pas indépendant, puisque dépendant tous les deux de l’ensemble
+          d’apprentissage) : un aléa dans la définition du risque empirque Rn , qui s’applique
+                                             ∗ . Une façon de couper cette difficulté est d’écrire :
+          au second aléa : le classifieur ĝn,C
+                      ∗             ∗
+                  R(ĝn,C ) − Rn (ĝn,C ) ≤ sup (R(g) − Rn (g)) = sup (R(gi ) − Rn (gi ))
+                                                 g∈C                      1≤i≤M
+
+          D’après la question 2a, la question 1b s’applique avec σ 2 ← 1/4n et m ← M et on
+          en déduit                                         r
+                                        ∗                  1   2 log(M )
+                                  E[R(ĝn,C )] ⩽ R(gC⋆ ) +               .
+                                                           2       n
+     Remarque : on a ici obtenu une borne sur l’excès de risque intégré. On aurait pu obtenir
+     une borne en intégrant la borne PAC du cours, mais on aurait obtenu une borne pro-
+     portionnelle au cardinal de l’ensemble C(carpla borne PAC du cours résulte d’Hoeffding
+     + une borne d’union “brutale”) au lieu de log(|C|).
+     En effet, en utilisant Pisier, on contrôle mieux l’espérance du max de |C| variables
+
+                                                                                                     Page 13
+Ecole Polytechnique, promotion 2025                                          PC-9 Cours APM 41033 EP
+
+
+     aléatoires (potentiellement dépendantes) sous-gaussiennes (l’intuition est que, par exemple
+     pour des variables aléatoires gaussiennes, (l’espérance du) maximum de k = |C| variables
+     croit
+       Pk très lentement en fonction du nombre de variables, utiliser la borne E max Xi ≤
+     E i=1 Xi ≤ kEX résulterait en une dépendance linéaire en k extrêmement pessimiste.
+     Au contraire E max Xi = ln exp(E max Xi ) ≤ ln E exp max Xi ≤ ln kE exp(X) (avec en
+     plus de l’optimisation en λ) permet d’avoir une dépendance plus raisonnable !
+     D’un autre coté, dans le cours comme dans l’exercice, la concentration vis a vis des
+     v.a. de Bernoulli découle du lemme de Hoeffding, qui montre que des variables bornées
+     centrées sont sous-gaussiennes (avec paramètre (b − a)2 /4), et qui n’est pas optimal (cf
+     cours) pour des Bernoullis.
+  3. On a, en remarquant que 1{Yi ̸=g(Xi )} = 1 − 1{Yi =g(Xi )}
+                              n
+                              X                                 n
+                                                               XX
+                    arg min         1{Yi ̸=g(Xi )} = arg max             1{Yi =g(x)} 1{Xi =x} .
+                      g∈C     i=1                    g∈C       x∈X i=1
+
+     Ainsi, toute règle de décision gn vérifiant, en tout point x,
+                           (         Pn                        Pn
+                             1 si      i=1 1{Yi =1} 1{Xi =x} ≥        1{Yi =0} 1{Xi =x} ,
+                 gn (x) =            Pn                        Pni=1
+                             0 si      i=1 1{Yi =1} 1{Xi =x} <   i=1 1{Yi =0} 1{Xi =x} ,
+
+     minimise le risque empirique. Comme gn∗ vérifie ces conditions, c’est un minimiseur du
+     risque empirique.
+  4. (a) Comme le classifieur bayésien g ∗ est une règle de classification : g ∗ ∈ C ; donc R∗ ≥
+         inf g∈C R(g). D’autre part, par définition du classifieur bayésien, R(g) − R∗ ⩾ 0.
+         Ainsi, inf g∈C R(g) ⩾ R∗ .
+         Soit g ∈ C. Les variables aléatoires {1{g(Xi )̸=Yi } }i sont indépendantes et à valeurs
+         dans [0, 1], donc d’après l’inégalité de Hoeffding
+                                                                                      2
+                                  ∀ε > 0,     P(|Rn (g) − R(g)| > ε) ⩽ 2e−2nε .
+
+          Comme le cardinal de C est 2K , en appliquant une borne d’union, on en déduit
+                                                  X                                     2
+          ∀ε > 0,   P(sup |Rn (g) − R(g)| > ε) ⩽     P(|Rn (g) − R(g)| > ε) ≤ 2K+1 e−2nε .
+                            g∈C                              g∈C
+
+
+      (b) On a
+
+                   R(gn∗ ) − R∗ = R(gn∗ ) − Rn (gn∗ ) + Rn (gn∗ ) − Rn (g ∗ ) + Rn (g ∗ ) − R∗ .
+
+          Pour les mêmes raisons que dans la question 2b, nous avons
+                                      "                   #     "                                  #
+               0 ≤ E [R(gn∗ )] − R∗ ⩽ E sup (Rn (g) − R(g)) ≤ E sup |Rn (g) − R(g)|                    .
+                                              g∈C                               g∈C
+
+          En se rappelant que                            Z ∞
+                                            E [|U |] =         P(|U | ≥ ε)dε
+                                                         0
+
+
+
+                                                                                                   Page 14
+Ecole Polytechnique, promotion 2025                                    PC-9 Cours APM 41033 EP
+
+
+             on en déduit que
+                                                 Z +∞
+                            E[R(gn∗ ) − R∗ ] ≤          P(sup |Rn (g) − R(g)| > ε)dε .
+                                                 0          g∈C
+
+             Pour majorer cette intégrale, on veut utiliser la borne de la question 4a. On re-
+             marque que cette borne n’est informative que lorsque ε est suffisamment grand
+             (pour les petites valeurs de ε, elle est supérieure à 1). On utilise donc la borne de
+             la question 4a pour les grandes valeurs de ε et pour les petites valeurs de ε, on
+             majore la probabilité par 1. On obtient que, pour tout x > 0,
+                                   Z x      Z +∞
+                       ∗      ∗                                2
+                 E[R(gn ) − R ] ⩽      dε +        2K+1 e−2nε dε
+                                    0         x
+                                   Z x             Z +∞
+                                              K+1                   2
+                                =      dε + 2            e−2n(ε+x) dε
+                                    0                0
+                                                     Z +∞
+                                        K+1 −2nx   2             2                     2p
+                                ⩽x+2        e              e−2nε dε = x + 2K−1 e−2nx 2π/n .
+                                                        0
+
+             où la dernière inégalité est obtenu en développant le carré dans l’exponentielle et
+             en remarquant que εx ⩾ 0. Le majorant est vrai pour tout x > 0 et il est de la
+             forme x + exp(A − 2nx2 ) avec
+                                                                    
+                                                               1     2π
+                                            A = (K − 1) ln 2 + ln         .
+                                                               2      n
+             En prenant 2nx2 = A − ln(A/2n)/2, nous obtenons
+                                             r       r
+                         K−1 −2nx2
+                                   p           A       (K − 1) ln 2 ln(2π) − ln n
+                    x+2     e       2π/n ≤ 2      ≤                +              .
+                                               2n          2n            4n
+Solution Exercice 5.   1. Les variables aléatoires Yi = 1{Xi ∈R} sont indépendantes, de loi de
+      Bernoulli de paramètre
+                                                         |P ∩ R|
+                                  E[Yi ] = P(Xi ∈ R) =           .
+                                                           |P|
+      Le résultat
+                Pkest donc une application de l’inégalité de Hoeffding en remarquant que
+      |R ∩ S| = i=1 1{Xi ∈R} .
+   2. C’est une conséquence directe du résultat de la question précédente.
+   3. On a
+                              |R ∩ S| |R ∩ P|        |R ∩ S| |R ∩ P|
+                           sup       −        ⩾ sup         −        ,
+                          R∈R   |S|     |P|     R∈RS   |S|     |P|
+      car RS ⊂ R. Réciproquement, quelque soit R ∈ R, il existe R′ ∈ RS tel que R∩P = R′ ∩P.
+      Il s’en suit que, nécessairement R ∩ S = R′ ∩ S, donc, que
+                 |R ∩ S| |R ∩ P|   |R′ ∩ S| |R′ ∩ P|        |R ∩ S| |R ∩ P|
+                        −        =         −         ⩽ sup         −        .
+                   |S|     |P|       |S|      |P|      R∈RS   |S|     |P|
+
+      Cette inégalité étant vraie pour tout R ∈ R, on a finalement
+                              |R ∩ S| |R ∩ P|        |R ∩ S| |R ∩ P|
+                           sup       −        ⩽ sup         −        .
+                          R∈R   |S|     |P|     R∈RS   |S|     |P|
+
+                                                                                             Page 15
+Ecole Polytechnique, promotion 2025                                             PC-9 Cours APM 41033 EP
+
+                                                 d
+   4. Remarquons d’abord que |RS | = n(n−1)   2      ⩽ n2d /2. En appliquant une borne d’union
+      dans le résultat de la question 1., on en déduit que
+                                                             !
+                                      |R ∩ S| |R ∩ P|                   2
+                            P sup             −          > ε ⩽ n2d e−2ε k .
+                               R∈RS     |S|       |P|
+
+      Si k ⩾ (d/ε2 ) log(n/δ 1/2d ), cette inégalité implique
+                                                                            !
+                                              |R ∩ S| |R ∩ P|
+                                       P sup         −        >ε                ⩽δ.
+                                         R∈RS   |S|     |P|
+
+      Sur l’événement supR∈RS |R∩S|    |R∩P|
+                                    |S| − |P|  ⩽ ε, dont la probabilité est supérieure à 1 − δ,
+      on a, d’après la question 3.,
+                                                  |R ∩ S| |R ∩ P|
+                                              sup        −        ⩽ε.
+                                              R∈R   |S|     |P|
+Solution Exercice 6.       1. On a par définition de Pq ,
+                                                      1
+                       Pq (X = aj , Y = qj ) =          ,   Pq (X = aj , Y = 1 − qj ) = 0 .
+                                                      K
+      Donc
+                                                                                                1
+                 Pq (X = aj ) = Pq (X = aj , Y = qj ) + Pq (X = aj , Y = 1 − qj ) =               .
+                                                                                                K
+      Ainsi, sous Pq , X suit la loi uniforme sur {a1 , . . . , aK }.
+   2. Soit g un classifieur, on a
+                           K
+                           X
+      Pq (Y ̸= g(X)) =           Pq (Y ̸= g(X) ∩ X = ai )
+                           i=1
+                           XK
+                       =         Pq (Y ̸= g(ai ) ∩ X = ai )
+                           i=1
+                           K
+                           X
+                       =         Pq (Y = qi ∩ X = ai )1{qi ̸=g(ai )} + Pq (Y = 1 − qi ∩ X = ai )1{qi =g(ai )}
+                           i=1
+                                 K
+                         1 X
+                       =     1{qi ̸=g(ai )} .
+                         K
+                                 i=1
+
+   3. Pour tout i ∈ {1, . . . , K}, gq (ai ) = qi , donc Pq (Y ̸= gq (X)) = 0 d’après la question
+      précédente. Il s’en suit que
+                         RP∗ q =        inf      Pq (Y ̸= g(X)) = Pq (Y ̸= gq (X)) = 0 .
+                                     g:X→{0,1}
+
+   4. La première inégalité vient du fait que l’ensemble des lois de probabilité sur X ⊗
+      P({0, 1}) contient l’ensemble (Pq )q∈{0,1}K et que, pour ces lois, RP∗ q = 0 par la question
+      précédente. La seconde inégalité vient des majorations, pour tout q ∈ {0, 1}K ,
+               En,q [Pq (Y ̸= gn (X; Dn )|Dn )] ⩽           sup     En,q [Pq (Y ̸= gn (X; Dn )|Dn )] .
+                                                         q∈{0,1}K
+
+
+                                                                                                         Page 16
+Ecole Polytechnique, promotion 2025                                                    PC-9 Cours APM 41033 EP
+
+
+     Pour la troisième inégalité, on écrit
+
+                  En,q [Pq (Y ̸= gn (X; Dn )|Dn )] = EDn ∼Pn,q ,(X,Y )∼Pq [1{Y ̸=gn (X;Dn )} ] .
+
+     On a ensuite
+                               1{Y ̸=gn (X;Dn )} ⩾ 1{Y ̸=gn (X;Dn )} 1{X ∈{X
+                                                                         / 1 ,...,Xn }} .
+
+     Comme 1{X ∈{X
+               / 1 ,...,Xn }} est mesurable par rapport à la tribu engendrée par (Dn , X),
+
+     EDn ∼Pn,q ,(X,Y )∼Pq [1{Y ̸=gn (X;Dn )} ] ⩾ EDn ∼Pn,q ,(X,Y )∼Pq [EDn ∼Pn,q ,(X,Y )∼Pq [1{Y ̸=gn (X;Dn )} 1{X ∈{X
+                                                                                                                   / 1 ,...,Xn }} |X, D
+                                                   = EDn ∼Pn,q ,(X,Y )∼Pq [Eq [1{Y ̸=gn (X;Dn )} 1{X ∈{X
+                                                                                                     / 1 ,...,Xn }} |X, Dn ]]
+                                                   = EDn ∼Pn,q ,(X,Y )∼Pq [Eq [1{Y ̸=gn (X;Dn )} |X, Dn ]1{X ∈{X
+                                                                                                             / 1 ,...,Xn }} ] .
+
+
+  5. Si on fixe Dn , on fixe la règle gn (·, Dn ) et en particulier la valeur de gn (ai , Dn ) en
+     tous les points ai ∈   / Dn , de façon indépendante de Dn . Pour tout i ∈ {1, . . . , K} tel que
+        / {X1 , . . . , Xn }, il existe 2K−1 valeurs de q ∈ {0, 1}K tels que qi = gn (ai , Dn ) et 2K−1
+     ai ∈
+     q ∈ {0, 1}K tels que qi = 1 − gn (ai , Dn ). Pour les premiers EPq [1{Y ̸=gn (ai ;Dn )} |Dn ] = 0
+     et pour les seconds EPq [1{Y ̸=gn (x;Dn )} |Dn ] = 1.
+  6. Comme X, X1 , . . . , Xn sont indépendants et, sous Pq , de même loi uniforme sur {a1 , . . . , aK },
+
+                          Pq (X1 ̸= x, . . . , Xn ̸= x) = P(X ̸= x)n = (1 − K −1 )n .
+
+  7. On déduit de la question 4
+                                                              1      X
+     sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP∗ } ⩾                                EDn ∼Pn,q ,(X,Y )∼Pq [Eq [1{Y ̸=gn (X;Dn )} |X, Dn ]1{X ∈{X
+                                                                                                                                        / 1 ,...
+      P                                                      2K
+                                                                  q∈{0,1}K
+
+     Il vient ensuite de la question 5
+
+          sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP∗ }
+           P
+                           1                       X
+                      ⩾                                                     EDn ∼Pn,q ,(X,Y )∼Pq [1{X ∈{X
+                                                                                                      / 1 ,...,Xn }} ] .
+                          2K
+                               q∈{0,1}K :E     1
+                                             q [ {Y ̸=gn (x;Dn )} |Dn ]=1
+
+
+     On a alors, d’après la question 6,
+
+          sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP∗ }
+           P
+                                                                                                                  n
+                                  Card({q ∈ {0, 1}K : Eq [1{Y ̸=gn (x;Dn )} |Dn ] = 1})                        1
+                                ⩾                                                                           1−          .
+                                                       2K                                                      K
+
+     En appliquant le résultat de la question 5 de nouveau, on a finalement
+                                                                        
+                                                         ∗     1       1 n
+                    sup {En [P(Y ̸= gn (X; Dn )|Dn )] − RP } ⩾     1−        .
+                     P                                         2       K
+
+     Comme X est infini, on peut appliquer l’inégalité précédente pour toute valeur de K.
+     En prenant la limite de cette inégalité lorsque K → ∞, on obtient (2).
+
+
+                                                                                                                Page 17
+Ecole Polytechnique, promotion 2025                                       PC-9 Cours APM 41033 EP
+
+
+Solution Exercice 7.       1. On a
+
+                     R(ga,b ) = P(a⊤ X + b ⩾ 0 ∩ Y = 0) + P(a⊤ X + b < 0 ∩ Y = 1)
+                             = (1 − p)(1 − F0,a (−b)) + pF1,a (−b) .
+
+   2. D’après la question 1.,
+
+                             R(g−a,−b ) = (1 − p)(1 − F0,−a (b)) + pF1,−a (b) .
+
+      Comme pour tout couple a, b,
+
+                                           Fi,a (b) = 1 − Fi,−a (−b) ,
+
+      on en déduit
+                             R(g−a,−b ) = (1 − p)F0,a (−b) + p(1 − F1,a (−b)) .
+
+   3. On calcule
+
+      R(g−a,−b )+R(ga,b ) = (1−p)F0,a (−b)+p(1−F1,a (−b))+(1−p)(1−F0,a (−b))+pF1,a (−b) = 1 .
+
+
+      R(g−a,−b ) − R(ga,b ) = (1 − p)F0,a (−b) + p(1 − F1,a (−b)) − (1 − p)(1 − F0,a (−b)) − pF1,a (−b)
+                             = (1 − p)(2F0,a (−b) − 1) + p(1 − 2F1,a (−b))
+                             = −2 [−(1 − p)F0,a (−b) + pF1,a (−b) + (1/2 − p)] .
+
+      D’après l’indication, on en déduit
+                                             1
+              min (R(g−a,−b ), R(ga,b )) =     − |−(1 − p)F0,a (−b) + pF1,a (−b) + (1/2 − p)| .
+                                             2
+
+   4. On prend la limite du majorant lorsque b → +∞, on en déduit, si p ̸= 1/2,
+                                                      1
+                                  min R(g−a,−b ) ⩽      − |1/2 − p| < 1/2 .
+                                   a,b                2
+
+   5. Supposons p = 1/2. Si il existe a, b tels que
+
+                                          −F0,a (−b) + F1,a (−b) ̸= 0 ,
+                 
+      alors Leb( x ∈ Rd : f1 (x) ̸= f0 (x) 
+                                           ) > 0.
+      Supposons réciproquement que Leb( x ∈ Rd : f1 (x) ̸= f0 (x) ) > 0, alors, il existe a et
+      b tels que
+                                    −F0,a (−b) + F1,a (−b) ̸= 0 .
+      Donc
+                                    1           1           1 1
+                                 | − F0,a (−b) + F1,a (−b) + − | > 0 .
+                                    2           2           2 2
+      Ainsi
+                                         1      1           1           1 1
+                   min R(g−a,−b ) ⩽        − | − F0,a (−b) + F1,a (−b) + − | < 1/2 .
+                    a,b                  2      2           2           2 2
+
+
+
+                                                                                            Page 18
+Ecole Polytechnique, promotion 2025                                           PC-9 Cours APM 41033 EP
+
+
+  6. Considérons l’ensemble A des couples (A, z), où A ⊂ {1, . . . , n}, est de cardinal d et
+     z ∈ {−1, 1}. Le cardinal de A est clairement égal à 2 nd . On peut, à tout couple (A, z)
+     de A, associé le classifieur gA,z de Cn défini par ĝn,i1d ,z (x), avec A = {i1d }. L’application
+     (A, z) 7→ gA,z réalise une surjection par construction
+                                                                 de Cn , ce qui montre que le cardinal
+     de Cn est inférieur à celui de A donc à 2 nd .
+  7. Soit g ∈ C et i1 , . . . , ik l’ensemble des indices des points C1 de la forme Xi tels que
+     g(Xi ) = 1, ik+1 , . . . , in les indices des points C0 tels que g(Xi ) = 0. Les enveloppes
+     convexes des points Xi1 , . . . , Xik et des points Xik+1 , . . . , Xin sont disjointes et les bords
+     de ces enveloppes convexes sont des hyperplans affines définissant les classifieurs de Cn .
+     Parmi ces classifieurs, il en existe au moins un définissant les mêmes classes que g, sauf
+     peut être en les d points le définissant. On a donc
+
+                               ∀g ∈ C, ∃h ∈ Cn :            R         b n (g) + d .
+                                                            b n (h) ⩽ R
+                                                                                n
+  8. On a
+                                            b n (ĝ ⋆ ) + R
+                 R(ĝn⋆ ) − R⋆ = R(ĝn⋆ ) − R             b n (ĝ ⋆ ) − R
+                                                                        b n (g ⋆ ) + R
+                                                                                     b n (g ⋆ ) − R⋆ .
+                                                   n             n
+
+     On a clairement
+                                            b n (ĝn⋆ ) ⩽ max{R(g) − R
+                                 R(ĝn⋆ ) − R                        b n (g)} .
+                                                         g∈Cn
+
+     D’après la question 7., on a aussi
+
+                                                          b n (g ⋆ ) ⩽ d .
+                                            b n (ĝn⋆ ) − R
+                                            R
+                                                                       n
+     Le résultat se déduit de ces trois bornes.
+  9. On utilise d’abord la question 8. pour obtenir
+                                                                                   
+            P(R(ĝn⋆ ) − R⋆ ⩾ ε) ⩽ P max{R(g) − R            b n (g ⋆ ) − R⋆ + d ⩾ ε .
+                                                  b n (g)} + R
+                                      g∈Cn                                     n
+
+     On utilise ensuite le fait que A + B ⩾ x seulement si A ⩾ x/2 ou B ⩾ x/2 valable pour
+     tout réel x pour dire que
+                                                                                    
+            ⋆      ⋆                        b                    b   ⋆    ⋆   d
+     P(R(ĝn ) − R ⩾ ε) ⩽ P max{R(g) − Rn (g)} ⩾ ε/2 + P Rn (g ) − R + ⩾ ε/2 .
+                                 g∈Cn                                         n
+
+     Enfin, on obtient la majoration désirée en utilisant une borne d’union pour majorer
+                                                    X                         
+                                b
+                P max{R(g) − Rn (g)} ⩾ ε/2 ⩽              P R(g) − Rb n (g) ⩾ ε/2 .
+                      g∈Cn
+                                                              g∈Cn
+
+
+ 10. D’après l’inégalité d’Hoeffding, on a
+                                               
+                                              d               d 2           ε2
+                                                  ⩽ e−2n( 2 − n ) ⩽ e2εd e−n 2 .
+                                                          ε
+                            b   ⋆      ⋆
+                      P Rn (g ) − R ⩾ ε/2 −
+                                              n
+
+
+
+
+                                                                                                         Page 19
+Ecole Polytechnique, promotion 2025                                                       PC-9 Cours APM 41033 EP
+
+
+ 11. On a
+                                                X n
+                         b n (ĝn,i ,z ) = 1
+        R(ĝn,i1d ,z ) − R                          {R(ĝn,i1d ,z ) − 1{ĝn,i ,z (Xj )̸=Yj } }
+                                    1d
+                                             n                               1d
+                                                j=1
+           1 X                                                      1 X
+        =             {R(ĝn,i1d ,z ) − 1{ĝn,i ,z (Xj )̸=Yj } } +         {R(ĝn,i1d ,z ) − 1{ĝn,i ,z (Xj )̸=Yj } }
+           n                                   1d                  n                                1d
+                 j ∈i
+                   / 1d                                                           j∈i1d
+             1 X                                                                d
+         ⩽                {R(ĝn,i1d ,z ) − 1{ĝn,i           (Xj )̸=Yj } } +     .
+             n                                        1d ,z                     n
+                 j ∈i
+                   / 1d
+
+     où nous avons utilisé R(ĝn,i1d ,z ) = P ( ĝn,i1d ,z (Xj ) ̸= Yj | Xi1 , . . . , Xid ) pour j ̸∈ i1d . On
+     en déduit, en appliquant l’inégalité de Hoeffding
+                                                                                 
+            Xn
+          1                                                                                    n2    d 2          ε2
+               {R(ĝn,i1d ,z ) − 1{ĝn,i ,z (Xj )̸=Yj } } ≥ ε/2 Xi1 , . . . , Xid  ⩽ e−2 n−d ( 2 − n ) ⩽ e2εd e−n 2 .
+                                                                                                  ε
+     P
+          n                             1d
+             j=1
+
+
+ 12. En injectant les bornes des questions (9) et (10) dans la majoration obtenue à la question
+     9., on obtient
+                                                                       
+                                      n                 ε2                             ε2
+                                          + 1 e2εd e−n 2 ⩽ 2ed log(e d ) + 1 e2εd e−n 2 .
+                                                                      n
+                 ⋆      ⋆
+           P(R(ĝn ) − R ⩾ ε) ⩽ 2
+                                      d
+
+     On choisit alors n assez grand pour que
+                                                       ε2
+                          log 2ed log(e d ) + 1 + 2εd − n ⩽ − log 1/δ ,
+                                        n
+
+                                                         2
+                                                                 
+     ce qui est possible car, lorsque n → ∞, log 2ed log(e d ) + 1 ∼ log n et donc
+                                                           n
+
+
+
+
+                                                                   ε2   ε2
+                                      log 2ed log(e d ) + 1 + 2εd − n ∼ −n .
+                                                    n
+
+                                                                     2    2
+
+
+
+
+                                                                                                              Page 20
+

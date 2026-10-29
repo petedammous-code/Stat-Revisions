@@ -1,0 +1,327 @@
+36                                             CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+2      Les outils mathématiques
+    Vous retrouverez ci-dessous les éléments de probabilité que la partie précédente mobilise : les
+modes de convergence et les implications qui les relient, les deux inégalités qui donnent la loi faible
+des grands nombres, les deux lemmes d’analyse qui apparaissent dans la preuve du théorème de la
+limite centrale, le procédé qui ramène une convergence de vecteurs à une convergence de variables
+réelles, et la différentiabilité d’une fonction vectorielle. La liste des résultats admis dans ce chapitre
+clôt la partie.
+
+
+2.1     Les modes de convergence et leurs liens
+
+     Définition 2.1: Convergence en probabilité
+    Soient {Xn , n ∈ N} une suite de vecteurs aléatoires à valeurs dans Rd et X un vecteur
+    aléatoire à valeurs dans Rd , définis sur un même espace de probabilité (Ω, F, P). La suite
+                                                                          P−prob
+    {Xn , n ∈ N} converge en probabilité vers X, ce que l’on note Xn −→ X, si pour tout ε > 0,
+
+                                      lim P (∥Xn − X∥ > ε) = 0 .
+                                      n→∞
+
+
+
+    La définition 1.2 est cette définition, écrite pour une suite d’estimateurs dont la limite est la
+constante g(θ), sous la probabilité Pn,θ ; la convergence en loi (définition 1.4) ne demande pas,
+elle, que les variables soient définies sur un même espace.
+
+     Proposition 2.1: Convergence d’un vecteur et de ses coordonnées
+    Soient {Xn , n ∈ N} et {Yn , n ∈ N} deux suites de vecteurs aléatoires à valeurs dans Rd et
+    Rp , et X, Y deux vecteurs aléatoires à valeurs dans Rd et Rp , définis sur le même espace de
+                                 P−prob                             P−prob          P−prob
+    probabilité. Alors (Xn , Yn ) −→ (X, Y ) si et seulement si Xn −→ X et Yn −→ Y .
+
+
+     Démonstration
+    C’est une conséquence directe des inégalités
+
+                     ∥x1 − x2 ∥ ≤ ∥(x1 , y1 ) − (x2 , y2 )∥ ≤ ∥x1 − x2 ∥ + ∥y1 − y2 ∥ .
+
+                                                                                                     □
+
+    L’énoncé analogue est faux pour la convergence en loi : si Xn ∼ N (0, 1) et Yn := (−1)n Xn ,
+chaque composante converge en loi vers N (0, 1), mais le couple (Xn , Yn ) ne converge pas en loi, car
+E[f (Xn + Yn )] vaut alternativement E[f (2Xn )] et f (0). C’est pourquoi la démonstration du lemme
+de Slutsky établit la convergence en loi du couple (Xn , Yn ) et non celle de chaque composante.
+
+     Théorème 2.1: Théorème de continuité, convergence en probabilité
+    Soient {Xn , n ∈ N} une suite de vecteurs aléatoires à valeurs dans Rd et X un vecteur aléatoire
+    à valeurs dans Rd , définis sur le même espace de probabilité (Ω, F, P). Soit φ : Rd → Rm une
+                                                                                          P−prob
+    fonction continue en tout point d’un ensemble C tel que P(X ∈ C) = 1. Si Xn −→ X, alors
+           P−prob                                P−prob
+    φ(Xn ) −→ φ(X). En particulier, si Xn −→ c où c est une constante et si φ est continue
+                             P−prob
+    au point c, alors φ(Xn ) −→ φ(c).
+2. LES OUTILS MATHÉMATIQUES                                                                        37
+
+   Démonstration
+  Soit ε > 0. Pour δ > 0, soit Bδ l’ensemble des points x pour lesquels il existe y vérifiant
+  ∥x − y∥ ≤ δ et ∥φ(x) − φ(y)∥ ≥ ε. Si x ∈
+                                         / Bδ et ∥φ(xn ) − φ(x)∥ ≥ ε, alors ∥xn − x∥ > δ. On
+  a donc
+                 P (∥φ(Xn ) − φ(X)∥ ≥ ε) ≤ P (X ∈ Bδ ) + P (∥Xn − X∥ > δ) .
+                                                P−prob
+  Le second terme tend vers zéro puisque Xn −→ X. Par ailleurs P(X ∈ Bδ ∩ C c ) = 0 et, la
+  famille (Bδ )δ>0 étant décroissante en δ et φ étant continue en tout point de C, limδ→0 P(X ∈
+  Bδ ∩ C) = 0. Le cas d’une limite constante s’obtient en prenant X = c et C = {c}.           □
+
+
+
+   Théorème 2.2: Convergence en probabilité et convergence en loi
+  Soit (Ω, F, P) un espace de probabilité, {Xn , n ∈ N} une suite de vecteurs aléatoires et X un
+  vecteur aléatoire définis sur (Ω, F, P) et à valeurs dans Rd . Alors
+            P−prob
+    (i) Xn −→ X entraîne Xn =⇒ X ;
+                                    P−prob
+   (ii) si c est une constante, Xn −→ c si et seulement si Xn =⇒ c.
+
+
+
+   Démonstration
+  Pour (i), soit f lipschitzienne bornée, de constante de Lipschitz Lf . Pour tout ε > 0,
+
+                     |E[f (Xn )] − E[f (X)]| ≤ εLf + 2 ∥f ∥∞ P (∥Xn − X∥ ≥ ε) ,
+
+  en séparant selon que ∥Xn − X∥ est inférieur ou supérieur à ε. Le second terme tend vers
+  zéro et le premier est arbitrairement petit ; le théorème de Portmanteau 1.3 conclut. Pour
+  (ii), le sens direct découle de (i) ; la réciproque est la première remarque qui suit le lemme de
+  Slutsky 1.1.                                                                                   □
+
+
+
+   La convergence presque sûre, P (limn Xn = X) = 1, entraîne la convergence en probabilité,
+donc la convergence en loi. Elle n’intervient pas dans ce chapitre, où les variables sont définies sur
+des espaces qui changent avec n ; elle apparaît dans la loi forte des grands nombres (Section 4.2).
+
+
+
+   Proposition 2.2: Convergence des moments et convergence en probabilité
+  Soient {Xn , n ∈ N} une suite de vecteurs aléatoires et X un vecteur aléatoire à valeurs
+                                                                               p
+  dans Rd , définis sur (Ω, F, P). S’il existe p > 0 tel que limn→∞ E [∥Xn − X∥ ] = 0, alors
+      P−prob
+  Xn −→ X.
+
+
+
+   Démonstration
+  Par l’inégalité de Markov (Section 2.2), pour tout ε > 0,
+                                                              p
+                                                 E [∥Xn − X∥ ]
+                          P (∥Xn − X∥ > ε) ≤                   −−−−→ 0 .
+                                                       εp       n→∞
+
+                                                                                                 □
+38                                             CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+2.2     Inégalité de Bienaymé-Tchebychev et lemme de Bienaymé
+
+     Lemme 2.1: Inégalités de Markov et de Bienaymé-Tchebychev
+ Soit Y une variable aléatoire réelle positive définie sur (Ω, F, P). Pour tout a > 0,
+
+                                                       E[Y ]
+                                         P(Y ≥ a) ≤          .
+                                                        a
+ En particulier, si W est une variable aléatoire réelle de carré intégrable, alors pour tout ε > 0,
+
+                                                            Var(W )
+                                  P (|W − E[W ]| ≥ ε) ≤             .
+                                                              ε2
+
+     Démonstration
+ La première inégalité résulte de a 1{Y ≥a} ≤ Y et de la croissance de l’espérance. La seconde
+ s’en déduit en l’appliquant à Y := (W − E[W ])2 et a := ε2 .                               □
+
+
+     Définition 2.2: Variables décorrélées
+ Soient X1 , . . . , Xn des variables aléatoires réelles définies sur (Ω, F, P) et de carré intégrable.
+ Elles sont dites décorrélées si, pour tout 1 ≤ k ̸= ℓ ≤ n,
+
+                        Cov(Xk , Xℓ ) := E [(Xk − E[Xk ]) (Xℓ − E[Xℓ ])] = 0 .
+
+     Des variables indépendantes et de carré intégrable sont décorrélées ; la réciproque est fausse.
+
+     Lemme 2.2: Lemme de Bienaymé
+ Soient X1 , . . . , Xn des variables aléatoires réelles de carré intégrable et décorrélées, définies
+ sur (Ω, F, P). Alors                            !
+                                          Xn           Xn
+                                    Var       Xk =         Var(Xk ) .
+                                         k=1          k=1
+
+
+
+     Démonstration
+ En développant le carré,
+            n
+                  !     n
+           X           X   h               i           X
+                                         2
+     Var      Xk =        E (Xk − E[Xk ]) +                      E [(Xk − E[Xk ]) (Xℓ − E[Xℓ ])] ,
+               k=1        k=1                        1≤k̸=ℓ≤n
+
+ et la seconde somme est nulle par décorrélation.                                                    □
+
+
+
+2.3     Deux lemmes pour la preuve du théorème de la limite centrale
+
+     Lemme 2.3: Développement d’une fonction caractéristique à l’ordre deux
+ Soit Y une variable aléatoire réelle de carré intégrable, de fonction caractéristique ψ : u 7→
+ E[eiuY ]. Alors ψ est deux fois dérivable sur R, de dérivées
+
+                        ψ ′ (u) = i E Y eiuY ,     ψ ′′ (u) = −E Y 2 eiuY ,
+                                                                      
+2. LES OUTILS MATHÉMATIQUES                                                                            39
+
+
+  la seconde étant continue, et
+
+                                                  u2  2 
+                         ψ(u) = 1 + iu E[Y ] −      E Y + o(u2 ) ,               u→0.
+                                                  2
+
+
+   Démonstration
+  Pour u, h ∈ R avec h ̸= 0,
+
+                                                          eihY − 1
+                                                                  
+                                 ψ(u + h) − ψ(u)
+                                                 = E eiuY            ,
+                                        h                     h
+
+  et eihY − 1 /h ≤ |Y | puisque |eiv − 1| ≤ |v| pour tout v réel. Comme Y est intégrable, le
+               
+
+  théorème de convergence dominée s’applique et donne ψ ′ (u) = iE[Y eiuY ]. Le même argument,
+  appliqué à u 7→ E[Y eiuY ] avec la domination |Y | · |Y | = Y 2 , intégrable par hypothèse, donne
+  ψ ′′ (u) = −E[Y 2 eiuY ]. La continuité de ψ ′′ résulte encore de la convergence dominée, avec
+  la même domination. La formule de Taylor-Young appliquée en 0 à la fonction ψ, deux fois
+  dérivable, donne
+                                                        u2
+                              ψ(u) = ψ(0) + uψ ′ (0) + ψ ′′ (0) + o(u2 ) ,
+                                                        2
+  et ψ(0) = 1, ψ ′ (0) = iE[Y ], ψ ′′ (0) = −E[Y 2 ].                                                  □
+
+
+   Lemme 2.4: Puissances n-ièmes
+  Soit {an , n ∈ N} une suite de nombres complexes telle que nan → c ∈ C. Alors (1+an )n → ec .
+
+
+   Démonstration
+  Comme nan → c, on a an → 0, donc |an | ≤ 1/2 pour n assez grand ; sur le disque
+  {z ∈ C : |z| ≤ 1/2}, le logarithme complexe principal est défini et vérifie Log(1+z) = z +r(z)
+  avec |r(z)| ≤ |z|2 . Pour n assez grand,
+
+                                                                                 (n|an |)2
+           n Log(1 + an ) = nan + n r(an ) ,            |n r(an )| ≤ n|an |2 =             −−−−→ 0 ,
+                                                                                    n       n→∞
+
+  puisque n|an | → |c|. Donc n Log(1 + an ) → c, et en composant par l’exponentielle, qui est
+  continue, (1 + an )n = exp (n Log(1 + an )) → ec .                                       □
+
+                                                                                       √
+   Dans la preuve du théorème de la limite centrale, ce lemme est appliqué à an := ψ(t/ n) − 1 =
+−t2 /(2n) + o(n−1 ), pour lequel nan → −t2 /2.
+
+
+2.4    Le procédé de Cramér-Wold
+   La convergence en loi d’une suite de vecteurs aléatoires se ramène à celle de toutes ses combi-
+naisons linéaires, ce qui permet de démontrer un énoncé vectoriel en ne traitant que le cas réel.
+
+   Théorème 2.3: Procédé de Cramér-Wold
+  Soit {(Yn , Yn , Pn ) : n ∈ N} une suite d’espaces de probabilité, {Yn , n ∈ N} une suite de
+  vecteurs aléatoires à valeurs dans Rd et Y un vecteur aléatoire à valeurs dans Rd . Alors
+                   P                                            P
+               Yn =⇒
+                   n
+                     Y         si et seulement si        t⊤ Yn =⇒
+                                                                n
+                                                                  t⊤ Y      pour tout t ∈ Rd .
+40                                              CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+      Démonstration
+  La fonction caractéristique d’un vecteur aléatoire Y évaluée en t ∈ Rd est la fonction caracté-
+                                                                  Pn
+  ristique de la variable réelle t⊤ Y évaluée au point 1. Si Yn =⇒   Y , alors pour tous t ∈ Rd et
+                  ⊤              ⊤
+               iut Yn         iut Y
+  u ∈ R, En [e        ] → E[e       ], et le théorème de Lévy 1.5 appliqué en dimension un donne
+           P                                      P
+  t⊤ Yn =⇒
+         n
+             t⊤ Y . Réciproquement, si t⊤ Yn =⇒   n
+                                                     t⊤ Y pour tout t ∈ Rd , alors en prenant u = 1 il
+                ⊤             ⊤
+  vient En [e it Yn
+                    ] → E[e it Y
+                                 ] pour tout t, et le théorème de Lévy 1.5, cette fois en dimension
+  d, conclut.                                                                                      □
+
+
+Intuition. Appliqué au théorème de la limite centrale, le procédé fait exactement ce que l’on attend : il
+                                                            √
+suffit de montrer que, pour tout t, la variable réelle t⊤ n(X̄n − µ) converge vers une loi N (0, t⊤ Σt), ce
+qui est le cas scalaire appliqué aux variables réelles t Xk , dont la variance est t⊤ Σt. Le cas t⊤ Σt = 0 est
+                                                         ⊤
+
+le seul à traiter à part : la variable est alors nulle presque sûrement, et sa limite est la loi de Dirac en 0,
+qui est bien la loi N (0, 0).
+
+
+
+2.5      Différentiabilité et matrice jacobienne
+   Soit g une fonction d’un ouvert de Rp à valeurs dans Rm . Une telle fonction est définie par ses
+m fonctions composantes à valeurs réelles :
+                                                                    
+                                    y1           g1 (y1 , . . . , yp )
+                               g :  ...  7−→           ..
+                                                                        .
+                                                                    
+                                                           .
+                                         yp           gm (y1 , . . . , yp )
+
+      Définition 2.3: Matrice jacobienne
+  Les dérivées partielles de ces fonctions en un point y, si elles existent, se rangent dans une
+  matrice à m lignes et p colonnes, appelée matrice jacobienne de g au point y :
+
+                                             ∂g1        ∂g1
+                                                            
+                                            ∂y1  · · ·
+                                                        ∂yp 
+                                            ..    ..     ..  .
+                                                            
+                                  Jg (y) =  .        .    . 
+                                                            
+                                            ∂gm        ∂gm 
+                                                  ···
+                                             ∂y1        ∂yp
+
+
+      Définition 2.4: Fonction différentiable
+  La fonction g : Rp → Rm est différentiable au point y si
+
+                  g(y + h) = g(y) + Jg (y) h + ε(h)           avec            ∥ε(h)∥ = o (∥h∥) .
+
+    Si g admet des dérivées partielles continues par rapport à toutes les variables, alors g est
+différentiable ; la réciproque est fausse. En dimension p = m = 1, la différentiabilité au point θ est
+la dérivabilité, et la matrice jacobienne se réduit à ġ(θ).
+
+
+2.6      Les résultats admis
+   Quatre énoncés de ce chapitre sont utilisés sans être démontrés. Leurs démonstrations figurent
+dans le polycopié d’origine, dont la numérotation est rappelée ici.
+     — Le théorème de Portmanteau 1.3 (théorème IV-5.26).
+     — Le théorème de Lévy 1.5, dans le sens réciproque (théorème IV-5.36).
+2. LES OUTILS MATHÉMATIQUES                                                                    41
+
+  — Le théorème de transformation continue 1.4, dans le cas où φ n’est continue que sur un en-
+    semble de mesure 1 (théorème IV-5.30) ; le cas d’une fonction continue partout est démontré.
+  — La construction du produit infini d’expériences statistiques (proposition 1.1), qui repose sur
+    le théorème d’extension de Carathéodory.
+À quoi s’ajoutent la loi faible des grands nombres pour des variables indépendantes de même loi
+seulement intégrables et la loi forte des grands nombres, rappelées dans les compléments (Sec-
+tion 4.2), et le théorème de Berry-Esseen (Section 4.3).
+

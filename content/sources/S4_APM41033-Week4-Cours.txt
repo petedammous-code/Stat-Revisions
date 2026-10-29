@@ -1,0 +1,1626 @@
+Chapitre 4
+
+Régions de confiance et tests
+
+   Les trois premiers chapitres construisent des estimateurs et mesurent leur qua-
+   lité, mais ils ne rendent jamais qu’un nombre : une valeur estimée, sans indica-
+   tion de la marge à lui accorder. On peut aller au-delà des estimateurs ponctuels.
+   Ce chapitre remplace la valeur unique par une région de confiance, ensemble
+   aléatoire construit sur les observations dont on garantit qu’il contient la quan-
+   tité inconnue avec une probabilité fixée, puis par une réponse à une question
+   binaire portant sur le paramètre : c’est le test d’hypothèses.
+   La première moitié du chapitre définit la région de confiance et son niveau de
+   couverture, met en garde contre l’interprétation qu’elle appelle naturellement,
+   et donne l’outil qui sert à en construire : la fonction pivotale. On en déduit
+   les intervalles du modèle gaussien (pour la moyenne à variance connue, pour la
+   moyenne à variance inconnue, pour la variance) et, lorsque aucun pivot n’est
+   disponible, un intervalle obtenu par une inégalité de déviation.
+   La seconde moitié pose le formalisme des tests : hypothèse nulle et hypo-
+   thèse alternative, test pur, région de rejet, fonction puissance, taille
+   et niveau. Les deux erreurs auxquelles un test expose ne se minimisent pas
+   simultanément ; l’approche de Neyman-Pearson lève la difficulté en les trai-
+   tant de façon dissymétrique, ce qui fait du choix de l’hypothèse nulle une
+   décision de modélisation. On en tire une méthode de construction, puis la p-
+   valeur, qui remplace la réponse binaire par le niveau limite au-delà duquel
+   l’observation conduit à rejeter.
+   La suite de ce chapitre est organisée comme suit : les fondamentaux, puis
+   les outils mathématiques mobilisés (fonction de répartition et quantile, loi de
+   Student non centrale, loi de Fisher, inégalité de Hoeffding, couplage de va-
+   riables de Bernoulli), puis la feuille d’exercices, enfin les compléments, hors
+   programme d’examen, qui traitent la dualité entre régions de confiance et tests
+   et la construction générale de tests par inégalités de déviation.
+
+
+Que dire de plus qu’une valeur estimée ?
+   Le chapitre 2 a construit des estimateurs, le chapitre 3 a donné les moyens de les comparer.
+Reste que l’objet rendu à l’utilisateur est un nombre : une fréquence empirique vaut 0,53, une
+moyenne des mesures de bruit vaut 82 décibels. Ce nombre ne dit rien, à lui seul, de la précision
+avec laquelle il approche la quantité qu’il estime. Le risque quadratique donne une telle information,
+mais il dépend du paramètre inconnu, et il n’est pas calculable à partir des observations.
+   Deux réponses sont possibles, qui seront traitées dans ce chapitre, l’une après l’autre. La
+première consiste à rendre, non plus une valeur, mais un ensemble de valeurs (un intervalle, ou
+plus généralement une région) dont on peut garantir qu’il contient la quantité inconnue avec
+
+                                                  7
+8                                      CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+une probabilité au moins égale à 1 − α, et cela pour toute valeur du paramètre. La seconde
+consiste à répondre à une question binaire posée sur le paramètre (l’espérance dépasse-t-elle le
+seuil réglementaire ? le nouveau traitement fait-il mieux que l’ancien ?), en contrôlant les taux
+d’erreur, sous nos hypothèses de modélisation. Les deux constructions reposent sur le même outils
+probabilistes, et la dualité entre régions de confiance et tests est traitée dans les compléments.
+1. RÉGIONS DE CONFIANCE                                                                                                 9
+
+1      Régions de confiance
+
+
+    Plutôt qu’un estimateur T (Z) de g(θ), on cherche une région C(Z), construite sur les ob-
+servations, qui contienne g(θ) avec une probabilité garantie, et cela quelle que soit la valeur du
+paramètre, puisque celle-ci est inconnue.
+
+
+
+     Définition 1.1: Région de confiance
+    Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique, g : Θ → Rp une fonction et α ∈ ]0, 1[. Une
+    fonction C : Z → B(Rp ) est une région de confiance au niveau de couverture 1 − α pour g(θ) si
+      (i) pour tout θ ∈ Θ, {z ∈ Z , g(θ) ∈ C(z)} ∈ Z ;
+     (ii) on a                                                  
+                                            inf Pθ {g(θ) ∈ C(Z)} ≥ 1 − α .
+                                            θ∈Θ
+
+
+
+
+    La condition (i) est une condition de mesurabilité : sans elle, la probabilité de la condition (ii)
+n’aurait pas de sens. La condition (ii) porte un « pour tout θ » écrit sous la forme d’un infimum :
+la garantie doit valoir en chaque point de l’espace des paramètres.
+
+
+
+
+Qui est aléatoire ? Si C(Z) est une région de confiance de niveau 1−α pour g(θ), l’interprétation
+qui vient spontanément est : « g(θ) a une probabilité 1 − α d’appartenir à C(Z) ». Cette inter-
+prétation est erronée : le paramètre θ est déterministe et fixé ; l’aléa porte sur l’observation Z,
+donc sur la région C(Z), qui est une statistique à valeurs ensemblistes. Ce qui est garanti est que,
+sous Pθ , «cette région aléatoire C(Z) a une probabilité au moins égale à 1 − α de contenir g(θ)»,
+et cela quelle que soit la valeur θ ∈ Θ du paramètre.
+
+     De même, une réalisation numérique ne se lit pas comme une probabilité. Si, sur un jeu de
+données, la région obtenue est l’intervalle [0, 2], il ne faut surtout pas conclure que Pθ (g(θ) ∈
+[0, 2]) ≥ 1 − α : cette dernière assertion n’a pas de sens, ses deux membres étant déterministes.
+
+
+
+
+Intuition. On saisit le sens de la garantie par une expérience de pensée. Répétons l’expérience N fois, in-
+dépendamment, pour une même valeur de θ, ce qui produit Z (1) , . . . , Z (N ) et N régions C(Z (1) ), . . . , C(Z (N ) ).
+Alors la proportion de ces régions qui contiennent g(θ) est d’au moins 1 − α lorsque N est grand. L’énoncé
+exact est que cette proportion converge vers Pθ (g(θ) ∈ C(Z)) ≥ 1 − α. C’est l’interprétation dite fréquen-
+tiste du niveau de couverture : elle porte sur la procédure, répétée, et non sur le résultat d’une expérience
+particulière.
+
+
+
+
+   La figure suivante met cette expérience de pensée en images, sur le modèle gaussien à variance
+connue qui sera traité à la Section 1.4.
+10                                          CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+                               n = 25, α = 0,10, 50 répétitions
+                           3 intervalles sur 50 ne contiennent pas μ
+                                                       μ
+
+
+
+
+               0.2       0.4      0.6      0.8       1.0      1.2      1.4       1.6        1.8
+                                            X̄ n ± z1 − α/2 σ/√ n
+Cinquante répétitions indépendantes de l’expérience, pour n = 25 observations et α = 0,10. Chaque trait
+                                               √ 
+horizontal est l’intervalle X̄n ± z1−α/2 σ/ n obtenu sur une répétition, le point marquant la valeur de
+                             
+
+ X̄n ; la droite verticale en pointillé est la vraie valeur µ, identique d’une répétition à l’autre. Trois des
+  cinquante intervalles, tracés en orange, ne contiennent pas µ. C’est ce que la garantie autorise : elle
+porte sur la proportion de répétitions réussies, et non sur une répétition donnée. Le nombre d’intervalles
+                    manquants fluctue d’une simulation à l’autre autour de α × 50 = 5.
+     Dans le cas p = 1, la région de confiance est le plus souvent un intervalle de confiance, qui
+prend l’une des trois formes suivantes.
+   (i) C(Z) = [m(Z), +∞[ : m(Z) est une borne inférieure de confiance.
+  (ii) C(Z) = ]−∞, M (Z)] : M (Z) est une borne supérieure de confiance.
+ (iii) C(Z) = [m(Z), M (Z)] est un intervalle de confiance bilatéral.
+Les bornes m et M y sont des statistiques, c’est-à-dire des fonctions mesurables des observations.
+
+1.1     Fonction pivotale
+   Pour construire une région de confiance, on cherche une fonction des observations et du para-
+mètre dont la loi soit connue et ne dépende pas du paramètre. C’est le seul ingrédient dont on ait
+besoin : la garantie de couverture s’en déduit mécaniquement.
+
+     Définition 1.2: Fonction pivotale
+  Soit (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique où Θ ∈ B(Rd ). Une fonction
+
+                     G : (Z × Θ, Z ⊗ B(Rd )) → (Rp , B(Rp )) ,        (z, θ) 7→ G(z, θ) ,
+
+  est dite pivotale, ou est appelée un pivot, si
+      (i) pour tout θ ∈ Θ, la fonction z 7→ G(z, θ) est mesurable ;
+     (ii) pour tous θ, ϑ ∈ Θ, la loi image de Pθ par G(·, θ) coïncide avec la loi image de Pϑ par
+          G(·, ϑ), c’est-à-dire
+
+                                                               pour tout A ∈ B(Rp ) .
+                                                        
+                        Pθ G(Z, θ) ∈ A = Pϑ G(Z, ϑ) ∈ A
+1. RÉGIONS DE CONFIANCE                                                                           11
+
+
+  On note Q la loi commune de G(Z, θ) sous Pθ ; elle ne dépend pas de θ.
+
+
+  Remarque. La condition (ii) ne dit pas que la fonction G ne dépend pas de θ : si c’était le cas,
+  G serait une statistique et la construction qui suit ne donnerait rien. Elle dit que le paramètre
+  entre dans G de telle façon que son effet sur la loi des observations se compense exactement :
+  la variable aléatoire G(Z, θ), calculée sous Pθ , a une loi qui est la même pour toutes les valeurs
+  de θ. C’est une propriété conjointe de la fonction et du modèle, et non une propriété de la seule
+  fonction.
+   Les deux exemples suivants se vérifient directement à partir de la fonction de répartition, sans
+aucun résultat préalable.
+
+   Exemple 1.1: Modèle exponentiel
+  Soit X une observation du modèle R+ , B(R+ ), E(θ) , θ ∈ Θ := R∗+ , où E(θ) désigne la loi
+                                                                        
+
+  exponentielle d’intensité θ, de densité x 7→ θe−θx sur R+ par rapport à la mesure de Lebesgue.
+  Posons
+                                           G(X, θ) := θX .
+                                                      R +∞ −θx
+  Pour tout t > 0 et tout θ ∈ Θ, on a Pθ (X > t) = t       θe    dx = e−θt , d’où
+
+                        Pθ (θX > t) = Pθ X > t/θ = e−t = P E(1) > t .
+                                                                       
+
+
+  La loi de G(X, θ) sous Pθ est donc E(1) pour tout θ : la fonction G est pivotale.
+
+
+   Exemple 1.2: Modèle uniforme
+  Soit X une observation du modèle R+ , B(R+ ), U ([0, θ]) , θ ∈ Θ := R∗+ . Posons
+                                                                         
+
+
+                                         G(X, θ) := X/θ .
+
+  Pour t ∈ [0, θ], on a Pθ (X ≤ t) = t/θ, donc pour tout u ∈ [0, 1],
+                                                                      
+                        Pθ X/θ ≤ u = Pθ (X ≤ uθ) = u = P U ([0, 1]) ≤ u .
+
+  La loi de G(X, θ) sous Pθ est donc U ([0, 1]) pour tout θ : la fonction G est pivotale.
+
+
+
+1.2    Construire une région de confiance à partir d’un pivot
+    Un pivot fournit une région de confiance par une manipulation d’ensembles, ce que la propo-
+sition suivante formalise et que le bloc méthode juste après résume.
+
+   Proposition 1.1: Région de confiance associée à un pivot
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique avec Θ ∈ B(Rd ), G : Z×Θ → Rp une fonction
+  pivotale, Q la loi de G(Z, θ) sous Pθ , et α ∈ ]0, 1[. Soit Aα ∈ B(Rp ) tel que Q(Aα ) ≥ 1 − α.
+  Alors la région définie pour tout z ∈ Z par
+
+                                  C(z) := {θ ∈ Θ , G(z, θ) ∈ Aα }
+
+  est une région de confiance au niveau de couverture 1 − α pour θ, c’est-à-dire pour la fonction
+  g = Id, avec p = d.
+12                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+     Démonstration
+  Pour z ∈ Z fixé, l’ensemble C(z) est la section en z de G−1 (Aα ), qui appartient à Z ⊗ B(Θ)
+  par mesurabilité conjointe de G ; c’est donc un borélien de Θ, et C est bien à valeurs dans
+  B(Rd ). Fixons maintenant θ ∈ Θ. Par définition de C,
+
+                            {z ∈ Z , θ ∈ C(z)} = {z ∈ Z , G(z, θ) ∈ Aα } ,
+
+  qui appartient à Z puisque z 7→ G(z, θ) est mesurable et Aα ∈ B(Rp ) : la condition de
+  mesurabilité de la Définition 1.1 est vérifiée. De plus,
+                                                        
+                      Pθ θ ∈ C(Z) = Pθ G(Z, θ) ∈ Aα = Q(Aα ) ≥ 1 − α ,
+
+  le membre du milieu ne dépendant pas de θ puisque G est pivotale. En prenant l’infimum sur
+  θ ∈ Θ, la seconde condition de la définition est vérifiée.                              □
+
+    Il est donc presque automatique de construire une région de confiance à partir d’un pivot : il
+suffit de choisir un ensemble de probabilité au moins 1 − α sous la loi du pivot, puis de résoudre
+l’appartenance à cet ensemble en θ.
+
+     Méthode 1.1: Construction d’une région de confiance par un pivot
+  Soit 1 − α ∈ ]0, 1[ le niveau de couverture visé.
+      1. Exhiber une fonction pivotale G : Z × Θ → Rp pour le modèle (Z, Z, {Pθ , θ ∈ Θ}).
+      2. Identifier la loi Q de G(Z, θ) sous Pθ , qui ne dépend pas de θ.
+      3. Choisir Aα ∈ B(Rp ) tel que Q(Aα ) ≥ 1 − α.
+      4. Résoudre en θ l’appartenance G(Z, θ) ∈ Aα : l’ensemble des solutions
+
+                                       C(Z) = {θ ∈ Θ , G(Z, θ) ∈ Aα }
+
+         est une région de confiance de niveau de couverture 1 − α.
+
+    En général, on redéroule cette méthode sur le modèle considéré plutôt que d’en appliquer la
+conclusion comme un résultat tout fait : c’est l’étape 4, la résolution en θ, qui change d’un modèle
+à l’autre, et c’est elle qui donne à l’intervalle sa forme.
+
+Le choix de Aα . Il n’est pas unique, et la construction n’en dit rien : toute partie de probabilité
+au moins 1 − α sous Q convient. Plaçons-nous dans le cas p = 1 et notons qβ le quantile d’ordre
+β de la loi Q (Section 3) ; ce quantile ne dépend pas de θ. Trois choix reviennent :
+                                                                                    
+                 Aα = ]−∞, q1−α ] ,        Aα = [qα , +∞[ ,        Aα = qα/2 , q1−α/2 ,
+
+les deux premiers donnant une borne de confiance unilatérale et le troisième un intervalle bilatéral.
+Plus généralement, pour tous 0 ≤ p1 < p2 ≤ 1 tels que p2 − p1 = 1 − α, l’ensemble Aα = ]qp1 , qp2 ]
+convient. Le choix d’une paire est guidé soit par la question posée (on ne cherche parfois qu’une
+borne inférieure), soit par le souhait de minimiser la longueur de l’intervalle obtenu.
+
+Intuition. Le choix symétrique p1 = α/2, p2 = 1 − α/2 n’est donc pas imposé par la théorie : c’est une
+convention, qui se trouve donner l’intervalle le plus court lorsque la densité de Q est paire et unimodale,
+comme pour la loi N (0, 1) et la loi de Student. Dès que la loi du pivot est dissymétrique, l’intervalle le
+plus court n’est plus symétrique : c’est le cas de la loi uniforme, où l’intervalle de longueur minimale est
+entièrement décalé d’un côté (Exercice 3 (PC4)), et de la loi du χ2 , où l’optimum n’est atteint qu’approxi-
+mativement par le choix symétrique.
+1. RÉGIONS DE CONFIANCE                                                                                 13
+
+1.3    Mise en pratique : calcul d’intervalles de confiance multiples pour
+       les lois gaussienne, exponentielle et de Student
+   L’exemple suivant applique la méthode au modèle uniforme et produit une borne inférieure de
+confiance : c’est le seul endroit du chapitre où l’une des trois formes unilatérales est effectivement
+construite.
+
+   Exemple 1.3: Modèle uniforme : borne inférieure de confiance
+  Reprenons l’Exemple 1.2 : X/θ est pivotale, de loi U ([0, 1]) sous Pθ . Prenons Aα = [0, 1 − α],
+  de probabilité 1 − α sous U ([0, 1]). Pour tout θ ∈ R∗+ ,
+                                                     
+                                     Pθ X/θ ≤ 1 − α = 1 − α ,
+
+  et, puisque θ > 0 et 1 − α > 0, l’inégalité X/θ ≤ 1 − α équivaut à θ ≥ X/(1 − α). Il vient
+  donc, pour tout θ ∈ R∗+ ,            h         h
+                                                   X
+                                     Pθ θ ∈       1−α , +∞     =1−α,
+
+  de sorte que X/(1 − α) est une borne inférieure de confiance de niveau 1 − α pour θ.
+
+
+1.4    Le cas gaussien
+    Le modèle gaussien est celui où les pivots se lisent le plus directement, et c’est aussi celui qui
+sert de référence à l’approche asymptotique du cours 6. On traite successivement la moyenne à
+variance connue, la moyenne à variance inconnue, la variance, puis le couple.
+
+   Exemple 1.4: Intervalle de confiance pour la moyenne, variance connue
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), N (µ, σ 2 ) , µ ∈ R , où la variance
+                                                                                 
+
+  σ 2 > 0 est connue. La fonction
+                                                                              n
+                                                 √ X̄n − µ                    X
+                     G(X1 , . . . , Xn ; µ) :=    n        ,     X̄n := n−1         Xi ,
+                                                      σ                       i=1
+
+  est pivotale : sous Pµ , on a X̄n ∼ N (µ, σ 2 /n), donc G(X1 , . . . , Xn ; µ) ∼ N (0, 1), et cela pour
+  tout µ ∈ R.
+  Notons Φ la fonction de répartition de N (0, 1) et, pour β ∈ ]0, 1[, zβ le quantile d’ordre β de
+  N (0, 1), caractérisé par Φ(zβ ) = β. Par symétrie de la loi N (0, 1), zα/2 = −z1−α/2 , de sorte
+  que
+                                                    
+         Pµ G(X1 , . . . , Xn ; µ) ∈ −z1−α/2 , z1−α/2 = Φ(z1−α/2 ) − Φ(−z1−α/2 ) = 1 − α .
+
+  En résolvant l’appartenance en µ, il vient, pour tout µ ∈ R,
+                                     h              σ i
+                             Pµ µ ∈ X̄n ± z1−α/2 √         =1−α,
+                                                      n
+
+  où [a ± b] désigne l’intervalle [a − b, a + b]. L’intervalle
+                                               h               σ i
+                                      In,α := X̄n ± z1−α/2 √
+                                                                n
+
+  est donc un intervalle
+                   √     de confiance bilatéral de niveau de couverture 1 − α pour µ. Sa longueur
+  vaut 2σz1−α/2 / n : elle décroît en n−1/2 à niveau fixé, et croît indéfiniment lorsque α tend
+  vers 0 à n fixé.
+14                                          CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+  Remarque. On rappelle les valeurs classiques : on a z1−α/2 ≃ 1,96√pour α = 0,05 et z1−α/2 ≃
+  2,576 pour α = 0,01. C’est ce là que vient l’approximation « ±2σ/ n » souvent utilisée pour
+  un intervalle de confiance à 95%.
+
+
+Intuition. Les deux paramètres n et α jouent l’un contre l’autre, et c’est le compromis central de tout
+ce chapitre. Exiger une garantie plus forte, c’est diminuer α, donc augmenter le quantile, donc allonger
+l’intervalle : une région plus sûre est une région moins informative, et la région R tout entière est de niveau
+1 sans rien apprendre. À l’inverse, augmenter n raccourcit l’intervalle à garantie constante. On retrouvera
+exactement ce compromis du côté des tests, entre la taille et la puissance.
+
+
+
+    Lorsque la variance est inconnue, ce qui est la règle plutôt que l’exception, le pivot précédent
+n’en est plus un, puisque σ n’est pas calculable à partir des observations. On le remplace par la
+racine de la variance empirique
+
+
+                                                       n
+                                                  1 X
+                                       Sn2 :=             (Xi − X̄n )2 ,
+                                                n − 1 i=1
+
+
+estimateur sans biais de σ 2 (chapitre 3, Exemple 1.4). La loi du quotient obtenu est donnée par le
+théorème de Gosset, énoncé et démontré au chapitre 1 (théorème de Gosset) : si (X1 , . . . , Xn ) est
+un n-échantillon de N (µ, σ 2 ) avec n ≥ 2, alors X̄n et Sn2 sont indépendantes, X̄n ∼ N (µ, σ 2 /n),
+(n − 1)Sn2 /σ 2 ∼ χ2 (n − 1) et en conséquence, par définition de la loi de Student,
+
+
+                                              √ X̄n − µ
+                                      Tn :=    n        ∼ t(n − 1) ,
+                                                  Sn
+
+
+où t(k) est la loi de Student à k degrés de liberté (chapitre 1, Définition 12).
+
+
+     Exemple 1.5: Intervalle de confiance pour la moyenne, variance inconnue
+  Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle
+
+                             R, B(R), N (µ, σ 2 ) , θ = (µ, σ 2 ) ∈ Θ := R × R∗+
+                                                                                
+                                                                                   .
+                                                                       √
+  Par le théorème de Gosset, la fonction G(X1 , . . . , Xn ; µ) := n(X̄n −µ)/Sn est pivotale, de loi
+                                                     (n−1)
+  t(n − 1) sous Pθ pour tout θ ∈ Θ. Notons tβ              le quantile d’ordre β de t(n − 1). La densité
+  de t(n − 1) est paire et unimodale, de mode en 0, ce qui justifie de prendre un intervalle
+                           (n−1)     (n−1)
+  symétrique ; on a tα/2 = − t1−α/2 et
+
+                             
+                                 (n−1)  √ X̄n − µ    (n−1)
+                                                           
+                           Pθ − t1−α/2 ≤ n        ≤ t1−α/2 = 1 − α .
+                                            Sn
+
+  En résolvant en µ, on obtient, pour tout θ = (µ, σ 2 ) ∈ Θ,
+                                                       
+                                                 (n−1)
+                                                t1−α/2
+                            Pθ µ ∈ X̄n ± Sn √  = 1 − α .
+                                                    n
+1. RÉGIONS DE CONFIANCE                                                                                                                                                         15
+
+
+
+
+                                                                                                                    3.5
+                                                        2.5
+
+
+
+
+                                                                                                                    3.0
+                                        quantile .975
+
+
+
+
+                                                                                                    quantile .995
+                                                        2.0
+
+
+
+
+                                                                                                                    2.5
+                                                                                                                    2.0
+                                                        1.5
+
+
+
+
+                                                                                                                    1.5
+                                                               20   40      60         80     100                         20     40       60       80    100
+                                                                    Nombre de d.l.                                                Nombre de d.l.
+
+
+  En traits pleins, les quantiles d’ordre 0,95, 0,975 et 0,99 de la loi de Student à n degrés de liberté, en
+fonction de n. Les traits pointillés donnent les quantiles de même ordre de la loi N (0, 1). Pour n grand,
+   de l’ordre de la centaine, les deux familles de quantiles sont proches ; pour n petit, les quantiles de
+   Student sont sensiblement plus grands, et l’intervalle de Student est donc plus long que celui qu’on
+                    obtiendrait en remplaçant naïvement σ par Sn dans l’Exemple 1.4.
+
+
+Intuition. L’écart entre les deux familles de quantiles a une lecture simple : en remplaçant σ par son
+estimateur Sn , on introduit une source d’aléa supplémentaire, et il faut élargir l’intervalle pour conserver la
+même garantie. Le prix payé est d’autant plus élevé que n est petit, c’est-à-dire que Sn est mal déterminé.
+Le calcul complet de la loi de Tn est repris à l’Exercice 2 (PC4), qui redémontre le théorème de Gosset.
+
+   Cet écart se chiffre. La figure ci-dessous compare les deux fonctions quantiles, puis les longueurs
+des deux intervalles pour une taille d’échantillon courante.
+
+                                                                                                                                           α = 0,05, n = 32, σ = 1
+                        6
+                                  Student, k = 2
+                        4         Student, k = 8
+  quantile d'ordre β
+
+
+
+
+                                  Student, k = 32                                                                              variance                              0,693
+                        2                                                                                                       connue
+                                  (0, 1)
+
+                        0                                                                                                                                             + 4,1 %
+
+                       −2                                                                                                       variance                              0,721
+                                                                                                                               inconnue
+                       −4
+
+                       −6
+                            0,0   0,2                         0,4        0,6            0,8                  1,0                           0,0          0,2    0,5   0,8
+                                                               ordre β                                                                         longueur de l'intervalle
+                                                                                 (k)
+ À gauche, les fonctions quantiles β 7→ tβ de la loi de Student à k = 2, 8 et 32 degrés de liberté, et, en
+   pointillé, la fonction quantile β 7→ zβ de N (0, 1). Les quantiles de Student sont plus éloignés de 0, et
+ d’autant plus que k est petit ; pour k = 32, les deux courbes sont déjà presque confondues. À droite, les
+ longueurs des deux intervalles de confiance pour µ au niveau 0,95, pour n = 32 observations et σ = 1 :
+                 √                                    (31)     √
+      2z0,975 σ/ n = 0,693 à variance connue et 2 t0,975 Sn / n = 0,721 à variance inconnue, soit un
+allongement de 4,1 %. La seconde longueur est aléatoire, puisqu’elle dépend de Sn ; elle est représentée ici
+          pour Sn = σ, ce qui est la seule façon de comparer les deux formules à la même échelle.
+16                                            CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+                        Point d’histoire : William Sealy Gosset (1876-1937)
+                        Chimiste chez Guinness, à Dublin, Gosset contrôle la qualité de l’orge et du
+                        malt sur des échantillons de quelques unités, trop petits pour l’approximation
+                                                                             √
+                        gaussienne à variance connue. Il détermine la loi de n(X̄n − µ)/Sn et la publie
+                        en 1908 dans Biometrika sous le pseudonyme « Student » : la brasserie interdi-
+                        sait à ses employés de publier sous leur nom, de peur d’informer la concurrence.
+                        La démonstration était en partie heuristique ; l’argument géométrique est de Fi-
+                        sher, et redémontré à l’Exercice 2 (PC4).
+                        Portrait : Wikimedia Commons, domaine public.
+
+
+     Le même théorème donne un pivot pour la variance, en ne conservant que le troisième point.
+
+   Exemple 1.6: Intervalle de confiance pour la variance, espérance inconnue
+  Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle N (µ, σ 2 ) , (µ, σ 2 ) ∈ R × R∗+ . La
+                                                                      
+
+  fonction
+                                                                 (n − 1)Sn2
+                                    G(X1 , . . . , Xn ; σ 2 ) :=
+                                                                     σ2
+  est pivotale, de loi χ2 (n−1) sous P(µ,σ2 ) pour tout couple (µ, σ 2 ). Notons χ2β (n−1) le quantile
+  d’ordre β de la loi χ2 (n − 1) et prenons α1 , α2 > 0 tels que α1 + α2 = α. Alors
+                                          (n − 1)Sn2                 
+                      Pµ,σ2 χ2α1 (n − 1) ≤       2
+                                                      ≤ χ21−α2 (n − 1) = 1 − α ,
+                                               σ
+  et, en résolvant en σ 2 (les trois membres étant strictement positifs, l’encadrement s’inverse),
+                                        h (n − 1)S 2     (n − 1)Sn2 i
+                                                    n
+                                                       ,
+                                         χ21−α2 (n − 1) χ2α1 (n − 1)
+
+  est un intervalle de confiance de niveau de couverture 1 − α pour σ 2 .
+  La paire (α1 , α2 ) n’est pas uniquement déterminée par la contrainte α1 + α2 = α. Si on note
+  Ln (Sn2 , α1 , α2 ) la longueur de l’intervalle, qui est une
+                                                             statistique, on
+                                                                             peut montrer qu’il existe
+  une paire (α1∗ , α2∗ ) de somme α qui minimise Eµ,σ2 Ln (Sn2 , α1 , α2 ) simultanément pour tout
+  (µ, σ 2 ), et que α1∗ ≃ α2∗ ≃ α/2 lorsque n est grand. C’est le choix α1 = α2 = α/2 qui est
+  retenu en pratique.
+
+   Enfin, l’exemple suivant illustre le cas où la région porte sur un couple, c’est-à-dire où p > 1
+dans la Définition 1.1.
+
+   Exemple 1.7: Région de confiance pour le couple (µ, σ 2 )
+  Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle N (µ, σ 2 ) , (µ, σ 2 ) ∈ R × R∗+ . Posons
+                                                            
+
+                                      (n−1)
+                       h           t1−α/4 i                                  h      (n − 1)Sn2    (n − 1)Sn2 i
+  I1 (X1 , . . . , Xn ) := X̄n ± Sn √       ,     I2 (X1 , . . . , Xn ) :=                      ,              ,
+                                      n                                          χ21−α/4 (n − 1) χ2α/4 (n − 1)
+  qui sont, d’après les deux exemples précédents, des intervalles de confiance de niveau de
+  couverture 1 − α/2 pour µ et pour σ 2 respectivement. Alors, par sous-additivité,
+                                                                            α   α
+      Pµ,σ2 (µ, σ 2 ) ∈                          / I1 ) + Pµ,σ2 (σ 2 ∈
+                                  
+                      / I1 × I2       ≤ Pµ,σ2 (µ ∈                   / I2 ) ≤ +     = α ,
+                                                                            2    2
+  de sorte que I1 × I2 est une région de confiance de niveau de couverture au moins 1 − α pour
+  (µ, σ 2 ).
+  Le niveau exact de cette région produit ne se calcule
+                                                    √ pas simplement. L’événement {µ ∈ I1 }
+  ne dépend de l’observation qu’à travers T := n(X̄n − µ)/Sn et l’événement {σ 2 ∈ I2 }
+1. RÉGIONS DE CONFIANCE                                                                                    17
+
+
+                                2   2
+  qu’à
+     ptravers V := (n − 1)S   √ n /σ ; mais T et V ne sont pas indépendantes, puisque T =
+  N/ V /(n − 1) avec N := n(X̄n − µ)/σ ∼ N (0, 1) indépendante de V . Le niveau exact vaut
+  donc Pµ,σ2 ({µ ∈ I1 } ∩ {σ 2 ∈ I2 }), en général strictement supérieur à 1 − α et différent du
+  produit des deux niveaux.
+  Une région dont le niveau est exact. On l’obtient en appliquant la Proposition 1.1 directement
+  en dimension p = 2. La fonction
+                                                  √ X̄ − µ (n − 1)S 2 
+                                                       n            n
+                               G(Z; µ, σ 2 ) :=     n      ,
+                                                        σ       σ2
+  est pivotale, de loi N (0, 1) ⊗ χ2 (n − 1) : c’est exactement le contenu du théorème de Gosset,
+  dont les points (i) à (iii) donnent les deux lois marginales et leur indépendance. En prenant
+                                                h                            i
+                     Aα := −z1−α/4 , z1−α/4 × χ2α/4 (n − 1), χ21−α/4 (n − 1) ,
+                             
+
+
+  il vient Q(Aα ) = (1 − α/2)2 par indépendance des deux composantes, et la région
+         n                                 σz1−α/4      (n − 1)Sn2          (n − 1)Sn2 o
+   C(Z) = (µ, σ 2 ) ∈ R × R∗+ : |X̄n − µ| ≤ √      et 2              ≤ σ2 ≤ 2
+                                               n      χ1−α/4 (n − 1)       χα/4 (n − 1)
+
+  est une région de confiance de niveau de couverture exactement (1 − α/2)2 = 1 − α + α2 /4.
+  Ce n’est plus un produit d’intervalles : la région est délimitée par
+                                                                    √ deux droites horizontales
+  dans le plan (µ, σ 2 ) et par les deux courbes µ = X̄n ± σz1−α/4 / n.
+
+
+Intuition. La perte est du second ordre : la région exacte atteint (1 − α/2)2 au lieu de 1 − α, soit un
+excédent de α2 /4, qui vaut 0,0625 % pour α = 5 %. Le procédé par sous-additivité se généralise : pour
+couvrir simultanément p quantités, on construit p intervalles de niveau 1 − α/p et l’on prend leur produit,
+dont le niveau est au moins 1−α. C’est la correction dite de Bonferroni ; elle est d’autant plus conservatrice
+que p est grand, et c’est un sujet à part entière, celui des tests multiples.
+
+
+1.5    En l’absence de pivot : intervalle pour une proportion
+    Il est rare de disposer d’un pivot dont les quantiles soient explicites. Lorsque ce n’est pas le cas,
+une inégalité de déviation fournit une majoration de la probabilité de s’écarter de la cible, dont on
+tire un intervalle. Le modèle de Bernoulli en donne l’illustration la plus simple, et la comparaison
+de deux inégalités y est instructive.
+
+   Exemple 1.8: Intervalle de confiance pour une proportion
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle de Bernoulli
+                                                                           
+                              {0, 1}, P({0, 1}), {Ber(θ) , θ ∈ Θ := [0, 1]} ,
+                 Pn
+  et X̄n = n−1 i=1 Xi la fréquence empirique, estimateur sans biais de θ. On cherche un
+  intervalle de confiance de niveau 1 − α pour θ. La loi de X̄n dépend de θ autrement que par
+  une translation ou un facteur d’échelle, et aucun pivot explicite ne se présente.
+  Par l’inégalité de Bienaymé-Tchebychev. On a Varθ (X̄n ) = θ(1 − θ)/n, donc
+                                                                1
+                                           sup Varθ (X̄n ) =      ,
+                                           θ∈Θ                 4n
+
+  le maximum de θ 7→ θ(1 − θ) sur [0, 1] étant atteint en θ = 1/2. L’inégalité de Bienaymé-
+  Tchebychev (chapitre 2, inégalité de Bienaymé-Tchebychev) donne alors, pour tout δ > 0 et
+18                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+    tout θ ∈ Θ,
+                                                 Varθ (X̄n )    1
+                                Pθ |X̄n − θ| ≥ δ ≤            ≤       .
+                                                     δ2         4nδ 2
+                                                                        √
+    En prenant δn,α solution de 1/(4nδ 2 ) = α, c’est-à-dire δn,α = 1/(2 nα), l’intervalle
+                                                h       1 i
+                                         In,α := X̄n ± √
+                                                      2 nα
+
+    vérifie Pθ (θ ∈ In,α ) ≥ 1 − α pour tout θ ∈ Θ :√c’est un intervalle de confiance de niveau de
+    couverture 1 − α. Sa longueur vaut |In,α | = 1/ nα.
+    Par l’inégalité de Hoeffding. Les observations étant à valeurs dans [0, 1], l’inégalité de Hoeffding
+    (Section 3) donne, pour tout δ > 0,
+
+                                 sup Pθ |X̄n − θ| > δ ≤ 2 exp(−2nδ 2 ) .
+                                                      
+                                 θ∈Θ
+                                                                                       p
+    En prenant δ(α, n) solution de 2 exp(−2nδ 2 ) = α, c’est-à-dire δ(α, n) =           log(2/α)/(2n),
+    l’intervalle                                    r
+                                       ⋆
+                                              h         1     2i
+                                      In,α := X̄n ±       log
+                                                       2n     α
+    est un intervalle de confiance de niveau de couverture 1 − α.
+    Comparaison. Le rapport des longueurs vaut
+                                           ⋆
+                                         |In,α | p
+                                                 = 2α log(2/α) ,
+                                         |In,α |
+
+    qui ne dépend pas de n et tend vers 0 lorsque α tend vers 0. Pour α = 5 %, il vaut 0,61 ; pour
+    α = 1 %, il vaut 0,33, soit une précision trois fois meilleure. Les deux intervalles ont le même
+    ordre de grandeur en n, à savoir n−1/2 , mais l’inégalité exponentielle est bien plus favorable
+    dès que le niveau exigé est élevé.
+
+
+Intuition. La différence tient à la façon dont chaque inégalité dépend de α. Bienaymé-Tchebychev ne
+mobilise que la variance
+                       p et paie le niveau en α
+                                                −1/2
+                                                     ; Hoeffding mobilise le caractère borné des observations
+et ne le paie qu’en      log(1/α), c’est-à-dire beaucoup moins vite. En contrepartie, Hoeffding exige des
+observations bornées, ce qui exclut par exemple le modèle gaussien à variance inconnue. Ni l’un ni l’autre
+ne donne l’intervalle exact que fournirait la loi binomiale : ce sont des majorations, donc des intervalles
+plus longs qu’il n’est nécessaire.
+
+Ce qu’il faut retenir de cette première moitié du chapitre tient en cinq points. Une région de
+confiance est un ensemble aléatoire ; qui contient la quantité inconnue avec une probabilité au
+moins 1 − α, et cela pour toute valeur du paramètre. La technique de construction la plus courante
+s’appuie sur une fonction pivotale. Le cas gaussien est particulièrement important, avec variance
+connue puis avec variance inconnue, où la loi de Student remplace la loi normale. Enfin, en l’absence
+de pivot, on peut recourir à une inégalité de concentration, ou à l’approche asymptotique du
+cours 6.
+
+
+2      Tests d’hypothèses
+2.1      Ce qu’un test cherche à établir
+    Un test a pour but de fournir une réponse à une question binaire portant sur le paramètre du
+modèle, par exemple « θ est-il inférieur ou supérieur à un θ0 ? » Dans le cadre d’une modélisation
+statistique adaptée, cela peut permettre d’aborder des questions pratiques :
+2. TESTS D’HYPOTHÈSES                                                                                19
+
+  1. La modification de mon site augmente-t-elle le nombre de visites par jour ?
+  2. Ce nouveau médicament augmente-t-il les chances de survie ?
+  3. Mes données montrent-elles l’existence d’une particule nouvelle ?
+  4. Cette personne est-elle atteinte de la maladie à traiter urgemment ?
+Le premier exemple peut par exemple se traduire ainsi :
+  (i) on modélise le nombre de visites par jour par une loi de Poisson de paramètre λ ;
+ (ii) le paramètre λ0 observé avant la modification est supposé connu ;
+(iii) on dispose d’un échantillon du modèle après modification,
+(iv) on cherche à savoir si le paramètre a augmenté.
+La question statistique est alors : « a-t-on λ ≤ λ0 ou λ > λ0 ? ».
+
+  Remarque. Le passage de la question pratique à la question statistique est la partie du travail
+  de modélisation, dont on a amplement parlé au cours 1, et c’est d’elle que dépend beaucoup
+  la portée pratique de la réponse. Dans ce cours, on se place dans le cadre d’une modélisation
+  statistique donnée, et on ne discutera pas en profondeur de la pertinence de telle ou telle
+  modélisation. Néanmoins, pour comprendre l’approche de Neyman-Pearson, il est
+  indispensable de s’ancrer dans les cas d’usage, afin de percevoir l’asymétrie des
+  erreurs. Nous nous appuierons donc régulièrement, à cette fin, sur de petits exemples.
+
+  Remarque. La notion de preuve statistique n’a rien d’immédiat. Les tests sont, en pratique,
+  l’outil le plus employé des sciences expérimentales (biologie, sciences sociales, économétrie, mé-
+  decine), et ils sont aussi l’une des principales sources d’erreurs. En 2019, plus de huit cents
+  scientifiques ont cosigné dans Nature un appel intitulé Scientists rise up against statistical si-
+  gnificance, dont la conclusion demande l’abandon du concept même de signification statistique.
+  Ils écrivent :
+
+             We [...] call for the entire concept of statistical significance to be abandoned.
+  Ce qui est en cause n’est pas la théorie exposée ici, qui est exacte, mais l’usage qui en est fait :
+  un seuil conventionnel, 5 % le plus souvent, y est traité comme une frontière entre le vrai et le
+  faux. Bien comprendre ce qu’un test dit et ce qu’il ne dit pas n’est pas difficile dès lors qu’on
+  s’appuie sur les mathématiques ; c’est l’objet de la suite du chapitre, et les limites de l’outil sont
+  reprises en détail à la Section 2.8, à la fin.
+
+2.2     Formalisme : test pur, région de rejet
+   Le cadre formel des tests est le suivant. On se donne un modèle statistique (Z, Z, {Pθ , θ ∈ Θ})
+et une partition de l’espace des paramètres en deux parties Θ0 et Θ1 , et le but du test est de
+déterminer si θ ∈ Θ0 ou θ ∈ Θ1 . On dit qu’on fait le test d’hypothèses
+
+                                H0 : θ ∈ Θ 0 ,   contre   H1 : θ ∈ Θ 1 ,
+
+H0 étant l’hypothèse nulle et H1 l’hypothèse alternative. Une première idée consiste à construire
+une statistique à valeurs dans {0, 1}, qui encode la décision ; on parle alors de test pur.
+
+   Définition 2.1: Test pur
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique et (Θ0 , Θ1 ) une partition de Θ. Un test pur
+  de H0 : θ ∈ Θ0 contre H1 : θ ∈ Θ1 est une fonction mesurable ϕ : Z → {0, 1}. On convient
+  que
+      — si ϕ(Z) = 1, on rejette l’hypothèse nulle H0 ;
+      — si ϕ(Z) = 0, on ne rejette pas l’hypothèse nulle H0 .
+20                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+  L’ensemble R := {z ∈ Z , ϕ(z) = 1} est la région de rejet du test (on dit aussi région critique),
+  et A := Z \ R est la région d’acceptation.
+
+    L’usage courant dit parfois « accepter H0 » là où la définition dit « ne pas rejeter H0 ». Les
+deux formulations décrivent la même décision, mais la seconde est plus prudente, et la raison en
+apparaîtra au Section 2.4 : la construction contrôlera en priorité la probabilité de rejeter à tort
+H0 , de sorte que le fait de “ne pas rejeter” n’établit rien. On pourra même dire, pour insister, que
+« on échoue à rejeter H0 » (c’est même ma formulation recommandée !) : on ne peut pas conclure
+que H0 est vrai, mais seulement que l’on n’a pas trouvé de preuve suffisante pour le rejeter. La
+notion d’échec ne veut pas dire ici que l’on souhaitait rejeter H0 , mais que l’on a échoué à trouver
+une preuve suffisante pour le faire.
+    Lorsque Θ0 ou Θ1 est réduit à un singleton, on parle d’hypothèse simple ; sinon, d’hypothèse
+composite. Lorsque les deux hypothèses considérées ne recouvrent pas Θ tout entier, ce qui arrive
+dès que l’on oppose deux valeurs particulières du paramètre, on peut se ramener à la définition
+en restreignant le modèle au sous-ensemble Θ0 ∪ Θ1 de l’espace des paramètres. Dans le cas où
+Θ ⊆ R, les trois tests suivants sont couramment employés :
+     — H0 : θ = θ 0 ,   contre   H1 : θ = θ1 , hypothèse simple contre alternative simple ;
+     — H0 : θ = θ 0 ,   contre   H1 : θ ̸= θ0 , hypothèse simple contre alternative composite ;
+     — H0 : θ ≤ θ 0 ,   contre   H1 : θ > θ0 , hypothèse composite contre alternative composite.
+
+
+Il est fréquent que la région de rejet se mette sous la forme
+
+                                        R = {z ∈ Z , T (z) ≥ c}
+
+pour une statistique T : Z → R et un réel c. La variable aléatoire T (Z) est alors appelée la
+statistique de test et c la valeur critique du test ; on dit aussi qu’on fait le test de statistique T
+et de valeur critique c. Lorsque la loi de T (Z) est continue, écrire {T (z) ≥ c} ou {T (z) > c} ne
+change ni la région, à un ensemble de probabilité nulle près, ni la taille du test ; lorsque T (Z) est
+à valeurs discrètes, en revanche, les deux conventions ne donnent pas le même seuil, et l’on adopte
+ici l’inégalité large dans tout le chapitre.
+
+      Exemple 2.1: Un test sur l’espérance d’un échantillon gaussien
+  On dispose de mesures à valeurs           réelles, pour lesquelles on considère le modèle
+   R, B(R), {N (θ, 1) , θ ∈ Θ := R} , et l’on souhaite répondre à la question : l’espérance est-
+                                     
+
+  elle inférieure ou égale à θ0 = 2 ? On veut en outre une procédure qui garantisse que l’erreur
+  consistant à répondre « non » alors que l’espérance est bien inférieure ou égale à θ0 ait une
+  probabilité au plus α.
+  On teste donc H0 : θ ∈ Θ0 contre H1 : θ ∈ Θ1 , avec Θ0 := ]−∞, 2] et Θ1 := ]2, +∞[, qui
+  forment bien une partition de R. Une règle de décision naturelle se fonde sur la moyenne
+  empirique des observations : on pose
+
+                                          ϕ(Z) := 1{X̄n ≥cα } ,
+                                                       Pn
+  de région  de rejet R = (x1 , . . . , xn ) ∈ Rn , n−1 i=1 xi ≥ cα et de région d’acceptation
+                               
+                                     n
+  A = (x1 , . . . , xn ) ∈ Rn , n−1 i=1 xi < cα . La valeur critique cα est choisie pour garantir
+                                  P
+  le niveau d’erreur fixé, c’est-à-dire Pθ (X̄n ≥ cα ) ≤ α pour tout θ ∈ Θ0 . La clause « pour
+  tout θ ∈ Θ0 » est l’écho de « alors que l’espérance est bien inférieure ou égale à θ0 », et
+  l’événement dont on calcule la probabilité correspond à « on répond non ». On attend que cα
+  soit légèrement supérieur à θ0 ; la valeur exacte sera calculée à l’Exemple 2.3.
+2. TESTS D’HYPOTHÈSES                                                                                 21
+
+   Exemple 2.2: Sondage
+  Reprenons le modèle de sondage du chapitre 1 : (X1 , . . . , Xn ) est un n-échantillon de
+                                                                         
+                         {0, 1}, P({0, 1}), {Ber(θ) , θ ∈ Θ := [0, 1]} ,
+
+  où θ est la probabilité de voter pour le candidat A. Pour θ0 ∈ ]0, 1[ fixé, on considère la
+  partition Θ0 := {θ ∈ Θ , θ ≤ θ0 } et Θ1 := {θ ∈ Θ , θ > θ0 }, et le test de H0 : θ ≤ θ0 contre
+  H1 : θ > θ0 . Il est naturel de prendre pour statistique de test le nombre de suffrages favorables,
+                                                         n
+                                                         X
+                                        T (Z) = Sn :=          Xi ,
+                                                         i=1
+
+  et de rejeter H0 lorsque Sn dépasse Pn   un seuil : le test est ϕ(Z) = 1{Sn ≥c} , de région de rejet
+  R = {(x1 , . . . , xn ) ∈ {0, 1}n ,  i=1 i ≥ c}. Le choix de c est détaillé à l’Exemple 2.5.
+                                          x
+
+
+2.3    Fonction puissance, taille et niveau
+   Un test est une procédure ; pour la juger, on regarde, pour chaque valeur du paramètre, la
+probabilité qu’elle a de rejeter l’hypothèse nulle. Si θ ∈ Θ0 , on espère ne pas rejeter H0 ; si θ ∈ Θ1 ,
+on espère rejeter H0 . La fonction puissance rassemble ces deux exigences en un seul objet.
+
+   Définition 2.2: Fonction puissance
+  Soit (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique. La fonction puissance βϕ : Θ →
+  [0, 1] d’un test pur ϕ est définie par
+                                                                 
+                              βϕ : θ 7−→ Pθ ϕ(Z) = 1 = Pθ Z ∈ R .
+
+  Effectuer un test expose à deux types d’erreur.
+  — Erreur de première espèce : rejeter H0 alors que cette hypothèse est satisfaite. Sa probabilité,
+    sous Pθ avec θ ∈ Θ0 , est le risque de première espèce βϕ (θ).
+  — Erreur de seconde espèce : ne pas rejeter H0 alors que cette hypothèse est fausse. Sa proba-
+    bilité, sous Pθ avec θ ∈ Θ1 , est le risque de seconde espèce 1 − βϕ (θ).
+
+   Définition 2.3: Taille et niveau d’un test
+  La taille du test ϕ est
+                                         α(ϕ) := sup βϕ (θ) .
+                                                  θ∈Θ0
+
+  Soit α ∈ ]0, 1[. Le test ϕ est dit de niveau α si α(ϕ) ≤ α.
+
+    La taille est donc le risque de première espèce maximal : c’est la probabilité maximale de rejeter
+H0 alors qu’elle est vraie. La taille est un nombre attaché au test ; le niveau est une contrainte
+qu’on lui impose. Un test de taille 3 % est de niveau 5 %, et il est aussi de niveau 3 %.
+    Étant donné un couple (Θ0 , Θ1 ), il n’y a pas unicité du test, et l’on peut chercher à les comparer.
+Si ϕ1 et ϕ2 sont deux tests tels que
+                                 (
+                                   βϕ1 (θ) ≤ βϕ2 (θ) pour tout θ ∈ Θ0 ,
+                                   βϕ1 (θ) ≥ βϕ2 (θ) pour tout θ ∈ Θ1 ,
+alors ϕ1 est préférable à ϕ2 : il se trompe moins souvent des deux côtés. Cette relation définit un
+préordre sur l’ensemble des tests. Comme l’ordre partiel sur les risques du chapitre 3 (Section 1.5),
+il ne permet pas de comparer deux procédures quelconques : deux tests dont les fonctions puissance
+se croisent ne sont pas comparables.
+22                                           CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+  Exemple 2.3: Test sur la moyenne d’une gaussienne de variance connue : calcul de la fonction puissan
+ Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), N (θ, σ 2 ) , θ ∈ R , où σ 2 ∈ R∗+
+                                                                                    
+
+ est connue, et considérons le test
+
+                                  H0 : θ ≤ 0,     contre     H1 : θ > 0 .
+
+ On prend pour statistique de test
+
+                                                        √ X̄n
+                                             T (Z) :=    n    ,
+                                                           σ
+ et, pour c ∈ R, on définit le test de valeur critique c par ϕc (Z) := 1{T (Z)≥c} . Sa fonction
+ puissance vaut, pour tout θ ∈ R,
+
+                                √                     √n(X̄ − θ)          √ 
+                                                                             nθ
+                                                            n
+                  βϕc (θ) = Pθ n X̄n /σ ≥ c = Pθ                    ≥c−
+                                        √                  σ                σ
+                                         nθ
+                          =1−Φ c−               ,
+                                         σ
+                                                            √
+ où Φ est la fonction de répartition de N (0, 1), puisque n(X̄n − θ)/σ ∼ N (0, 1) sous Pθ . La
+ fonction βϕc est strictement croissante, ce qui est la propriété qu’on attend : plus le paramètre
+ est grand, plus il est probable qu’on rejette H0 . La taille du test vaut
+                                                           √ o
+                                              n             nθ
+                   α(ϕc ) = sup βϕc (θ) = sup 1 − Φ c −             = 1 − Φ(c) ,
+                            θ≤0           θ≤0                σ
+
+ le supremum étant atteint en θ = 0. La taille décroît lorsque la valeur critique croît : on a donc
+ intérêt à prendre c assez grand, et le choix c = 0 donnerait une taille de 1/2. Pour obtenir un
+ test de niveau α, et même de taille exactement α, on prend c = z1−α .
+
+
+     Sur cet exemple, la taille se lit comme une aire sous une courbe.
+
+
+
+
+                                       densité de T(Z) sous ℙ0
+
+
+
+
+                                                            région de rejet {T(Z) ≥ c}
+                                                            aire = α(ϕ
+                                                                    ̄ c) = 1 − Φ(c) = 0,05
+
+
+
+
+                         −2              0              c
+                                             T(Z) = √ n X̄ n/σ
+                                               √
+    Densité de la statistique de test T (Z) = n X̄n /σ sous P0 , qui est celle de N (0, 1), pour la valeur
+ critique c = z0,95 ≃ 1,645. Le test ϕc rejette H0 lorsque la statistique tombe dans la zone ombrée, dont
+ l’aire vaut 1 − Φ(c) = 0,05 : c’est la taille du test, atteinte en θ = 0. Déplacer c vers la droite diminue
+  cette aire, donc la taille ; on verra à l’Exemple 2.4 que cela diminue en même temps la probabilité de
+                                             rejeter lorsque θ > 0.
+2. TESTS D’HYPOTHÈSES                                                                                      23
+
+
+
+
+ Cas θ0 = 2, n = 50, pour le modèle N (θ, 1) et la statistique X̄n . À gauche, les fonctions puissance des
+  tests ϕ1 et ϕ2 de valeurs critiques c1 = 2,23 et c2 = 0,9 c1 ; le trait horizontal est la droite d’équation
+y = 0,05, et c1 a été choisi pour que la taille de ϕ1 vaille 5 %. À droite, la taille de ϕ1 en fonction de sa
+                        valeur critique : elle vaut 1/2 en c = θ0 et décroît vers 0.
+
+   Lorsque la valeur critique diminue, la région de rejet s’agrandit, et la probabilité de rejeter
+augmente sous toutes les valeurs du paramètre : la taille du test et sa puissance croissent ensemble.
+Le risque de première espèce et le risque de seconde espèce varient donc en sens contraire.
+
+   Exemple 2.4
+  Reprenons l’Exemple 2.1, avec Θ0 = ]−∞, θ0 ] et Θ1 = ]θ0 , +∞[, et donnons-nous deux réels
+  c1 > c2 . Posons ϕi (Z) := 1{X̄n ≥ci } pour i ∈ {1, 2} : la statistique de test est T (Z) = X̄n et
+  c1 , c2 sont deux valeurs critiques. Les régions de rejet vérifient R1 ⊂ R2 , donc
+
+                                 βϕ1 (θ) ≤ βϕ2 (θ)      pour tout θ ∈ Θ .
+
+  Plus précisément, sous Pθ , X̄n ∼ N (θ, 1/n), donc
+                                                              √ 
+                                      βϕi (θ) = 1 − Φ (ci − θ) n ,
+                                                                     √ 
+  et la taille de ϕi vaut α(ϕi ) = supθ≤θ0 βϕi (θ) = 1 − Φ (ci − θ0 ) n .
+  L’inégalité βϕ1 ≤ βϕ2 se lit donc de deux façons opposées selon l’endroit où on la regarde.
+  Sur Θ0 , elle dit que ϕ1 a une taille strictement plus petite que ϕ2 : ϕ1 rejette moins souvent
+  à tort. Sur Θ1 , la même inégalité dit que ϕ1 a une puissance plus petite, donc un risque de
+  seconde espèce plus grand : ϕ1 manque plus souvent une alternative vraie. Les deux tests ne
+  sont pas comparables au sens du préordre ci-dessus.
+  Pour θ0 = 2, n = 50 et un niveau α = 5 %, la valeur critique c1 est déterminée par 1 − Φ (c1 −
+      √                                        √               √
+  θ0 ) n = 0,05, c’est-à-dire c1 = θ0 + z0,95 / n = 2 + 1,645/ 50 = 2,23. En θ = θ0 , la fonction
+  puissance vaut exactement la taille du test, soit 0,05.
+
+
+Intuition. On voudrait un test dont la fonction puissance soit nulle sur Θ0 et égale à 1 sur Θ1 : il ne
+se tromperait jamais. C’est impossible dès que Θ0 et Θ1 sont adjacents, comme ici en θ0 : la fonction
+puissance est continue, et elle ne peut pas sauter de 0 à 1 au point de contact. La fonction puissance idéale
+est donc hors d’atteinte, et tout ce qu’on peut faire est de la rendre petite sur Θ0 et grande sur Θ1 , deux
+objectifs qu’on ne peut pas satisfaire simultanément, puisque déplacer la valeur critique les fait varier dans
+le même sens.
+
+
+   Exemple 2.5: Sondage : taille du test et seuil entier
+                                         Pn
+  Reprenons l’Exemple 2.2. La loi de Sn = i=1 Xi est explicite : sous Pθ , Sn ∼ Bin(n, θ),
+24                                                                                   CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+ c’est-à-dire                         
+                                      n k
+                       Pθ (Sn = k) =     θ (1 − θ)n−k ,                                                          k ∈ {0, . . . , n} .
+                                      k
+ Croissance en θ. Montrons d’abord que, pour tout c fixé, la fonction θ 7→ Pθ (Sn ≥ c) est
+ croissante, c’est-à-dire que
+
+                      Pθ (Sn ≥ c) ≤ Pϑ (Sn ≥ c)                                                     pour tous 0 ≤ θ ≤ ϑ ≤ 1 .
+
+ Soient U1 , . . . , Un des variables aléatoires indépendantes de loi U ([0, 1]). Pour i ∈ {1, . . . , n},
+ posons
+ Pn      Ai := 1{Ui ≤θ}Pet Bi := 1{Ui ≤ϑ} , dePsorte que P     Ai ≤ Bi presque sûrement. Alors
+                              n                       n          n
+   i=1 A i ∼   Bin(n,   θ),   i=1 B i ∼ Bin(n, ϑ) et  i=1 Ai ≤   i=1 Bi , d’où
+
+                                                                             n
+                                                                            X                 n
+                                                                                               X       
+                   Pθ (Sn ≥ c) = P                                                  Ai ≥ c ≤ P    Bi ≥ c = Pϑ (Sn ≥ c) .
+                                                                              i=1                     i=1
+
+ Ce procédé, qui réalise deux lois sur un même espace de façon à les comparer trajectoire par
+ trajectoire, est un couplage (Section 3).
+ Taille. Il s’ensuit que, pour tout c,
+
+                                                                         α(ϕ) = sup Pθ (Sn ≥ c) = Pθ0 (Sn ≥ c) .
+                                                                                   θ≤θ0
+
+ Choix du seuil. Comme Sn ne prend que des valeurs entières, il n’existe pas en général de
+ valeur critique pour laquelle la taille égale exactement le niveau α. Pour obtenir un test de
+ niveau α, on prend
+
+                         cα := min {k ∈ {0, . . . , n + 1} , Pθ0 (Sn ≥ k) ≤ α} ,
+
+ l’ensemble étant non vide puisque Pθ0 (Sn ≥ n + 1) = 0. Le test ϕα (Z) = 1{Sn ≥cα } est alors
+ de niveau α, et sa taille est en général strictement inférieure à α. Enfin, la croissance établie
+ plus haut donne, pour tout θ ∈ Θ1 ,
+
+                                                               βϕα (θ) = Pθ (Sn ≥ cα ) ≥ Pθ0 (Sn ≥ cα ) = α(ϕα ) ,
+
+ c’est-à-dire que la puissance sur l’alternative est au moins égale à la taille.
+                                                               0.8
+                         Fonction repartition complementaire
+                                                               0.6
+                                                               0.4
+                                                               0.2
+                                                               0.0
+
+
+
+
+                                                                     0         5          10   15           20      25       30
+                                                                                               k
+
+
+
+   Fonction de répartition complémentaire c 7→ Pθ (Sn ≥ c) de la loi binomiale pour n = 30 et θ = 0,1
+  (noir), 0,2 (rouge), 0,3 (bleu) et 0,4 (vert). Les courbes ne se croisent pas : c’est la croissance en θ
+établie par couplage, et l’escalier rend visible que la taille ne peut prendre qu’un nombre fini de valeurs.
+2. TESTS D’HYPOTHÈSES                                                                                     25
+
+2.4    L’approche de Neyman-Pearson
+    Chercher à minimiser la taille conduit à prendre la région de rejet la plus petite possible ;
+chercher à maximiser la puissance sur Θ1 conduit à la prendre la plus grande possible. Les deux
+objectifs sont contradictoires, et la détermination de la région de rejet oblige à un compromis. La
+règle la plus communément admise pour le trancher est celle de Neyman-Pearson : elle se fonde sur
+une dissymétrie entre H0 et H1 . On se donne un niveau α ∈ ]0, 1[, typiquement petit (de l’ordre
+de 5 %, de 10−3 ou de 10−6 selon les applications), on ne retient que les tests de niveau α, et l’on
+cherche parmi eux à maximiser la fonction puissance sur Θ1 .
+Intuition. La dissymétrie n’est pas un artifice mathématique : elle correspond à des situations où les deux
+erreurs n’ont pas la même gravité. C’et le cas dans de nombreuses applications, et le choix de l’hypothèse
+nulle est crucial. Considérez par exemple les trois situations que les exemples ci-dessus décrivent :
+   1. dans un dépistage, qu’est-ce qui est le plus problématique : dire à un malade qu’il ne l’est pas, ou
+      dire à un bien portant qu’il est malade ?
+   2. Dans un contrôle antidopage : laisser passer un sportif dopé, ou accuser un sportif qui ne l’est pas ?
+   3. Dans une expérience de physique : manquer la découverte d’une particule nouvelle, ou annoncer une
+      découverte sans preuve suffisante ?
+Les réponses ne sont pas les mêmes dans les trois cas, et c’est ce qui détermine laquelle des deux hypothèses
+on met en H0 .
+    Dans l’approche de Neyman-Pearson, on garantit en priorité un risque de première espèce
+contrôlé : on s’assure de ne rejeter H0 à tort qu’avec une probabilité petite, sous le modèle et sous
+H0 . La conséquence est que la seule décision forte est de rejeter H0 : c’est elle, et elle seule,
+qui est assortie d’une garantie. Ne pas rejeter H0 ne prouve rien. Cela peut signifier que H0 est
+vraie, ou simplement que les données ne suffisent pas à la mettre en défaut. Le choix de H0 est
+donc crucial, et il obéit à deux heuristiques.
+  — Choisir en H0 l’hypothèse qui est en notre défaveur. Si l’on veut établir l’efficacité d’un nou-
+      veau médicament à partir d’essais cliniques, on met en H0 que le médicament est inefficace :
+      si cette hypothèse est rejetée, la conclusion est probante, ce qu’elle ne serait pas si la même
+      hypothèse était simplement acceptée.
+  — Choisir en H0 l’hypothèse la plus dangereuse. Si l’on teste la sécurité sismique d’un site avant
+      l’implantation d’une centrale nucléaire, il est crucial de détecter un risque : on met donc en
+      H0 la présence d’un risque, quitte à écarter à tort un site sûr, ce qui est bien moins grave.
+En vertu du second principe, deux groupes aux intérêts différents partiront souvent d’hypothèses
+nulles inversées : par exemple, dans un cas pratique, on peut imaginer qu’industriels et associations
+de consommateurs ne posent pas le même H0 .
+    L’exemple suivant montre ce que devient un test lorsqu’on échange les deux hypothèses.
+
+   Exemple 2.6: Échanger H0 et H1
+  Reprenons le modèle N (θ, 1) et un n-échantillon. Pour le test H0 : θ ≤ θ0 contre H1 : θ > θ0 ,
+  le calcul de l’Exemple 2.3, transposé au seuil θ0 , donne la région de rejet de niveau et de taille
+  α                                     √
+                                   R=      n(X̄n − θ0 ) ≥ z1−α .
+  Échangeons maintenant les hypothèses et testons H0′ : θ > θ0 contre H1′ : θ ≤ θ0 . On rejette
+  cette fois pour des valeurs petites de X̄n : pour c ∈ R, le test ϕ(Z) = 1{X̄n ≤c} a pour fonction
+  puissance                                               √         
+                                  θ 7−→ Pθ (X̄n ≤ c) = Φ n(c − θ) ,
+                               √                √
+  et sa taille vaut supθ>θ0 Φ( n(c−θ)) = Φ( n(c−θ0 )). Ce supremum n’est pas atteint, puisque
+          ′
+  θ0 ∈/ Θ0 , mais il vaut bien la limite lorsque
+                                            √      θ décroît vers
+                                                              √ θ0 . En choisissant c tel que cette
+  taille égale α, c’est-à-dire c = θ0 + zα / n = θ0 − z1−α / n, on obtient la région de rejet
+
+                                    R′ =
+                                         √
+                                             n(X̄n − θ0 ) ≤ −z1−α .
+26                                       CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+ Les deux régions de rejet ne sont pas complémentaires : entre les deux se trouve tout un
+ domaine de valeurs de X̄n où aucun des deux tests ne réussit à rejetter son hypothèse nulle.
+
+     Exemple 2.7: Trois régions, deux hypothèses simples
+ Précisons ce point sur un test entre deux hypothèses simples. Fixons θ1 > 0 et soit
+ (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), {N (θ, 1) , θ ∈ Θ := {0, θ1 }} , dont l’es-
+ pace des paramètres se réduit aux deux valeurs en présence. Pour tester H0 : θ = 0 contre
+ H1 : θ = θ1 , on prend X̄n pour   √ statistique et l’on cherche une région de rejet de la forme
+ {X̄n ≥ c} ; le choix c = z1−α / n donne une taille égale à α, soit
+                                              n       z1−α o
+                                        R := X̄n ≥ √         .
+                                                        n
+
+ Échangeons les hypothèses : pour tester H0′ : θ = θ1 contre H1′ : θ = 0, la même construction
+ donne                                     n         z1−α o
+                                   R′ := X̄n ≤ θ1 − √        ,
+                                                        n
+                                                  √                            √            √
+ de taille α également. Supposons 0 < θ1 < 2z1−α / n, de sorte que θ1 − z1−α / n < z1−α / n.
+ L’ensemble des valeurs prises par X̄n se découpe alors en trois :
+                          √
+   — X̄n ≤ θ1 − z1−α / n : le premier test ne rejette pas H0 , le second rejette H0′ ; les deux
+       
+
+       concluent θ = 0.
+                       √
+   — X̄n ≥ z1−α / n : le premier test rejette H0 , le second ne rejette pas H0′ ; les deux
+       
+
+       concluent θ = θ1 .
+                     √                    √
+   — θ1 − z1−α / n < X̄n < z1−α / n : aucun des deux tests ne rejette son hypothèse
+       
+
+       nulle. Une même observation conduit donc à conclure θ = 0 si l’on a mis θ = 0 en H0 ,
+       et θ = θ1 si l’on y a mis θ = θ1 .
+ Dans cette troisième région, les données ne permettent pas de trancher entre les deux valeurs,
+ et la règle de Neyman-Pearson consiste à retenir l’hypothèse nulle. La contradiction n’est
+ qu’apparente : les deux procédures ne répondent pas à la même question, puisqu’elles ne
+ protègent pas la même hypothèse.
+
+
+2.5     Comment construire un test
+     La démarche que suivent tous les exemples précédents peut s’énoncer une fois pour toutes.
+
+     Méthode 2.1: Construction d’un test de niveau α
+     (0) Choisir le niveau α ∈ ]0, 1[ : c’est le seul seuil que l’on fixe.
+     (1) Choisir une statistique de test T (Z), en fonction de H0 et du modèle.
+     (2) Choisir la forme de la région de rejet, en fonction de H1 : typiquement {T (Z) ≥ cα }
+         pour une alternative unilatérale, {|T (Z) − t0 | ≥ cα } pour une alternative bilatérale. Le
+         test est alors ϕα (Z) = 1{T (Z)∈Rα } .
+     (3) Choisir cα de sorte que la taille soit au plus α, c’est-à-dire
+                                                               
+                                           sup Pθ T (Z) ≥ cα ≤ α .
+                                         θ∈Θ0
+
+         Cette étape demande de connaître la loi de T (Z) sous H0 .
+     (4) Éventuellement, calculer la fonction puissance βϕα .
+     (5) Éventuellement, calculer la p-valeur α̂(Z) associée.
+     (6) Conclure numériquement.
+2. TESTS D’HYPOTHÈSES                                                                              27
+
+    L’étape (1) est la seule où le choix n’est pas dicté par la construction. Une réponse générale
+existe (prendre par défaut le test du rapport de vraisemblance) ; elle est l’objet du chapitre 5.
+    L’exemple qui suit déroule les six étapes sur une situation concrète, d’abord du point de vue
+de l’une des parties en présence, puis du point de vue de l’autre.
+
+   Exemple 2.8: Bruit d’aéroport : le point de vue des riverains
+  On considère un aéroport en conflit avec des riverains sur le niveau de bruit. La réglementation
+  fixe le seuil légal à µ0 , par exemple 80 décibels. Les riverains veulent établir que le niveau de
+  bruit dépasse ce seuil. On effectue n mesures, modélisées par un n-échantillon de N (µ, σ 2 ),
+  avec σ 2 connue.
+  (1) Choix des hypothèses. La seule décision forte étant de rejeter H0 , et les riverains cherchant
+  à établir µ > µ0 , il faut mettre l’assertion contraire en hypothèse nulle :
+
+                               H0 : µ ≤ µ 0 ,  contre H1 : µ > µ0 .
+                                               √
+  (2) Statistique de test. On prend T (Z) := n(X̄n − µ0 )/σ, dont la loi sous Pµ0 est N (0, 1).
+  Ni X̄n seul, ni X̄n − µ0 ne conviendraient aussi bien : leur loi dépend encore de n et de σ, et
+  il faudrait recalculer les quantiles à chaque jeu de données.
+  (3) Forme de la région de rejet. L’alternative étant µ > µ0 , on rejette pour des valeurs grandes
+  de T (Z) : Rα = {T (Z) ≥ c}.                                        √
+  (4) Valeur critique. La fonction puissance vaut β(µ) = 1 − Φ c − n(µ − µ0 )/σ , donc la taille
+                                                                                    
+
+  vaut supµ≤µ0 β(µ) = 1 − Φ(c), et le choix c = z1−α donne un test de taille exactement α.
+  (5) Application numérique. Pour n = 100, X̄n = 82 dB et σ = 10, on a T (Z) = 10 × (82 −
+  80)/10 = 2. Au niveau α = 5 %, z0,95 = 1,645,       √ et 2 ≥ 1,645 : on rejette H0 . De façon
+  équivalente, on rejette dès que X̄n ≥ µ0 + σz1−α / n = 80 + 1,645 = 81,645, ce qui est le cas.
+  Au niveau α = 0,1 %, z0,999 = 3,090, et 2 < 3,090 : on échoue à rejeter H0 .
+  (6) Conclusion. Au niveau 5 %, les riverains ont établi statistiquement que le niveau de bruit
+  dépasse le seuil réglementaire. Au niveau 0,1 %, ils n’ont rien établi, ce qui ne signifie pas que
+  le seuil est respecté.
+
+   Exemple 2.9: Bruit d’aéroport : le point de vue de l’aéroport
+  Même situation, mêmes données, mais l’aéroport veut établir que le niveau de bruit ne dépasse
+  pas le seuil. L’hypothèse à mettre en H0 est cette fois celle qui lui est défavorable :
+
+                               H0 : µ ≥ µ0 , contre H1 : µ < µ0 .
+                                √
+  La statistique reste T (Z) = n(X̄n − µ0 )/σ, mais l’alternative étant √ µ < µ0 , on rejette pour
+  des valeurs petites : R′α = {T (Z) ≤ c′ }. La taille vaut supµ≥µ0 Φ c′ − n(µ − µ0 )/σ = Φ(c′ ),
+                                                                                        
+
+  atteinte en µ = µ0 , d’où c′ = zα = −z1−α et
+
+                                     R′α = T (Z) ≤ −z1−α .
+                                             
+
+
+  Avec les mêmes données, T (Z) = 2 > −1,645 : l’aéroport échoue à rejeter son hypothèse nulle,
+  à tous les niveaux usuels. Il n’a donc rien établi.
+  Le même jeu de données conduit ainsi à des conclusions qui semblent contradictoires selon
+  la partie qui pose la question, alors qu’elles ne le sont pas : chacune protège une hypothèse
+  différente, et aucune des deux n’a « prouvé » que l’autre avait tort. Ici, seuls les riverains
+  obtiennent une conclusion forte.
+
+
+2.6    Construire un test à partir d’un pivot
+   La première moitié du chapitre a construit des régions de confiance à partir de pivots ; la même
+construction fournit des tests, et c’est le pont entre les deux notions. Soit G une fonction pivotale.
+28                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+Pour tout α ∈ [0, 1], on peut déterminer des réels t−     +
+                                                    α et tα tels que
+
+                       Pθ G(Z, θ) ∈ t−     +
+                                                           pour tout θ ∈ Θ ,
+                                            
+                                      α , tα    ≥1−α
+
+de sorte que Iˆα := {θ ∈ Θ , G(Z, θ) ∈ [t−        +
+                                             α , tα ]} est une région de confiance de niveau 1 − α pour
+θ. Pour tester H0 : θ = θ0 , il est naturel de rejeter lorsque θ0 ∈  / Iˆα , c’est-à-dire lorsque G(Z, θ0 ) ∈
+                                                                                                            /
+  − +
+[tα , tα ]. Attention toutefois : la région de confiance obtenue est en général implicite, et il n’est pas
+toujours facile d’en déduire un test explicite. Les trois exemples qui suivent sont des situations
+classiques où la résolution est possible.
+
+   Exemple 2.10: Test sur la moyenne, variance connue
+                                                            2                2
+  Soit (X1 , . . . , Xn ) un n-échantillon
+                                         √ du modèle N (µ, σ ) , µ ∈ R , où σ est connue, et soit
+                                                    
+
+  µ0 ∈ R. La fonction G(Z; µ) := n(X̄n − µ)/σ est pivotale, de loi N (0, 1) (Exemple 1.4).
+  Considérons le test bilatéral
+
+                                 H0 : µ = µ 0 ,   contre    H1 : µ ̸= µ0 .
+
+  Sous H0 , G(Z; µ0 ) ∼ N (0, 1), donc pour tout α ∈ ]0, 1[,
+                                                        
+                                Pµ0 G(Z; µ0 ) < z1−α/2 = 1 − α ,
+
+  et le test ϕα (Z) := 1{|G(Z;µ0 )|≥z1−α/2 } est de niveau et de taille α. Sa région d’acceptation est
+              n                                               Pn                       o
+          Aα = (x1 , . . . , xn ) ∈ Rn , µ0 − z1−α/2 √σn < n−1 i=1 xi < µ0 + z1−α/2 √σn .
+                                                                         √
+  La fonction puissance se calcule explicitement, la loi de (X̄n − µ)/(σ/ n) sous Pµ restant
+  N (0, 1) pour tout µ :
+                                            X̄n − µ0          
+                  β(µ) = 1 − Pµ − z1−α/2 <       √    < z1−α/2
+                                              σ/ n
+                                µ − µ              X̄ − µ    µ −µ     
+                                    0
+                       = 1 − Pµ       √ − z1−α/2 < n √ < 0 √ + z1−α/2
+                                  σ/ n               σ/ n      σ/ n
+                              µ − µ                 µ − µ        
+                                  0                     0
+                       =1−Φ          √ + z1−α/2 + Φ       √ − z1−α/2 .
+                                 σ/ n                  σ/ n
+
+  La fonction µ 7→ β(µ) atteint son minimum en µ = µ0 , où elle vaut α, et elle tend vers 1
+  lorsque n tend vers l’infini, aussi bien pour µ > µ0 que pour µ < µ0 .
+2. TESTS D’HYPOTHÈSES                                                                                    29
+
+  Fonction puissance du test bilatéral sur la moyenne, pour n = 20, n = 50 et n = 100, avec α = 0,05,
+  µ0 = 2 et σ = 1. Le trait horizontal est la droite d’équation y = α ; les trois courbes se rejoignent en
+                                  µ = µ0 , où la puissance vaut la taille.
+
+
+
+   Exemple 2.11: Test sur la moyenne, variance inconnue
+  Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle N (µ, σ 2 ) , (µ, σ 2 ) ∈ R × R∗+    et soit
+                                                            
+
+  µ0 ∈ R. Par le théorème de Gosset, la fonction
+
+                                                         X̄n − µ
+                                           G(Z; µ) :=        √
+                                                         Sn / n
+
+  est pivotale, de loi t(n−1). Sous l’hypothèse nulle du test H0 : µ = µ0 , contre         H1 : µ ̸= µ0 ,
+  on a G(Z; µ0 ) ∼ t(n − 1), donc
+                                                                 
+                                       (n−1)                (n−1)
+                           Pµ0 ,σ2 − t1−α/2 < G(Z; µ0 ) < t1−α/2 = 1 − α
+
+  pour tout σ 2 > 0, et le test
+                                      ϕα (Z) := 1                (n−1)
+                                                    { G(Z;µ0 ) ≥t1−α/2 }
+
+  est de taille α. C’est le test de Student.
+  Sa fonction puissance ne s’exprime plus à l’aide de la loi de Student : sous P(µ,σ2 ) avec µ ̸= µ0 ,
+  la quantité µ0 n’est plus l’espérance de X̄n . En écrivant
+                                        √                 √
+                            X̄n − µ0      n(X̄n − µ)/σ + n(µ − µ0 )/σ
+                                 √ =                                      ,
+                             Sn / n                  Sn /σ
+                                                  √
+  on reconnaît, au numérateur, une variable N n(µ − µ0 )/σ, 1 et, au dénominateur, la racine
+                                                                  
+
+  de Sn2 /σ 2 = χ2 (n − 1)/(n − 1), indépendante du numérateur : la statistique de test suit
+  une
+  √ loi de Student non centrale à n − 1 degrés de liberté et de paramètre de non-centralité
+    n(µ − µ0 )/σ (Section 3).
+
+
+   Exemple 2.12: Test sur la variance
+  Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle N (µ, σ 2 ) , (µ, σ 2 ) ∈ R × R∗+    et soit
+                                                             
+
+  σ02 > 0. On considère
+                                  H0 : σ 2 = σ02 , contre H1 : σ 2 ̸= σ02 .
+  La fonction G(Z; σ 2 ) := (n − 1)Sn2 /σ 2 est pivotale, de loi χ2 (n − 1) (Exemple 1.6). Sous H0 ,
+  pour tout µ ∈ R,
+                                          (n − 1)Sn2                   
+                    Pµ,σ02 χ2α/2 (n − 1) <            < χ 2
+                                                          1−α/2 (n − 1)   =1−α,
+                                               σ02
+
+  de sorte que le test
+                             ϕα (Z) := 1 (n−1)Sn2     i                        h
+                                          {    2    / χ2α/2 (n−1),χ21−α/2 (n−1) }
+                                                    ∈
+                                              σ0
+
+
+  est de niveau et de taille α. La loi du χ2 n’étant pas symétrique, les deux quantiles ne sont
+  pas opposés, et la région de rejet n’est pas symétrique autour de σ02 .
+
+
+  Ces trois exemples ferment le triptyque du modèle gaussien : moyenne à variance connue,
+moyenne à variance inconnue, variance. Leur version à deux échantillons (comparaison de deux
+moyennes, comparaison de deux variances) fait l’objet de l’Exercice 5 (PC4).
+30                                        CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+2.7      La p-valeur
+    Se fixer un niveau α à l’avance a l’avantage de la simplicité, mais ne rend qu’une information
+binaire : rejet ou non-rejet. On peut demander davantage. Si je réduis le niveau, est-ce que je
+rejette plus ou moins souvent ?
+    → Le niveau α est ma tolérance à l’erreur de première espèce ; en la diminuant,
+j’accepte de moins en moins de rejeter à tort, donc je rejette de moins en moins. Pour une famille
+de tests dont les régions de rejet décroissent avec α, il existe donc un niveau à partir duquel je
+cesse de rejeter, et ce niveau est une fonction des observations. C’est la p-valeur.
+
+     Définition 2.4: p-valeur
+  Soit (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique. Soit {ϕα , α ∈ [0, 1]} une famille de tests purs
+  vérifiant
+     (a) pour tout α ∈ [0, 1], le test ϕα est de niveau α, c’est-à-dire α(ϕα ) = supθ∈Θ0 βϕα (θ) ≤ α ;
+     (b) pour tous 0 ≤ α ≤ α′ < 1, Rα ⊂ Rα′ , où Rα := {z ∈ Z , ϕα (z) = 1}.
+  La p-valeur de l’observation Z pour cette famille de tests est
+
+                                  α̂(Z) := inf {α ∈ [0, 1] , Z ∈ Rα } .
+
+    La condition (b) est ce qui donne son sens à l’infimum : augmenter le niveau, donc la tolérance,
+revient à agrandir la région de rejet. La p-valeur est alors la plus petite taille de test qui conduise
+à rejeter l’hypothèse nulle sur l’observation dont on dispose. Autrement dit, H0 est rejetée pour
+tout niveau α > α̂(Z) et n’est pas rejetée pour tout α < α̂(Z). En particulier, plus la p-valeur est
+faible, plus les données sont défavorables à l’hypothèse nulle.
+
+     Proposition 2.1: Calcul pratique de la p-valeur
+  Soit {ϕα , α ∈ [0, 1]} une famille de tests purs de niveau α, de la forme ϕα (Z) = 1{T (Z)≥cα } ,
+  où α 7→ cα est décroissante sur [0, 1]. Alors la famille vérifie la condition (b) de la Définition 2.4
+  et
+                               α̂(Z) = inf {α ∈ ]0, 1[ , T (Z) ≥ cα } .
+
+     Démonstration
+  Pour α ≤ α′ , la décroissance de α 7→ cα donne cα′ ≤ cα , donc Rα = {z , T (z) ≥ cα } ⊂
+  {z , T (z) ≥ cα′ } = Rα′ : la condition (b) est vérifiée. L’expression de la p-valeur est alors la
+  définition, réécrite avec Rα = {T (Z) ≥ cα }.                                                   □
+
+   Exemple 2.13: p-valeur pour la moyenne d’une gaussienne
+  Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), N (θ, σ 2 ) , θ ∈ Θ := R , avec
+                                                                                           
+
+  σ 2 connue, et considérons H0 : θ ≤ √     0, contre H1 : θ > 0. D’après l’Exemple 2.3, le test
+  ϕα (Z) = 1{T (Z)≥z1−α } , avec T (Z) = n X̄n /σ, est de niveau α ; sa région de rejet est
+                                              √
+                                       Rα =      n X̄n /σ ≥ z1−α .
+  Comme α 7→ z1−α est décroissante, la Proposition 2.1 s’applique. Or Φ est continue et stric-
+  tement croissante, donc, pour α ∈ ]0, 1[,
+   √                                 √                                          √
+     n X̄n /σ ≥ z1−α if and only if Φ n X̄n /σ ≥ 1 − α if and only if α ≥ 1 − Φ n X̄n /σ ,
+                                                                                         
+
+  d’où                                                √           
+                                      α̂(Z) = 1 − Φ       n X̄n /σ .
+  La p-valeur ne dépend de l’observation qu’à travers X̄n . Pour n = 100 et σ = 1, on obtient
+  α̂ = 0,999 si X̄n = −0,3, α̂ = 0,159 si X̄n = 0,1, et α̂ = 1,35 · 10−3 si X̄n = 0,3.
+2. TESTS D’HYPOTHÈSES                                                                                     31
+
+Comment s’en servir. Supposons avoir calculé une p-valeur de 2 % sur un jeu de données. Alors,
+pour tout niveau α > 2 %, on rejette H0 ; pour tout niveau α < 2 %, on échoue à rejeter H0 . La
+p-valeur résume donc, en un seul nombre, la réponse du test à tous les niveaux à la fois. C’est pour
+cela qu’on la publie plutôt que la seule décision.
+    L’énoncé suivant explique ce que l’on voit lorsqu’on répète l’expérience et que l’on trace l’his-
+togramme des p-valeurs obtenues.
+
+   Proposition 2.2: Loi de la p-valeur sous l’hypothèse nulle
+  Soit (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique et soit (Θ0 , Θ1 ) une partition
+  de Θ. Soit {ϕα , α ∈ [0, 1]} une famille de tests purs vérifiant les conditions (a) et (b) de la
+  Définition 2.4, et soit α̂(Z) la p-valeur associée. Alors, pour tout θ ∈ Θ0 ,
+
+                                                     pour tout u ∈ [0, 1] ,                    (1)
+                                          
+                             Pθ α̂(Z) ≤ u ≤ u
+
+  c’est-à-dire que α̂(Z) est stochastiquement dominée par la loi U ([0, 1]). Si de plus
+
+                                                pour tout α ∈ ]0, 1[ ,                                 (2)
+                                        
+                             Pθ Z ∈ R α = α
+
+  alors Pθ (α̂(Z) ≤ u) = u pour tout u ∈ ]0, 1[ : la statistique α̂(Z) suit la loi uniforme sur ]0, 1[.
+
+   Démonstration
+  Soit θ ∈ Θ0 et u ∈ [0, 1].
+  Domination. Soit v ∈ ]u, 1[. Si α̂(Z) ≤ u < v, alors, par définition de l’infimum, il existe α < v
+  tel que Z ∈ Rα , et la condition (b) donne Rα ⊂ Rv , donc Z ∈ Rv . Ainsi {α̂(Z) ≤ u} ⊂ {Z ∈
+  Rv }, et la condition (a) donne
+                                                        
+                             Pθ α̂(Z) ≤ u ≤ Pθ Z ∈ Rv ≤ α(ϕv ) ≤ v .
+
+  Cette inégalité valant pour tout v > u, on obtient (1) en faisant tendre v vers u par valeurs
+  supérieures.
+  Cas d’égalité. Par définition de l’infimum, {Z ∈ Ru } ⊂ {α̂(Z) ≤ u}, donc Pθ (α̂(Z) ≤ u) ≥
+  Pθ (Z ∈ Ru ). Si (2) est satisfaite, le membre de droite vaut u, d’où Pθ (α̂(Z) ≤ u) ≥ u ;
+  combinée à (1), cette inégalité donne l’égalité annoncée.                                  □
+
+
+
+
+ Histogramme de N = 105 p-valeurs associées à N observations indépendantes, pour le test de région de
+                        √
+rejet {X̄n ≥ θ0 + z1−α / n} avec θ0 = 2 et n = 20. Les observations sont des n-échantillons de N (θ, 1) ;
+à gauche θ = 2, à droite θ = 2,1. Le trait horizontal d’équation y = 1 est la densité de la loi uniforme sur
+                                                   [0, 1].
+
+Intuition. La proposition explique ce que montrent ces deux histogrammes. À gauche, on est sous H0 avec
+un niveau atteint, et la p-valeur est uniforme : elle ne porte alors aucune information, ce qui est cohérent,
+32                                          CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+puisque l’hypothèse nulle est vraie. À droite, on est sous l’alternative, et l’histogramme se concentre près de
+zéro : les petites p-valeurs deviennent fréquentes. C’est ce contraste qui autorise à lire une petite p-valeur
+comme une indication défavorable à H0 , et rien de plus. La domination stochastique, plutôt que l’égalité,
+correspond aux cas où le niveau n’est pas atteint, par exemple lorsque la statistique de test est discrète,
+comme dans le modèle du sondage : l’histogramme n’y est plus plat.
+
+
+
+2.8      Ce qu’un test dit et ce qu’il ne dit pas
+   Les six points suivants résument les erreurs d’interprétation les plus fréquentes, et se déduisent
+tous de ce qui précède.
+     1. La p-valeur n’est pas la probabilité que H0 soit vraie. Elle est calculée sous H0 : c’est une
+        probabilité portant sur l’observation, le paramètre étant fixé. La probabilité que H0 soit
+        vraie n’a pas de sens dans le cadre de ce cours, où θ est déterministe.
+     2. Deux conclusions qui semblent contradictoires ne le sont pas nécessairement, comme le
+        montrent l’Exemple 2.7 et les deux points de vue de l’aéroport : elles répondent à des
+        questions différentes.
+     3. La seule décision significative est de rejeter H0 , puisque c’est la seule dont la probabilité
+        d’erreur soit contrôlée.
+     4. La nomenclature qui rend ce point visible est donc « rejeter H0 » et « échouer à rejeter H0
+        », plutôt que « rejeter » et « accepter ».
+     5. Plus α est petit, plus la conclusion « on rejette » est assurée.
+     6. α est le niveau de tolérance au risque de première espèce : c’est une convention, choisie en
+        fonction des conséquences d’une erreur, et non une constante universelle.
+    Le point suivant complète le troisième : une conclusion « statistiquement significative » ne dit
+rien de l’ampleur de l’effet observé.
+
+     Exemple 2.14: Signification statistique et taille d’effet
+  Reprenons le modèle gaussien de l’Exemple 2.8, avec µ0 = 80 dB, σ = 10 et le test H0 : µ ≤
+  µ0 , contre H1 : µ > µ0 , et comparons deux jeux de données.
+      — n = 4 et X̄n = 88 dB. Alors T (Z) = 2×8/10 = 1,6, et la p-valeur vaut 1−Φ(1,6) = 0,055 :
+        on échoue à rejeter H0 au niveau 5 %.
+      — n = 104 et X̄n = 80,2 dB. Alors T (Z) = 100 × 0,2/10 = 2, et la p-valeur vaut 1 − Φ(2) =
+        0,023 : on rejette H0 au niveau 5 %.
+  Le second jeu de données conduit à une conclusion « significative » pour un dépassement de
+  0,2 dB, inaudible ; le premier n’y parvient pas pour un dépassement de 8 dB, qui correspond
+  à un bruit perçu bien plus fort. La p-valeur mêle en effet deux informations, l’ampleur de
+  l’écart et la quantité de données : elle décroît quand l’un ou l’autre augmente. Une conclusion
+  complète doit donc rapporter, outre la p-valeur, l’estimation de l’effet et un intervalle de
+  confiance pour cet effet, qui sont, eux, à l’échelle de la quantité mesurée.
+
+
+
+2.9      Une étude de cas : la fonte de la banquise arctique
+    L’exemple qui suit met en œuvre tout le chapitre sur des données réelles, celles de l’étendue
+de la banquise arctique mesurée chaque année depuis 1979. Le modèle est celui de la régression
+linéaire gaussienne, rencontré au chapitre 1 (Section 4) et étudié à l’Exercice 1 (PC2).
+    2. TESTS D’HYPOTHÈSES                                                                                                                                                                                  33
+
+
+                             Exemple 2.15: Étendue de la banquise arctique
+                            On observe (Y1 , . . . , Yn ), où Yi est l’étendue de la banquise l’année i, et l’on pose ti :=
+                            annéei − 1979. Le modèle est
+
+                                                                      Yi = β0 + β1 ti + σεi ,                     i ∈ {1, . . . , n} ,
+
+                            où θ = (β0 , β1 , σ 2 ) ∈ R2 × R∗+ et où les εi sont, sous Pθ , des variables gaussiennes centrées
+                            réduites indépendantes. Les estimateurs des moindres carrés sont
+                                                                       n                                                                                  n
+                                                                       X                                                                             1 X
+                                     (β̂0 , β̂1 ) := arg min                      (Yi − b0 − b1 ti )2 ,           σ̂ 2 :=                                    (Yi − β̂0 − β̂1 ti )2 .
+                                                      (b0 ,b1 )∈R2 i=1                                                                             n − 2 i=1
+
+                                          −1
+                                             Pn                  −1
+                                                                    Pn 2        2
+                            Notons
+                                Pnt̄ := n       i=1 ti et s := n     i=1 ti − t̄ la variance empirique des ti , de sorte que
+                                              2
+                            ns = i=1 (ti − t̄) . On montre (Exercice 1 (PC2)) que, sous Pθ ,
+                                                                                               2  −1 P 2                                              
+                                                                      β̂0                      β0    σ  n     i ti                                    −t̄
+                                                                                  ∼N               ,                                                                ,
+                                                                      β̂1                      β1    ns   −t̄                                         1
+
+                            que (n − 2)σ̂ 2 /σ 2 ∼ χ2 (n − 2), et que σ̂ 2 est indépendante de (β̂0 , β̂1 ). En particulier β̂1 ∼
+                            N (β1 , σ 2 /(ns)), et
+                                                                              √
+                                                                                ns (β̂1 − β1 )
+                                                                G(Z; β1 ) :=
+                                                                                     σ̂
+                            est une fonction pivotale de loi t(n − 2), comme quotient d’une variable N (0, 1) par la racine
+                            d’un χ2 (n − 2) indépendant divisé par n − 2.
+                            Intervalle de confiance pour la pente. Il vient, pour tout θ,
+                                                                                               (n−2)
+                                                                                    h     σ̂ t1−α/2 i
+                                                                              Pθ β1 ∈ β̂1 ± √           =1−α.
+                                                                                                ns
+
+                            Sur les données, au niveau de couverture 95 %, on obtient [−0,11, −0,07] pour la pente β1 , en
+                            millions de kilomètres carrés par an, et [7,55, 8,34] pour l’ordonnée à l’origine β0 .
+                            Test de nullité de la pente. On teste H0 : β1 = 0, contre H1 : β1 ̸= 0. Le test dual de
+                            l’intervalle précédent,
+
+                                                           ϕα (Z) = 1                     h      σ̂ t
+                                                                                                      (n−2)   i =1                                          (n−2)       ,
+                                                                                                      1−α/2         { G(Z;0) ≥t1−α/2 }
+                                                                                       / β̂1 ±
+                                                                                     {0∈             √
+                                                                                                       ns
+                                                                                                              }
+
+
+                            est de niveau α. Sur les données, la p-valeur associée vaut 1,76 · 10−10 .
+                        8
+
+
+
+
+                                                                                                                                               8
+                        7
+
+
+
+
+                                                                                                                                               7
+Arctic_Sea_Ice_Extent
+
+
+
+
+                                                                                                                       Arctic_Sea_Ice_Extent
+                        6
+
+
+
+
+                                                                                                                                               6
+                        5
+
+
+
+
+                                                                                                                                               5
+                        4
+
+
+
+
+                                                                                                                                               4
+
+
+
+
+                              1980   1985   1990   1995    2000        2005        2010                                                             1980     1985       1990   1995   2000   2005   2010
+
+                                                   Year                                                                                                                        Year
+
+
+          Étendue de la banquise arctique par année (à gauche) et droite de régression ajustée par moindres carrés
+                                                        (à droite).
+34                                          CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+Intuition. La p-valeur obtenue, de l’ordre de 10−10 , s’interprète ainsi et pas autrement : si la pente
+était nulle et si le modèle était exact, une pente estimée aussi éloignée de zéro que celle qu’on observe
+n’aurait qu’une chance sur dix milliards environ de se produire. Elle ne dit pas que la probabilité que la
+pente soit nulle vaut 10−10 . Elle ne dit rien non plus de la validité du modèle lui-même (indépendance
+des erreurs, homoscédasticité, linéarité), qui est ici l’hypothèse la plus discutable, les mesures successives
+d’une même grandeur physique n’étant pas indépendantes. En revanche, l’intervalle de confiance pour la
+pente, [−0,11, −0,07], est directement lisible : il donne l’ordre de grandeur de la décroissance annuelle, ce
+que la p-valeur ne fait pas.
+
+
+2.10       En pratique : programme des exercices
+   Les notions de ce chapitre sont mises en œuvre dans la feuille d’exercices (PC 4), intégrée au
+chapitre (Section 4). Exercices traités en petite classe :
+
+     Exercice                         Notions du cours                    Rappels
+     Exo 1 – Modèle exponentiel       pivot, test unilatéral, fonc-       Loi Gamma et loi du χ2
+                                      tion puissance, p-valeur, in-
+                                      tervalle de confiance
+     Exo 2 – Modèle gaussien          test bilatéral, taille, p-valeur,   Th. de Cochran et th. de Gosset
+                                      test de Student
+     Exo 3 – Intervalle pour la loi   pivot, intervalle de longueur       Statistiques d’ordre, loi de Xn:n
+     uniforme                         minimale
+
+    L’Exercice 1 (PC4) est le seul de la feuille qui applique Pn la méthode de construction par un
+pivot à un modèle non gaussien : on y établit que 2θ−1 i=1 Xi suit une loi χ2 (2n), on en tire
+un test de niveau α, sa fonction puissance, sa taille et sa p-valeur, puis un intervalle de confiance
+bilatéral et les deux bornes unilatérales. L’Exercice 2 (PC4), annoncé en amphi comme étant à
+savoir faire, reprend le test bilatéral sur la moyenne à variance connue, puis redémontre le théorème
+de Gosset avant de traiter le cas de la variance inconnue. L’Exercice   3 (PC4) construit  l’intervalle
+de confiance de longueur minimale pour le modèle uniforme, Xn:n , Xn:n α−1/n : c’est le seul cas
+                                                                                  
+
+du cours où l’intervalle optimal n’est pas symétrique, et il prolonge le Section 1.2.
+    Les exercices suivants portent sur le modèle de Poisson, seul test d’une hypothèse simple
+contre une alternative simple de la feuille et seule préparation directe au chapitre 5 (Exercice 4
+(PC4)) ; sur la comparaison de deux échantillons gaussiens, où la dualité entre intervalle et test est
+effectivement mise en œuvre et où intervient la loi de Fisher (Exercice 5 (PC4)) ; sur une campagne
+de vaccination, où le choix de H0 change selon la partie qui pose la question (Exercice 6 (PC4)) ;
+et sur le test de rangs de Wilcoxon, seul test non paramétrique du cours et seul test construit par
+une inégalité de déviation (Exercice 7 (PC4)).
+Une énigme à préparer. On considère une zone de terrain, représentée par une grille G de pixels.
+Chaque pixel a un coût d’achat c0 : G → R+ et rapporte un gain r1 : G → R+ si on l’achète.
+Étant donné un budget α, quels pixels acheter pour maximiser le bénéfice ? On modélisera ensuite
+le problème dans un cadre continu, où l’on achète un sous-ensemble de R2 plutôt qu’un ensemble
+fini de pixels. Quel rapport avec les tests ? Quel est le meilleur test de niveau α ? La réponse est
+l’objet du chapitre 5.
+Notions de probabilités clés utilisées cette semaine, à revoir : fonction de répartition
+et quantile, loi gaussienne, loi du χ2 , loi de Student, loi de Fisher, théorèmes de Cochran et de
+Gosset, inégalités de Bienaymé-Tchebychev et de Hoeffding, statistiques d’ordre (voir la partie
+Outils mathématiques ci-dessous).
+

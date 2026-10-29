@@ -1,0 +1,1406 @@
+Ecole Polytechnique, promotion 2025                                                        PC-4 Cours APM 41033 EP
+
+
+2     Solutions
+2.1     Exercice 1
+     Posons Z = (X1 , · · · , Xn ).
+    1. (a) Une loi exponentielle est une loi Gamma de paramètres (1, 1/θ). Or, si Y suit une
+           loi Gamma de paramètres (a, b) alors pour tout λ > 0, λY suit une loi Gamma de
+           paramètres (a, b/λ). 5 Ainsi, sous pθ · dLeb, 2Xi θ−1 ∼ Γ(1, 1/2) = χ2 (2) = E(1/2).
+           Comme sous pθ · dLeb, les Xi sont i.i.d., on en déduit que
+                                                                  n
+                                                                  X
+                                                        2θ   −1
+                                                                        Xi ∼ χ2 (2n)
+                                                                  i=1
+
+            sous pθ · dLeb.
+                                    P
+            Rque. On dit que 2θ−1 ni=1 Xi est une fonction pivotale puisque sa loi est indépendante
+            de θ sous pθ · dLeb, et ce pour tout θ ∈ Θ.
+        (b) Plusieurs idées pour proposer un estimateur :
+               i. Une loi exponentielle de paramètre τ est une loi Gamma de paramètres (1, τ ).
+                  En utilisant le rappel, il vient que son espérance est 1/τ . Donc Eθ [X1 ] = θ ;
+                  en utilisant la méthode des moments, on fait la proposition
+                                                                             n
+                                                                          1X
+                                                                  θ̂n =      Xk .
+                                                                          n
+                                                                            k=1
+
+              ii. Par une approche maximum de vraisemblance : la vraisemblance est donnée
+                  par                                   !
+                                                   Xn
+                                        −n
+                                  θ 7→ θ exp −θ −1
+                                                      Xi 1X1 >0,··· ,Xn >0
+                                                                           i=1
+                  et la log-vraisemblance normalisée est donnée par
+                                                                                     n
+                                                                                 11X
+                                                        θ 7→ − log θ −               Xi
+                                                                                 θn
+                                                                                     i=1
+
+                  si (X1 , · · · , Xn ) ∈ (R+ )n et par −∞ sinon. Lorsque θ → 0, cette fonction tend
+                  vers −∞ ; et lorsque θ → +∞ elle tend aussi vers −∞. Son gradient possède
+                  une seule racine donnée par
+                                                                                 n
+                                                                         1X
+                                                                  X̄n :=    Xi
+                                                                         n
+                                                                             i=1
+
+    5. Soit h une fonction mesurable positive. Nous avons
+                                            Z +∞
+                          E [h(λY )] = Ca,b      h(λy)y a−1 exp(−by)dy
+                                              0
+                                                   Z +∞
+                                   = Ca,b λ   −a
+                                                             h(λy)(λy)a−1 exp(−b(λy)/λ)λdy
+                                                    0
+                                          Z +∞
+                                   = C̃            h(z)z a−1 exp(−bz/λ)dz.
+                                          0
+
+
+
+
+                                                                                                            Page 8
+Ecole Polytechnique, promotion 2025                                  PC-4 Cours APM 41033 EP
+
+
+               qui est un maximum de la vraisemblance. Par suite, la moyenne empirique est
+               l’estimateur du maximum de vraisemblance.
+          iii. La loi exponentielle est un élément de la famille de loi dite ”exponentielle” ; le
+               paramétrage proposé fait qu’il n’est pas dans la famille ”canonique” mais dans
+               la famille ”généralisée” (voir PC2, exercice 3). Dans le paramétrage canonique
+               (λ ← 1/θ), l’estimateur du maximum de vraisemblance et celui des moments
+               associé à la statistique T (x) = x sont égaux (voir PC2 exercice 2) et nous
+               avons donc
+                                                             1
+                                                 λ̂M
+                                                   n
+                                                     V
+                                                       = 1 Pn       .
+                                                         n   i=1 Xi
+              Puisque θ = ϕ(λ) avec le difféomorphisme ϕ sur R+ donné par ϕ(t) = 1/t,
+              nous avons donc (voir PC2 exercice 3)
+                                                          1X n
+                                         θ̂nM V = ϕ λ̂M
+                                                      n
+                                                        V
+                                                           =     Xi .
+                                                             n
+                                                                  i=1
+
+      (c) Construisons le test. Intuition : on vient de voir la relation entre espérance et
+          paramètre du modèle, et donc entre moyenne empirique et paramètre du modèle.
+          On peut donc utiliser cette information pour proposer une façon de traduire une
+          “distance” entre le paramètre du modèle et la valeur du paramètre testée par H0 .
+          On sait que pour définir le seuil critique, il nous faudra être capable de trouver
+          la loi de la statistique de test proposée. La question précédente, qui identifie une
+          fonction pivotale, nous conduit à poser une statistique de test de la forme de cette
+          fonction pivotale.
+          (A) choix de la statistique de test. L’idée est donc de définir une zone de rejet
+          à l’aide de la statistique de test
+                                                         n
+                                                   1 X
+                                          T (Z) =      Xk − 1
+                                                  nθ0
+                                                        k=1
+
+          qui doit être proche de zero sous H0 , tandis qu’elle est “très supérieure à zero”
+          sous H1 .
+          (B) Forme de la zone de rejet. Cela amène à poser une zone de rejet de la
+          forme
+                                      R = {z ∈ (R+ )n , T (z) > c}.
+          (C) Détermination du seuil critique c. Il faut calibrer le seuil critique c pour
+          que l’erreur de première espèce soit au plus α. On cherche donc c tel que la quantité
+
+                             sup Pθ (Z ∈ R) = Pθ0 (Z ∈ R) = Pθ0 (T (Z) > c)
+                             θ∈Θ0
+
+          soit inférieure ou égale à α. En exploitant la fonction pivotale trouvée à la question
+          précédente, on a
+                                              n
+                                                             !             n
+                                                                                                !
+                                           1 X                          2 X
+              Pθ0 (T (Z) > c) = Pθ0              X k > c + 1 = Pθ 0            Xk > 2n(c + 1)
+                                         nθ0                            θ0
+                                           k=1                            k=1
+                             = P(W > 2n(c + 1)) = 1 − P(W ≤ 2n(c + 1))
+
+
+                                                                                             Page 9
+Ecole Polytechnique, promotion 2025                                              PC-4 Cours APM 41033 EP
+
+
+          où W désigne une v.a. qui suit une loi χ2 (2n). Puisque la fonction de répartition
+          de cette v.a. est une fonction continue, on cherche le seuil pour que cette quantité
+          soit exactement égale à α ; on résoud donc
+                                                                      χ2 (2n)
+                                                 2n(c + 1) = q1−α
+
+              χ2 (2n)
+          où q1−α désigne le quantile d’ordre 1 − α d’une loi du χ2 (2n).
+          (D) Conclusion Le test est défini par la zone de rejet
+                                                                 n
+                                                            2 X       χ2 (2n)
+                                        R = {z ∈ (R+ )n ,       zk > q1−α }
+                                                            θ0
+                                                               k=1
+
+      (d) La fonction puissance, définie sur Θ0 ∪ Θ1 est donnée par
+                                                 n
+                                                                   !
+                                              2 X          χ2 (2n)
+             ∀θ ≥ θ0     Pθ [Z ∈ R] = Pθ            Xk > q1−α
+                                             θ0
+                                                k=1
+                                                n
+                                                                    !                  
+                                             2X         θ0 χ2 (2n)           θ0 χ2 (2n)
+                                     = Pθ          Xk > q1−α          = P W > q1−α
+                                             θ           θ                   θ
+                                                      k=1
+
+          où W ∼ χ2 (2n).
+          Comme H0 est une hypothèse simple, l’erreur de première espèce est Pθ0 (Z ∈ R) =
+          α ; la taille et le niveau coincident.
+          Sur la figure 4, on trace la fonction puissance θ 7→ Pθ (Z ∈ R) pour différentes
+          valeurs de n. On observera que, compte-tenu de la façon dont le seuil critique a été
+          calibré, toutes ces fonctions puissance valent 0.05 en θ = θ0 = 2. On observe aussi
+          que pour θ > θ0 fixé, n 7→ Pθ (R) est une fonction croissante et qu’elle tend vers 1.
+
+
+                                1
+
+                              0.9
+
+                              0.8
+
+                              0.7
+
+                              0.6
+
+                              0.5
+
+                              0.4
+                                                             n=10
+                                                             n=20
+                              0.3                            n=30
+                                                             y=0.05
+                              0.2
+
+                              0.1
+
+                                0
+                                    0       2     4     6         8         10
+
+
+
+
+Figure 4 – Pour différentes valeurs de n, fonction puissance du test θ 7→ Pθ (T (Z) > cα )
+lorsque α = 0.05. On trace aussi en trait horizontal la droite d’équation y = α.
+
+      (e) Soient α < α′ . Alors q1−α > q1−α′ et Rα ⊂ Rα′ . Dans ce contexte, la p-valeur est le
+          plus petit niveau α(Z) à partir duquel le test sera rejeté compte-tenu de la valeur
+          de la statistique T (Z) associée à l’observation Z.
+
+
+                                                                                                 Page 10
+Ecole Polytechnique, promotion 2025                                        PC-4 Cours APM 41033 EP
+
+                                                                            Pn
+          Si nous observons Z, et donc la statistique T (Z) :=       i=1 Xi /(2θ0 ), le test est
+                              χ2 (2n)
+          rejeté si T (Z) > q1−α . Donc la p-valeur α(Z) est solution de
+
+                                                           χ2 (2n)
+                                                T (Z) = q1−α(Z)
+
+          soit encore
+                                                          2s
+                                      α(Z) = P(W >           )| Pn     ,
+                                                          θ0 s= i=1 Xi
+          où W ∼ χ2 (2n).
+            P θ0 = 2, n = 10 et pour l’observation (x1 , · · · , xn ) donnée, on obtient que
+          Pour
+          2 ni=1 xi /θ0 = 28.1 et la p-valeur vaut
+                                                       
+                                       P χ2 (20) ≥ 28.1 ≃ 10.7%.
+
+          Aussi, on accepte H0 au seuil 5%. On la rejetterait au seuil 11%. Sur la figure 5, on
+          trace la densité de T (Z) sous H0 pour différentes valeurs de n. On a aussi indiqué
+          par un trait vertical, la valeur t⋆ de T (Z) calculée sur l’échantillon fourni dans
+          l’énoncé. Ob observe que n 7→ Pθ0 (T (Z) > t⋆ ) est une fonction croissante.
+  2. (a) Pour l’hypothèse composite H0 = {θ ≤ θ0 } contre H1 = {θ > θ0 }, la région de
+         rejet du test est définie par
+                                                                            n
+                                                                      2 X
+                           Rα′ = {z = (x1 , · · · , xn ) ∈ (R+ )n :       xk > d},
+                                                                      θ0
+                                                                           k=1
+
+          pour un seuil critique d à déterminer en fonction du niveau du test.
+      (b) La fonction puissance du test est définie par
+                                           n
+                                                    !
+                                          X                                 
+                         θ 7→ Pθ 2θ0  −1
+                                             Xk > d = P χ2 (2n) > d θ0 θ−1 .
+                                          k=1
+
+          C’est une fonction croissante de θ et donc la taille du test est :
+                              n
+                                        !                n
+                                                                    !
+                             X                          X                          
+               sup Pθ 2θ0 −1
+                                 Xk > d = Pθ0 2θ0    −1
+                                                             Xk > d = P χ2 (2n) > d .
+               θ∈H0           k=1                             k=1
+
+                                                χ2 (2n)
+          Pour un test de niveau α, d = q1−α . Puisque le test est identique à celui du
+          premier jeu d’hypothèses (H0 , H1 ), la p-valeur est également identique.
+  3. Intervalles de confiance.
+      (a) IC bilatéral exact pour θ. Sous pθ · dLeb, la v.a.
+                                                                      n
+                                                                   2X
+                                       T (θ, (Xi )i=1,...,n ) :=      Xi
+                                                                   θ
+                                                                     i=1
+
+          est une fonction pivotale de loi χ2 (2n) (sa loi ne dépend pas de θ). Pour 0 < α < 1,
+                             2                                          
+                               χ (2n)                            χ2 (2n)
+                          Pθ qα/2 ≤ T (θ, (Xi )i=1,...,n ) ≤ q1−α/2 = 1 − α.
+
+                                                                                           Page 11
+Ecole Polytechnique, promotion 2025                                              PC-4 Cours APM 41033 EP
+
+
+
+
+                              0.07
+                                                                   n=10
+                                                                   n=20
+                              0.06                                 x=28.1
+
+
+                              0.05
+
+
+                              0.04
+
+
+                              0.03
+
+
+                              0.02
+
+
+                              0.01
+
+
+                                 0
+                                     0   10   20   30   40   50   60        70
+
+
+
+
+                                                                                         Pn
+Figure 5 – Pour différentes valeurs de n, densité de la v.a. T (Z) = 2                   k=1 Xk /θ0   sous
+pθ0 dLeb.
+
+          En remplaçant T (θ, (Xi )i=1,...,n ) et en inversant les inégalités relativement à θ, on
+          a pour tout θ
+                                                                     
+                                    Pn                       Pn
+                                 2 i=1 Xi                  2 i=1 Xi 
+                           Pθ       χ2 (2n)
+                                                  ≤ θ ≤       χ2 (2n)
+                                                                          =1−α
+                                    q1−α/2                   qα/2
+
+          d’où l’IC bilatéral exact de niveau 1 − α.
+      (b) Bornes unilatérales exactes pour θ.
+           — pour la orne supérieure seule : on veut Pθ (θ ≤ U ) = 1 − α. Or {θ ≤ U } ⇔
+                                        P                                             χ2 (2n)
+             {T (θ, (Xi )i=1,...,n ) ≥ 2 Xi /U }. Comme Pθ (T (θ, (Xi )i=1,...,n ) ≥ qα       ) =
+                                  P          χ2 (2n)
+             1 − α, on pose 2 Xi /U = qα             et
+             Pour tout θ,                   #                  #!
+                                                      P
+                                                     2 ni=1 Xi
+                                      Pθ θ ∈ −∞; χ2 (2n)          = 1 − α.
+                                                      qα
+
+                                                                                                  Page 12
+Ecole Polytechnique, promotion 2025                                     PC-4 Cours APM 41033 EP
+
+
+          — pour la borne inférieure seule : on veut Pθ (θ ≥ L) = 1 − α. Or {θ ≥ L} ⇔
+                                        P                                           χ2 (2n)
+            {T (θ, (Xi )i=1,...,n ) ≤ 2 Xi /L}. Comme Pθ (T (θ, (Xi )i=1,...,n ) ≤ q1−α ) =
+                                 P          χ2 (2n)
+            1 − α, on pose 2 Xi /L = q1−α et
+            Pour tout θ,                    " P               "!
+                                             2 ni=1 Xi
+                                     Pθ θ ∈      χ2 (2n)
+                                                         ; +∞    = 1 − α.
+                                                q1−α
+      (c) Application numérique POur les valuers des quantiles, voir : https://homepage.
+          divms.uiowa.edu/~mbognar/applets/chisq.html par exemple
+                           P                               P
+          (α = 5%, n = 10,    Xi = 28.1, donc 2n = 20 et 2 Xi = 56.2). Avec
+                                   χ2 (20)                  χ2 (20)
+                                  q0.025 ≈ 9.59,           q0.975 ≈ 34.17,
+
+          on obtient :                       h                  i
+                                                 56.2      56.2
+                             IC95% (θ) =         34.17   , 9.59   ≈ [1.64, 5.79],
+
+
+
+
+                                                                                        Page 13
+Ecole Polytechnique, promotion 2025                                      PC-4 Cours APM 41033 EP
+
+
+2.2   Exercice 2
+   Observons tout d’abord que, sous pµ dLeb, X n ∼ N (µ, σ 2 /n) de sorte que
+                                         √               
+                                            n
+                            T (Z) ∼ N         (µ − µ0 ); 1 .
+                                           σ
+Pour tout c > 0, on définit un test dont la zone de rejet est de la forme {T (Z) > c}.
+  1. La fonction puissance est donnée par
+                                                       √                       
+                                                           n
+                   µ 7→ βc (µ) := Pµ (T (Z) > c) = P         (µ − µ0 ) + W > c
+                                                          σ
+      où W ∼ N (0, 1). En notant Φ la fonction de répartition d’une loi gaussienne N (0, 1), il
+      vient
+                                   √                       
+                                       n
+                   βc (µ) = 1 − P        (µ − µ0 ) + W ≤ c
+                                     σ
+                                  √                          √                
+                                      n                         n
+                          =1−P          (µ0 − µ) − c ≤ W ≤        (µ0 − µ) + c
+                                    σ                          σ
+                                  √                       √                
+                                      n                         n
+                          =1−Φ          (µ0 − µ) + c + Φ          (µ0 − µ) − c .
+                                     σ                         σ
+      Sur la figure 6, on trace cette fonction puissance dans le cas µ0 = 0, σ = 1 et pour une
+      valeur du seuil critique c garantissant Pµ0 (T (Z) > c) = 0.05 (i.e. un test du niveau 5%).
+      On envisage différentes valeurs de n.
+
+                                  1
+
+                                0.9
+
+                                0.8
+
+                                0.7
+
+                                0.6
+
+                                0.5
+                                                            n=5
+                                                            n=10
+                                0.4
+                                                            n=20
+                                                            y=0.05
+                                0.3
+
+                                0.2
+
+                                0.1
+
+                                  0
+                                   -5             0                  5
+
+
+
+
+Figure 6 – Fonction puissance µ 7→ βc (µ) pour différentes valeurs de n. On a pris µ0 = 0,
+σ = 1 et c = Φ−1 (0.975). On trace aussi la droite d’équation y = 0.05.
+
+  2. Le risque de première espèce αc est égal à
+                 αc = Pµ0 (T (Z) > c) = βc (µ0 ) = 1 − Φ(c) + Φ(−c) = 2 (1 − Φ(c))
+      en utilisant que Φ(−c) = 1 − Φ(c).
+      Soit α ∈ (0, 1). Le seuil critique cα doit vérifier αcα = α, i.e. cα est solution de
+                                            2 (1 − Φ(c)) = α
+      donc                                             α
+                                          cα := Φ−1 1 −    .
+                                                        2
+
+                                                                                              Page 14
+Ecole Polytechnique, promotion 2025                                            PC-4 Cours APM 41033 EP
+
+
+  3. Soient 0 ≤ α < α′ ≤ 1 ; alors cα > cα′ donc {z : T (z) > cα } ⊂ {z : T (z) > cα′ }. Puis
+                                     Pµ0 (T (Z) > cα ) ≤ Pµ0 (T (Z) > cα′ ) .
+     La p-valeur est définie comme
+                                         inf{α ∈ [0, 1] : T (Z) > cα } .
+     Puisque α 7→ cα est décroissante et bijective de ]0, 1[ dans R+ , la solution est donc
+     α ∈ [0, 1] tel que T (Z) = cα soit
+                                             α̂(Z) := 2 (1 − Φ(T (Z))) .
+     Densité de T (Z) sous pµ dLeb. On peut vérifier que si X ∼ N (ν, 1) alors la densité
+     de |X| est donnée par
+                          1                                         
+                  x 7→ √     exp(−0.5(x − ν)2 ) + exp(−0.5(x + ν)2 ) 1R+ (x).
+                          2π
+     On donne en Figure 7 l’allure de la densité de |N (ν, 1)| pour différentes valeurs de ν.
+
+                           0.8
+                                                                        nu=0
+                                                                        nu=1
+                           0.7
+                                                                        nu=2
+
+                           0.6
+
+
+                           0.5
+
+
+                           0.4
+
+
+                           0.3
+
+
+                           0.2
+
+
+                           0.1
+
+
+                             0
+                                 0       1         2       3        4          5
+
+
+
+
+  Figure 7 – Densité de |X| (à une constante multiplicative près) lorsque X ∼ N (ν, 1).
+
+  4. Soit 1 le vecteur de Rn de coordonnées (1, . . . , 1), In la matrice identité de taille n × n
+     et Π la projection orthogonale sur la droite engendrée par 1. On a
+                                      1 T                       1
+                          Xn =          1 ΠZ,          Sn2 =       ∥(In − Π)Z∥2 .
+                                      n                        n−1
+     Observons que Π(In − Π)T = Π(In − Π) = 0 ; de plus, sous pθ dLeb, Z ∼ Nn (µ1, σ 2 In )
+     donc
+                  ΠZ ∼ Nn (µ1, σ 2 Π),  (In − π)Z ∼ Nn (0Rn , σ 2 (In − Π));
+     cela entraine que le vecteur de R2n obtenu en concaténant (πZ, (I −π)Z), est un vecteur
+     gaussien (et en particulier, chacun des deux blocs l’est). Ces deux vecteurs sont de plus
+     indépendants : la matrice de covariance du vecteur (ΠZ, (I − Π)Z) ∈ R2n est diagonale
+     par bloc puisque le bloc hors diagonal vaut
+                                                    
+                   Eθ Π(Z − µ1) (Z − µ1)T (In − Π) = σ 2 Π(In − Π) = 0Rn×n .
+     Par suite, Xn et Sn2 sont indépendants sous pθ dLeb.
+
+                                                                                               Page 15
+Ecole Polytechnique, promotion 2025                                       PC-4 Cours APM 41033 EP
+
+
+  5. Sous pθ dLeb, Z ∼ Nn (µ1, σ 2 In ) donc (In − Π)Z ∼ Nn (0Rn , σ 2 (In − Π)). In − Π est une
+     matrice de la forme Q∆QT avec Q matrice orthogonale et ∆ matrice diagonale dont les
+     éléments diagonaux dont 0 (1 fois) et 1 (n − 1 fois). Il vient
+                                                     2                       2
+                               Sn2            Z                          Z
+                     (n − 1)       = (In − Π)            = QT (In − Π)           = ∥W ∥2 ,
+                               σ2             σ                          σ
+
+     où W ∼ Nn (0, ∆). On en déduit que, sous pθ dLeb, la loi de (n − 1)Sn2 /σ 2 est χ2 (n − 1)
+  6. Sous pθ dLeb,
+                                       √                          √
+                     √ X n − µ0            n                         n
+                      n         ∼N           (µ − µ0 ), 1       =      (µ − µ0 ) + N(0, 1)
+                           σ              σ                         σ
+     et                                   s
+                                   Sn         (n − 1)Sn2    p
+                                      =                   ∼   χ2 (n − 1)
+                                   σ          σ 2 (n − 1)
+     et les deux v.a. sont indépendantes. On déduit du rappel B que
+                                               √
+                                                   n(X n − µ0 )
+                                                      Sn
+     suit une loi de Student décentrée à n−1 degrés de liberté, de paramètre de non-centralité
+          √
+     γ = n(µ − µ0 )/σ.
+  7. Notons t la fonction de répartition d’une loi de Student (centrée) à n − 1 degrés de
+     liberté. En répétant les arguments de la question 2, on obtient cette fois que la taille du
+     test est égale à αc = 2 (1 − t(c)), en utilisant que t(−c) = 1 − t(c).
+  8. Pour garantir un test de niveau α, il faut choisir c tel que 2(1 − t(c)) ≤ α. Toute valeur
+     de c supérieure à xα défini par
+
+                                          cα := t−1 (1 − α/2)
+
+     vérifie cette condition. Néanmoins, un critère basé sur la puissance du test nous amène
+     à choisir la zone de rejet la plus grande possible (parmi toutes celles satisfaisant le
+     contrôle de l’erreur de première espèce) et c’est la raison pour laquelle on prendra cα
+     comme seuil critique.
+  9. En répétant les arguments de la question 3, on trouve maintenant que la p-valeur du
+                                  b(Z) = 2(1 − t(T (Z))).
+     nouveau test est donnée par α
+
+
+
+
+                                                                                             Page 16
+Ecole Polytechnique, promotion 2025                                           PC-4 Cours APM 41033 EP
+
+
+2.3   Exercice 3
+   Sous Pθ , les v.a. {Xi }i sont i.i.d. de loi uniforme sur [0, θ].
+  1. On a, pour tout x < 0, Pθ (Xn:n /θ ≤ x) = 0, pour tout x > 1, Pθ (Xn:n /θ ≤ x) = 1 et,
+     pour tout x ∈ [0, 1],
+
+                                        Pθ (Xn:n /θ ≤ x) = Pθ (∩ni=1 {Xi ≤ θx}) = xn .
+
+      La loi de Xn:n /θ sous Pθ ne dépend donc pas de θ, donc Xn:n /θ est une fonction pivotale.
+      Sur la figure 8, on trace la densité x 7→ nxn−1 sur [0, 1] pour différentes valeurs de n > 1.
+      On trace aussi la densité de θ/Xn:n , qui sous Pθ est y 7→ ny −(n+1) sur [1, +∞[ ; en effet,
+      pour toute fonction g mesurable positive, nnous avons
+                                  Z                           Z +∞
+                               θ                                                n
+                     Eθ g             =         g(1/x)nxn−1 dx =        g(y) n+1 dy.
+                             Xn:n           0,1                    1          y
+
+
+
+             15                                                                  15
+                      n=5                                                                                      n=5
+                      n=10                                                                                     n=10
+                      n=15                                                                                     n=15
+
+
+
+
+             10                                                                  10
+
+
+
+
+              5                                                                   5
+
+
+
+
+              0                                                                   0
+                  0     0.2       0.4       0.6   0.8      1                          1   1.5   2        2.5          3
+
+
+
+
+Figure 8 – Exercice 3. Pour différentes valeurs de n ∈ {5, 10, 15}, on trace [gauche] la densité
+x 7→ nxn−1 sur [0, 1] et [droite] la densité y 7→ ny −(n+1) pour y ≥ 1.
+
+  2. Soit                                                              
+                                                                   Xn:n
+                                                        I := Xn:n , 1/n ,                               (1)
+                                                                   α
+      on a
+                              Pθ (θ ∈ I) = Pθ (Xn:n /θ ∈ [α1/n , 1]) = 1 − [α1/n ]n = 1 − α .
+      Donc I est un intervalle de confiance pour θ au niveau 1 − α. Vérifions que sa longueur
+      est minimale parmi les intervalles Ia,b de la forme [Xn:n /a, Xn:n /b].
+      Step A. Pour être un intervalle de confiance de niveau 1−α, il faut que a et b satisfassent
+
+                      Pθ (θ ∈ Ia,b ) = Pθ (Xn:n /θ ∈ [b, a]) = (a ∧ 1)n − (b ∨ 0)n ≥ 1 − α .
+
+      On peut se restreindre à a ≤ 1 et b ≥ 0. Donc on cherche 0 ≤ b < a ≤ 1 tels que
+      a n ≥ 1 − α + bn .
+
+
+
+                                                                                                    Page 17
+Ecole Polytechnique, promotion 2025                               PC-4 Cours APM 41033 EP
+
+
+     Step B. La longueur de l’intervalle est ℓ = 1/b − 1/a ; la condition précédente entraine
+                                                               
+                                  1             1
+                             ℓ≥                             −1 .
+                                  a (1 − a−n (1 − α))1/n
+
+     Cette fonction étant clairement décroissante en a sur R∗+ , la borne inférieure sur ℓ est
+     minimale (assurant donc la longueur la plus petite possible) lorsque a = 1.
+     Step C. Ainsi, les conditions que nous avons sur b, sont d’une part α1/n ≥ b ≥ 0
+     et d’autre part ℓ ≥ α−1/n − 1. Puisqu’on veut la longueur minimale, il faut prendre
+     ℓ = α−1/n − 1 et donc 1/b = α−1/n . On retrouve bien l’intervalle de confiance proposé
+     en (1).
+
+
+
+
+                                                                                        Page 18
+Ecole Polytechnique, promotion 2025                                  PC-4 Cours APM 41033 EP
+
+
+2.4   Exercice 4
+   Rappels. On rappelle que l’espérance d’une loi de Poisson de paramètre λ > 0 est λ.
+  1. Si X ∼ P(θ1 ) et Y ∼ P(θ2 ) et si X et Y sont indépendantes, alors X + Y ∼ P(θ1 + θ2 ).
+     Compléments. Cela peut se démontrer à l’aide de la fonction génératrice des mo-
+     ments GU (s) = E[sU ] pour tout s ∈ R pour lequel cette espérance existe. En uti-
+     lisant l’expression de la loi de Poisson, on a GX (s) = exp(−θ1 (1 − s)). De même
+     GY (x) = exp(−θ2 (1 − s)). Si X et Y sont indépendantes, alors GX+Y = GX GY donc
+     GX+Y (s) = exp(−(θ1 + θ2 )(1 − s)) ; cette expression est celle d’une fct génératrice de
+     Poisson de paramètre θ1 + θ2 . On conclut en rappelant que la fonction génératrice d’une
+     v.a. caractérise sa loi
+                P pθ · dµ, les v.a. (Xi )i sont i.i.d. de même loi de Poisson de paramètre θ, il
+     Puisque sous
+     vient que ni=1 Xi ∼ P(nθ).
+  2. Posons Z = (X1 , · · · , Xn ).
+     (A) Avoir l’idée d’une statistique. On utilise la statistique
+                                                     n
+                                                     X
+                                           T (Z) =         Xi .
+                                                     i=1
+
+      (B) Etablir la loi de cette statistique sous pθ · dµ, pour θ satisfaisant H0 .
+      Lorsque θ = 1 i.e. sous H0 , la loi de T (Z) est une loi de Poisson de paramètre n, et son
+      espérance est n.
+      (C) Proposer une forme de zone de rejet. Lorsque θ = 2 i.e. sous H1 , la loi de
+      T (Z) est une loi de Poisson de paramètre 2n et son espérance est 2n. Aussi, T (Z) aura
+      tendance à prendre des valeurs plus grandes sous H1 que sous H0 . Cela incite à poser
+      une région de rejet de la forme
+                                    Rα := {z ∈ Nn : T (z) > cα }
+
+      (D) Déterminer le seuil critique On calibre alors cα pour que l’erreur de première
+      espèce soit au plus la tolérance donnée, à savoir α : on cherche cα tel que
+                                        P1 (T (Z) > cα ) ≤ α,
+      ou encore
+                                      P1 (T (Z) ≤ cα ) > 1 − α.
+      Ainsi,
+                                cα = inf{t ∈ R : FP(10) (t) > 1 − α}.
+      Pour l’application numérique, on constate que 1 − α = 0.95 et que
+                          FP(10) (14) ≃ 0.917,             FP(10) (15) ≃ 0.951.
+      On en déduit donc que c5% = 15. La zone de rejet du test est donc
+                                        
+                                R0.05 := z ∈ N10 : T (z) > 15 .
+      (E) Taille du test La taille de ce test est donnée par
+                          P1 (T (Z) > 15) = P(P(10) > 15) ≃ 4.9% < 0.05.
+      On a donc ici un exemple de test pur dont le niveau et la taille diffèrent.
+
+                                                                                         Page 19
+Ecole Polytechnique, promotion 2025                                                       PC-4 Cours APM 41033 EP
+
+
+  3. Comme l’hypothèse H0 est simple, l’erreur de première espèce est donnée par
+
+                           sup Pθ (T (Z) > 15) = P1 (T (Z) > 15) = 0.049.
+                          θ∈Θ0
+
+     On trace la fonction puissance de ce test sur la figure 9.
+
+                                   1
+
+                                 0.9
+
+                                 0.8
+
+                                 0.7
+
+                                 0.6
+                                                                         Puissance
+                                                                         y=0.049
+                                 0.5
+                                                                         y=0.8435
+
+                                 0.4
+
+                                 0.3
+
+                                 0.2
+
+                                 0.1
+
+                                   0
+                                       0   0.5   1   1.5   2   2.5       3      3.5   4
+
+
+
+
+                Figure 9 – Fonction puissance θ 7→ Pθ (T (Z) > cα ) du test.
+
+  4. Soient 0 < α < α′ < 1. La zone de rejet étant de la forme {T (Z) > cα }, il est aisé de
+     voir que cα′ < cα et donc Rα ⊆ Rα′ . La p-valeur est donc définie comme
+
+                                       inf{α, Z ∈ Rα } = inf {T (Z) > cα }.
+                                                                     α
+
+     La monotonie de la zone de rejet en fonction de α montre que l’on cherche la zone de
+     rejet la plus petite possible au sens de l’inclusion ; ici, T (Z) ne prend que des valeurs
+     entières, donc on a cα(Z) = T (Z) − 1. Par suite,
+
+                       α(Z) = P(P10 > T (Z) − 1) = 1 − P(P10 ≤ T (Z) − 1)
+
+     Pour le premier jeu de données, la statistique T (Z) vaut 18, donc α(Z) = 0.0143 ; et
+     pour le second, la statistique vaut T (Z) = 13 donc α(Z) = 0.2084.
+     Rque. Pour le premier échantillon, on évalue la statistique T (Z) et on obtient la valeur
+     t1 = 18. Cette valeur est dans la zone de rejet R0.05 = {z, T (z) > 15} donc on rejette
+     H0 au niveau 5%.
+     Pour le second échantillon, on évalue la statistique T (Z) et on obtient la valeur t2 = 13.
+     Cette fois, on accepte H0 au niveau 5%. Deux situations : soit H0 est vraie et on prend la
+     bonne décision ; soit H1 est vraie et en acceptant H0 , on se trompe avec une probabilité
+     β = 15.7%.
+
+
+
+
+                                                                                                          Page 20
+Ecole Polytechnique, promotion 2025                                         PC-4 Cours APM 41033 EP
+
+
+2.5   Exercice 5
+  1. La vraisemblance est donnée par (à une constante multiplicative près)
+                                                                               
+                                       X n                        p
+                                                                  X
+                    1
+              θ 7→ n+p exp −0.5σ −2        {Xi − µ0 }2 − 0.5σ −2   {Yj − µ1 }2  .
+                  σ
+                                                    i=1                     j=1
+
+      On en déduit la log-vraisemblance
+                                                 X        n              X        p
+                        (n + p)
+               θ 7→ −           ln σ 2 − 0.5σ −2   {Xi − µ0 }2 − 0.5σ −2   {Yj − µ1 }2 .
+                           2
+                                                          i=1                  j=1
+
+      Soit Z := (X1 , · · · , Xn , Y1 , · · · , Yp ), la log-vraisemblance est maximisée en
+                                            n
+                                       1X
+                        µ̂0,n (Z) :=      Xi ,
+                                       n
+                                           i=1
+                                           Xp
+                                       1
+                        µ̂1,p (Z) :=             Yj ,
+                                       p
+                                           j=1
+                                                                                    
+                                                  Xn                p
+                                                                    X
+                          2             1         (Xi − µ̂0,n )2 +
+                        σ̂n,p (Z) :=                                  (Yj − µ̂1,p )2  .
+                                       n+p
+                                                    i=1               j=1
+
+      Dans la suite, il nous arrivera d’omettre la dépendance en Z dans l’argument des µ̂i,n
+             2 pour simplifier l’écriture.
+      et de σn,p
+  2. Dans cette question on omet la dépendance en Z des estimateurs. Il est naturel de
+     penser à exploiter la statistique µ̂0,n − µ̂1,p puisque sous pθ dLebn+p ,
+                                                                    
+                                                            2   1 1
+                             µ̂0,n − µ̂1,p ∼ N µ0 − µ1 , σ       +        ,
+                                                                n p
+      ou de façon équivalente
+                           r                                     
+                               np   (µ̂0,n − µ̂1,p ) − (µ0 − µ1 )
+                                                                    ∼ N (0, 1) .
+                             n+p                   σ
+
+      σ 2 est inconnue ; on peut le remplacer par un estimateur
+                                                                      
+                                   Xn               Xp
+                2          1     (Xi − µ̂0,n )2 +                           n+p
+               Sn,p :=                                  (Yj − µ̂1,p )2  =          σ̂ 2 .
+                       n+p−2                                               n + p − 2 n,p
+                                       i=1                      j=1
+
+
+      En procédant comme dans l’exercice 2, on montre que sous pθ dLebn+p ,
+            2 est indépendant de µ̂
+           Sn,p                      0,n − µ̂1,p .
+                       2     2   2
+           (n + p − 2)Sn,p /σ ∼ χ (n + p − 2).
+      Par suite, en utilisant le Rappel C., sous pθ dLebn+p ,
+                           r                                      
+                               np    (µ̂0,n − µ̂1,p ) − (µ0 − µ1 )
+                                                                     ∼ tn+p−2 ,
+                              n+p                 Sn,p
+
+                                                                                               Page 21
+Ecole Polytechnique, promotion 2025                                         PC-4 Cours APM 41033 EP
+
+
+     où tn+p−2 désigne une loi de Student (centrée) de paramètre n + p − 2. Notons tun+p−2
+     le quantile d’ordre u d’une loi de Student (centrée) à n + p − 2 degrés de liberté. Alors
+     un intervalle de confiance de niveau 1 − α est donné par
+                                    r                                                
+                             α/2        np     (µ̂0,n − µ̂1,p ) − (µ0 − µ1 )      1−α/2
+               (µ0 − µ1 ) : tn+p−2 ≤                                           ≤ tn+p−2 ;
+                                       n+p                  Sn,p
+
+     soit encore                                                     r                  
+                                                              1−α/2       n+p
+                       I(Z) :=       µ̂0,n (Z) − µ̂1,p (Z) ± tn+p−2           Sn,p (Z)
+                                                                           np
+                      α/2             1−α/2
+     en notant que tn+p−2 = −tn+p−2 .
+     Fonction pivotale Posons
+                               r                                            
+                                  np    (µ̂0,n (Z) − µ̂1,p (Z)) − (µ0 − µ1 )
+                    G(Z, θ) :=
+                                 n+p                  Sn,p (Z)
+
+     Alors pour tout θ,
+
+                   Pθ (G(Z, θ) ∈ A) = P(Wn+p−2 ∈ A)               où Wn+p−2 ∼ tn+p−2 .
+
+     G est donc une fonction pivotale. On construit un intervalle de confiance de couverture
+     1−α :
+                                  Iα (Z) = {θ : G(θ, Z) ∈ Aα }
+     où on a choisi Aα tel que P(Wn+p−2 ∈ Aα ) = 1 − α. On choisit Aα comme l’intervalle
+     délimité par les quantiles d’ordre α/2 et 1 − α/2 d’une loi tn+p−2 ; car c’est le plus court
+     des intervalles de probabilité 1 − α sous une loi tn+p−2 .
+  3. Posons le test défini par la zone de rejet
+                                         r                                       
+                                   n+p        np |µ̂0,n (z) − µ̂1,p (z)|    1−α/2
+                   Rα := z ∈ R         :                                 ≥ tn+p−2 .
+                                             n+p         Sn,p (z)
+
+     Alors pour θ = (µ0 , µ0 , σ 2 ) ∈ Θ0 , on a
+
+                                              Pθ (Z ∈ Rα ) = α .
+
+     La taille du test de zone de rejet Rα est α.
+     Fonction pivotale → IC → test. Le test défini ci-dessus est le même que celui de
+     zone de rejet
+                                                                                             1−α/2
+          {z ∈ Rn+p : G(z; µ0 , µ0 , σ 2 ) ∈
+                                           / Aα } = {z ∈ Rn+p : |G(z; µ0 , µ0 , σ 2 )| ≥ tn+p−2 }.
+
+
+  4. Posons le test défini par la zone de rejet
+                                         r                                      
+                                              np (µ̂0,n (z) − µ̂1,p (z))
+                  Rα := z ∈ Rn+p :                                       ≥ t1−α
+                                                                            n+p−2 .
+                                            n+p          Sn,p (z)
+
+
+
+
+                                                                                                 Page 22
+Ecole Polytechnique, promotion 2025                                     PC-4 Cours APM 41033 EP
+
+
+     Vérifions le niveau de ce test : pour tout θ tel que µ0 − µ1 ≤ 0,
+                                       r                                       
+                                            np (µ̂0,n (Z) − µ̂1,p (Z))    1−α
+                    Pθ (Z ∈ Rα ) = Pθ                                  ≥ tn+p−2
+                                           n+p         Sn,p (Z)
+                                                  r                            
+                                                        np (µ0 − µ1 )      1−α
+                                 = Pθ Wn+p−2 +                         ≥ tn+p−2 ,
+                                                      n + p Sn,p (Z)
+     où Wn+p−2 ∼ tn+p−2 . Puisque µ0 − µ1 ≤ 0, il vient
+                                                       
+                                                  1−α
+              Pθ (Z ∈ Rα ) ≤ Pθ Wn+p−2 + 0 ≥ tn+p−2
+                                                    r                          
+                                                         np (µ0 − µ1 )    1−α
+                           = P(µ0 ,µ0 ,σ2 ) Wn+p−2 +                   ≥ tn+p−2
+                                                       n + p Sn,p (Z)
+                                                  
+                           = P Wn+p−2 ≥ t1−α  n+p−2 = α .
+
+     Ainsi, on a montré que
+                                        sup         Pθ (Z ∈ Rα ) = α
+                                     θ:µ0 −µ1 ≤0
+
+     ce qui termine la démonstration du niveau (et de la taille) du test.
+  5. D’après la question 3, on cherche α(Z) tel que
+                              r
+                                  np |µ̂0,n (Z) − µ̂1,p (Z)|    1−α(Z)/2
+                                                             = tn+p−2
+                                 n+p         Sn,p (Z)
+     D’après les données du tableau, nous avons n = p = 120, µ̂0,n (z) = 75, µ̂1,n (z) = 74.99,
+     et                               r
+                                           n                p
+                           Sn,p (z) =           8.722 +            6.542 .
+                                        n+p−2           n+p−2
+     Donc il faut résoudre
+                                             1−α(Z)/2
+                                            t238         = 0.01.
+     On trouve α(Z) = 1−0.5040 = 0.4960. Tout test de niveau raisonnable va donc accepter
+     l’hypothèse nulle (consistance des deux correcteurs).
+  6. On a sous pθ dLebn+p ,
+                                            n
+                                            X
+                         Rn,1 (Z) := σ0−2         (Xi − µ̂0,n (Z))2 ∼ χ2 (n − 1) ,
+                                            i=1
+                                            p
+                                            X
+                         Rp,2 (Z) := σ1−2         (Yj − µ̂1,p (Z))2 ∼ χ2 (p − 1) ,
+                                            j=1
+
+     et les deux v.a. Rn,1 (Z) et Rp,2 (Z) sont indépendantes car sont respectivement fonction
+     des Xi , et des Yj . On en déduit, en utilisant le Rappel D., que sous pθ dLebn+p , la v.a.
+                                                      P
+                                        σ12 (n − 1)−1 ni=1 (Xi − µ̂0,n (Z))2
+                            G(Z; θ) := 2              Pp
+                                        σ0 (p − 1)−1 j=1 (Yj − µ̂1,p (Z))2
+     suit une loi de Fisher de paramètres (n − 1, p − 1) ; c’est une loi indépendantes de θ. G
+     est donc une fonction pivotale.
+     Loi de Fisher. On trace sur la figure 10 la densité d’une loi de Fisher pour deux jeux
+     de paramètres.
+
+                                                                                        Page 23
+Ecole Polytechnique, promotion 2025                                                   PC-4 Cours APM 41033 EP
+
+
+                                1.8
+
+                                1.6
+
+                                1.4
+
+                                1.2
+
+                                  1
+
+                                0.8
+
+                                0.6
+
+                                0.4
+
+                                0.2
+
+                                  0
+                                      0            1             2     3       4      5
+
+
+
+
+Figure 10 – Densité d’une loi de Fisher de paramètres (10, 5) en rouge ; et (100, 50) en bleu.
+
+
+  7. On propose le test de zone de rejet
+                       (               P                                 )
+                             (n − 1)−1 ni=1 (Xi − µ̂0,n (Z))2    1−α
+                         Z:            P                      > fn−1,p−1
+                             (p − 1)−1 pj=1 (Yj − µ̂1,p (Z))2
+          1−α
+     où fn−1,p−1 désigne le (1 − α)-quantile de la loi de Fisher de paramètres (n − 1, p − 1).
+     Etablissons le niveau de ce test. Notons Wn−1,p−1 une v.a. de loi de Fisher de paramètres
+     (n − 1, p − 1). Pour tout θ tel que σ02 ≤ σ12 , on a
+                        P                                  !      2                         
+             (n − 1)−1 ni=1 (Xi − µ̂0,n (Z))2       1−α            σ0               1−α
+        Pθ              P                      > fn−1,p−1 = P          Wn−1,p−1 > fn−1,p−1
+             (p − 1)−1 pj=1 (Yj − µ̂1,p (Z))2                      σ12
+                                                                                            
+                                                                                σ 2 1−α
+                                                             = P Wn−1,p−1 > 12 fn−1,p−1
+                                                                                σ0
+                                                                                       
+                                                                                  1−α
+                                                             ≤ P Wn−1,p−1 > fn−1,p−1       .
+
+     D’une part                                                        
+                                                                1−α
+                                                  P Wn−1,p−1 > fn−1,p−1   =α
+     et d’autre part
+                                                                                P                                  !
+                                                                     (n − 1)−1 ni=1 (Xi − µ̂0,n (Z))2
+                         1−α                                                    P                          α
+     P Wn−1,p−1 >       fn−1,p−1              = P(µ0 ,µ1 ,σ02 ,σ02 )                                    > fn−1,p−1
+                                                                       (p − 1)−1 pj=1 (Yj − µ̂1,p (Z))2
+
+     ce qui montre que
+                                                   P                                 !
+                                          (n − 1)−1 ni=1 (Xi − µ̂0,n (Z))2    1−α
+                      sup Pθ                       P                       > fn−1,p−1 = α.
+                   θ:σ02 ≤σ12             (p − 1)−1 pj=1 (Yj − µ̂1,p (Z))2
+                                Pn
+                     (n−1)−1         0,n  (X −µ̂         (Z))2
+  8. Soit T (Z) = (p−1)−1 Pi=1
+                           p
+                                 i
+                               (Y −µ̂ (Z))2
+                                            , la p-valeur du test est la plus petite valeur de α
+                                      j=1     j    1,p
+     pour laquelle
+                                                                    1−α
+                                                           T (Z) > fn−1,p−1 .
+
+                                                                                                           Page 24
+Ecole Polytechnique, promotion 2025                               PC-4 Cours APM 41033 EP
+
+
+     En notant Fn−1,p−1 la fonction de répartition de la loi de Fisher de paramètres n − 1 et
+                  1−α        −1
+     p − 1, on a fn−1,p−1 = Fn−1,p−1 (1 − α), c’est donc une fonction décroissante et bijective
+                     ∗
+     de (0, 1) dans R+ donc
+                                  b(Z) = 1 − Fn−1,p−1 (T (Z)) .
+                                  α
+
+
+
+
+                                                                                       Page 25
+Ecole Polytechnique, promotion 2025                                            PC-4 Cours APM 41033 EP
+
+
+2.6   Exercice 6
+   Le modèle statistique est
+
+                          ({0, 1}n , P({0, 1}n ), {Pp = ⊗ni=1 B(p); p ∈ ]0, 1[}) .
+
+  1. La proportion annoncée par le Ministère est p0 = 1/310 000 ≈ 3.23e − 06.
+  2. On prend un test dont la zone de rejet est de la forme {Sn > c}. Le risque de première
+     espèce est
+                                sup Pp (Sn > c) = Pp0 (Sn > c).
+                                       p≤p0
+
+      Démonstration de cette monotonie. Soit p ≤ p0 . Sous Pp , Sn a même loi que
+      P
+        k=1 1Uk ≤p où U1 , · · · , Un sont des v.a. i.i.d. uniformes sur [0, 1]. Puisque
+        n
+
+
+                                            n
+                                            X                n
+                                                             X
+                                                  1Ui ≤p ≤         1Ui ≤p0 ,
+                                            i=1              i=1
+
+      il vient                     ( n                )      ( n                   )
+                                    X                         X
+                                           1Ui ≤p > c ⊆              1Ui ≤p0 > c
+                                     i=1                       i=1
+
+      dont on déduit que pour tout p ≤ p0 , Pp (Sn > c) ≤ Pp0 (Sn > c).
+      On veut un test de niveau α, donc on prend c tel que Pp0 (Sn > c) ≤ α, en remarquant
+      que sous Pp0 , Sn ∼ Bin(n, p0 ). Posons
+
+          cα := inf{0 ≤ c ≤ n : Pp0 (Sn > c) ≤ α} = inf{0 ≤ c ≤ n : Pp0 (Sn ≤ c) ≥ 1 − α}
+                 = Fp−1
+                     0
+                        (1 − α)
+
+      où Fb−1 désigne l’inverse généralisée de la fonction de répartition de la loi binomiale de
+      paramètres n = 300 533 et p = p0 .
+      Fonction de répartition de Bin(n, p0 ). La figure 11(gauche) représente la fonction
+      de répartition de la loi Binomiale de paramètres n = 300 533 et p0 , sur [−1.5; 5.5]. On
+      illustre aussi la détermination de inf{0 ≤ c ≤ n : Pp0 (Sn ≤ c) ≥ 1 − α} lorsque α = 0.05
+      (en rouge) et α = 0.01 (en vert). Voir aussi la figure de droite pour le tracé de la fonction
+      de survie x 7→ Pp0 (Sn > x).
+  3. Au niveau α = 0.05, on trouve cα = 3 ; on relève Sn = 4 donc on rejette H0 . Pour
+     α = 0.01, on trouve cα = 4, donc on accepte H0 .
+  4. Si α < α′ , alors cα > cα′ donc {Sn > cα } ⊂ {Sn > cα′ }. On cherche donc
+
+            inf{α ∈ [0, 1] : Sn = 4 ∈ Rα } = inf{α ∈ [0, 1] : 4 ∈]cα , n]} = inf{α : cα = 3}.
+
+      Donc on cherche α tel que
+
+                             3 = Fb−1 (1 − α)        i.e.      α = 1 − Pp0 (Sn ≤ 3).
+
+      La p-valeur est 0.0172 (exactement 0.017172).
+  5. On attend θ0 = 300 533 × p0 = 300 533/310 000 ≈ 0.9695.
+
+
+                                                                                               Page 26
+Ecole Polytechnique, promotion 2025                                             PC-4 Cours APM 41033 EP
+
+
+
+           1                                                 1
+
+
+
+         0.8                                               0.8
+
+
+
+         0.6                                               0.6
+
+                                                                                        de proba
+                                                                                        0.0732
+         0.4                                               0.4
+                                                                                                   de proba 0.0171
+
+                                                                                                              de proba
+         0.2                                               0.2                                                0.0032
+
+
+
+
+           0                                                 0
+               -1   0   1    2    3      4    5               -2   -1   0   1       2          3          4          5   6
+                                                                                                         Sn
+
+
+
+
+Figure 11 – (gauche) Fonction de répartition d’une loi binomiale avec n = 300 533 et p = p0 .
+(droite) On trace x 7→ Pp0 (Sn > x)
+
+
+2.6.1     Une façon de comprendre la formulation de la question 6 donnée en PC
+
+
+        On garde les mêmes hypothèses H0 et H1 que dans la première partie. La seule modifi-
+        cation vient que l’on remplace la loi binômiale par une loi de Poisson pour calculer les
+        cdf.
+
+  6. Les hypothèses nulle et alternative restent
+
+                                      H0 :        θ ≤ θ0           H1 : θ > θ 0 .
+
+        On considère la famille de tests de zone de rejet de la forme {Sn > c} ; et l’on choisit c tel
+        que supθ≤θ0 Pθ (Sn > c) ≤ α. Puisque θ 7→ Pθ (Sn > c) est croissante (voir la Figure 12),
+        on choisit c tel que
+                                              Pθ0 (Sn > c) ≤ α.
+        Pour des considérations de puissance de test, on prendra le plus petit c qui vérifie cette
+        condition. Posons
+
+        cα := min{c ≥ 0 : Pθ0 (Sn > c) ≤ α} = min{c ≥ 0 : Pθ0 (Sn ≤ c) ≥ 1−α} = Fθ−1
+                                                                                  0
+                                                                                     (1−α),
+
+        où Fθ−1
+              0
+                 désigne l’inverse généralisée de la fonction de répartition d’une loi de Poisson
+        de paramètre θ0 . Le test associé est donc
+
+                                             Rα := {n ∈ N : n > cα }.
+
+
+  7. On peut vérifier la monotonie des zones de rejet : si α < α′ alors cα ≥ cα′ et donc
+     Rα ⊂ Rα′ . On cherche
+
+                         inf{α ∈ [0, 1] : 4 > cα } = inf{α : cα = 3} = 1 − Fθ0 (3).
+                                                             P
+        Il vient (probabilité calculée directement par 1 − 3k=0 θ0k /k! exp(−θ0 )) :
+
+                                       α̂(Sn ) = Pθ0 (Sn > 3) = 0.017173.
+
+                                                                                                                             Page 27
+Ecole Polytechnique, promotion 2025                                            PC-4 Cours APM 41033 EP
+
+
+                                 1
+                                                                       θ=0.5
+                               0.9                                     θ=1
+                                                                       θ=2
+                               0.8
+
+                               0.7
+
+                               0.6
+
+                               0.5
+
+                               0.4
+
+                               0.3
+
+                               0.2
+
+                               0.1
+
+                                 0
+                                  -2    -1    0    1   2    3     4    5       6
+
+
+
+
+         Figure 12 – Fonction de survie x 7→ Pθ (Sn > x) pour différentes valeurs de θ
+
+
+2.6.2     Autre approche pour la question 6 : changer de point de vue
+
+
+        On change de point de vue. On se place du point de vue des patients.
+        jusqu’ici, via le risque de première espèce on a garanti que la procédure de test ne faisait
+        pas l’erreur suivante dans plus de α% des cas : ”affirmer que la probabilité que le vaccin
+        a de graves effets secondaires est plus élevée que p0 , alors qu’en réalité elle ne l’est pas”.
+        en fait, du point de vue du patient, il vaut mieux se protéger de l’erreur suivante
+        ”affirmer que la probabilité que le vaccin a de graves effets secondaires est inférieure à
+        p0 , alors qu’en réalité, elle l’est”. Pour le patient, le fait est que la probabilité réelle est
+        plus élevée, et il attend que les données démontrent le contraire.
+
+
+  6. Les hypothèses nulle et alternative deviennent
+
+                                       H0 :       θ ≥ θ0          H1 : θ < θ 0 .
+
+        On considère la famille de test de zone de rejet de la forme {Sn ≤ c} ; et l’on choisit
+        c tel que supθ≥θ0 Pθ (Sn ≤ c) ≤ α. Puisque θ 7→ Pθ (Sn ≤ c) est décroissante (voir la
+        Figure 12), on choisit c tel que
+
+                                                  Pθ0 (Sn ≤ c) ≤ α.
+
+        Pour des considérations de puissance, on prendra le plus grand c qui vérifie cette condi-
+        tion. Posons
+                           cα := max{c ∈ N : Pθ0 (Sn ≤ c) ≤ α} = Fθ−1  0
+                                                                         (α),
+
+        où Fθ−1
+              0
+                 désigne l’inverse généralisée de la fonction de répartition d’une loi de Poisson
+        de paramètre θ0 . Le test associé est donc
+
+                                              Rα := {n ∈ N : n ≤ cα }.
+
+
+
+                                                                                                   Page 28
+Ecole Polytechnique, promotion 2025                                 PC-4 Cours APM 41033 EP
+
+
+     pour se donner une idée des valeurs du seuil critique en fonction de α (qu’on choisit
+     plutôt de l’ordre de qq %) quelques valeurs
+
+                Pθ0 (Sn < 0) = 0     Pθ0 (Sn ≤ 0) = 0.3793       Pθ0 (Sn ≤ 1) = 0.7470.
+
+
+  7. On peut vérifier la monotonie des zones de rejet : si α < α′ alors cα ≤ cα′ et donc
+     Rα ⊂ Rα′ . On cherche
+
+                         inf{α ∈ [0, 1] : 4 ≤ cα } = inf{α : cα = 4} = Fθ0 (4).
+
+     Il vient
+                                           α̂(Sn ) = 0.9968.
+
+
+
+
+                                                                                          Page 29
+Ecole Polytechnique, promotion 2025                                           PC-4 Cours APM 41033 EP
+
+
+2.7   Exercice 7
+   La v.a. R est bien définie. Puisque FX et FY sont continues, on a P(Zi = Zj ) = 0
+pour i ̸= j.
+  1. • Sous H0 , les v.a. (Z1 , · · · , Zn+m ) sont i.i.d. de loi FX ce qui entraine que (Z1 , · · · , Zn+m )
+     a même loi que (Zτ (1) , · · · , Zτ (n+m) ) pour toute permutation déterministe τ ∈ SN . En
+     particulier, on a                                      h                  i
+                                                  
+                              E0 1Z1 <···<Zn+m = E0 1Zτ (1) <···<Zτ (n+m) ;
+
+      on a noté P0 la probabilité sous laquelle les v.a. {Zk }1≤k≤n+m sont i.i.d. de loi FX . Par
+      suite pour tout permutation τ ∈ SN ,
+                                                                   h                      i
+          P0 (R = (1, · · · , n + m)) = E0 1Z1 <···<Zn+m = E0 1Zτ (1) <···<Zτ (n+m)
+                                                                                                   
+                                      = P0 Rτ (1) = 1, · · · , Rτ (i) = i, · · · , Rτ (n+m) = n + m .
+
+      Cette relation étant vraie pour tout τ , il vient que R suis la loi uniforme sur SN donc
+                                                                            1
+                                   P0 (R = (i1 , · · · , in+m )) =               .
+                                                                        (n + m)!
+
+      • Montrons que sous H0 , P Wn,m est libre. SousPH0 , Wn,m est à valeur dans l’intervalle
+      délimité par (au mieux) ni=1 i et (au pire) n+mi=m+1 i. Pour toute valeur q dans cet
+      intervalle, on a
+                                            X
+                        P0 (Wn,m = q) =            P0 (R1 = i1 , · · · , Rn = in )
+                                               (i1 ,··· ,in )∈Iq
+                                                    X                 m!
+                                           =
+                                                                   (n + m)!
+                                               (i1 ,··· ,in )∈Iq
+
+      où Iq désigne l’ensemble des listes à n éléments, d’entiers deux à deux distincts choisis
+      dans l’alphabet {1, · · · , n+m}, et dont la somme vaut q ; et m! correspond au nombre de
+      possibilités de compléter les m valeurs manquantes pour (Rn+1 , · · · , Rn+m ). La preuve
+      est terminée en observant que le cardinal de Iq ne dépend pas de la loi FX .
+      • Enfin, déterminons la loi de Ri sous H0 . On connaı̂t la loi du vecteur R, qui est la loi
+      uniforme. L’événement {Ri = q} correspond à choisir les valeurs de n + m − 1 autres
+      rangs dans une liste à n + m − 1 éléments : il y a (n + m − 1)! possibilités. Donc
+
+                                                      (n + m − 1)!    1
+                                  P0 (Ri = q) =                    =     .
+                                                        (n + m)!     n+m
+
+      Autrement sur : sous H0 , Ri suit une loi uniforme sur {1, · · · , n + m}.
+  2. On vient de voir que sous H0 , Ri suit une loi uniforme sur {1, · · · , n + m}, donc
+
+                                          (n + m)(n + m + 1)   (n + m + 1)
+                             E0 [Ri ] =                      =             .
+                                               2(n + m)             2
+
+      Ce résultat est indépendant de i ; par suite, E0 [Wn,m ] = n E0 [R1 ] = n(n + m + 1)/2.
+
+
+
+                                                                                                   Page 30
+Ecole Polytechnique, promotion 2025                                             PC-4 Cours APM 41033 EP
+
+
+  3. • Par un développement classique de la variance d’une somme, et en utilisant que sous
+     H0 , les v.a. (Ri )i ont même loi, il vient
+                                                        X
+                           Var0 (Wn,m ) = nVar0 (R1 ) +    Cov0 (Ri , Rj ) .
+                                                            1≤i̸=j≤n
+
+     Il reste à montrer que sous H0 , Cov0 (Ri , Rj ) = Cov0 (R1 , R2 ), ce qui est une conséquence
+     du fait que sous H0 , les v.a. (Zk )k sont iid. Pour s’en convaincre, on peut utiliser la
+     relation
+                                             n+m
+                                              X
+                                   Ri = 1 +        1]0,+∞[ (Zi − Zℓ ) .
+                                                ℓ=1
+
+     • La démonstration de la seconde expression est identique ; le terme vaut zero puisque
+     la somme de tous les rangs est une constante égale à la somme de tous les entiers de 1
+     à n + m.
+     • On déduit de la seconde relation que
+                                                        1
+                                Cov0 (R1 , R2 ) = −         Var0 (R1 )
+                                                      n+m−1
+     et en l’introduisant dans la première, il vient
+                                                       
+                                                    n−1       nm
+                Var0 (Wn,m ) = nVar0 (R1 ) 1 −            =       Var0 (R1 ) .
+                                                 n+m−1      n+m−1
+
+     Puisque R1 suit une loi uniforme P sur {1, · · · , n + m}, sa variance est (n + m + 1)(n +
+     m − 1)/12 (en utilisant le fait que qi=1 i2 = q(q + 1)(2q + 1)/6) ce qui donne le résultat.
+  4. Puisque sous H0 , la loi de Wn,m ne dépend pas de FX , on peut trouver Aα telle que
+
+                                         P0 (Wn,m ∈
+                                                  / Aα ) ≤ α ,
+
+     et poser le test de zone de rejet
+                                                           n
+                                                           X
+                                    {z1 , · · · , zn+m :         ri ∈
+                                                                    / Aα } .
+                                                           i=1
+
+     Un exemple de tel ensemble Aα peut être construit par Tchebychev : on sait que
+
+                                                                       nm(n + m + 1)
+                       P0 (|Wn,m − n(n + m + 1)/2| ≥ ε) ≤
+                                                                           12 ε2
+     donc on choisit                            r
+                                                    nm(n + m + 1)
+                                       εα :=
+                                                        12 α
+     puis                                                              
+                                                n(n + m + 1)
+                                    Aα :=                    ± εα           .
+                                                     2
+
+
+
+
+                                                                                                Page 31
+

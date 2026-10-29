@@ -1,0 +1,87 @@
+import type { SummarySheet } from '../types'
+
+export const summarySheet: SummarySheet = {
+  definitions: [
+    { label: 'Déf. 1.1 — Biais', text: '$b(\\theta,T):=\\mathbb{E}_\\theta[T(Z)]-g(\\theta)$ (si $\\mathbb{E}_\\theta\\lVert T\\rVert<\\infty$), une **fonction** de $\\theta$ ; sans biais : $b(\\theta,T)=0$ pour **tout** $\\theta$.', source: 'Poly ch.3, Déf. 1.1' },
+    { label: 'Déf. 1.2 — Risque', text: '$R_\\ell(\\theta,T):=\\mathbb{E}_\\theta[\\ell(\\theta,T(Z))]$, $\\ell:\\Theta\\times\\mathbb{R}^p\\to\\mathbb{R}_+$ perte ; pertes $\\ell_2(\\theta,a)=\\lVert a-g(\\theta)\\rVert_2^2$, $\\ell_1(\\theta,a)=\\lVert a-g(\\theta)\\rVert_1$ (Ex. 1.6). Le choix de la perte n’est pas neutre.', source: 'Poly ch.3, Déf. 1.2, Ex. 1.6' },
+    { label: 'Déf. 1.3 — Risque quadratique (EQM)', text: '$R(\\theta,T):=\\mathbb{E}_\\theta[(T(Z)-g(\\theta))^2]$ (perte quadratique, notée sans indice).', source: 'Poly ch.3, Déf. 1.3' },
+    { label: '§1.5 — Ordre partiel', text: '$T$ uniformément meilleur que $T\'$ si $R_\\ell(\\theta,T)\\le R_\\ell(\\theta,T\')$ pour tout $\\theta$ ; uniformément optimal s’il est meilleur que tout estimateur. Courbes qui se croisent : incomparables.', source: 'Poly ch.3, §1.5' },
+    { label: 'Déf. 1.4 — Admissibilité', text: '$T$ inadmissible s’il existe $T^*$ avec $R_\\ell(\\theta,T^*)\\le R_\\ell(\\theta,T)$ pour tout $\\theta$ et $<$ pour au moins un $\\theta$ ; admissible sinon.', source: 'Poly ch.3, Déf. 1.4' },
+    { label: 'Déf. 1.5 — E.S.B.V.M.', text: 'Sans biais et de variance $\\le$ celle de tout estimateur sans biais de $g(\\theta)$, pour tout $\\theta$.', source: 'Poly ch.3, Déf. 1.5' },
+    { label: 'Déf. 1.6 — Modèle régulier', text: '$\\Theta$ ouvert de $\\mathbb{R}^d$ ; (i) dominé, $\\ell(\\theta,z)=\\log p_\\theta(z)$ ; (ii) $\\theta\\mapsto p_\\theta(z)$ de classe $C^2$ ; (iii) dominations locales $\\lVert\\nabla_\\theta\\ell\\rVert^2\\le h_1$, $\\lVert\\mathrm{H}_\\ell\\rVert\\le h_1$, $p_\\theta\\le h_0$, $\\int(1+h_1)h_0\\,\\mathrm{d}\\mu<\\infty$ ; (iv) $\\mathbb{E}_\\theta[\\mathrm{H}_\\ell(\\theta,Z)]$ inversible.', source: 'Poly ch.3, Déf. 1.6' },
+    { label: 'Déf. 1.7 — Score', text: '$S(\\theta,z):=\\nabla_\\theta\\ell(\\theta,z)\\in\\mathbb{R}^d$, $\\ell(\\theta,z)=\\log p_\\theta(z)$.', source: 'Poly ch.3, Déf. 1.7' },
+    { label: 'Déf. 1.8 — Information de Fisher', text: '$\\mathbb{I}(\\theta):=\\mathbb{E}_\\theta[S(\\theta,Z)S(\\theta,Z)^\\top]$ ; en dimension 1, $\\mathrm{Var}_\\theta(S(\\theta,Z))$. Indépendante de la mesure dominante (Lemme 2.1).', source: 'Poly ch.3, Déf. 1.8' },
+    { label: 'Déf. 1.9 — Estimateur régulier', text: '$\\mathbb{E}_\\theta[T^2]<\\infty$ et $\\nabla_\\theta\\mathbb{E}_\\theta[T(Z)]=\\int T\\nabla_\\theta p_\\theta\\,\\mathrm{d}\\mu$ (éq. (10)) ; admis en exercice.', source: 'Poly ch.3, Déf. 1.9' },
+    { label: 'Déf. 1.10 — Efficacité', text: 'Sans biais, régulier, de variance égale à $\\nabla g^\\top\\mathbb{I}(\\theta)^{-1}\\nabla g$ pour tout $\\theta$. Efficace $\\Rightarrow$ E.S.B.V.M. (réciproque fausse).', source: 'Poly ch.3, Déf. 1.10' },
+    { label: 'Notations', text: '$\\hat\\sigma_n^2=\\frac1n\\sum(X_i-\\bar X_n)^2$, $S_n^2=\\frac1{n-1}\\sum(X_i-\\bar X_n)^2$ ; $X_{1:n}\\le\\dots\\le X_{n:n}$ ; $\\mathbb{I}_1$ (une observation), $\\mathbb{I}_{\\mathcal{M}^n}=n\\mathbb{I}_1$ ; hessienne $\\mathrm{H}_\\ell$ ; ordre de Loewner $A\\ge B$ ; $\\mathcal{E}(\\theta)$ d’intensité $\\theta$ (sauf PC3 Ex. 5 : $\\theta$ = moyenne).', source: 'Poly ch.3, §1' },
+  ],
+  theorems: [
+    { label: 'Prop. 1.1 — Biais-variance', hypotheses: ['$g$ réelle', '$T$ de carré intégrable sous chaque $\\mathbb{P}_\\theta$'], text: '$R(\\theta,T)=\\mathrm{Var}_\\theta(T(Z))+b(\\theta,T)^2$. Vectoriel (Prop. 2.3) : $\\mathbb{E}_\\theta[(T-g)(T-g)^\\top]=\\mathrm{Var}_\\theta(T)+bb^\\top$.', source: 'Poly ch.3, Prop. 1.1 et 2.3' },
+    { label: 'Ex. 1.4 — Variance empirique', hypotheses: ['$n$-échantillon, $\\mathbb{E}_\\theta[X_1^2]<\\infty$'], text: '$\\mathbb{E}_\\theta[\\hat\\sigma_n^2]=\\frac{n-1}n\\mathrm{Var}_\\theta(X_1)$ ; $S_n^2$ sans biais.', source: 'Poly ch.3, Ex. 1.4' },
+    { label: 'Ex. 1.8 — σ̂² bat S² (gaussien)', hypotheses: ['Modèle $\\mathcal{N}(\\mu,\\sigma^2)$, $n\\ge2$ (Gosset)'], text: '$R(\\theta,S_n^2)=\\frac{2\\sigma^4}{n-1}$, $R(\\theta,\\hat\\sigma_n^2)=\\frac{(2n-1)\\sigma^4}{n^2}$, différence $\\frac{(3n-1)\\sigma^4}{(n-1)n^2}>0$ : $S_n^2$ inadmissible.', source: 'Poly ch.3, Ex. 1.8' },
+    { label: 'Ex. 1.9 — Uniforme, famille aX(n:n)', hypotheses: ['$\\mathcal{U}([0,\\theta])$, densité de $X_{n:n}$ : $nx^{n-1}/\\theta^n$'], text: '$R(\\theta,aX_{n:n})=\\theta^2\\{\\frac{na^2}{n+2}-\\frac{2an}{n+1}+1\\}$, minimal en $a_\\star=\\frac{n+2}{n+1}$ (risque $\\frac{\\theta^2}{(n+1)^2}$) ; $\\frac{n+1}nX_{n:n}$ (risque $\\frac{\\theta^2}{n(n+2)}$) inadmissible.', source: 'Poly ch.3, Ex. 1.9 ; PC3 Ex. 1' },
+    { label: 'Ex. 1.10 — Estimateur constant', hypotheses: ['Bernoulli, $\\vartheta\\in\\,]0,1[$, risque quadratique'], text: '$\\hat\\theta_\\vartheta$ admissible ; aucun estimateur uniformément optimal.', source: 'Poly ch.3, Ex. 1.10' },
+    { label: 'Ex. 1.11 — Meilleur linéaire sans biais', hypotheses: ['$\\mathbb{E}_\\theta[X_1^2]<\\infty$', 'classe $\\sum\\alpha_iX_i$, $\\sum\\alpha_i=1$'], text: '$R=\\sigma^2(\\theta)\\sum\\alpha_i^2$ minimal pour $\\alpha_i=1/n$ ($\\bar X_n$), pour tout $\\theta$ (Cauchy-Schwarz).', source: 'Poly ch.3, Ex. 1.11' },
+    { label: 'Prop. 1.2 — Score et information', hypotheses: ['Modèle régulier (Déf. 1.6)', '(iii) : modèles indépendants, même $\\Theta$'], text: '(i) $\\mathbb{E}_\\theta[\\nabla_\\theta\\ell]=0$ ; (ii) $\\mathbb{I}(\\theta)=-\\mathbb{E}_\\theta[\\mathrm{H}_\\ell]$ ; (iii) $\\mathbb{I}_{12}=\\mathbb{I}_1+\\mathbb{I}_2$, $\\mathbb{I}_{\\mathcal{M}^n}=n\\mathbb{I}_{\\mathcal{M}}$. Preuve : (8)–(9), Prop. 2.2.', source: 'Poly ch.3, Prop. 1.2' },
+    { label: 'Ex. 1.13–1.15, 1.19 — Valeurs', hypotheses: ['Une observation'], text: 'Exponentiel $1/\\theta^2$ ; Poisson $1/\\theta$ ; Bernoulli $\\frac1{\\theta(1-\\theta)}$ ; $\\mathcal{N}(\\theta,\\sigma_0^2)$ : $1/\\sigma_0^2$.', source: 'Poly ch.3, Ex. 1.13–1.15, 1.19' },
+    { label: 'Thm 1.1 — Cramér-Rao', hypotheses: ['Modèle régulier, $\\Theta$ ouvert de $\\mathbb{R}^d$', '$g:\\Theta\\to\\mathbb{R}$ dérivable', '$T$ sans biais de $g(\\theta)$', '$T$ régulier (Déf. 1.9)'], text: '$\\mathrm{Var}_\\theta(T(Z))\\ge\\nabla_\\theta g(\\theta)^\\top\\mathbb{I}(\\theta)^{-1}\\nabla_\\theta g(\\theta)$. Preuve : $\\nabla g=\\mathbb{E}_\\theta[(T-g)S]$, Cauchy-Schwarz, $u=\\mathbb{I}^{-1}\\nabla g$.', source: 'Poly ch.3, Thm 1.1' },
+    { label: 'Cor. 1.1–1.3 — Trois lectures', hypotheses: ['Hypothèses du Thm 1.1 ; Cor. 1.2 : chaque $\\lambda^\\top T$ sans biais et régulier ; Cor. 1.3 : $n$-échantillon'], text: '$d=1$ : $\\frac{g\'(\\theta)^2}{\\mathbb{I}(\\theta)}$ ; vectoriel : $\\mathrm{Var}_\\theta(T)\\ge\\mathbb{I}(\\theta)^{-1}$ (Loewner, donc $\\mathrm{Var}(T_j)\\ge[\\mathbb{I}^{-1}]_{jj}$) ; $n$-échantillon : $\\frac1n\\nabla g^\\top\\mathbb{I}_1^{-1}\\nabla g$ (ordre $n^{-1}$).', source: 'Poly ch.3, Cor. 1.1–1.3' },
+    { label: 'Ex. 1.16 — Modèle non régulier', hypotheses: ['$\\mathcal{U}([0,\\theta])$ (non régulier, Ex. 1.12)'], text: '$\\mathrm{Var}(\\frac{n+1}nX_{n:n})=\\frac{\\theta^2}{n(n+2)}$ en $n^{-2}$ : pas de contradiction, la borne ne s’applique pas.', source: 'Poly ch.3, Ex. 1.16' },
+    { label: 'Ex. 1.17–1.19 — Efficacité de X̄ₙ', hypotheses: ['Bernoulli, Poisson, $\\mathcal{N}(\\theta,\\sigma_0^2)$'], text: '$\\mathrm{Var}(\\bar X_n)=\\theta(1-\\theta)/n$, $\\theta/n$, $\\sigma_0^2/n$ = borne : efficace, E.S.B.V.M.', source: 'Poly ch.3, Ex. 1.17–1.19' },
+    { label: 'Prop. 2.1 — Cauchy-Schwarz', hypotheses: ['$U$, $V$ de carré intégrable'], text: '$(\\mathbb{E}[UV])^2\\le\\mathbb{E}[U^2]\\mathbb{E}[V^2]$, égalité ssi colinéarité p.s. ; version covariance.', source: 'Poly ch.3, Prop. 2.1' },
+    { label: 'Prop. 2.2 — Dérivation sous l’intégrale', hypotheses: ['$I$ ouvert, $f(t,\\cdot)$ intégrables', '$t\\mapsto f(t,x)$ dérivable p.p.', '$|\\partial_tf(t,x)|\\le h(x)$ intégrable, indépendante de $t$'], text: '$\\phi(t)=\\int f(t,x)\\mu(\\mathrm{d}x)$ dérivable, $\\phi\'=\\int\\partial_tf\\,\\mathrm{d}\\mu$ (accroissements finis + convergence dominée).', source: 'Poly ch.3, Prop. 2.2' },
+    { label: 'PC3 Ex. 3 — Borne sans régularité', hypotheses: ['Modèle dominé, $T$ sans biais de carré intégrable', '$\\{p_\\theta=0\\}\\subseteq\\{p_{\\theta-\\delta}=0\\}$'], text: '$\\mathrm{Var}_\\theta(T)\\ge\\frac{(g(\\theta)-g(\\theta-\\delta))^2}{\\int_{A_\\theta}(1-p_{\\theta-\\delta}/p_\\theta)^2p_\\theta\\,\\mathrm{d}\\mu}$ ; uniforme : $\\ge\\theta^2\\tau_n(c)/n^2$, $\\tau_n(c)\\to c^2/(e^c-1)$.', source: 'Poly ch.3, Exercice 3 ; PC3 Ex. 3' },
+  ],
+  methods: [
+    {
+      title: 'Calculer la borne de Cramér-Rao (Examen 2025 Ex. 1 Q1)',
+      steps: [
+        'Écrire la densité d’une observation et $\\ell_1(\\theta,x)=\\log q_\\theta(x)$.',
+        'Dériver : score $S(\\theta,x)$ ; vérifier $\\mathbb{E}_\\theta[S]=0$.',
+        '$\\mathbb{I}_1(\\theta)=\\mathrm{Var}_\\theta(S)$ ou $-\\mathbb{E}_\\theta[\\partial^2_\\theta\\ell_1]$ ; $\\mathbb{I}=n\\mathbb{I}_1$ (indépendance).',
+        'Énoncer : « modèle régulier ; pour tout $T$ sans biais et régulier de $g(\\theta)$, $\\mathrm{Var}_\\theta(T)\\ge g\'(\\theta)^2/(n\\mathbb{I}_1(\\theta))$ » ; risque = variance si sans biais.',
+        'Comparer à la variance d’un candidat sans biais : égalité pour tout $\\theta$ ⇒ efficace.',
+        'Multidimensionnel : inverser $\\mathbb{I}$, calculer $\\nabla g^\\top\\mathbb{I}^{-1}\\nabla g$.',
+      ],
+    },
+    {
+      title: 'Biais, risque, admissibilité (CC 2022 Ex. 2 ; PC3 Ex. 1)',
+      steps: [
+        'Loi exacte : Gosset, additivité Gamma, loi de $X_{n:n}$ par la fonction de répartition.',
+        'Biais $\\mathbb{E}_\\theta[T]-g(\\theta)$ ; variance (indépendance) ; risque par la Prop. 1.1.',
+        'Comparer $R(\\theta,T_1)-R(\\theta,T_2)$ **pour tout** $\\theta$ (signe constant ?).',
+        'Inadmissibilité : exhiber un $T^*$ qui domine (partout $\\le$, quelque part $<$) ; pour une famille à un coefficient, minimiser le trinôme et vérifier que l’optimum ne dépend pas de $\\theta$.',
+      ],
+    },
+    {
+      title: 'Construire un estimateur sans biais (PC3 Ex. 1 Q2–Q3)',
+      steps: [
+        'Écrire $\\mathbb{E}_\\theta[T]$ comme intégrale en $\\theta$ (densité de $X_1$ ou de $X_{n:n}$).',
+        'Imposer $=g(\\theta)$ pour tout $\\theta$ : équation intégrale.',
+        'Reconnaître une primitive (constante fixée par une limite en $0$) puis dériver.',
+      ],
+    },
+    {
+      title: 'Optimiser dans une classe linéaire (Ex. 1.11 ; PC3 Ex. 4–5)',
+      steps: [
+        'Espérance et variance de $\\sum a_kX_k$ (indépendance) ; risque par biais-variance.',
+        'Sans biais : contrainte $\\sum a_k=1$, Cauchy-Schwarz ou Lagrange ⇒ $a_k=1/n$.',
+        'Sans contrainte : gradient nul + hessienne définie positive ; sommer les équations.',
+        'Vérifier si les poids optimaux dépendent de $\\theta$ (borne inférieure seulement) ou non (vrai estimateur, PC3 Ex. 5).',
+      ],
+    },
+  ],
+  pitfalls: [
+    'Le biais et le risque sont des **fonctions** de $\\theta$, pas des nombres.',
+    'Oublier le **carré** du biais dans la Prop. 1.1 ; confondre $\\mathrm{Var}_\\theta(T)$ et $R(\\theta,T)$ pour un estimateur biaisé.',
+    'Sans biais $\\ne$ meilleur : $\\hat\\sigma_n^2$ bat $S_n^2$ ; $\\frac{n+2}{n+1}X_{n:n}$ bat $\\frac{n+1}nX_{n:n}$ ; $\\frac1{n+1}\\sum X_i$ bat $\\bar X_n$ (exponentielle-moyenne).',
+    'Admissible $\\ne$ bon (estimateur constant) ; efficace $\\ne$ admissible ; E.S.B.V.M. $\\not\\Rightarrow$ efficace.',
+    'Inadmissibilité : la domination doit valoir **pour tout** $\\theta$, stricte en au moins un point.',
+    'Cramér-Rao : vérifier modèle **régulier** ($\\Theta$ ouvert, support indépendant de $\\theta$), $T$ **sans biais et régulier**, $g$ dérivable. Ne pas l’appliquer à l’uniforme ni à l’EMV biaisé $1/\\bar X_n$.',
+    'Facteur $n$ : borne $\\frac{g\'(\\theta)^2}{n\\mathbb{I}_1(\\theta)}$ ; ne pas confondre $\\mathbb{I}_1$ et $\\mathbb{I}_{\\mathcal{M}^n}$.',
+    'Multidimensionnel : $[\\mathbb{I}^{-1}]_{jj}$, pas $1/\\mathbb{I}_{jj}$ (PC3 Ex. 2) ; connaître un paramètre de nuisance ne peut qu’abaisser la borne.',
+    'Signe moins dans $\\mathbb{I}=-\\mathbb{E}_\\theta[\\mathrm{H}_\\ell]$ ; l’additivité exige l’indépendance.',
+    'Conventions : exponentielle d’intensité $\\theta$ (poly, Examen 2025) contre $\\theta$ = moyenne (PC3 Ex. 5) ; Gamma en intensité.',
+    'PC3 Ex. 5 : la formule d’inversion correcte est $a_{j,n}=(n-j+1)m_{j,n}-(n-j)m_{j+1,n}$ (celle du poly est erronée).',
+  ],
+}

@@ -1,0 +1,167 @@
+26                                      CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+2      Les outils mathématiques
+    Vous retrouverez ci-dessous les éléments mathématiques ou probabilistes nécessaires pour com-
+prendre cette partie du cours : la fonction de répartition et la fonction quantile, dont dépend toute
+la construction de la valeur critique ; le lemme de monotonie, qui donne la croissance de la fonc-
+tion puissance dans les familles à rapport de vraisemblance monotone ; et la loi binomiale négative,
+qui intervient dans la feuille d’exercices. La fin de cette partie rappelle où trouver, aux chapitres
+précédents, les résultats utilisés sans être redémontrés.
+
+
+Fonction de survie, sauts et fonction quantile
+
+   La construction de la valeur critique repose entièrement sur les propriétés de régularité de la
+fonction de répartition d’une variable aléatoire réelle, que l’on rappelle ici.
+   Soit Y une variable aléatoire réelle de fonction de répartition F (c) := P(Y ≤ c) et de fonction
+de survie F̄ (c) := P(Y > c) = 1 − F (c).
+
+     Proposition 2.1: Régularité de la fonction de répartition
+    La fonction F est croissante, continue à droite, et admet en tout point une limite à gauche
+    donnée par F (c− ) = P(Y < c). Le saut de F en c vaut F (c) − F (c− ) = P(Y = c). Sy-
+    métriquement, F̄ est décroissante, continue à droite, et F̄ (c− ) = P(Y ≥ c), de sorte que
+    F̄ (c− ) − F̄ (c) = P(Y = c).
+
+
+     Démonstration
+    La croissance de F est immédiate. Pour la continuité  T à droite, soit (ck ) une suite décroissant
+    vers c : les événements {Y ≤ ck } décroissent vers k {Y ≤ ck } = {Y ≤ c}, et la continuité
+    décroissante de la mesure de probabilité donne F (ck ) → F (c). Pour la limite à gauche, S soit
+    (ck ) une suite croissant strictement vers c : les événements {Y ≤ ck } croissent vers k {Y ≤
+    ck } = {Y < c}, et la continuité croissante donne F (ck ) → P(Y < c). Le saut s’obtient par
+    différence, et les énoncés sur F̄ = 1 − F s’en déduisent.                                       □
+
+    Une valeur c telle que P(Y = c) > 0 est appelée un atome de la loi de Y . Dire que la loi de Y
+n’a pas d’atome revient donc à dire que F , ou de façon équivalente F̄ , est continue sur R. C’est
+en particulier le cas lorsque Y admet une densité par rapport à la mesure de Lebesgue. Dans ce
+cas, si de plus F̄ (0) = 1 et limc→+∞ F̄ (c) = 0, le théorème des valeurs intermédiaires garantit que
+l’équation F̄ (c) = α a une solution pour tout α ∈ ]0, 1[ : c’est l’argument d’existence de cα dans
+la démonstration du Théorème 1.1.
+    Lorsque la loi a des atomes, l’équation F̄ (c) = α peut n’avoir aucune solution. On dispose alors
+de la fonction quantile, ou inverse généralisée,
+
+                          F −1 (u) := inf {c ∈ R : F (c) ≥ u} ,     u ∈ ]0, 1[ ,
+
+qui vérifie F (F −1 (u)) ≥ u et F (F −1 (u)− ) ≤ u : la valeur u est comprise entre les deux valeurs
+que F prend de part et d’autre de son saut. C’est ce raisonnement, mené sur F̄ , qui donne dans
+les compléments le couple (cα , γα ) du théorème général (Section 4). Le quantile d’ordre β de la loi
+N (0, 1) est noté zβ et celui de la loi χ2 (k) est noté χ2β (k).
+
+
+Le lemme de monotonie
+
+    Le lemme suivant est le seul énoncé technique du chapitre. C’est lui qui donne la croissance de
+la fonction puissance, et donc le passage de l’hypothèse nulle simple à l’hypothèse nulle composite.
+2. LES OUTILS MATHÉMATIQUES                                                                              27
+
+   Lemme 2.1: Monotonie sous rapport de vraisemblance monotone
+  Soit un modèle à rapport de vraisemblance monotone croissant en la statistique T , au sens de la
+  Définition 1.4. Soit φ : R → R une fonction croissante (au sens large) telle que Eθ [|φ◦T (Z)|] <
+  ∞ pour tout θ ∈ Θ. Alors la fonction
+
+                                           θ 7−→ Eθ [φ ◦ T (Z)]
+
+  est croissante (au sens large) sur Θ.
+
+
+   Démonstration
+  Soient θ′ < θ dans Θ et posons
+
+                                    A := {z ∈ Z : pθ′ (z) > pθ (z)} .
+
+  Là où pθ′ (z) > 0, la factorisation (2) donne pθ (z)/pθ′ (z) = ψ(T (z); θ)/ψ(T (z); θ′ ), quotient qui
+  est une fonction strictement croissante de T (z). Par conséquent, il existe d ∈ R ∪ {−∞, +∞},
+  à savoir
+                                d := sup {t ∈ R : ψ(t; θ)/ψ(t; θ′ ) < 1} ,
+  tel que A = {z ∈ Z : T (z) < d} (à un ensemble µ-négligeable près, celui où h(z) = 0). La
+  fonction φ étant croissante, on a
+
+                               b := inf c φ ◦ T (z) ≥ a := sup φ ◦ T (z) .
+                                     z∈A                           z∈A
+
+                                                               c
+  Il vient alors, en séparant l’intégrale sur A et sur A et en observant que pθ − pθ′ est négative
+  sur A et positive sur Ac ,
+                                       Z
+                                                      
+    Eθ [φ ◦ T (Z)] − Eθ′ [φ ◦ T (Z)] =     φ ◦ T (z) pθ (z) − pθ′ (z) µ(dz)
+                                         A
+                                             Z
+                                                            
+                                          +       φ ◦ T (z) pθ (z) − pθ′ (z) µ(dz)
+                                         Z A
+                                                c
+                                                                           Z
+                                                                               
+                                     ≥a        pθ (z) − pθ′ (z) µ(dz) + b         pθ (z) − pθ′ (z) µ(dz)
+                                           A                                 Ac
+                                                Z
+                                                     
+                                     = (b − a)         pθ (z) − pθ′ (z) µ(dz) ≥ 0 ,
+                                                     Ac
+                                           R
+  l’avant-dernière égalité utilisant que       Z
+                                                   {pθ − pθ′ } dµ = 0, les deux densités étant d’intégrale
+  1.                                                                                                    □
+
+
+Intuition. Le lemme dit que, dans une famille à rapport de vraisemblance monotone, augmenter le
+paramètre pousse la statistique T vers le haut, au sens de la dominance stochastique : l’espérance de toute
+fonction croissante de T augmente. Appliqué à la fonction indicatrice φ(u) = 1{u>dα } , il donne exactement
+la croissance de θ 7→ Pθ (T (Z) > dα ), c’est-à-dire de la fonction puissance du test unilatéral.
+
+
+
+Loi géométrique et loi binomiale négative
+    L’Exercice 3 (PC5) porte sur un plan d’expérience de durée aléatoire, dont la statistique de
+test suit une loi binomiale négative ; voici les deux lois en jeu.
+    Soit θ ∈ ]0, 1[. Une variable aléatoire Y à valeurs dans N suit la loi géométrique de paramètre
+θ (comptée en nombre d’échecs avant le premier succès) si
+
+                                 Pθ (Y = k) = θ(1 − θ)k ,                k∈N.
+28                                       CHAPITRE 5. OPTIMALITÉ EN THÉORIE DES TESTS
+
+                                                                     Pn
+Si Y1 , . . . , Yn sont indépendantes de cette loi, leur somme T = i=1 Yi suit la loi binomiale négative
+de paramètres (n, θ) :
+
+                                             n+k−1 n
+                                                       
+                              Pθ (T = k) =                θ (1 − θ)k ,  k∈N.
+                                                 k
+
+Cette formule s’obtient en comptant les façons d’écrire k comme somme de n entiers positifs  ou
+nuls, c’est-à-dire le nombre de n-uplets (k1 , . . . , kn ) ∈ Nn de somme k, qui vaut n+k−1
+                                                                                          k   . On
+lit sur l’expression de Pθ (T = k) que le modèle induit par T est une famille exponentielle en
+φ(θ) = log(1 − θ), fonction strictement décroissante de θ : il est donc à rapport de vraisemblance
+monotone croissant en −T .
+
+Résultats des chapitres précédents utilisés dans ce chapitre
+    Les résultats suivants sont utilisés sans être redémontrés ; ils sont énoncés et démontrés dans
+les chapitres précédents.
+     — Test pur, région de rejet, fonction puissance, taille et niveau (chapitre 4, Section 2.2 et
+       Section 2.3) : la Définition 1.1 en est la reprise, étendue aux fonctions critiques à valeurs
+       dans [0, 1].
+     — p-valeur (chapitre 4, Section 2.7) : ni la définition ni son calcul dans le cas gaussien ne sont
+       repris ici, le chapitre s’y ramenant par un renvoi (Section 1.10).
+     — Ce qu’un test dit et ce qu’il ne dit pas, signification statistique et taille d’effet (chapitre 4,
+       Section 2.8) : seule la lecture de la taille d’effet sur la fonction puissance du test U. P. P.(α)
+       appartient à ce chapitre.
+     — Préordre sur les procédures, ordre partiel des risques, admissibilité, restriction de la classe
+       (chapitre 3, Section 1.5 et Section 1.6) : la définition du test uniformément plus puissant est
+       la borne supérieure de ce préordre, restreinte à Θ1 , et la classe Kα (Θ0 ) joue le rôle de la
+       classe restreinte.
+     — Le test comme règle de décision, perte 0-1, risque exprimé par la fonction puissance (cha-
+       pitre 3, Section 4) : c’est le cadre décisionnel dans lequel s’inscrit ce chapitre, et il n’est pas
+       refait ici.
+     — Vraisemblance et log-vraisemblance d’un n-échantillon (chapitre 2) : le rapport de vraisem-
+       blance est le quotient de la même fonction évaluée en deux points du paramètre.
+     — Familles exponentielles (Exercice 3 (PC2)) : employées à la Section 4 et à la Proposition 1.1.
+     — Loi Gamma, additivité, loi du χ2 et loi de Fisher (chapitre 1, Section 2) : seuils des tests
+       sur la variance (Section 4), exercices 1 et 6 de la feuille.
+     — Statistiques d’ordre, loi de Xn:n et de X1:n (chapitre 1, Section 1.5) : modèle uniforme
+       (Section 4), Exercice 4 (PC5) et Exercice 7 (PC5).
+     — Modèle linéaire gaussien, estimateur des moindres carrés (chapitres 1 et 2) : Exercice 6
+       (PC5).
+

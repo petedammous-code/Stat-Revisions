@@ -1,0 +1,673 @@
+3. LES EXERCICES                                                                                        33
+
+3     Les exercices
+    Par convention, les vecteurs sont des vecteurs colonne, et pour un vecteur a, a⊤ désigne sa
+transposée. Lorsqu’un modèle statistique n’est que dominé par une mesure σ-finie µ, les intégrales
+s’écrivent par rapport à µ(dz) ; lorsque µ = Leb ou µ = Leb⊗n , cela est précisé.
+
+3.1     Questions courtes : avez-vous assimilé le chapitre ?
+   Avant d’aborder les exercices, vérifiez votre compréhension du chapitre en répondant – de tête,
+sans revenir au texte – aux questions suivantes. En cas d’hésitation, la référence entre parenthèses
+renvoie au passage concerné.
+    1. Rappeler la définition du biais d’un estimateur. Un estimateur sans biais peut-il avoir un
+       risque quadratique plus grand qu’un estimateur biaisé de la même quantité ? (Définition 1.1,
+       Proposition 1.1)
+    2. Vrai ou faux : le risque d’un estimateur, pour une perte donnée, est un nombre réel. (Défi-
+       nition 1.2, Définition 1.3)
+    3. Qu’est-ce qu’un estimateur admissible ? Un estimateur admissible est-il nécessairement un
+       bon estimateur ? (Définition 1.4, Exemple 1.10)
+    4. Le modèle uniforme sur [0, θ] est-il régulier ? Citer un modèle qui l’est. (Définition 1.6,
+       Exemple 1.12)
+    5. Définir le score d’un modèle régulier. Quelle est son espérance sous Pθ , et en quoi cette
+       propriété sert-elle à démontrer la borne de Cramér-Rao ? (Définition 1.7, Proposition 1.2)
+    6. L’information de Fisher est-elle une caractéristique du seul paramètre, ou du modèle tout
+       entier ? Comment se comporte-t-elle pour un n-échantillon ? (Définition 1.8, Proposition 1.2
+       (iii))
+    7. Énoncer la borne de Cramér-Rao pour l’estimation d’un paramètre scalaire. Quelles hypo-
+       thèses portent sur le modèle, et lesquelles portent sur l’estimateur ? (Théorème 1.1, Défini-
+       tion 1.6, Définition 1.9)
+    8. Qu’est-ce qu’un estimateur efficace ? Un estimateur sans biais de variance minimale est-il
+       nécessairement efficace ? (Définition 1.10)
+    9. Vrai ou faux : dans le modèle uniforme sur [0, θ], il existe un estimateur sans biais de θ dont
+       la variance décroît en n−2 , ce qui contredit la borne de Cramér-Rao. (Exemple 1.16)
+
+3.2     Groupe 1 — Exercices traités en petite classe
+   Les trois exercices de ce groupe mettent en œuvre les deux notions du chapitre : la comparaison
+de règles de décision par le risque et l’admissibilité, puis la borne de Cramér-Rao, régulière et
+étendue au cas non régulier (Section 1.12).
+
+Objectif : modèle uniforme, biais, risque quadratique et admissibilité
+Cet exercice reprend etPprolonge l’Exemple 1.9 du chapitre : on y montre qu’aucun estimateur sans
+biais de la forme n−1 i T (Xi ) n’existe pour une fonction g générale, on construit un estimateur
+sans biais fonction de Xn:n , puis on compare les risques quadratiques de toute la famille aXn:n et
+l’on conclut à l’inadmissibilité de plusieurs d’entre eux.
+Exercice 1 (Modèle uniforme (⋆⋆)). Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle statistique
+                                                                         
+                                R+ , B(R+ ), {U([0, θ]) , θ ∈ Θ := R∗+ } .
+
+    1. Calculer l’estimateur du maximum de vraisemblance de θ.
+Soit g : R∗+ → R une fonction différentiable vérifiant limθ→0+ θ g(θ) = 0.
+34                                        CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+                                                        (1)           Pn
+     2. Peut-on choisir T : R+ → R de telle sorte que θ̂n := n−1       i=1 T (Xi ) soit un estimateur sans biais
+        de g : θ 7→ g(θ) ?
+  3. On pose Xn:n := max(X1 , . . . , Xn ). Montrer que l’on peut choisir Te : R+ → R de telle sorte que
+        (2)
+      θ̂n := Te(Xn:n ) soit un estimateur sans biais de g : θ 7→ g(θ).
+Dans la suite de l’exercice, on pose g(θ) = θ.
+                                                                (1)        (2)                           (1)
+     4. Comparer le risque quadratique des deux estimateurs θ̂n et θ̂n . Montrer que l’estimateur θ̂n est
+        inadmissible pour n > 1. Voir la figure 1.
+                                                                     (3)
+     5. Pour a > 0, calculer le risque quadratique de l’estimateur θ̂n,a := aXn:n . Montrer que l’estimateur
+          (2)
+        θ̂n est inadmissible. Voir la figure 1.
+
+0.018
+             Risque 1
+0.016        Risque 2
+
+0.014
+
+0.012
+
+ 0.01
+
+0.008
+
+0.006
+
+0.004
+
+0.002
+
+     0
+         0     0.2      0.4   0.6   0.8      1
+
+
+                                             (i)                                      (i)      
+Figure 1 – [gauche] Évolution de θ 7→ Eθ (θ̂n −θ)2 dans le cas n = 20. [droite] θ 7→ Eθ (θ̂n −θ)2
+                                         (3)
+pour i = 2, 3 dans le cas n = 5 ; pour θ̂n,a , on a envisagé a = 1 et a = a⋆ .
+
+Corrigé : page 38.                                                                                             ♢
+
+
+Objectif : information de Fisher matricielle et efficacité, modèle de régression
+Cet exercice poursuit l’Exercice 1 (PC2), où le modèle de régression linéaire gaussienne a été
+construit et où la matrice X⊤ X a été inversée explicitement : c’est le seul endroit du cours où
+l’information de Fisher est une matrice 2 × 2, et l’on y calcule la borne de Cramér-Rao pour
+l’estimation d’un coefficient, puis du produit des deux, en réutilisant ce calcul plutôt qu’en le
+refaisant.
+Exercice 2 (Régression linéaire gaussienne (⋆⋆)). Soient x1 , . . . , xn des réels tels que xi ̸= xj pour au
+moins deux indices i ̸= j. On considère le modèle statistique
+                                       ( n                                         )
+                                       O                                            
+                             n     n                         2                   2
+                            R , B(R ),      N (β1 + β2 xi , σ ) , (β1 , β2 ) ∈ R       ,
+                                            i=1
+
+où σ 2 > 0 est connu. On reprend les notations matricielles de l’Exercice 1 (PC2) : Y := (Y1 , . . . , Yn )⊤ ,
+X := [1 x] avec 1 := (1, . . . , 1)⊤ et x := (x1 , . . . , xn )⊤ , et β := (β1 , β2 )⊤ .
+   1. Déterminer la matrice d’information de Fisher I(β1 , β2 ).
+   2. Déterminer une borne inférieure sur la variance d’un estimateur (régulier) sans biais de β1 .
+   3. On suppose que β2 est connu. Donner une borne inférieure sur la variance d’un estimateur (régulier)
+       sans biais de β1 .
+   4. Déterminer une borne inférieure sur la variance d’un estimateur (régulier) sans biais de β1 β2 .
+Corrigé : page 39.                                                                                             ♢
+
+
+Objectif : extension de la borne de Cramér-Rao au cas non régulier
+Cet exercice établit, pour toute statistique Ψ de carré intégrable, une borne inférieure sur la
+variance d’un estimateur sans biais qui ne demande aucune hypothèse de régularité au modèle,
+dont la borne de Cramér-Rao se déduit comme cas limite ; il l’applique ensuite au modèle uniforme,
+qui échappe à Cramér-Rao (Exemple 1.16) mais pas à cette borne plus générale.
+3. LES EXERCICES                                                                                      35
+
+Exercice 3 (Cramér-Rao sans régularité (⋆ ⋆ ⋆)). Soit Θ ⊂ R et (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle statis-
+tique dominé. Soit T un estimateur sans biais de g : Θ → R tel que, pour tout θ ∈ Θ, Eθ [T 2 (Z)] < ∞.
+   1. Montrer que pour toute fonction Ψ : Z → R mesurable telle que 0 < Varθ (Ψ(Z)) < ∞, on a
+                                                                              2
+                                                         Covθ (T (Z), Ψ(Z))
+                                    Varθ (T (Z)) ≥                                 .
+                                                            Varθ (Ψ(Z))
+
+Dans la suite, on fixe θ, δ tels que θ ∈ Θ et θ − δ ∈ Θ. On suppose que
+
+                              {z ∈ Z : pθ (z) = 0} ⊆ {z ∈ Z : pθ−δ (z) = 0} .
+
+   2. On considère la fonction Ψ donnée par
+                                             
+                                              pθ−δ (z) − 1      si pθ (z) > 0 ,
+                                     Ψ(z) :=     pθ (z)
+                                             
+                                               0                 sinon .
+
+      Montrer que Eθ [Ψ(Z)] = 0 et que Covθ (T (Z), Ψ(Z)) = g(θ − δ) − g(θ).
+   3. En déduire une borne sur les estimateurs sans biais de g : θ 7→ g(θ).
+   4. Proposer des conditions sous lesquelles la borne de Cramér-Rao (Théorème 1.1) se déduit de cette
+      inégalité par passage à la limite δ → 0.
+On suppose maintenant que Z = (X1 , . . . , Xn ) est un n-échantillon du modèle
+                                                                         
+                                 R+ , B(R+ ), {U([0, θ]) , θ ∈ Θ := R∗+ } .
+
+Observer que ce modèle n’est pas régulier (Exemple 1.12). On considère la fonction g(θ) = θ.
+   5. Montrer que pour tout δ ∈ ]0, θ[, on a pour tout estimateur sans biais T de θ
+
+                                                                 δ2
+                                        Varθ (T (Z)) ≥                     .
+                                                          θn /(θ − δ)n − 1
+
+   6. Soit 0 < c ≤ n. En posant δ = cθ/n, montrer que la borne inférieure peut s’écrire θ2 τn (c)/n2 pour
+      une quantité τn (c) telle que limn→∞ τn (c) existe. Conclure. Voir la figure 2.
+
+
+
+
+Figure 2 – [gauche] Tracé de c 7→ τn (c) pour différentes valeurs de n, et de c 7→ limn τn (c). [droite]
+                                                                                (2)
+Tracé de c 7→ n/{(n + 2)τn (c)}, ratio de l’erreur quadratique moyenne de θ̂n (Exercice 1) et du
+minorant de l’erreur quadratique moyenne des estimateurs sans biais.
+
+Corrigé : page 40.                                                                                     ♢
+36                                          CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+3.3      Groupe 2 — Exercices bonus
+Guide de lecture. Les deux exercices qui suivent ne sont pas traités en petite classe. L’exer-
+cice Estimateurs linéaires (⋆) reprend le modèle de translation de l’Exemple 1.1 et généralise
+le meilleur estimateur linéaire sans biais de l’espérance (Exemple 1.11) en levant la contrainte
+d’absence de biais : c’est le prolongement naturel de cet exemple, et il ne demande rien de plus
+que les notions de biais, de risque quadratique et un calcul d’optimisation sous contrainte (mul-
+tiplicateurs de Lagrange, ou directement l’inégalité de Cauchy-Schwarz). L’exercice Statistiques
+d’ordre exponentielles (⋆ ⋆ ⋆) est plus technique : il calcule la loi jointe des statistiques d’ordre
+d’un échantillon exponentiel par un changement de variables explicite, puis en déduit, par la même
+méthode qu’à l’exercice précédent, l’estimateur linéaire optimal du paramètre. Vous pouvez l’abor-
+der après l’exercice sur les estimateurs linéaires, dont il reprend la démarche dans un cadre plus
+général.
+
+Objectif : estimateurs linéaires dans un modèle de translation
+Exercice 4 (Estimateurs linéaires (⋆)). Soit p une densité sur R par rapport à la mesure de Lebesgue
+vérifiant                        Z                    Z
+                                           x p(x) dx = 0 ,                 x2 p(x) dx = 1 .
+
+Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique
+                                                                           
+                                                R, B(R), {pθ · Leb , θ ∈ R} ,
+
+où pθ est un modèle de translation
+
+                                                                    1 x − θ
+                                                x 7→ pθ (x) :=        p       ;
+                                                                    σ    σ
+le facteur d’échelle σ > 0 est supposé connu. Pour tout an = (a1,n , . . . , an,n ) ∈ Rn , on considère la classe
+des estimateurs linéaires, c’est-à-dire des combinaisons linéaires des observations,
+                                                                   n
+                                                                   X
+                                                    θ̂n (an ) :=          ai,n Xi .
+                                                                   i=1
+
+
+     1. Déterminer l’estimateur de θ de risque quadratique minimal dans la classe des estimateurs {θ̂n (an ), an ∈
+        Rn } et sans biais.
+     2. Calculer une borne inférieure du risque quadratique dans la classe des estimateurs linéaires {θ̂n (an ), an ∈
+        Rn }, sans contrainte d’absence de biais.
+Corrigé : page 41.                                                                                                          ♢
+
+
+Objectif : statistiques d’ordre d’un échantillon exponentiel
+Exercice 5 (Statistiques d’ordre exponentielles (⋆ ⋆ ⋆)). Soit la densité exponentielle de paramètre θ > 0 :
+
+                                x 7→ pθ (x) := θ−1 e−x/θ 1R+ (x) ,                    θ ∈ Θ := R∗+ .
+                                                                                          
+Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique R, B(R), {pθ · Leb , θ ∈ Θ} . On note X1:n ≤
+X2:n ≤ · · · ≤ Xn:n les statistiques d’ordre de l’échantillon, et
+                                                                          n
+                                                                          Y
+                                               pθ (y1 , . . . , yn ) :=         pθ (yk ) .
+                                                                          k=1
+
+
+     1. Montrer que sous pθ · Leb⊗n , la loi jointe des statistiques d’ordre X1:n , . . . , Xn:n admet une densité
+        par rapport à Leb⊗n , donnée par
+
+                      (y1 , . . . , yn ) 7→ f1:n (θ; y1 , . . . , yn ) := n! pθ (y1 , . . . , yn ) 1{0≤y1 <y2 <···<yn } .
+3. LES EXERCICES                                                                                               37
+
+On considère la transformation
+
+                      Z1 := nX1:n ,          Zk := (n − k + 1)(Xk:n − X(k−1):n ) ,               k≥2,        (14)
+                                  P
+ou, de façon équivalente, Xk:n = kj=1 Zj /(n − j + 1) pour tout k ≥ 1. On remarquera que le jacobien de
+la transformation (14) vaut n!, et que pour tout x1 , . . . , xn ∈ R, en posant x0 := 0,
+                                       n
+                                       X             n
+                                                     X
+                                             xi =          (n − i + 1)(xi − xi−1 ) .
+                                       i=1           i=1
+
+
+   2. Montrer que sous pθ · Leb⊗n , les variables (Z1 , . . . , Zn ) sont i.i.d. de loi exponentielle de paramètre
+      θ.
+Pour tout an = (a1,n , . . . , an,n ) ∈ Rn , on considère l’estimateur
+                                                                 n
+                                                                 X
+                                                  θ̂n (an ) :=         ai,n Xi:n .
+                                                                 i=1
+
+   3. Montrer que
+                                           n
+                                           X                                                   Xn
+                                                                                         1
+                             θ̂n (an ) =         Zj mj,n ,        où      mj,n :=                  ai,n .
+                                           j=1
+                                                                                     n − j + 1 i=j
+
+   4. Calculer le biais et le risque quadratique de l’estimateur.
+   5. Déterminer les poids an de l’estimateur sans biais de risque quadratique minimal dans la classe des
+      estimateurs {θ̂n (an ), an ∈ Rn }. Indication : on déterminera d’abord les poids mj,n , puis les poids
+      aj,n .
+   6. Déterminer les poids an pour lesquels le risque quadratique est minimal dans la classe des estimateurs
+      {θ̂n (an ), an ∈ Rn }, sans contrainte d’absence de biais.
+Corrigé : page 42.                                                                                              ♢
+38                                      CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+3.4     Corrigés des exercices
+    Les corrigés ci-dessous reprennent, en les complétant et en corrigeant les points signalés en
+tête de fichier, ceux distribués avec la feuille de petite classe de 2023. Les résultats du chapitre
+(inégalité de Cauchy-Schwarz, dérivation sous le signe intégral, définition du modèle régulier) sont
+appelés par un renvoi et ne sont pas redémontrés.
+
+     Corrigé de l’exercice 1 – Modèle uniforme
+                                                  Qn
+      1. La vraisemblance s’écrit Ln (ϑ) = ϑ−n i=1 1[0,ϑ] (Xi ) = ϑ−n 1Xn:n ≤ϑ , une fonction de
+         ϑ nulle sur [0, Xn:n [, strictement décroissante sur [Xn:n , +∞[ et continue à gauche en
+         Xn:n : son maximum est atteint en ϑ = Xn:n seulement, et θ̂nMV := Xn:n .
+                                                                                     Rθ
+      2. On cherche T tel que Eθ [T (X1 )] = g(θ) pour tout θ > 0, c’est-à-dire θ−1 0 T (x) dx =
+         g(θ). La fonction θ 7→ θ g(θ) doit donc être une primitive de T s’annulant en 0 (ce qui
+         est licite puisque limθ→0+ θ g(θ) = 0), d’où
+                                                    ′
+                                      T (x) = x g(x) = g(x) + x g ′ (x) ,
+                                                                (1)
+         et l’on vérifie que ce choix donne bien Eθ [θ̂n ] = g(θ) pour tout θ > 0.
+      3. Pour x ∈ [0, θ], par indépendance et même loi, Pθ (Xn:n ≤ x) = Pθ (X1 ≤ x, . . . , Xn ≤
+         x) = (x/θ)n : Xn:n admet la densité x 7→ 1[0,θ] (x) nxn−1 /θn . On veut Eθ [Te(Xn:n )] =
+                           Rθ
+         g(θ), soit nθ−n 0 Te(x) xn−1 dx = g(θ) ; la fonction θ 7→ θn g(θ)/n doit donc être une
+         primitive de x 7→ Te(x) xn−1 s’annulant en 0, d’où
+                                               1  xn g(x) ′         x
+                                  Te(x) =                     = g(x) + g ′ (x) ,
+                                             xn−1     n               n
+                                               (2)
+         et l’on vérifie de même que Eθ [θ̂n ] = g(θ) pour tout θ > 0.
+      4. Le risque quadratique d’un estimateur T (Z) de θ est R(θ, T ) := Eθ [(T (Z) − θ)2 ]. En
+         injectant g(x) = x dans l’expression de T obtenue à la question 2, T (x) = 2x, d’où
+                                                                  n
+                                                                2X
+                                                     θ̂n(1) =      Xk .
+                                                                n
+                                                                 k=1
+                                                                        Rθ
+         Sous Pθ , les Xi sont i.i.d. d’espérance θ/2 et Eθ [X12 ] = θ−1 0 x2 dx = θ2 /3, donc
+         Varθ (X1 ) = θ2 /3 − θ2 /4 = θ2 /12 et
+                                                                         4 θ2   θ2
+                                 R(θ, θ̂n(1) ) = n−1 Varθ (2X1 ) =        ·   =    .
+                                                                         n 12   3n
+         En injectant g(x) = x dans l’expression de Te obtenue à la question 3, Te(x) = (1+1/n)x,
+         d’où
+                                                    n+1
+                                           θ̂n(2) =      Xn:n ,
+                                                     n
+                                                 (1)
+         qui est le même estimateur que Tn de l’Exemple 1.9 du chapitre. Son risque quadra-
+         tique, déjà calculé à cet exemple, vaut
+                                                                     θ2
+                                               R(θ, θ̂n(2) ) =             .
+                                                                  n(n + 2)
+         Comme n(n + 2) > 3n dès que n > 1,
+                                          θ2      θ2
+                     R(θ, θ̂n(2) ) =            <    = R(θ, θ̂n(1) ) ,         pour tout θ > 0 ,
+                                       n(n + 2)   3n
+                                                     (1)
+         ce qui montre l’inadmissibilité de θ̂n dès que n > 1 (Définition 1.4).
+3. LES EXERCICES                                                                                                          39
+
+
+                                                             2
+   5. Comme à l’Exemple 1.9, Eθ [Xn:n ] = nθ/(n + 1) et Eθ [Xn:n ] = nθ2 /(n + 2), d’où pour
+      tout a ∈ R
+                                                                            n na2            2an    o
+                     (3)
+              R(θ, θ̂n,a ) = a2 Eθ [Xn:n
+                                     2
+                                         ] − 2aθ Eθ [Xn:n ] + θ2 =                       −       + 1 θ2 .
+                                                                                n+2          n+1
+      L’accolade est un trinôme en a, de coefficient dominant n/(n + 2) > 0, minimal en
+      a⋆ := (n + 2)/(n + 1), quelle que soit la valeur de θ. Pour ce choix,
+
+                                                     (3)              θ2
+                                              R(θ, θ̂n,a   )=               ,
+                                                         ⋆
+                                                                   (n + 1)2
+
+      et, comme (n + 1)2 > n(n + 2) pour tout n ≥ 1,
+                                       (3)
+                                R(θ, θ̂n,a ⋆
+                                             ) < R(θ, θ̂n(2) ) ,       pour tout θ > 0 ,
+
+                               (2)                                                                                  (1)
+      ce qui montre que θ̂n est inadmissible (et, par transitivité de l’inégalité stricte, que θ̂n
+      l’est aussi). L’évolution des risques est représentée sur la figure 1.
+
+
+  Corrigé de l’exercice 2 – Régression linéaire gaussienne
+                                                                                     2
+ On reprend
+           les notations ducorrigé de l’Exercice 1 (PC2) : sous Pβ , Y ∼ N (Xβ, σ In ), et
+            1                                                 P
+ X⊤ X = n           Px̄n                                        n
+                              est inversible, de déterminant n i=1 (xi − x̄)2 > 0, avec
+            x̄ n−1 i=1 x2i
+                                                             Pn    2
+                                                                                    Pn        
+                       ⊤       −1           1                  i=1 xi           −    i=1 xi
+                   (X X)             = Pn                      P n                                .
+                                      n i=1 (xi − x̄)2       − i=1 xi                n
+
+ Ici σ 2 est connu ; le paramètre est β = (β1 , β2 ) et la variable de la log-vraisemblance b =
+ (b1 , b2 ).
+   1. La log-vraisemblance s’écrit, pour y ∈ Rn ,
+                           n               1                                                  1 ⊤
+           ℓn (b; y) = −     log(2πσ 2 ) − 2 ∥y − Xb∥2 ,                  ∇b ℓn (b; y) =         X (y − Xb) .
+                           2              2σ                                                  σ2
+      Comme Eβ [(Y − Xβ)(Y − Xβ)⊤ ] = σ 2 In ,
+                                                  1                       1
+      I(β1 , β2 ) = Eβ ∇b ℓn (β; Y) ∇b ℓn (β; Y)⊤ = 4 X⊤ Eβ (Y−Xβ)(Y−Xβ)⊤ X = 2 X⊤ X .
+                                                   σ                         σ
+      Cette matrice est inversible d’après le préliminaire, puisque deux xi sont distincts par
+      hypothèse.
+   2. Soit g(β) = β1 , de gradient ∇β g(β) = (1, 0)⊤ . Le modèle étant régulier (les hypothèses
+      de la Définition 1.6 se vérifient comme pour le modèle gaussien), tout estimateur sans
+      biais et régulier de β1 a une variance minorée, par le Théorème 1.1, par
+                                                                        Pn
+                                             2
+                                                ⊤ −1          σ2             x2
+                         ⊤     −1
+                 ∇β g(β) I(β) ∇β g(β) = σ (X X) 11 =               · n i=1 i 2 .
+                                                                    P
+                                                                n      i=1 (xi − x̄)
+
+   3. Lorsque β2 est connu, la log-vraisemblance ne dépend plus que de β1 :
+                                                n
+                             n               1 X                                         ∂ 2 ℓ̃n             n
+          ℓ̃n (β1 ; y) = −     log(2πσ 2 ) − 2     (yi − β1 − β2 xi )2 ,                         (β1 ; y) = − 2 ,
+                             2              2σ i=1                                       ∂β12                σ
+40                                   CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+         d’où Ĩ(β1 ) = n/σ 2 et une borne inférieure σ 2 /n pour la variance d’un estimateur sans
+         biais et Prégulier de Pβ1 . Cette borne est inférieure ou égale à celle de la question 2,
+                      n          n
+         puisque i=1 x2i ≥ i=1 (xi − x̄)2 (l’écart est nx̄2 ≥ 0), avec égalité si et seulement si
+         x̄ = 0 : c’est le cas, à l’Exercice 1 (PC2) question 4, où l’indépendance de β̂1 et β̂2 a
+         été caractérisée par x̄ = 0. Connaître β2 ne peut qu’aider à estimer β1 ; la borne baisse
+         d’autant moins que x̄ est proche de 0, c’est-à-dire que les deux coefficients sont déjà peu
+         corrélés.
+      4. Soit g(β) = β1 β2 , de gradient ∇β g(β) = (β2 , β1 )⊤ . En utilisant l’inverse du préliminaire,
+
+                                                   σ2            X   n                 Xn             
+                                                                   2       2                         2
+              ∇β g(β)⊤ I(β)−1 ∇β g(β) =        Pn             2
+                                                                 β 2     x i − 2β 1 β 2     x i + nβ 1 ,
+                                           n    i=1 (xi − x̄)        i=1                i=1
+
+         qui minore la variance de tout estimateur sans biais et régulier de β1 β2 .
+
+
+     Corrigé de l’exercice 3 – Cramér-Rao sans régularité
+
+      1. Par l’inégalité de Cauchy-Schwarz (Proposition 2.1), appliquée aux variables centrées
+         T (Z) − Eθ [T (Z)] et Ψ(Z) − Eθ [Ψ(Z)],
+                                                                       2
+                                2
+           Covθ (T (Z), Ψ(Z)) = Eθ (T (Z)−Eθ [T (Z)])(Ψ(Z)−Eθ [Ψ(Z)])         ≤ Varθ (T (Z)) Varθ (Ψ(Z)) ,
+
+         et l’on conclut en divisant par Varθ (Ψ(Z)) ∈ ]0, ∞[.
+      2. Pour α ∈ Θ, posons Aα := {z ∈ Z : pα (z) > 0} ; l’hypothèse s’écrit Aθ−δ ⊆ Aθ , et
+         pθ−δ 1Aθ = pθ−δ 1Aθ−δ . Alors
+                        Z                                  Z
+                         pθ−δ (z)                                                
+           Eθ [Ψ(Z)] =            − 1 1Aθ (z) pθ (z) µ(dz) =     pθ−δ (z) − pθ (z) 1Aθ (z) µ(dz)
+                          pθ (z)
+                       Z                          Z
+                     = pθ−δ (z)1Aθ−δ (z) µ(dz) − pθ (z)1Aθ (z) µ(dz) = 1 − 1 = 0 ,
+
+         et, par le même argument,
+                                                    Z
+                                                                                            
+         Covθ (T (Z), Ψ(Z)) = Eθ [T (Z)Ψ(Z)] =          T (z) pθ−δ (z)1Aθ−δ (z)−pθ (z)1Aθ (z) µ(dz) = g(θ−δ)−g(θ) ,
+
+         en utilisant que T est sans biais sous Pθ−δ et sous Pθ .
+      3. En combinant les deux questions précédentes,
+                                                         {g(θ) − g(θ − δ)}2
+                               Varθ (T (Z)) ≥ R                  (z) 2
+                                                                                     .
+                                                  Aθ
+                                                        1 − pθ−δ
+                                                             pθ (z)     pθ (z) µ(dz)
+
+      4. En divisant numérateur et dénominateur par δ 2 ,
+                                                  g(θ)−g(θ−δ)              2
+                              Varθ (T (Z)) ≥ R  p (z)−p δ(z)          2                  .
+                                                  θ      θ−δ                 1
+                                              Aθ       δ                   pθ (z) µ(dz)
+
+         Pour retrouver la borne de Cramér-Rao par passage à la limite δ → 0+ , il suffit que :
+         Θ soit ouvert, de sorte que θ − δ ∈ Θ pour δ assez petit ; g soit dérivable en θ, de sorte
+         que le numérateur tende vers g ′ (θ)2 ; et que l’on puisse permuter limite et intégrale
+         au dénominateur. Ces trois conditions sont exactement celles que rassemble la Défini-
+         tion 1.6 du modèle régulier : la différentiabilité de θ 7→ pθ (z) donne la limite ponctuelle
+3. LES EXERCICES                                                                                    41
+
+
+      {pθ (z) − pθ−δ (z)}/δ → ∂θ pθ (z), et les dominations qu’elle impose permettent d’appli-
+      quer le théorème de convergence dominée (Proposition 2.2 de dérivation sous le signe
+      intégral) pour passer la limite sous l’intégrale. On retrouve alors
+
+                                      {g ′ (θ)}2                   h ∂                2 i
+                     Varθ (T (Z)) ≥              ,     I(θ) = Eθ          log pθ (Z)          ,
+                                        I(θ)                         ∂θ
+
+      qui est la borne de Cramér-Rao unidimensionnelle (Corollaire 1.1).
+                                                                   Qn
+   5. Posons z = (x1 , . . . , xn ), µ = Leb⊗n et pθ (z) = θ−n i=1 1[0,θ] (xi ). Pour δ ∈ ]0, θ[,
+                                                                                                   n
+      pθ (z) = 0 entraîne pθ−δ (z) = 0 : l’hypothèse de la question 2 est vérifiée, et Aθ = [0, θ] .
+      Le dénominateur de la borne de la question 3 vaut
+      Z                 2                Z                                     Z
+             pθ−δ (z)                            pθ−δ (z) 2
+                      − 1 pθ (z) µ(dz) =                     pθ (z) µ(dz) + 1 − 2      pθ−δ (z) µ(dz)
+       Aθ     pθ (z)                         Aθ   pθ (z)                            Aθ
+                                               Z
+                                             1                    2              θn
+                                         = n           θn pθ−δ (z) dz − 1 =              −1,
+                                            θ [0,θ]n                           (θ − δ)n
+              R                                                       n             n
+      puisque Aθ pθ−δ µ(dz) = 1 (question 2) et θn pθ−δ (z) = θ/(θ −δ) sur [0, θ − δ] . D’où
+      la borne annoncée.
+   6. En posant δ = cθ/n avec 0 < c ≤ n, le dénominateur devient (1 − c/n)−n − 1, et
+      Varθ (T (Z)) ≥ τn (c) θ2 /n2 avec
+
+                                                   c2             c2
+                               τn (c) :=              −n
+                                                          −−−−→ c    .
+                                            (1 − c/n) − 1 n→∞ e − 1
+
+      La borne de la question 5 vaut ainsi, pour tout 0 < c ≤ n, θ2 τn (c)/n2 ; en optimisant sur
+      c, l’erreur quadratique moyenne de tout estimateur sans biais de θ dans ce modèle est
+      minorée par θ2 supc∈]0,n[ τn (c)/n2 , une quantité d’ordre θ2 /n2 lorsque n → ∞ (figure 2).
+      On retrouve ainsi, par une borne qui ne suppose aucune régularité, la vitesse en n−2
+                                                     (2)
+      annoncée à l’Exemple 1.16 : l’estimateur θ̂n = n+1      n Xn:n de l’Exercice 1, de risque
+                     2
+      quadratique θ /{n(n + 2)}, est de cet ordre.
+
+
+
+  Corrigé de l’exercice 4 – Estimateurs linéaires
+ Sous Pθ , chaque Xk a même loi que θ + σYk avec Yk ∼ p · Leb (Exemple 1.1), donc Eθ [Xk ] = θ
+ et Varθ (Xk ) = σ 2 . Par indépendance des Xk ,
+                                   n
+                                   X                                      n
+                                                                          X
+                                                                 
+                  Eθ θ̂n (an ) = θ   ak,n ,          Varθ θ̂n (an ) = σ 2   a2k,n ,
+                                   k=1                                     k=1
+
+ d’où le risque quadratique
+
+                                           X
+                                             n         2     n
+                                                              X
+                        R θ, θ̂n (an ) = θ2    ak,n − 1 + σ 2   a2k,n .
+                                               k=1                   k=1
+                          Pn                                     P
+   1. Sans biais signifie k=1 ak,n = 1 ; il reste à minimiser σ 2 k a2k,n sous cette contrainte.
+      Par l’inégalité de Cauchy-Schwarz appliquée à an et à 1 := (1, . . . , 1),
+                                      n
+                                   1X 2     1 X     2 n
+                                                        1
+                                     ak,n ≥      ak,n = 2 ,
+                                   n         n          n
+                                      k=1              k=1
+42                                        CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+         avec égalité si et seulement si a1,n = · · · = an,n ; la contrainte impose alors ak,n = 1/n
+         pour tout k. L’estimateur sans biais de risque quadratique minimal dans cette classe est
+         donc la moyenne empirique θ̂n (1/n, . . . , 1/n) = X̄n : c’est le résultat de l’Exemple 1.11
+         du chapitre, ici retrouvé sous l’hypothèse plus faible Eθ [X12 ] < ∞ remplacée par la
+         structure de translation.
+      2. Sans la contrainte d’absence de biais, on minimise sur Rn la fonction
+                                                     X
+                                                      n               2     n
+                                                                             X
+                                        an 7→ θ2              ak,n − 1 + σ 2   a2k,n ,
+                                                       k=1                          k=1
+                                                                                         P
+         dont la matrice hessienne, 2σ 2 In + 2θ2 11⊤ , vérifie u⊤ Hu = 2σ 2 ∥u∥2 + 2θ2 ( k uk )2 ≥
+         2σ 2 ∥u∥2 > 0 pour tout u ̸= 0 : la fonction est strictement convexe et son unique
+         minimum est le point où le gradient s’annule, soit, pour tout i,
+                                                  X
+                                                   n              
+                                             θ2           ak,n − 1 + σ 2 ai,n = 0 .
+                                                    k=1
+                                        P                           P                      P
+         En sommant sur i, nθ2              k ak,n − 1        + σ2       k ak,n = 0, d’où
+                                                                                                           2   2    2
+                                                                                                k ak,n = nθ /(σ + nθ ),
+         puis, en reportant,
+                                              θ2
+                                          ai,n =    ,    i = 1, . . . , n .
+                                          σ 2 + nθ2
+         Le risque minimal dans la classe des estimateurs linéaires, atteint pour ce choix, vaut
+                                                          σ2 θ2           σ2     θ2     σ2
+                               R θ, θ̂n (a⋆n ) =                       =      · 2      <    ,
+                                                       σ 2 + nθ2           n θ + σ /n2   n
+
+         strictement inférieur au risque optimal σ 2 /n de la question 1 : en autorisant un biais,
+         la classe des estimateurs comparés est plus grande, et le risque optimal ne peut que
+         baisser.
+
+
+     Corrigé de l’exercice 5 – Statistiques d’ordre exponentielles
+
+ On note Eθ [U ] = θ et Varθ (U ) = θ2 pour U ∼ pθ · Leb.
+      1. Soit Sn l’ensemble des permutations de {1, . . . , n}, de cardinal n!. Sous pθ · Leb⊗n ,
+         (X1 , . . . , Xn ) sont i.i.d., donc pour toute permutation τ = (τ1 , . . . , τn ), (X1 , . . . , Xn ) a
+         même loi que (Xτ1 , . . . , Xτn ). Comme les Xi ont une loi à densité, Pθ (Xi = Xj ) = 0
+         pour i ̸= j, donc il existe presque sûrement une unique permutation aléatoire σ telle que
+         Xk:n = Xσk pour tout k et Xσ1 < · · · < Xσn . Pour toute fonction h mesurable bornée,
+                                                                 X                                     
+             Eθ h(X1:n , . . . , Xn:n ) = Eθ h(Xσ1 , . . . , Xσn ) =   Eθ h(Xτ1 , . . . , Xτn ) 1σ=τ
+                                                                                  τ ∈Sn
+                                                 X                                          
+                                          =            Eθ h(Xτ1 , . . . , Xτn ) 1Xτ1 <···<Xτn ,
+                                              τ ∈Sn
+
+         et chaque terme de la somme vaut, par un changement de variables sur les indices (les
+         Xi étant i.i.d.),
+                                Z                                      Y
+                                                                        n            
+                                                 h(y1 , . . . , yn )         pθ (yk ) dy1 . . . dyn ,
+                                    y1 <···<yn                         k=1
+
+         indépendamment de τ ; en sommant les n! termes égaux, on obtient la densité annoncée.
+3. LES EXERCICES                                                                                                    43
+
+
+   2. Soit h mesurable positive. En posant zi := (n − i + 1)(yi − yi−1 ) (c’est-à-dire yi =
+      Pi
+        j=1 zj /(n − j + 1)), de jacobien n! pour l’inverse de la transformation (14), et en
+                Pn Pk                           Pn
+      utilisant k=1 j=1 1j≤k zj /(n − j + 1) = j=1 zj ,
+                                     Z                             n
+                                                                    X   
+                             n!                                                                    
+      Eθ h(Z1 , . . . , Zn ) = n                          exp − θ−1   yk h ny1 , . . . , (yn − yn−1 ) dy1 . . . dyn
+                              θ          0≤y1 <···<yn                 k=1
+                                     Z                              n
+                                                                     X       
+                                 1
+                               = n                       exp − θ−1         zj h(z1 , . . . , zn ) dz1 . . . dzn ,
+                                θ        z1 ,...,zn >0               j=1
+
+      ce qui identifie la loi de (Z1 , . . . , Zn ) comme le produit de n lois exponentielles de
+      paramètre θ.
+   3. On a
+       n
+       X                 n
+                         X             Xn         Xn       Xi          Xn
+                                Zj                               Zj
+             mj,n Zj =                     ai,n =     ai,n           =     ai,n Xi:n = θ̂n (an ) ,
+       j=1               j=1
+                             n − j + 1 i=j        i=1      j=1
+                                                               n−j+1   i=1
+
+      en intervertissant les sommes sur i et j (indice j ≤ i) et en reconnaissant Xi:n =
+      Pi
+        j=1 Zj /(n − j + 1).
+   4. Par la question 2, (Z1 , . . . , Zn ) sont i.i.d. de loi exponentielle de paramètre θ : Eθ [Zj ] = θ
+      et Varθ (Zj ) = θ2 . Par la question 3, θ̂n (an ) est une combinaison linéaire des Zj de poids
+      mj,n , donc
+                                              n
+                                              X                                                  n
+                                                                                                 X
+                                                                                          2
+                      Eθ θ̂n (an ) = θ               mj,n ,      Varθ θ̂n (an ) = θ                    m2j,n ,
+                                               j=1                                               j=1
+
+      d’où le risque quadratique
+
+                                                  X
+                                                    n         2    n
+                                                                    X
+                               R θ, θ̂n (an ) = θ2    mj,n − 1 + θ2   m2j,n .
+                                                           j=1                         j=1
+
+                          P                                   P
+   5. Sans biais signifie j mj,n = 1 ; on minimise alors j m2j,n sous cette contrainte, exac-
+      tement comme à la question 1 de l’Exercice 4, ce qui donne P       mj,n = 1/n pour tout j.
+                                                                           n
+      La bijection entre mn et an donnée par mj,n = (n − j + 1)−1 i=j ai,n (question 3) se
+      résout en ai,n = mi,n − mi+1,n pour i < n et an,n = mn,n ; avec mn = (1/n, . . . , 1/n), il
+      vient an = (1/n, . . . , 1/n) : l’estimateur sans biais de risque quadratique minimal dans
+      cette classe est de nouveau la moyenne empirique.
+                                                                                 P
+   6. Sans la contrainte d’absence de biais, la minimisation en mn de θ2 ( j mj,n − 1)2 +
+         P
+      θ2 j m2j,n se fait comme à la question 2 de l’Exercice 4 (avec σ 2 = θ2 ) : le minimum est
+      atteint en mj,n = θ2 /(θ2 + nθ2 ) = 1/(n + 1) pour tout j, d’où, par la même bijection,
+      ai,n = 1/(n + 1) pour tout i.
+

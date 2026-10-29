@@ -1,0 +1,1037 @@
+Ecole Polytechnique, promotion 2025                                   PC-8 Cours APM 41033 EP
+
+
+1     Solutions
+1.1    Exercice 1
+    1. On écrit que le risque de classification d’une règle g est
+
+                      R(g) = E[ℓ(Y, g(X))]
+                           = E 1g(X)=1,Y =−1 + c1g(X)=−1,Y =1
+                                                             
+
+                           = E 1g(X)=1 1Y =−1 + cE 1g(X)=−1 1Y =1
+                                                               
+
+                           = E 1g(X)=1 E [1Y =−1 |X] + cE 1g(X)=−1 E [1Y =1 |X]
+                                                                             
+
+
+       Par définition de η(X), nous avons
+
+                         η(X) = P(Y = 1|X) = E [1Y =1 |X] = 1 − E [1Y =−1 |X]
+
+       De plus, puisque g(X) ne prend que deux valeurs, nous avons
+
+                                         1g(X)=1 = 1 − 1g(X)=−1 .
+       Il vient
+
+                                 1 − 1g(X)=−1 (1 − η(X)) + cE 1g(X)=−1 η(X)
+                                                                        
+                     R(g) = E
+                           = 1 − E [η(X)] + E ((1 + c)η(X) − 1) 1g(X)=−1 .
+                                                                       
+
+
+    2. • Solution 1. Soit g une règle de classification binaire. L’excès de risque vaut :
+                                                                                  
+                                                                                 1
+          R(g) − R(gc ) = (c + 1) E 1{g(X)=−1} − 1{gc⋆ (X)=−1}
+                    ⋆
+                                                                  
+                                                                      η(X) −
+                                                                               c+1
+                                                                                       
+                                                                                      1
+                        = (c + 1) E 1{g(X)=−1} − 1{η(X)−1/(c+1)<0}
+                                                                       
+                                                                            η(X) −          .
+                                                                                    c+1
+
+       Maintenant, on remarque que pour tout pour tout x , on a :
+                                                                  
+                                                                 1
+                        1{g(x)=−1} − 1{η(x)−1/(c+1)<0} η(x) −
+                                                      
+                                                                     ≥ 0.
+                                                              c+1
+
+       Par suite, l’espérance est aussi positive ou nulle et donc R(g) ≥ R(g ⋆ ).
+       • Solution 2. En partant de l’expression
+                                                                                   
+                                                                                   1
+               R(g) = (c + 1) E 1{g(X)=−1} − 1{η(X)−1/(c+1)<0}
+                                                                    
+                                                                        η(X) −          .
+                                                                                 c+1
+
+       Si l’on veut choisir g de façon à minimiser le terme dont on calcule l’espérance, il faut
+       prendre g(X) = −1 lorsque η(X) − 1/(c + 1) < 0 ; et g(X) = 1 dans le cas contraire.
+       On retrouve donc que R(g) ≥ R(gc⋆ ).
+       ▶ Dans le cas c = 1, la fonction de perte proposée coı̈ncide avec la fonction de perte
+       0/1 usuelle ; et on retrouve que la règle de décision bayésienne est 1{η(X)≥1/2} .
+
+
+
+
+                                                                                            Page 7
+Ecole Polytechnique, promotion 2025                                 PC-8 Cours APM 41033 EP
+
+
+  3. Supposons qu’il existe une autre règle, notée f ⋆ , telle que pour toute règle g on ait
+     R(g) ≥ R(f ⋆ ). Alors nécessairement, on a R(gc⋆ ) ≥ R(f ⋆ ). Par ailleurs, gc⋆ est aussi une
+     règle bayésienne, donc R(f ⋆ ) ≥ R(gc⋆ ). On en déduit que R(f ⋆ ) = R(gc⋆ ).
+     Traduisons cette égalité des risques : en écrivant {gc⋆ (X) = −1} = {η(X) < 1/(c + 1)},
+     nous avons
+                                                                                            
+                                                                                          1
+                            Ξ(X) := 1{f ⋆ (X)=−1} − 1{η(X)−1/(c+1)<0}
+                                                                          
+          E [Ξ(X)] = 0,                                                       η(X) −           .
+                                                                                       c+1
+
+     La différence des indicatrices vaut soit 0, soit 1, soit −1. Le cas où elle vaut 1 correspond
+     à {f ⋆ (X) = −1, η(X) ≥ 1/(c + 1)} ; et dans ce cas, nous avons
+                                                                            
+                                                                         1
+                      1{f ⋆ (X)=−1} − 1{η(X)−1/(c+1)<0} η(X) −
+                                                          
+                                                                                ≥0.
+                                                                       c+1
+
+     Le cas où elle vaut −1 correspond à {f ⋆ (X) = 1, η(X) < 1/(c + 1)} ; et dans ce cas,
+     nous avons
+                                                                    
+                                                                  1
+                      1{f ⋆ (X)=−1} − 1{η(X)−1/(c+1)<0} η(X) −
+                                                       
+                                                                       ≥0.
+                                                                c+1
+
+     Donc Ξ(X) ≥ 0 et si son espérance est nulle, c’est que Ξ(X) = 0 avec probabilité 1.
+     Donc nécessairement, nous devons avoir η(X) = 1/(c + 1) sur l’ensemble 1f ⋆ (X)=−1 −
+     1η(X)−1/(c+1)<0 ̸= 0.
+     Nous en déduisons que deux classifieurs bayésiens diffèrent uniquement sur l’ensemble
+     {X : η(X) = 1/(c + 1)}.
+
+
+
+
+                                                                                            Page 8
+Ecole Polytechnique, promotion 2025                                     PC-8 Cours APM 41033 EP
+
+
+1.2   Exercice 2
+  1. Nous avons par définition du risque associé à la fonction de perte 0 − 1,
+
+              R (g ⋆ ) = P(g ⋆ (X) ̸= Y ) = P(g(X) = 1, Y = −1) + P(g(X) = −1, Y = 1)
+                       = E 1{Y =−1} 1{g(X)=1} + E 1{Y =1} 1{g(X)=−1}
+                                                                  
+
+                       = E E 1{Y =−1} |X 1{g(X)=1} + E E 1{Y =1} |X 1{g(X)=−1}
+                                                                          
+
+                       = E (1 − η(X))1{g(X)=1} + η(X)1{g(X)=−1} .
+                                                                 
+
+
+      Or, {X : g(X) = 1} = {X : η(X) ≥ 1/2} ; et nous avons aussi {X : η(X) ≥ 1/2} =
+      {X : η(X) ≥ 1 − η(X)}. Donc
+
+               E (1 − η(X))1{g(X)=1} = E (1 − η(X))1{η(X)≥1−η(X)}
+                                                                
+
+                                      = E ((1 − η(X)) ∧ η(X)) 1{η(X)≥1−η(X)} .
+                                                                           
+
+
+      De même, on montre que
+
+                 E η(X)1{g(X)=−1} = E ((1 − η(X)) ∧ η(X)) 1{η(X)≤1−η(X)} .
+                                                                     
+
+
+      On en déduit que
+                                     R(g ⋆ ) = E [(1 − η(X)) ∧ η(X)] .
+
+      La relation a ∧ b + |a − b|/2 = (a + b)/2 se démontre facilement en considérant l’inter-
+      valle [a ∧ b, a ∨ b]. Elle exprime que ajouter la demi-longueur de l’intervalle à la borne
+      inférieure est égal au milieu de l’intervalle.
+  2. La relation se démontre comme dans l’exercice 1 question 1, en prenant c = 1. On
+     obtient le résultat voulu.
+  3. On utilise le résultat de la question précédente. Nous avons
+
+                  R(g1 ) − R(g2 ) = E (2η(X) − 1) 1{g1 (X)=−1} − 1{g2 (X)=−1} .
+                                                                            
+
+
+      En prenant les valeurs absolues, on obtient
+
+                  |R(g1 ) − R(g2 )| ≤ E |2η(X) − 1||1{g1 (X)=−1} − 1{g2 (X)=−1} | .
+                                                                                
+
+
+      La différence des indicatrices vaut 0, 1 ou −1 et elle est non nulle lorsque g1 (X) ̸= g2 (X) ;
+      nous en déduisons donc que
+
+                             |1{g1 (X)=−1} − 1{g2 (X)=−1} | = 1{g1 (X)̸=g2 (X)} .
+
+      Ce qui conclut la démonstration.
+  4. On applique le résultat de la question précédente avec g1 ← g̃ et g2 ← g ⋆ . Il vient
+
+                        |R(g̃) − R(g ⋆ )| ≤ 2E |η(X) − 1/2|1{g̃(X)̸=g⋆ (X)} .
+                                                                          
+
+
+      Par définition de g ⋆ , nous avons R(g̃) − R(g ⋆ ) ≥ 0 pour tout classifieur g̃, ce qui entraine
+
+                            R(g̃) − R(g ⋆ ) ≤ 2E |η(X) − 1/2| 1{g̃(X)̸=g⋆ (X)} .
+                                                                               
+
+
+
+                                                                                               Page 9
+Ecole Polytechnique, promotion 2025                                   PC-8 Cours APM 41033 EP
+
+
+     Considérons deux cas. Dans le premier cas, g̃(X) = 1 et g ⋆ (X) = −1. Puisque {X :
+     g̃(X) = 1, g ⋆ (X) = −1} = {X : η̃(X) ≥ 1/2, η(X) < 1/2}, nous avons sur cet ensemble :
+
+                  |η(X) − 1/2| = η(X) − 1/2 ≤ η(X) − η̃(X) = |η(X) − η̃(X)|.
+
+     Dans le second cas, g̃(X) = −1 et g ⋆ (X) = 1. De la même façon, nous montrons que
+     sur cet ensemble
+
+                  |η(X) − 1/2| = 1/2 − η(X) ≤ η̃(X) − η(X) = |η(X) − η̃(X)|.
+
+     Par suite, nous avons établi que
+
+                    |η(X) − 1/2| 1{g̃(X)̸=g⋆ (X)} ≤ |η(X) − η̃(X)| 1{g̃(X)̸=g⋆ (X)}
+
+     ce qui termine la démonstration.
+  5. En utilisant la question 4, on a
+
+                          En [R(g̃n ) − R(g ⋆ )] ≤ 2 En [E [|η̃n (X) − η(X)|]] .
+
+     Dans la relation précédente, la première espérance E désigne l’espérance par rapport
+     à X – l’aléa porté par Dn étant ”gelé”. Tandis que la seconde En consiste ensuite à
+     prendre la valeur moyenne sur l’aléa porté par Dn .
+     Puisque |η̃n (X) − η(X)| ≤ 1, nous pouvons appliquer le théorème de Fubini et nous
+     obtenons
+                           En [R(g̃n ) − R(g ⋆ )] ≤ 2E [ En [|η̃n (X) − η(X)|] ] .
+     Pour démontrer que le terme de droite tens vers zero, nous le voyons comme 2 E[ϕn (X)]
+     et ayant posé
+                                 ϕn (X) := En [|η̃n (X) − η(X)|]
+     et nous allons appliquer le théorème de convergence dominée. Puisque |η̃n (X) − η(X)| ≤
+     1, nous avons |ϕn (X)| ≤ 1. Il reste à montrer que pour Q-presque tout x, nous avons
+     limn ϕn (x) = 0. Soit x fixé ; nous écrivons pour tout ε > 0,
+
+                    ϕn (x) = En [|η̃n (x) − η(x)|] ≤ Pn (|η̃n (x) − η(x)| ≥ ε) + ε.
+
+     Cette relation étant vraie pour tout ε, et en utilisant la convergence en probabilité de
+     η̃n (x) vers η(x), on en déduit que limn En [|η̃n (x) − η(x)|] = 0.
+     Ce qui termine la preuve.
+     C’est un résultat classique : si on sait estimer de façon consistante la fonction de
+     régression η(x) alors l’excès de risque du classifieur g̃n associé à cette estimation η̃n
+     tend vers 0 dans L1 (ou de façon équivalente en proba, puisque les v.a. sont bornées).
+
+
+
+
+                                                                                         Page 10
+Ecole Polytechnique, promotion 2025                                   PC-8 Cours APM 41033 EP
+
+
+1.3   Exercice 3
+  1. La fonction de régression est donnée par
+      ηθ (x) = Qθ (Y = 1|X = x)
+                                                T   −1
+                                     π1 e−(x−µ1 ) Σ1 (x−µ1 )/2
+      =                                                                   T   −1
+       π1 e−(x−µ1 ) Σ1 (x−µ1 )/2 + π−1 (det Σ1 / det Σ−1 )1/2 e−(x−µ−1 ) Σ−1 (x−µ−1 )/2
+                    T   −1
+
+       
+             π−1
+      = 1+        (det Σ1 / det Σ−1 )1/2
+              π1
+                                                                                                −1
+          exp −xT (Σ−1    −1        T −1          T   −1           T   −1      T −1
+                    −1 − Σ1 )x/2 + µ1 Σ1 µ1 /2 − µ−1 Σ−1 µ−1 /2 + µ−1 Σ−1 x − µ1 Σ1 x                  .
+      On en déduit que
+                    1
+           ϕθ (x) = xT (Σ−1     −1      T   −1
+                          −1 − Σ1 )x − µ−1 Σ−1 x
+                    2                                                                  
+                     T −1     1 T −1      1 T −1             π1                     1/2
+                  + µ1 Σ1 x − µ1 Σ1 µ1 + µ−1 Σ−1 µ−1 + ln       (det Σ−1 / det Σ1 )
+                              2           2                 π−1
+     La règle de classification est équivalente à ϕθ (X) ≥ 0 ⇐⇒ Y = 1. Ici, x 7→ ϕθ (x) est
+     une forme quadratique. On parle de Quadratic Discriminant Analysis (QDA). La
+     géométrie de la séparation correspond à une forme quadrique en dimension d dont la
+     signature dépend de la réduction simultanée de Σ−1 et Σ1 .
+  2. Lorsque Σ−1 = Σ1 = Σ, il vient
+                                               1            1                   π1
+                  ϕθ (x) = (µ1 − µ−1 )T Σ−1 x − µT1 Σ−1 µ1 + µT−1 Σ−1 µ−1 + ln
+                                               2            2                  π−1
+      qui est bien de la forme linéaire wθT x + Aθ .
+
+      De plus, la règle de décision Bayésienne est donnée par
+                             gθ⋆ (x) = 21{ηθ (x)≥1/2} − 1 = 21{wT x+Aθ ≥0} − 1.
+                                                                 θ
+
+     La frontière de décision est donc portée par un hyperplan orienté par le vecteur normal
+     wθ : les points situés d’un côté de cet hyperplan sont classés “classe -1” et ceux de l’autre
+     côté sont classés “classe 1”. On parle de Linear Discriminant Analysis (LDA).
+     Notons que si les deux classes sont équilibrées (i.e. π−1 = π1 ) alors le milieu du segment
+     [µ−1 , µ1 ] est sur l’hyperplan - remarquer en effet que ϕθ ((µ1 + µ−1 )/2) = 0.
+     Si Σ est la matrice identité, alors le vecteur w normal à l’hyperplan de décision est tout
+     simplement µ1 − µ−1 .
+  3. On écrit la log-vraisemblance d’une observation
+                       d             Y +1                                        T −1
+                                                                                               
+     ℓ(X, Y ; θ) = − ln (π/2) +              ln det(Σ1 )−1/2 (1 − π−1 )e−(X−µ1 ) Σ1 (X−µ1 )/2
+                       2                2
+                     (1 − Y )                                    T −1
+                                                                                
+                  +           ln det(Σ−1 )−1/2 π−1 e−(X−µ−1 ) Σ−1 (X−µ−1 )/2
+                         2
+                       d             Y +1
+                                           ln(det(Σ1 )) + (1−Y   )
+                                                                   ln(det(Σ−1 )) Y + 1                 (1 − Y )
+                  = − ln (π/2) − 2                           2
+                                                                                +        ln(1 − π1 ) +          ln π−1
+                       2                                  2                          2                    2
+                     Y + 1 (X − µ1 )T Σ−1 1 (X − µ1 )      (1 − Y ) (X − µ−1 )T Σ−1−1 (X − µ−1 )
+                  −                                     −                                        .
+                        2                2                     2                  2
+
+                                                                                             Page 11
+Ecole Polytechnique, promotion 2025                                            PC-8 Cours APM 41033 EP
+
+
+     On observe un echantillon d’apprentissage de n données i.i.d., la log-vraisemblance de
+     l’échantillon θ 7→ ℓn (X1 , Y1 , . . . , Xn , Yn ; θ) satisfait donc pour tout θ ∈ Θ, ℓn (X1 , Y1 , . . . , Xn , Yn ; θ) =
+     P   n
+         i=1 ℓ(Xi , Yi ; θ). En particulier la fonction de vraisemblance de l’échantillon est donnée
+     par
+     ℓn (X1 , Y1 , . . . , Y1 , Yn ; .) : Θ →R
+                                                                                  d
+                                      θ 7→ℓn (X1 , Y1 , . . . , Y1 , Yn ; θ) := −n ln (π/2)
+                                                                                  2
+                                                n                                       n
+                                                                 !                                   !
+                                               X    Yk + 1 log(det(Σ1 ))              X     (1 − Yk ) log(det(Σ−1 ))
+                                           −                                      −
+                                                          2                 2                   2            2
+                                               k=1                                    k=1
+                                                n                                     n
+                                                                 !                                  !
+                                               X    Yk + 1                          X     (1 − Yk )
+                                           +                        ln(1 − π−1 ) +                    ln π−1
+                                                          2                                   2
+                                                  k=1                              k=1
+                                                 n
+                                                 X Yk + 1 (Xk − µ1 )T Σ−1 (Xk − µ1 )
+                                                                           1
+                                            −
+                                                        2                 2
+                                                 k=1
+                                                 n
+                                                 X (1 − Yk ) (Xk − µ−1 )T Σ−1
+                                                                           −1 (Xk − µ−1 )
+                                            −                                                   .
+                                                        2                      2
+                                                 k=1
+
+  4. En dérivant par rapport à π−1 , µ1 , µ−1 et en étudiant le comportement aux limites par
+     rapport à ces trois paramètres, on obtient les estimateurs de maximum de vraisem-
+     blance :
+                                       n                     n
+                                   1 X (1 − Yk )          1X
+                         π̂−1,n :=                     =        1{Yk =−1} ,
+                                   n           2          n
+                                     k=1                    k=1
+
+                                                               k=1 1{Yk =−1} Xk
+                                   Pn                        Pn
+                                      k=1  (1 −  Y k )X k
+                         µ̂−1,n := Pn                     = P
+                                        k=1 (1 − Yk )
+                                                                 n
+                                                                     1{Yk =−1}
+                                                             Pn k=1
+                                                               k=1 1{Yk =1} Xk
+                                   Pn
+                                      k=1 (Yk + 1)Xk
+                           µ̂1,n := P                     = P                  .
+                                                                 k=1 1{Yk =1}
+                                        n                        n
+                                        k=1 (Yk + 1)
+
+     • Solution 1. Le fait que l’on ait jusqu’ici défini les estimateurs tels que pour tout
+     θ∈Θ
+                            ℓn (θ) ≤ ℓn (π̂−1,n , µ̂−1,n , µ̂1,n , Σ−1 , Σ1 )
+     justifie le fait que l’on se contente de regarder la maximization de
+                                   log(det(Σ−1 ))   X (Xk − µ̂−1,n )T Σ−1
+                                                                       −1 (Xk − µ̂−1,n )
+                Σ−1 7→ −N−1                       −                                      ,
+                                         2                            2
+                                                        k∈K−1
+
+     où N−1 est le nombre de points dont le label vaut 0, points indexés par K−1 . For-
+     mellement, cette maximisation est celle que l’on résoud quand on cherche l’estimateur
+     MV d’une matrice de covariance d’un modèle N(µ̂−1,n , Σ−1 ) à moyenne connue, à partir
+     de N−1 réalisations indépendantes. Nous savons que pour les familles exponentielles de
+     modèle statistique, l’estimateur MV correspond à l’estimateur des moments de x 7→ xxT
+     (voir PC2). Par suite, cette fonction est maximale en
+                                                               n
+                1 X                           T       1        X (1 − Yk )
+     Σ̂−1,n :=      (Xk −µ̂−1,n )(Xk −µ̂−1,n ) = n                         (Xk −µ̂−1,n )(Xk −µ̂−1,n )T .
+                                                     1
+                                                P
+               N−1                                k=1 {Yk =−1}       2
+                        k∈K−1                                                        k=1
+
+
+                                                                                                       Page 12
+Ecole Polytechnique, promotion 2025                                           PC-8 Cours APM 41033 EP
+
+
+     De même, on obtient
+                                                                          n
+              1 X                                 1        X Yk + 1
+     Σ̂1,n :=     (Xk −µ̂1,n )(Xk −µ̂1,n )T = Pn                    (Xk −µ̂1,n )(Xk −µ̂1,n )T .
+              N1
+                     k∈K1
+                                                  1
+                                               k=1 {Yk =1}      2
+                                                                         k=1
+
+     • Solution 2 (raisonnement dans le cas Σ−1 = Σ1 = Σ). Pour calculer le maximum
+     de vraisemblance en Σ, on utilise un peu de calcul différentiel. La différentielle de la
+     fonction inverse est donnée par le calcul suivant :
+                                   (Σ + H)−1 = Σ−1 − Σ−1 HΣ−1 + o(∥H∥).
+     De même,
+                             log det(Σ + H) = log det(Σ) + Tr Σ−1 H + o(∥H∥).
+                                                                   
+
+     Enfin, si Cn (π1 ) désigne une quantité ne dépendant que des données et de π1 , on écrit
+     la vraisemblance astucieusement en :
+                                                n
+                             n               1X T
+               ℓn (Σ) = − log(det(Σ)) −            1{Yi =1} (Xi − µ1 )Σ−1 (X − µ1 )
+                             2               2
+                                                     i=1
+                               + (1{Yi =−1} ) (Xi − µ−1 )Σ−1 (X − µ−1 ) + Cn (π1 )
+                                              T
+
+                                                   n    
+                               n                1X
+                            = − log(det(Σ)) −         Tr 1T{Yi =1} (Xi − µ1 )Σ−1 (Xi − µ1 )
+                               2                2
+                                                  i=1
+                                                                         
+                               + (1{Yi =−1} ) (Xi − µ−1 )Σ (Xi − µ−1 ) + Cn (π1 )
+                                             T            −1
+
+                                                          n
+                               n
+                                                               1{Yi =1} (Xi − µ1 )T (Xi − µ1 )
+                                                         X
+                            = − log(det(Σ)) + Tr Σ−1
+                               2
+                                                          i=1
+                                                                        
+                               + (1{Yi =−1} )(Xi − µ−1 ) (Xi − µ−1 )
+                                                        T
+
+
+                               n                            
+                            = − log(det(Σ)) + Tr Σ−1 Ŝn
+                               2
+     où on a introduit Ŝn par :
+                 n
+                       1{Yi =1} (Xi − µ̂1,n )T (Xi − µ̂1,n ) + (1{Yi =−1} )(Xi − µ̂−1,n )T (Xi − µ̂−1,n ),
+                 X
+        Ŝn :=
+                 i=1
+
+     la condition d’annulation du gradient en Σ−1 permet alors d’écrire que le maximum de
+     vraisemblance en Σ satisfait :
+                                          n                           
+                      ∀H ∈ Md (R) : − Tr Σ−1 H + Tr Σ−1 HΣ−1 Ŝn = 0.
+                                                
+                                          2
+     Cette dernière équation se récrit en
+                              ∀H ∈ Md (R) : −T r(nΣ−1 H − Σ−1 HΣ−1 Ŝn ) = 0.
+     C’est-à-dire
+                                ∀H ∈ Md (R) : T r(Σ−1 H(nId + Σ−1 Ŝn )) = 0.
+     On en déduit donc que
+                                                             Ŝn
+                                                     Σ̂n =       .
+                                                              n
+
+                                                                                                    Page 13
+Ecole Polytechnique, promotion 2025                                                        PC-8 Cours APM 41033 EP
+
+
+  5. Par un argument de loi faible des grands nombres et le lemme de Slutsky, on a
+                            Pn,θ −prob
+                 π̂−1,n       −→      Qθ (Y = −1) = π−1
+                                       k=1 1{Yk =−1} Xk Pn,θ −prob
+                                    Pn
+                               n−1
+                 µ̂−1,n :=                                 −→ µ−1
+                                   −1   n
+                                                    1
+                                      P
+                                nk=1 {Yk =−1}
+                                                                      1
+                               Pn
+                               Yk +1      Pn
+                            k=1 2 Xk         k=1 {Yk =1} Xk Pn,θ −prob
+                  µ̂1,n := Pn Y +1 = P                             −→ µ1 ,
+                             k=1 2
+                                  k
+                                              n
+                                              k=1    {Y k =1}             1
+                                                1
+                          n−1 nk=1 {Yk =−1} (Xk XkT ) − µ̂−1,n µ̂T−1,n Pn,θ −prob
+                             P
+                Σ̂−1,n =                                                  −→ Σ−1 ,
+                                    n−1 nk=1 {Yk =−1}             1
+                                       P
+
+                            Pn,θ −prob
+                    Σ̂1,n     −→         Σ1 ,
+
+  6. Puisque pour Qθ -presque tout x, θ 7→ ϕθ (x) est une fonction continue sur Θ, il vient
+     que pour Qθ -presque tout x,
+                                         Pn,θ −prob                                  Pn,θ −prob
+                             ϕθ̂n (x)      −→           ϕθ (x),           ηθ̂n (x)     −→         ηθ (x).
+
+     On conclut à l’aide de la question 5 de l’exercice 2.
+  7. Dans le cas du modèle plus simple, seule l’estimation de la matrice de covariance est
+     changée (voir l’expression de ℓn ci-dessus dans le cas où Σ−1 = Σ1 = Σ). On obtient
+                n
+             1X
+                1{Yk =0} (Xk − µ̂−1,n )(Xk − µ̂−1,n )T + 1{Yk =1} (Xk − µ̂1,n )(Xk − µ̂1,n )T ;
+                                                                                             
+      Σ̂n :=
+             n
+               k=1
+
+     et on établit par la loi faible des grands nombres que
+                                                               Pn,θ −prob
+                                                         Σ̂n      −→          Σ.
+
+     On conclut comme à la question précédente.
+  8. Dans un problème à plus de deux classes étiquetées par la variable Y , on obtient de
+     la même façon en écrivant la vraisemblance des observations (on traite ici le cas d’une
+     matrice de covariance commune)
+
+                                                          1{Yi =j}
+                                       Pn
+                                                    i=1
+                                   π̂j,n :=              ,                                                      (2)
+                                           Pn n
+                                            i=1 Xi 1{Yi =j}
+                                   µ̂j,n := P               ,                                                   (3)
+                                              n
+                                                     i=1    1{Yi =j}
+                                                    n
+                                                1   X
+                                     Σ̂n :=               (Xi − µ̂Yi ,n )(Xi − µ̂Yi ,n )T ..                    (4)
+                                                n
+                                                    i=1
+
+   Commentaire des graphes: les données sont simulées comme un mélange de gaussiennes.
+  — Dans le premier graphe, on a Σ = I, donc la frontière de classification est la droite
+    orthogonale au segment [µ̂−1,n ; µ̂1,n ]. On a utilisé un graphe orthonormé pour mettre
+    en avant ce point.
+
+
+                                                                                                            Page 14
+Ecole Polytechnique, promotion 2025                                PC-8 Cours APM 41033 EP
+
+
+  — Les ⋆ et les ellipsoı̈des correspondent aux estimations des moyennes et des covariances
+    par la méthode du maximum de vraisemblance.
+  — LDA et QDA ne sont pas équivalents dans le cas où la matrice de covariance (ayant
+    servi à produire les données) est la même, car la matrice de covariance estimée est bien
+    sûr différente (l’approche LDA en cherche une commune aux deux classes ; l’approche
+    QDA en cherche une propre à chaque classe).
+  — Dans les cas où la matrice de covariance (ayant servi à produire les données) est
+    différente, QDA se comporte a priori mieux puisqu’on utilise une règle de décision
+    qui exploite une estimation de matrice de covariance spécifique pour chaque classe.
+  — Selon que Σ̂−1       −1
+                  1 − Σ̂−1 est définie positive (ou négative) ou non, la forme la frontière de
+    décision n’est pas la même : c’est une ellipse si les deux valeurs propres de Σ̂−1
+                                                                                       1 − Σ̂−1
+                                                                                               −1
+
+    sont de même signe (5ème ligne sur la Figure) et c’est une paire  d’hyperboles
+                                                                                     sinon.
+                                                                                             En
+                                                                                               
+                                                                        1 0               ε 0
+    particulier, sur l’exemple de la 4ème ligne, on a le cas où Σ1 ≃        et Σ−1 ≃           .
+                                                                        0 ε               0 1
+    On peut discriminer deux gaussiennes de même moyenne mais dispersées dans deux
+    directions quasi-orthogonales.
+  — Ligne 3-5, LDA, on remarque que l’estimation de la variance de la classe noire/bleue
+    est mauvaise !
+
+
+
+
+                                                                                         Page 15
+Ecole Polytechnique, promotion 2025                                                                                                             PC-8 Cours APM 41033 EP
+
+
+                                                                            Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                                       Linear Discriminant Analysis                    Quadratic Discriminant Analysis
+
+
+
+
+                                          fixed covariance
+                                              Data with
+
+
+
+
+                                                                       Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                                       Linear Discriminant
+                                                                       Linear Discriminant Analysis
+                                                                                           Analysis                     Quadratic Discriminant
+                                                                                                                        Quadratic Discriminant Analysis
+                                                                                                                                               Analysis
+                                                 varying covariances
+                         covariance
+                   fixedcovariance
+
+                                                      Data with
+                            with
+                       Datawith
+                      Data
+                  fixed
+
+
+
+
+                                                                            Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                                        Linear Discriminant Analysis                      Quadratic Discriminant Analysis
+                            covariances
+                           covariances
+                        covariance
+                              with
+                             with
+                           with
+                         Data
+                        Data
+                   varying
+                      Data
+                  varying
+                  fixed
+
+
+
+
+                                                                           Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                                        Linear Discriminant Analysis                     Quadratic Discriminant Analysis
+                          covariances
+                       covariance
+                       Data
+                     Data   with
+                           with
+                 varying
+                 fixed
+                 varying covariances
+                      Data with
+
+
+
+
+Figure 2 – Exercice 6. Classifieurs LDA et QDA and différents cas de figure. Colonne de
+gauche : LDA, colonne de droite : QDA. La ligne blanche correspond à la ligne de séparation.
+Les moyennes de chaque classe sont représentées par les ⋆. Les points d’une classe qui sont
+mal classifiés sont représentés par des ×. Deux premières lignes : même matrice de covariance,
+deux dernières lignes, matrice de covariance différentes.
+
+
+                                                                                                                                                                Page 16
+Ecole Polytechnique, promotion 2025                                           PC-8 Cours APM 41033 EP
+
+
+1.4   Exercice 4
+  1. La variable aléatoire E [ X | Y ] est σ (Y )-mesurable donc il existe une fonction mesurable
+     ψ telle que E [ X | Y ] = ψ (Y ). De plus, pour toute fonction continue bornée f , on a (par
+     égalité en loi de Y et Y ′ ),
+
+
+                              E [f (E [ X | Y ])] =E [f (ψ (Y ))] = E f ψ Y ′
+                                                                             
+
+      Pour conclure il faut montrer l’égalité en loi entre ψ (Y ′ ) et E [ X ′ | Y ′ ].
+      Pour toute fonction σ (Y )-mesurable et bornée ϕ, la caractérsation de l’espérance condi-
+      tionnelle implique
+
+
+                             E [Xϕ (Y )] = E [E [ X | Y ] ϕ (Y )] = E [ψ (Y ) ϕ (Y )]
+      Enfin par égalité en loi de (X, Y ) et (X ′ , Y ′ ), on a E [Xϕ (Y )] = E [X ′ ϕ (Y ′ )] et d’autre
+      part E [ψ (Y ) ϕ (Y )] = E [ψ (Y ′ ) ϕ (Y ′ )].
+      En conclusion, pour toute fonction σ (Y )-mesurable et bornée ϕ, on a
+
+
+                                        E X ′ϕ Y ′ = E ψ Y ′ ϕ Y ′
+                                                              
+
+     Par caractérisation de l’espérance conditionnelle on a donc E [ X ′ | Y ′ ] = ψ (Y ′ ), P − p.s..
+  2. Comme X est symétrique, X et −X ont même loi. Donc (X, |X|) et (−X, |−X|) =
+     (−X, |X|) ont même loi ; en effet, on utilise la fonction f : t 7→ (t, |t|) qui est conti-
+     nue. Donc E [ X | |X|] = E [ −X | |X|] par la question 1. D’un autre côté, E [ X | |X|] +
+     E [ −X | |X|] = E [ 0 | |X|] = 0. On en déduit que E [ X | |X|] = 0.
+  3. Les couples (Xi , X1 + · · · + Xn ) sont de même loi pour i ∈ {1, . . . , n}. En effet, en notant
+     dν la loi de Xi , nous avons pour toute fonction mesurable bornée h
+                                               Z
+                E [h(Xi , X1 + · · · + Xn )] = h(xi , x1 + · · · + xn )dν(x1 ) · · · dν(xn )
+
+      en en faisant le changement de variable y1 = xi puis y2 = x1 , y3 = x2 , · · · , yi = xi−1 ,
+      yi+1 = xi+1 , · · · , yn = xn , on obtient pour tout i
+                                       Z
+      E [h(Xi , X1 + · · · + Xn )] = h(y1 , y2 + · · · + yi−1 + y1 + yi+1 + · · · + yn )dν(y1 ) · · · dν(yn )
+
+      Le terme de droite est indépendant de i, ce qui donne le résultat.
+      Par suite, nous avons d’une part
+                           n
+                           X
+                                  E [ Xi | X1 + · · · + Xn ] = nE [ X1 | X1 + · · · + Xn ]
+                            i=1
+      et d’autre part
+          n
+          X
+                E [ Xi | X1 + · · · + Xn ] = E [ X1 + · · · + Xn | X1 + · · · + Xn ] = X1 + · · · + Xn .
+          i=1
+
+      Ainsi, pour tout i ∈ {1, . . . , n},
+                                                                   X1 + · · · + Xn
+                                    E [ Xi | X1 + · · · + Xn ] =                   .
+                                                                         n
+
+                                                                                                   Page 17
+Ecole Polytechnique, promotion 2025                                      PC-8 Cours APM 41033 EP
+
+
+1.5   Exercice 5
+  1. La loi de X est celle d’un mélange d’une loi uniforme sur [0; 2] et d’une loi uniforme sur
+     [1; 4]. En effet, on écrit pour x ∈ R
+
+              P(X ≤ x) = P(X ≤ x, Y = 1) + P(X ≤ x, Y = −1)
+                        = P(X ≤ x |Y = 1)P(Y = 1) + P(X ≤ x |Y = −1)P(Y = −1)
+                          1                   1
+                        = P(X ≤ x |Y = −1) + P(X ≤ x |Y = 1)
+                          2                   2
+      On obtient donc                         
+                                              
+                                               0                si x ≤ 0
+                                              
+                                                x
+                                                                 si0 < x ≤ 1
+                                              
+                                              
+                                              4
+                                              
+                               P(X ≤ x) =        5     1
+                                                12 x − 6         si1 < x ≤ 2
+                                                x
+                                                   +2
+                                              
+                                                                 si 2 < x ≤ 4
+                                              
+                                              
+                                              6 6
+                                              
+                                              
+                                                1                si x > 4
+                                              
+
+      La densité de X par rapport à la mesure de Lebesgue λLeb est pX (x) = p−1 (x)+p
+                                                                                    2
+                                                                                        1 (x)
+                                                                                              ,
+      avec p−1 (x) := 2 1{0≤x≤2} et p1 (x) := 3 1{1≤x≤4} .
+                      1                       1
+
+
+                                              densité de X
+                               0.5
+
+
+
+
+                               0.4
+
+
+
+
+                               0.3
+
+
+
+
+                               0.2
+
+
+
+
+                               0.1
+
+
+
+
+                               0.0
+                                     0    1      2           3    4
+
+
+
+
+                                     Figure 3 – Densité de X
+
+  2. On vient de montrer que P(X ∈ [0, 4]) = 1. La fonction η est donc définie sur [0, 4]
+     uniquement.
+
+      La densité de X par rapport à la mesure de Lebesgue λLeb (dx) = dx est pX (x).
+      Celle de Y par rapport à la mesure du comptage c (dx) = δ{0} (dx) + δ{1} (dx) est une
+      Bernoulli de paramètre 1/2. On rappelle que la densité jointe de (X, Y ) par rapport à
+      la mesure produit λLeb ⊗ c est donnée par
+
+
+                                         1                1
+                            pY,X (y, x) = p1 (x)1{1} (y) + p0 (x)1{0} (y)
+                                         2                2
+
+
+
+
+                                                                                         Page 18
+Ecole Polytechnique, promotion 2025                                    PC-8 Cours APM 41033 EP
+
+
+     Dans ce cas, la fonction de régression via la formule de Bayes est donnée par :
+                                                                pY,X (1, x)
+                               η(x) = P ( Y = 1 | X = x) =
+                                                                  pX (x)
+                                                1
+                                                2 p1 (x)
+                                     = 1              1
+                                         2 p1 (x) + 2 p−1 (x)
+                                              p1 (x)
+                                     =
+                                         p−1 (x) + p1 (x)
+
+     p1 est non nulle sur [1, 4] et p−1 est non nulle sur [0, 2]. Par suite, p−1 + p1 est non nulle
+     sur [0, 4].
+     Il vient que p1 /(p−1 + p1 ) est définie sur [0, 4] et est non nulle sur [1, 4]. On a
+
+                                         ∀x ∈ [0, 1]     η(x) = 0.
+
+     Si 1 < x ≤ 2, on a p−1 (x) = 12 tandis que p1 (x) = 1/3. Ainsi :
+                                                             1
+                                                                  2
+                                  ∀x ∈ [0, 1]       η(x) = 1 3 1 = .
+                                                           2 + 3
+                                                                  5
+
+     Enfin, si 2 < x ≤ 4, on a p1 (x) = 31 tandis que p−1 (x) = 0. Par conséquent :
+
+                                         ∀x ∈ [0, 1]     η(x) = 1.
+
+     En résumé, pour x ∈ [0, 4], la fonction de régression est donc donnée par
+                                             
+                                             0
+                                                     si 0 ≤ x ≤ 1
+                                     η(x) = 2/5 si 1 < x ≤ 2
+                                             
+                                               1      si 2 < x ≤ 4
+                                             
+
+     .
+  3. Le classifieur Bayésien est défini par
+
+                                         g ⋆ (x) = 21{η(x)≥1/2} − 1.
+
+     En utilisant la question précédente, on obtient :
+
+                                          g ⋆ (x) = 21{2<x≤4} − 1.
+
+     On peut alors calculer le risque associé à ce classifieur (optimal) :
+
+               R(g ⋆ ) = P (Y ̸= g ⋆ (X))
+                      = P (Y = 1, g ⋆ (X) = −1) + P (Y = −1, g ⋆ (X) = 1)
+                      = P (Y = 1, X < 2) + P (Y = −1, X > 2)
+                      = P (Y = 1) P (X < 2 |Y = 1) + P (Y = −1) P (X > 2 |Y = −1)
+                        1 1
+                      = × +0
+                        2 3
+                        1
+                      = .
+                        6
+     où on a utilisé la formule de Bayes pour la quatrième égalité.
+
+                                                                                          Page 19
+Ecole Polytechnique, promotion 2025                              PC-8 Cours APM 41033 EP
+
+
+  4. On considère la règle de classification g(x) = 21{x≥1} − 1. On rappelle la formule du
+     cours pour l’excès de risque
+
+     R(g)−R(g ⋆ ) = E |2η(X) − 1| 1{g⋆ (X)̸=g(X)} . = E (2η(X) − 1) 1{g⋆ (X)=1} − 1{g(X)=1} .
+                                                                                          
+
+
+     On a donc
+
+                         R(g) − R(g ⋆ ) = E[(2η(X) − 1) 1{X>2} − 1{X≥1} ]
+                                                                       
+
+                                         = E[(1 − 2η(X)) 1{1≤X≤2} ]
+                                                       
+                                               1             P (1 ≤ X ≤ 2)
+                                         = E 1{1≤X≤2} =
+                                               5                    5
+                                           1
+                                         = (P(X ≤ 2) − P(X < 1))
+                                           5
+                                            1
+                                         = .
+                                           12
+     où la dernière égalité est déduite de la question 1.
+
+
+
+
+                                                                                   Page 20
+Ecole Polytechnique, promotion 2025                                               PC-8 Cours APM 41033 EP
+
+
+1.6   Exercice 6
+  1. Soient (x′ , y ′ ) ∈ R×{−1, 1}. Par la formule des probabilités totales et comme 1{y′ =−1} +
+     1{y′ =1} = 1, on a
+                                               
+      R(g(x′ ,y′ ) ) = P Y ̸= g(x′ ,y′ ) (X)
+                                                                                                  
+                  = P (Y = −1) P g(x′ ,y′ ) (X) = 1 |Y = −1 + P (Y = 1) P g(x′ ,y′ ) (X) = 0 |Y = 1
+                  = (1 − p) 1{y′ =−1} P(X > x′ |Y = −1) + 1{y′ =1} P(X ≤ x′ |Y = −1)
+                                                                                        
+
+                  + p 1{y′ =−1} P(X ≤ x′ |Y = 1) + 1{y′ =1} P(X > x′ |Y = 1) .
+                                                                            
+
+
+      En distinguant selon les deux valeurs possibles de y ′ , nous obtenons
+
+                                  R(g(x′ ,0) ) = (1 − p)(1 − F0 (x′ )) + pF1 (x′ )
+                                  R(g(x′ ,1) ) = (1 − p)F0 (x′ ) + p(1 − F1 (x′ )).
+
+      On obtient bien l’expression demandée.
+  2. On a en particulier
+                                                                              
+                              R ≤ lim              R(g(x′ ,0) ) ∧ R(g(x′ ,1) ) = (1 − p) ∧ p.
+                                    x→−∞
+
+      On a bien R ≤ 1/2 en notant que
+
+                             (1 − p) ∧ p = 1 − p ⇐⇒ p ≥ 1/2 ⇐⇒ 1 − p ≤ 1/2,
+                             (1 − p) ∧ p = p ⇐⇒ p ≤ 1/2 ⇐⇒ p ≤ 1/2.
+
+  3. Par définition du risque bayésien, on a toujours R⋆ ≤ R(g(x′ ,y′ ) ) pour tout x′ , y ′ ; et
+     donc R⋆ ≤ R. Puisque R ≤ 1/2, il vient que si R⋆ = 1/2 alors R = 1/2.
+     Réciproquement, supposons que R = 1/2. Alors 1/2 ≤ p ∧ (1 − p) ≤ 1/2 d’après la
+     question 2 ; ce qui entraine p = 1 − p = 1/2. On en déduit, en utilisant la question 1
+     que pour tout x′ ∈ R,
+
+                     F1 (x′ ) + (1 − F0 (x′ )) ≥ 1             et     (1 − F1 (x′ )) + F0 (x′ ) ≥ 1.
+
+      En particulier F1 (x′ ) − F0 (x′ )) ≥ 0 d’après la première inégalité et F1 (x′ ) − F0 (x′ )) ≤ 0
+      d’après la seconde, donc F1 = F0 et donc X et Y sont indépendants. La règle optimale
+      (classifieur Bayésien) g ⋆ est telle que R (g ⋆ ) = 1/2 ssi η(X) := E [ Y | X] = 1/2 P − p.s.
+      (voir Exercice 2, question 1). Ici E [ Y | X] = EY = p = 1/2 donc R⋆ = 1/2.
+  4. Notons Ax := (1 − p)(1 − F0 (x)) + pF1 (x) et Bx := p(1 − F1 (x)) + (1 − p)F0 (x). Alors
+     R = minx (Ax ∧ Bx ). Par ailleurs, observons que
+                                                                               
+              1                                                   1 1
+                − sup |pF1 (x) − (1 − p)F0 (x) − p + 1/2| = inf    − |1 − 2Bx | ;
+              2    x                                         x    2 2
+
+      Il suffit donc de montrer que
+                                           1 1
+                                            − |1 − 2Bx | = Ax ∧ Bx
+                                           2 2
+
+
+                                                                                                       Page 21
+Ecole Polytechnique, promotion 2025                             PC-8 Cours APM 41033 EP
+
+
+     en exploitant le fait que Ax + Bx = 1. Par un calcul analogue à la fin de la correction
+     de la question 1 exercice 2, nous avons
+      1 1             1 1
+       − |1 − 2Bx | = − |Ax − Bx |
+      2 2             2 2
+                      1 1                          1
+                    = − (Ax − Bx ) 1{Ax >Bx } + (Ax − Bx ) 1{Ax ≤Bx }
+                      2 2                          2
+                      1 1
+                    = − (Ax − Bx ) + (Ax − Bx )1{Ax ≤Bx }
+                      2 2
+                    = Bx + (Ax − Bx )1{Ax ≤Bx } = Ax 1{Ax ≤Bx } + Bx 1{Ax >Bx } = Ax ∧ Bx .
+
+
+
+
+                                                                                     Page 22
+Ecole Polytechnique, promotion 2025                                 PC-8 Cours APM 41033 EP
+
+
+1.7   Exercice 7
+  1. Ecrivons
+
+          P(g(X) ̸= Y ) = P(g(X) ̸= Y, Y = g ∗ (X)) + P(g(X) ̸= Y, Y ̸= g ∗ (X))
+                         = P(g(X) ̸= g ∗ (X), Y = g ∗ (X)) + P(g(X) = g ∗ (X), Y ̸= g ∗ (X)) .
+
+      On en déduit
+
+      P(g(X) ̸= Y )−P(g ∗ (X) ̸= Y ) = P(g(X) ̸= g ∗ (X), Y = g ∗ (X))−P(g(X) ̸= g ∗ (X), Y ̸= g ∗ (X)) .
+
+      En conditionnant par rapport à X, il vient
+
+      P(g(X) ̸= Y ) − P(g ∗ (X) ̸= Y ) = E 1{g(X)̸=g∗ (X)} P(Y = g ∗ (X)|X) − E 1{g(X)̸=g∗ (X)} P(Y ̸= g ∗ (X)|X)
+                                                                                                               
+
+                                       = E 1{g(X)̸=g∗ (X)} {1{g⋆ (X)=1} η ⋆ (X) + 1{g⋆ (X)=−1} (1 − η ⋆ (X))}
+                                                                                                             
+
+                                       − E 1{g(X)̸=g∗ (X)} {1{g⋆ (X)=1} (1 − η ⋆ (X)) + 1{g⋆ (X)=−1} η ⋆ (X)}
+                                                                                                             
+
+                                       = E 1{g(X)̸=g∗ (X)} 1{g⋆ (X)=1} (2η ⋆ (X) − 1)
+                                                                                     
+
+                                       + E 1{g(X)̸=g∗ (X)} 1{g⋆ (X)=−1} (1 − 2η ⋆ (X)) .
+                                                                                       
+
+
+      Ce qui conclut la preuve.
+  2. On a
+
+                       1{g(X)̸=g∗ (X)} = 1{η(X)<1/2≤η∗ (X)} + 1{η(X)≥1/2>η∗ (X)}
+                                       ⩽ 1{|η∗ (X)−1/2|≤|η∗ (X)−η(X)|} .
+
+      Ce qui donne le résultat en utilisant la question précédente.
+
+
+
+
+                                                                                         Page 23
+
