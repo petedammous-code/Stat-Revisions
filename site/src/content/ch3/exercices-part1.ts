@@ -112,7 +112,7 @@ export const exercisesPart1: Exercise[] = [
       { text: 'Il est **efficace** : sa covariance $\\sigma^2(Z^\\top Z)^{-1}$ égale $\\mathbb{I}(\\beta)^{-1}$, donc il est de variance minimale (E.S.B.V.M.).', correct: true, explanation: 'Exact : $\\mathbb{I}(\\beta)=Z^\\top Z/\\sigma^2$ (PC3 Ex. 2 Q1) et $\\hat\\beta\\sim\\mathcal{N}(\\beta,\\sigma^2(Z^\\top Z)^{-1})$ : Cor. 1.2 avec égalité. C’est aussi le BLUE (meilleur linéaire sans biais, Gauss-Markov).' },
       { text: 'Il est biaisé, donc la borne ne s’applique pas.', correct: false, explanation: 'Faux : $\\mathbb{E}[\\hat\\beta]=(Z^\\top Z)^{-1}Z^\\top Z\\beta=\\beta$ ; il est sans biais.' },
       { text: 'Il est le meilleur parmi les estimateurs linéaires sans biais, mais pas au-delà.', correct: false, explanation: 'Incomplet donc faux ici : c’est vrai sans hypothèse gaussienne (Gauss-Markov) ; dans le cas **gaussien**, il atteint la borne de Cramér-Rao et domine **tous** les sans biais réguliers.' },
-      { text: 'Il est admissible pour le risque quadratique puisqu’il est efficace.', correct: false, explanation: 'Faux : efficace $\\ne$ admissible ; un estimateur biaisé (rétréci) peut le battre (cf. PC3 Ex. 5, $\\frac1{n+1}\\sum X_i$ bat $\\bar X_n$).' },
+      { text: 'Il est admissible pour le risque quadratique puisqu’il est efficace.', correct: false, explanation: 'Faux : la déduction est invalide, efficace $\\ne$ admissible (PC3 Ex. 5 : $\\bar X_n$ est efficace mais dominé par l’estimateur biaisé $\\frac1{n+1}\\sum X_i$). Ici même, pour $\\beta$ de dimension $\\ge3$, $\\hat\\beta$ est inadmissible pour la perte quadratique (estimateur de James-Stein, hors programme).' },
     ],
   },
   {
@@ -350,7 +350,7 @@ export const exercisesPart1: Exercise[] = [
     prompt: 'Raisonnement d’un étudiant dans $\\mathcal{U}([0,\\theta])$. Trouver la ligne fausse.',
     lines: [
       'Pour $0\\le x\\le\\theta$, $\\ell(\\theta,x)=-\\log\\theta$, donc $\\partial_\\theta\\ell(\\theta,x)=-1/\\theta$.',
-      'Le carré du score vaut $1/\\theta^2$, d’où « $\\mathbb{I}_1(\\theta)=1/\\theta^2$ ».',
+      'Formellement, $\\mathbb{E}_\\theta[(\\partial_\\theta\\ell(\\theta,X))^2]=1/\\theta^2$ : on note « $\\mathbb{I}_1(\\theta)=1/\\theta^2$ ».',
       'Par le Cor. 1.3, tout estimateur sans biais de $\\theta$ a une variance $\\ge\\theta^2/n$.',
       'Or $\\frac{n+1}nX_{n:n}$ est sans biais de variance $\\frac{\\theta^2}{n(n+2)}<\\frac{\\theta^2}n$.',
     ],

@@ -26,7 +26,7 @@ export const monteCarlo: MonteCarloCheck[] = [
         const sh = ss / n
         d += (s2 - 1) * (s2 - 1) - (sh - 1) * (sh - 1)
       }
-      // écart-type MC ≈ 0,085/√R ≈ 0,0006 (méthode-δ sur D = (19/81)V² − (2/9)V)
+      // écart-type MC ≈ 0,14/√R ≈ 0,001 (D = (19/8100)V² − V/45 avec V ~ χ²(9)) : tolérance ≈ 3 écarts-types
       return { observed: d / R, expected: 29 / 900, tolerance: 0.003 }
     },
   },

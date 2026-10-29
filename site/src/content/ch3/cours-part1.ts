@@ -231,7 +231,7 @@ Biais$^2$ et variance varient en sens opposés avec $\\gamma$ ; le $\\gamma$ opt
         kind: 'viz',
         id: 'ch3-s3-viz-bv',
         vizId: 'ch3-biais-variance',
-        caption: 'Choisir la famille ($c\\sum_i(X_i-\\bar X_n)^2$ en gaussien, $aX_{n:n}$ en uniforme, $\\gamma\\bar X_n$) et le coefficient : l’histogramme montre biais et dispersion, les barres $\\text{biais}^2+\\text{variance}=$ risque calculés sur $2000$ répétitions.',
+        caption: 'Choisir la famille ($c\\,S_n^2$ en gaussien, $aX_{n:n}$ en uniforme, $\\gamma\\bar X_n$) et le coefficient : l’histogramme montre biais et dispersion, les barres $\\text{biais}^2+\\text{variance}=$ risque calculés sur $2000$ répétitions.',
       },
       {
         kind: 'example',
