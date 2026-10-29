@@ -68,7 +68,7 @@ export const summarySheet: SummarySheet = {
     '**TCL** : hypothèse = moment d’ordre 2 ; pour la variance empirique ou le vecteur $(X_i,X_i^2)$ : moment d’ordre 4.',
     '**Slutsky** exige une limite **constante** pour l’un des deux termes ; la convergence en loi des marginales n’entraîne pas celle du couple ($Y_n=(-1)^nX_n$).',
     '**Méthode-δ** : dérivée évaluée **au point limite** de la moyenne empirique ($1/\\theta$, $2/\\theta$, $2/\\theta^2$…), pas en $\\theta$ ; ne pas oublier le **carré** ; cas $\\dot g=0$ dégénéré (échelle $n$, $\\chi^2$).',
-    '**Variance asymptotique $v(\\theta)$** = variance de la loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$, pas $\\mathrm{Var}(\\hat\\theta_n)\\approx v/n$ ; $v_{EMV}=1/\\mathbb{I}(\\theta)$ avec $I$ l’information d’**une** observation.',
+    '**Variance asymptotique $v(\\theta)$** = variance de la loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$, pas $\\mathrm{Var}(\\hat\\theta_n)\\approx v/n$ ; $v_{EMV}=1/\\mathbb{I}(\\theta)$ avec $\\mathbb{I}$ l’information d’**une** observation.',
     '**IC** : écart-type $\\sqrt{v/n}$ (pas la variance) ; dire « niveau **asymptotique** » ; la probabilité porte sur l’intervalle, pas sur $\\theta$ ; couverture à $n$ fini non garantie (Wald dégénéré si $\\bar X_n=0$).',
     '**Consistance vs sans biais asymptotique** : aucune implication ; **normalité asymptotique $\\Rightarrow$ consistance** (facteur $1/\\sqrt n$).',
     '**Méthode des moments à deux paramètres** : méthode-δ **vectorielle** (jacobienne) avec le terme croisé $\\Sigma_{12}$.',

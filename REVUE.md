@@ -264,10 +264,16 @@ Correction des 27 constats de l’audit transversal (couverture des annales, not
 - [Corrigé] F11 — $X_{n:n}$, $X_{1:n}$ ajoutés à `Xkn` (ch.2) et enregistrés aux ch.3, 4, 5 ; **pas** au ch.9, où $X_{1:n}$ est le design (constat partiellement inexact sur ce point).
 - [Corrigé] F12 — $\alpha$ paramètre de Pareto (ch.7, 3 occurrences) et de Weibull (ch.2, 2 occurrences) écrit `\alpha{}`.
 - [Corrigé] F13 — ch.8 : conflit $X_{(n)}$ (plus proche voisin) / statistique d’ordre signalé dans le cours et dans l’énoncé de l’annale ; la notation vient du CC 2022 Ex. 5, pas de l’Examen 2025 (source rectifiée).
-- [Corrigé] F14 — viz lois usuelles (ch.1) : « EMV $X_{(n)}$ (ch.2, Ex. 1.11 ; sa loi : Ex. 1.13) ».
+- [Corrigé] F14 — viz lois usuelles (ch.1) : « EMV $X_{(n)}$ (ch.2, Ex. 1.11 ; sa loi : ch.1, Ex. 1.13) ».
 - [Corrigé] COV-6 — CC 2022 Ex. 3 Q8 (bonus) devient une vraie question dans `ch4-annale-cc2022-ex3-translatee` (indice, correction par la fonction de survie, barème 0,5).
 - [Corrigé] socle-associer-clavier — puces et cases `tabIndex=0`, `role="button"`, `aria-label`, Entrée/Espace, focus restitué après rendu ; test ajouté.
 - [Corrigé] socle-numerique-affichage-flottant — valeur attendue et tolérance formatées (`formatWithTolerance`, virgule décimale) ; tests ajoutés.
 - [Corrigé] socle-ordonner-cibles-petites — `.btn-mini` ≥ 28×28 px, 40×36 px sous `pointer: coarse`, espacement 4–6 px (mesuré : 40×36 px à 390 px).
 - [Rejeté] Aucun constat rejeté en bloc ; deux distracteurs proposés par l’audit (COV-1 « exposant $1/d$ », COV-2 « Cochran ») ont été écartés car mathématiquement justes (voir DECISIONS, passe finale §8).
 - [Reporté] Rien.
+
+### Contrôle de la passe de cohérence finale
+
+- [Corrigé] ch.6 fiche (piège « variance asymptotique ») : un $I$ résiduel écrit $\mathbb{I}$ (oubli de F10).
+- [Corrigé] ch.1 viz lois usuelles : « sa loi : ch.1, Ex. 1.13 » (sans le « ch.1 », le renvoi se lisait comme ch.2 Ex. 1.13, le modèle de Laplace).
+- [Corrigé] `ch9-etape-2025-q6-q7`, étape 2 : $F_x$ n’est strictement croissante que si le support est connexe ; l’explication mentionne maintenant l’inverse généralisée (paliers de probabilité nulle pour $\mathfrak R_k(x)$). Conclusion : Jensen avec $u\mapsto u^{2/d}$ concave précisé « pour $d\ge2$ ».

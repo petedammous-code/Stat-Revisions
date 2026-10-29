@@ -99,7 +99,7 @@ export const exercisesPart2: Exercise[] = [
       {
         prompt: 'Étape 2 (Q6) — Loi de $U_k(x)=F_x(\\mathfrak R_k(x))$ :',
         choices: [
-          { text: '$\\mathrm{Beta}(k,n-k+1)$, d’espérance $\\frac k{n+1}$ : $\\mathbb P_n(U_k\\le u)=\\mathbb P_n(\\mathfrak R_k\\le F_x^{-1}(u))=\\mathbb P(\\mathrm{Bin}(n,u)\\ge k)$', correct: true, explanation: '$F_x$ est continue ($X$ a une densité) et strictement croissante tant qu’elle est $<1$ (densité minorée par $c_->0$ sur le support, (H2)), d’où l’équivalence $U_k\\le u\\iff\\mathfrak R_k\\le F_x^{-1}(u)$ ; on applique l’étape 1 en $t=F_x^{-1}(u)$, où $F_x(t)=u$, puis le rappel. C’est l’analogue de $F(X_{(k)})\\sim\\mathrm{Beta}(k,n-k+1)$ (ch.1).' },
+          { text: '$\\mathrm{Beta}(k,n-k+1)$, d’espérance $\\frac k{n+1}$ : $\\mathbb P_n(U_k\\le u)=\\mathbb P_n(\\mathfrak R_k\\le F_x^{-1}(u))=\\mathbb P(\\mathrm{Bin}(n,u)\\ge k)$', correct: true, explanation: '$F_x$ est continue ($X$ a une densité) et strictement croissante tant qu’elle est $<1$ lorsque le support est connexe (densité minorée par $c_->0$ sur le support, (H2)) ; sinon $F_x$ peut avoir des paliers, on prend l’inverse généralisée et les paliers sont de probabilité nulle pour $\\mathfrak R_k(x)$. D’où l’équivalence (p.s.) $U_k\\le u\\iff\\mathfrak R_k\\le F_x^{-1}(u)$ ; on applique l’étape 1 en $t=F_x^{-1}(u)$, où $F_x(t)=u$, puis le rappel. C’est l’analogue de $F(X_{(k)})\\sim\\mathrm{Beta}(k,n-k+1)$ (ch.1).' },
           { text: '$\\mathrm{Beta}(n-k+1,k)$, d’espérance $\\frac{n-k+1}{n+1}$', correct: false, explanation: 'Paramètres inversés : pour $k=1$ (plus proche voisin), $U_1$ doit être petit (espérance $\\frac1{n+1}$), pas proche de $1$.' },
           { text: '$\\mathcal U([0,1])$, comme $F(X_1)$', correct: false, explanation: '$F(X_1)$ est uniforme pour **une** observation ; $U_k$ est la $k$-ième plus petite des $n$ valeurs i.i.d. uniformes $F_x(\\|X_i-x\\|)$ : elle se concentre autour de $\\frac k{n+1}$.' },
           { text: '$\\mathrm{Bin}(n,u)$', correct: false, explanation: 'La binomiale est la loi de $N_t$, qui sert au calcul ; $U_k$ est à valeurs dans $[0,1]$ et a une densité.' },
@@ -123,7 +123,7 @@ export const exercisesPart2: Exercise[] = [
         ],
       },
     ],
-    conclusion: 'Résultat de la Q7 : $\\frac{1}{c_+v_d}\\frac{k}{n+1}\\le\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{1}{c_-v_d}\\frac{k}{n+1}$, au bord près. C’est l’entrée admise de l’exercice « Examen 2025 Q8 — décomposition biais / variance » ci-dessous, où l’on passe de $\\mathbb E[\\mathfrak R_k^d]$ à $\\mathbb E[\\mathfrak R_k^2]$ par Jensen avec $u\\mapsto u^{2/d}$ concave.',
+    conclusion: 'Résultat de la Q7 : $\\frac{1}{c_+v_d}\\frac{k}{n+1}\\le\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{1}{c_-v_d}\\frac{k}{n+1}$, au bord près. C’est l’entrée admise de l’exercice « Examen 2025 Q8 — décomposition biais / variance » ci-dessous, où l’on passe de $\\mathbb E[\\mathfrak R_k^d]$ à $\\mathbb E[\\mathfrak R_k^2]$ par Jensen avec $u\\mapsto u^{2/d}$ concave (pour $d\\ge2$).',
   },
   {
     id: 'ch9-etape-2025-q8',
