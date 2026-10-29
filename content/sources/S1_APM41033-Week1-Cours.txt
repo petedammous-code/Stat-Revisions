@@ -1,0 +1,916 @@
+Chapitre 1
+
+Modèles statistiques
+
+   L’objectif de ce chapitre est d’introduire la notion de modèle statistique. Les
+   concepts principaux abordés incluent les observations, le modèle statistique,
+   l’identifiabilité, la notion de statistique, le modèle statistique induit, le modèle
+   statistique dominé, et le n-échantillon. On construit également de premiers
+   estimateurs élémentaires.
+   La partie principale du chapitre suit le déroulé du cours. Elle est suivie d’une
+   partie Outils mathématiques, qui rassemble les prérequis utilisés, et d’une par-
+   tie Compléments, hors programme d’examen, qui développe des exemples sup-
+   plémentaires (données censurées, sondage sans remise, régression logistique,
+   modèles non dominés).
+
+
+Qu’est-ce qu’un modèle ?
+    Moralement, un modèle statistique est une description mathématique simplifiée d’un phénomène
+aléatoire réel. Il sert de pont entre le monde des données, que l’on observe, et celui des lois de
+probabilité, qui représentent nos hypothèses sur la manière dont ces données sont produites. En
+choisissant un modèle, on fixe un cadre théorique dans lequel on pourra raisonner, estimer des
+grandeurs inconnues, prédire de nouvelles observations ou tester des hypothèses. Comme toute
+simplification, un modèle ne capture pas toute la réalité, mais en retient les aspects jugés essentiels
+pour répondre à une question précise.
+    Un modèle statistique est donc une hypothèse mathématiquement formalisée sur le mécanisme
+aléatoire ayant généré les données. Mathématiquement, nous verrons qu’il correspond à définir un
+espace d’observations et une famille de lois de probabilité candidates, servant de cadre à l’inférence
+statistique.
+
+
+
+
+                                                   7
+8                                                       CHAPITRE 1. MODÈLES STATISTIQUES
+
+1      Les fondamentaux
+1.1     Introduction : la démarche statistique
+    La statistique est l’étude de la collecte, de la modélisation et du traitement des données. Ses ap-
+plications couvrent aujourd’hui un champ immense : médecine et santé (épidémiologie, génomique,
+médecine de précision), sciences de l’environnement (pollution, météorologie, climat), assurance et
+finance (modélisation d’actifs, calcul de risques), apprentissage statistique et traitement du signal
+(reconnaissance de la parole, vision par ordinateur, traduction automatique), marketing (systèmes
+de recommandation, scoring). Dans tous ces exemples avancés, les données observables sont com-
+plexes. Pour dégager les idées fondamentales, commençons par des questions plus simples :
+   1. Quelle est la probabilité qu’une pièce retombe sur « pile » ? Les pièces de 1 centime sont-elles
+      biaisées ?
+   2. Quelle est la taille moyenne d’une personne dans une salle de cours ? Les élèves de Polytech-
+      nique sont-ils plus grands que la moyenne ?
+   3. Quelle proportion des élèves de deuxième année a déjà utilisé un modèle d’IA pour faire un
+      devoir ?
+Apporter une réponse à ces questions demande de les reformuler dans un langage mathématique,
+puis de collecter, modéliser et analyser des données.
+    Le point de départ est donc un jeu de données (x1 , . . . , xn ). Celles-ci peuvent être numériques
+– scalaires, vectorielles (xi ∈ Rd ), matricielles (xi ∈ Rp×q ) – ou symboliques (labels, catégories,
+par exemple xi ∈ {0, 1}), mais aussi plus structurées : graphes, séries chronologiques, fonctions,
+textes, images, etc.
+
+1.2     Modélisation statistique
+     La démarche de modélisation repose sur deux étapes.
+    1. Nous modélisons les observations comme des réalisations de variables aléatoires :
+
+         Données = réalisation d’un élément aléatoire Z = (X1 , . . . , Xn ) ,   Z(ω) = (x1 , . . . , xn ) ,
+
+       où (X1 , . . . , Xn ) sont des variables aléatoires définies sur un espace probabilisé (Ω, A, P)
+       (toujours omis dans la suite), à valeurs dans un espace mesurable (Z, Z), dit espace des
+       observations.
+    2. Nous modélisons la loi de ces variables aléatoires : la loi du vecteur Z = (X1 , . . . , Xn ) est
+       partiellement connue, c’est un élément d’une famille C de lois de probabilité.
+
+     Définition 1.1: Modèle statistique
+    Un modèle statistique est la donnée de :
+      — un espace mesurable (Z, Z), dit l’espace des observations,
+      — une famille de probabilités C sur (Z, Z).
+    Nous notons (Z, Z, C) le modèle statistique.
+    Le modèle est dit paramétrique lorsque C correspond à une famille {Pθ , θ ∈ Θ}, où Θ est
+    un sous-ensemble de Rd , avec d ≥ 1 ; i.e., il existe une fonction associant à chaque θ ∈ Θ
+    un élément Pθ de C. Le paramètre θ est alors de dimension finie, pour une paramétrisation
+    naturelle du modèle. Il est dit non paramétrique lorsqu’il ne se décrit pas par un nombre fini
+    de paramètres réels (par exemple, l’ensemble de toutes les lois à densité continue sur R).
+
+
+    Remarque. Lorsque l’espace des observations (Z, Z) est clair d’après le contexte, on pourra,
+    par abus de langage, appeler « modèle statistique » la seule famille de lois C ; on parlera ainsi
+    du modèle {Pθ , θ ∈ Θ} sans rappeler l’espace mesurable sur lequel ces lois sont définies.
+1. LES FONDAMENTAUX                                                                                   9
+
+  Exemple 1.1: Pile ou face
+ On observe le nombre de « piles » issus de n lancers d’une pièce. On observe une unique
+ réalisation d’une variable aléatoire à valeurs dans {0, . . . , n}, muni de la tribu des parties.
+ En supposant les lancers indépendants, chacun de loi de Bernoulli Ber(θ) pour un θ ∈ [0, 1],
+ l’observation a pour loi Bin(n, θ). Le modèle s’écrit
+
+                       ({0, . . . , n}, P({0, . . . , n}), {Bin(n, θ) , θ ∈ [0, 1]}) .
+
+
+
+  Exemple 1.2: Tailles
+ On observe la taille de n personnes : l’observation est un vecteur de Rn , muni de la tribu
+ borélienne B(Rn ). On modélise la taille par une loi gaussienne de moyenne µ et de variance
+ σ 2 , et les différentes observations par des variables aléatoires indépendantes. Le modèle est
+
+                            Rn , B(Rn ), N (µ1n , σ 2 In ) , µ ∈ R, σ 2 ∈ R∗+
+                                                                             
+                                                                                .
+
+
+
+  Exemple 1.3: Temps d’attente
+ On mesure n temps d’attente, en minutes : l’observation est un vecteur de Rn+ , muni de sa
+ tribu borélienne. Deux situations conduisent à deux modèles différents.
+   1. Des bus à horaire régulier. Les bus partent toutes les θ minutes et l’on arrive à l’arrêt à
+      un instant sans lien avec l’horaire : on modélise le temps d’attente par une loi uniforme
+      sur [0, θ], et les n attentes, observées des jours différents, par des variables aléatoires
+      indépendantes. Le modèle est
+                                                                     
+                                  Rn+ , B(Rn+ ), U ([0, θ])⊗n , θ > 0
+                                                
+                                                                        .
+
+   2. Des clients qui arrivent dans un café. Les arrivées sont dispersées et sans mémoire : le
+      temps qui sépare deux arrivées successives ne dépend pas du temps déjà écoulé depuis
+      la dernière. Cette propriété caractérise la loi exponentielle (Section 2) ; on modélise les n
+      temps entre arrivées successives par des variables aléatoires indépendantes de loi E(λ),
+      où λ > 0 est le nombre moyen d’arrivées par minute. Le modèle est
+                                                                    
+                                   Rn+ , B(Rn+ ), E(λ)⊗n , λ > 0
+                                                 
+                                                                       .
+
+ Dans les deux cas, l’espace des observations et la tribu sont les mêmes ; seule la famille de lois
+ change, et avec elle l’hypothèse faite sur le mécanisme des arrivées. Le second modèle est le
+ point de départ de l’Exercice 1 (PC1).
+
+
+
+  Exemple 1.4: Modèle de sondage
+ Une élection entre deux candidats A et B a lieu : on effectue un sondage à la sortie des urnes
+ en interrogeant n votants. On appelle xi la réponse du i-ème individu sondé : xi = 1 si le i-ème
+ individu sondé vote A et xi = 0 sinon. En considérant que l’expérience consiste en un tirage
+ uniforme de n individus avec replacement dans la population, le modèle statistique associé est
+ donné par                                                          
+                              {0, 1}n , P({0, 1}n ), Ber(θ)⊗n , θ ∈ Θ ,
+                                                    
+
+ où P({0, 1}n ) est l’ensemble des parties de {0, 1}n et Ber(θ)⊗n est le produit de n lois de
+10                                                              CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+  Bernoulli de paramètre θ (voir Section 2), i.e.
+                                                n
+                                                Y                           Pn                    Pn
+              Ber(θ)⊗n ({x1 , . . . , xn }) =         θxi (1 − θ)1−xi = θ    i=1 xi   (1 − θ)n−    i=1 xi   .
+                                                i=1
+
+  Par ce choix de la famille de lois, on exprime que les tirages sont indépendants et le résultat
+  de chaque tirage est une variable de Bernoulli de paramètre θ ∈ Θ. Le cas d’un tirage sans
+  replacement, qui conduit à la loi hypergéométrique, est traité en Section 4.
+
+
+Intuition. Construire un modèle, c’est répondre à trois questions : qu’est-ce que j’observe ? (l’espace
+(Z, Z)), quels mécanismes aléatoires ai-je envisagés ? (la famille C), et que veux-je apprendre ? (la problé-
+matique). Plus la famille C est grande, moins le modèle fait d’hypothèses – mais plus il sera difficile d’en
+extraire une réponse précise.
+
+
+
+     Illustration / animation : Un modèle bien choisi produit des données qui
+     ressemblent aux données réelles
+     L’animation accessible par le QR code ci-contre permet d’ajuster les para-
+     mètres d’un modèle de Bernoulli, gaussien ou exponentiel et de comparer
+     l’échantillon simulé aux données réelles affichées à côté.                                                 link
+
+
+   La plupart des modèles rencontrés dans ce cours s’écrivent sous la forme « pθ · µ » (une densité
+par rapport à une mesure de référence). Cette propriété porte un nom :
+Définition 1 (Famille dominée et modèle statistique dominé). Soient (Z, Z) un espace me-
+surable et µ une mesure σ-finie sur (Z, Z). Une famille de lois C est dominée par la mesure µ si
+toute loi P ∈ C admet une densité de probabilité p par rapport à µ, i.e. P = p · µ.
+   Le modèle statistique (Z, Z, C) est dit dominé lorsque la famille de lois C est dominée.
+
+     Exemple 1.5: Modèles dominés : quelques densités
+  Une loi et sa densité sont deux objets différents : la densité est une
+                                                                      R fonction, la loi est la
+  mesure obtenue en l’intégrant contre la mesure de référence, P(A) = A p dµ. Il faut d’ailleurs
+  toujours préciser par rapport à quelle mesure une loi admet une densité : une densité est
+  définie pour une loi par rapport à une mesure (σ-finie) qui la domine.
+      1. Le modèle gaussien à n observations est dominé par la mesure de Lebesgue Leb⊗n ,
+         avec la densité
+                                                    1 X n           Y n                   (x − µ)2 
+                                                                                               i
+        pµ,σ2 (x1 , . . . , xn ) = (2πσ 2 )−n/2 exp − 2     (xi −µ)2 =     (2πσ 2 )−1/2 exp −           ,
+                                                     2σ i=1            i=1
+                                                                                                2σ 2
+
+        et N (µ, σ 2 )⊗n (A) = A pµ,σ2 dLeb⊗n pour A ∈ B(Rn ) ; ici pµ,σ2 (x) n’est pas une pro-
+                               R
+
+        babilité (la loi d’un singleton est nulle). Les densités des autres lois usuelles du cours
+        (exponentielle, Gamma, uniforme) sont rappelées en Section 2.
+      2. Une observation de Poisson. On observe un comptage X à valeurs dans N (nombre
+         de clients arrivés en une heure, par exemple), modélisé par N, P(N), {Poi(λ) , λ > 0}
+         (voir l’Exercice 1 (PC1)). Le modèle est dominé par la mesure de comptage µ sur N,
+         avec la densité
+                              λk                                                 X
+               pλ (k) = e−λ      ,      de sorte que           Poi(λ)(A) =             pλ (k)   pour A ⊂ N .
+                              k!
+                                                                                 k∈A
+1. LES FONDAMENTAUX                                                                                   11
+
+
+        Ici pλ (k) coïncide avec la probabilité du singleton {k} : c’est propre à la mesure de
+        comptage, et cela ne dispense pas de distinguer la fonction pλ de la loi Poi(λ).
+      3. Le modèle de Bernoulli à n observations est dominé par la mesure de comptage
+         sur {0, 1}n , avec la densité
+                                  P            P                      X
+         pθ (x1 , . . . , xn ) = θ i xi (1−θ)n− i xi , Ber(θ)⊗n (A) =   pθ (x) pour A ⊂ {0, 1}n .
+                                                                       x∈A
+
+
+La mesure de domination n’est jamais unique : si µ domine le modèle, toute mesure σ-finie µ′
+telle que µ ≪ µ′ le domine aussi. Ce choix est sans conséquence pour la statistique, car deux
+densités relatives à deux mesures dominantes diffèrent d’un facteur multiplicatif qui ne dépend
+pas de θ ; ce point, ainsi que des exemples de modèles non dominés, sont discutés en Section 4.
+La modélisation d’arrivées successives (temps exponentiels, comptages poissoniens) est l’objet de
+l’Exercice 1 (PC1).
+
+
+1.3     Objectifs de la statistique
+   À partir des observations, on cherche à affiner notre connaissance de la loi de l’observation.
+Plus spécifiquement, on distingue plusieurs tâches :
+  — estimation ponctuelle : donner une valeur plausible du paramètre θ ;
+  — estimation par région : déterminer un sous-ensemble Θ0 (Z) ⊂ Θ auquel le paramètre θ
+    appartient de façon plausible ;
+  — test : décider si le paramètre θ appartient à un sous-ensemble Θ0 , et évaluer la plausibilité
+    de la décision ;
+  — prédiction : donner une valeur plausible pour une quantité non observée, par exemple
+    prédire la valeur d’une sortie Y à partir d’une entrée X. Le modèle de régression linéaire
+    gaussienne, outil central de prédiction, est l’objet de l’Exercice 4 (PC1).
+Nous étudierons ces différentes tâches au fur et à mesure du cours : l’estimation aux cours 2 et 3,
+les régions de confiance au cours 3, les tests aux cours 4 et 5, et les problèmes de régression, que
+l’on rencontrera aussi bien en statistique qu’en apprentissage.
+
+
+Statistique et probabilités. En probabilités, la loi est supposée connue : étant donnée une loi
+P et un vecteur aléatoire Z, on évalue des quantités de la forme P(f (Z) ≥ c), E[f (Z)], etc. En
+statistique, on résout un problème inverse : étant donnée une réalisation z = (x1 , . . . , xn ) d’un
+élément aléatoire Z = (X1 , . . . , Xn ), on cherche à inférer certaines caractéristiques de la loi de ce
+vecteur.
+
+
+Le modèle comme point de départ. Dans ce cours de statistique mathématique, le modèle
+est le point de départ, et tout ce qui en est déduit est mathématiquement exact. La phrase
+      « on considère le modèle (Z, Z, C) »
+signifie : « on suppose observer une réalisation d’une variable aléatoire Z à valeurs dans Z dont la
+loi est un élément de C ». Par exemple, « on considère le modèle (R+ , B(R+ ), {qλ · Leb, λ > 0}) »
+avec qλ (x) = λe−λx 1R+ (x) signifie que l’on suppose observer X de loi exponentielle de paramètre
+λ, pour un certain λ > 0. On souligne cette hypothèse, et la dépendance dans le paramètre, par
+les notations
+                                           Eθ [·] ,  Pθ (·) ,
+
+qui désignent l’espérance et la probabilité sous l’hypothèse que l’observation suit la loi Pθ .
+12                                                        CHAPITRE 1. MODÈLES STATISTIQUES
+
+Un modèle est une hypothèse. C’est même précisément notre hypothèse de départ pour toute
+la partie mathématique de la statistique. « Tous les modèles sont faux, mais certains sont utiles ! »
+(George Box). En pratique, la pertinence d’une modélisation dépend du contexte : modéliser un
+pile ou face par une loi de Bernoulli, des tailles par une gaussienne, les réponses d’un sondage
+téléphonique par des Bernoulli i.i.d. , ou un temps d’attente par une loi exponentielle, sont des
+simplifications utiles mais discutables (dépendances mécaniques, queues de distribution, biais de
+réponse, non-stationnarité...).
+Intuition. Il faut distinguer deux niveaux : à l’intérieur du modèle, tous les énoncés sont rigoureux ; le
+choix du modèle, lui, est une hypothèse de modélisation, qui peut être inexacte. La conclusion statistique
+sur le monde réel doit donc être prise avec la même précaution que la conclusion de tout modèle physique.
+
+
+
+                        Point d’histoire : George Edward Pelham Box (1919-2013)
+                        Box a fait de la statistique en usine, huit ans au service de recherche d’Imperial
+                        Chemical Industries, avant de fonder en 1960 le département de statistique du
+                        Wisconsin. La formule citée ci-dessus revient dans ses écrits à partir de 1976 et
+                        prend sa forme proverbiale, « all models are wrong, but some are useful », dans
+                        l’ouvrage qu’il publie en 1987 avec Norman Draper. Ce n’est pas une boutade :
+                        un modèle se juge à l’usage qu’on en fait.
+                        Portrait : DavidMCEddy, Wikimedia Commons, CC BY-SA 3.0.
+
+
+
+
+1.4     Identifiabilité
+Définition 2 (Identifiabilité). Soit un modèle paramétrique (Z, Z, {Pθ , θ ∈ Θ}). Le modèle est
+identifiable si la fonction θ 7→ Pθ est injective, i.e. si Pθ = Pθ′ implique θ = θ′ .
+
+   L’identifiabilité signifie que la connaissance complète de la loi Pθ permet d’identifier de fa-
+çon unique θ. C’est donc une propriété minimale pour pouvoir espérer retrouver θ à partir des
+observations.
+
+     Exemple 1.6: Les modèles rencontrés jusqu’ici sont identifiables
+  Les modèles paramétriques rencontrés jusqu’ici sont tous identifiables, à savoir :
+      1. le modèle du pile ou face ({0, . . . , n}, P({0, . . . , n}), {Bin(n, θ) , θ ∈ [0, 1]}), le nombre
+         de lancers n ≥ 1 étant fixé ;
+      2. le modèle des tailles Rn , B(Rn ), N (µ1n , σ 2 In ) , (µ, σ 2 ) ∈ R × R+ , où l’on autorise
+                                                                                       
+
+         σ 2 = 0 avec la convention N (µ1n , 0) = δµ1n , masse de Dirac au point µ1n (toutes les
+         tailles sont alors égales à µ) ;
+      3. le modèle de sondage avec remise ({0, 1}n , P({0, 1}n ), {Ber(θ)⊗n , θ ∈ [0, 1]}) ;
+      4. le modèle exponentiel du temps d’attente (R+ , B(R+ ), {qλ · Leb , λ > 0}), où qλ (x) =
+         λe−λx 1R+ (x).
+  Dans chaque cas, il s’agit de vérifier que la connaissance de la loi Pθ détermine la valeur
+  du paramètre, autrement dit que deux valeurs distinctes du paramètre donnent deux lois
+  distinctes.
+
+     Démonstration
+  On montre dans chaque cas que le paramètre s’exprime en fonction de la loi Pθ , ce qui entraîne
+  l’injectivité de θ 7→ Pθ .
+      1. Pile ou face. Pour θ ∈ [0, 1], la formule Bin(n, θ)({k}) = nk θk (1 − θ)n−k donne, pour
+                                                                      
+
+         k = n, la probabilité d’obtenir n piles : Bin(n, θ)({n}) = θn . Si Bin(n, θ) = Bin(n, θ′ ),
+1. LES FONDAMENTAUX                                                                                             13
+
+
+         alors θn = θ′n , donc θ = θ′ , l’application t 7→ tn étant strictement croissante, donc
+         injective, sur [0, 1].
+      2. Tailles. Une loi de probabilité sur Rn admettant un moment d’ordre deux détermine
+         son vecteur espérance et sa matrice de covariance. Pour (µ, σ 2 ) ∈ R × R+ , la loi
+         N (µ1n , σ 2 In ) a pour vecteur espérance µ1n et pour matrice de covariance σ 2 In : ce
+         sont les paramètres qui la définissent, et c’est encore vrai pour σ 2 = 0, la masse de
+         Dirac δµ1n ayant pour espérance µ1n et pour matrice de covariance la matrice nulle.
+                                              2                                       2
+         Si N (µ1n , σ 2 In ) = N (µ′ 1n , σ ′ In ), alors µ1n = µ′ 1n et σ 2 In = σ ′ In , d’où µ = µ′ et
+                   2
+         σ 2 = σ ′ . L’application (µ, σ 2 ) 7→ N (µ1n , σ 2 In ) est donc injective sur R × R+ , et a
+         fortiori sur R × R∗+ .
+      3. Sondage avec remise. D’après l’expression de Ber(θ)⊗n , la probabilité que les n per-
+         sonnes interrogées votent toutes pour A vaut Ber(θ)⊗n ({(1, . . . , 1)}) = θn . Si Ber(θ)⊗n =
+         Ber(θ′ )⊗n , alors θn = θ′n , et l’on conclut comme au premier point.
+                                                                                     R +∞
+      4. Temps d’attente. Pour λ > 0, la loi Pλ = qλ · Leb vérifie Pλ ([1, +∞[) = 1 λe−λx dx =
+                                               ′
+         e−λ . Si Pλ = Pλ′ , alors e−λ = e−λ , donc λ = λ′ par injectivité de l’exponentielle.
+                                                                                                                □
+
+   Exemple 1.7: Mélange gaussien
+  Les modèles de l’exemple précédent sont identifiables ; voici un exemple qui ne l’est pas. Soit
+  σ 2 > 0 connu. Considérons le modèle de mélange gaussien sur R dont les lois ont pour densité
+  par rapport à Leb
+
+               pπ,µ1 ,µ2 = π pN (µ1 ,σ2 ) + (1 − π) pN (µ2 ,σ2 ) ,       (π, µ1 , µ2 ) ∈ [0, 1] × R2 ,
+
+  où π est la proportion de la première composante et µ1 , µ2 les moyennes. Ce modèle n’est pas
+  identifiable : en échangeant les rôles des deux composantes,
+
+                                             pπ,µ1 ,µ2 = p1−π,µ2 ,µ1 .
+
+  On peut rendre le modèle identifiable en restreignant l’espace des paramètres, par exemple en
+  imposant µ1 < µ2 (et π ∈ ]0, 1[, µ1 ≤ µ2 avec conventions au bord à préciser). L’identifiabilité
+  des modèles de mélange gaussien et poissonien, une fois cette restriction faite, est démontrée
+  dans l’Exercice 7 (PC1).
+
+
+
+
+    Illustration / animation : Deux jeux de paramètres opposés produisent
+    exactement la même densité de mélange
+    Vous pouvez observer ici, pour un mélange de deux gaussiennes, comment les
+    paramètres (π, µ1 , µ2 ) et (1 − π, µ2 , µ1 ) produisent la même densité.                            link
+
+
+
+1.5     Statistiques
+    Étant données des observations, il est possible d’en effectuer des transformations : calculer leur
+moyenne, ne retenir que la plus grande, les compter, etc. Une statistique est une telle transforma-
+tion, c’est-à-dire une fonction des observations seules, dans laquelle n’interviennent ni le paramètre
+ni la loi inconnue.
+Définition 3 (Statistique). Soient (Z, Z, C) un modèle statistique et (T, T ) un espace mesu-
+rable. On appelle statistique sur le modèle statistique (Z, Z, C) une application mesurable T de
+(Z, Z) à valeurs dans (T, T ).
+14                                                         CHAPITRE 1. MODÈLES STATISTIQUES
+
+Remarquons, et cela est très important, que T ne dépend pas de la loi P ∈ C et donc ne dépend
+pas du paramètre si le modèle est paramétrique.
+
+     Exemple 1.8
+  Si (Z, Z, C) = (Rn , B(Rn ), {Pθ , θ ∈ Θ}), en notant Z = (X1 , . . . , Xn ) :
+      1. la i-ème observation est la statistique Xi définie pour z = (x1 , . . . , xn ) ∈ Rn par Xi (z) =
+         xi ;
+      2. S1 (Z) = X1 +···+X
+                       n
+                            n
+                              , la moyenne empirique, notée canoniquement X̄n ;
+      3. S2 (Z) = min{Xi , i = 1, . . . , n}, et plus généralement les statistiques d’ordre
+         (X(i) )i=1,...,n ;
+      4. S3 (Z) = med(X1 , . . . , Xn ), la médiane empirique.
+
+
+  Remarque. Une statistique est, d’après la définition ci-dessus, une application mesurable
+  S : (Z, Z) → (T, T ) : c’est une fonction définie sur l’espace des observations, dans laquelle
+  n’intervient aucun aléa. En la composant avec l’observation canonique Z : (Ω, A, P) → (Z, Z),
+  on obtient la variable aléatoire S ◦ Z, que l’on note S(Z), à valeurs dans (T, T ) ; sa loi est la
+  loi image de celle de Z par S (voir la Section 1.6). Les deux points de vue, fonction mesurable
+  sur l’espace des observations d’une part, variable aléatoire dérivée de (X1 , . . . , Xn ) d’autre part,
+  décrivent le même objet, et l’on emploiera le terme de statistique pour l’un comme           Pnpour l’autre.
+                                                                                             1
+  La notation, elle, les distingue
+                            Pn       : S 1 désigne l’application z =  (x 1 , . . . , x n ) →
+                                                                                           7 n  i=1 xi , tandis
+  que X̄n = S1 (Z) = n1 i=1 Xi désigne la variable aléatoire, et non l’application.
+  Il reste à vérifier que les exemples ci-dessus sont bien des statistiques, c’est-à-dire des applications
+  mesurables de (Rn , B(Rn )) dans (R, B(R)). Toute application continue de Rn dans R étant
+  borélienne, il suffit de montrer qu’elles sont continues.
+                                                                             Pn
+     — La i-ème observation z 7→ xi et la moyenne empirique z 7→ n1 i=1 xi sont des applications
+         linéaires sur Rn , donc continues.
+     — Pour k ∈ {1, . . . , n}, notons x(1) ≤ · · · ≤ x(n) le réarrangement croissant de (x1 , . . . , xn ) ;
+       la k-ième statistique d’ordre est l’application z 7→ x(k) . Elle est 1-lipschitzienne pour la
+       norme ∥z∥∞ = max1≤i≤n |xi |. En effet, soient z, z ′ ∈ Rn et ε = ∥z − z ′ ∥∞ . Par définition
+       du réarrangement croissant, au moins k coordonnées de z sont inférieures ou égales à x(k) ;
+       comme x′i ≤ xi + ε pour tout i, au moins k coordonnées de z ′ sont inférieures ou égales
+       à x(k) + ε, ce qui donne x′(k) ≤ x(k) + ε. En échangeant les rôles de z et z ′ , on obtient
+       |x′(k) − x(k) | ≤ ∥z − z ′ ∥∞ . Les statistiques d’ordre sont donc continues, en particulier le
+       minimum x(1) et le maximum x(n) .
+     — La médiane empirique est une fonction continue des statistiques d’ordre : avec la conven-
+       tion usuelle, elle vaut x(m+1) si n = 2m + 1 est impair et 12 x(m) + x(m+1) si n = 2m est
+       pair. Elle est donc continue.
+  Toutes ces applications sont continues, donc boréliennes : ce sont bien des statistiques.
+
+   Pour servir de support à l’intuition, il est souvent pratique d’introduire des statistiques associées
+aux observations individuelles. On parlera d’observations individuelles X1 , · · · , Xn ; on dit aussi
+que Xi est la statistique associée à la i-ème donnée collectée.
+Définition 4 (Statistiques indépendantes). Nous dirons que les statistiques X et Y sur (Z, Z, C)
+sont indépendantes si pour toute loi P ∈ C, les éléments aléatoires X et Y sont indépendants sous
+P:
+                            P(X ∈ A, Y ∈ B) = P(X ∈ A)P(Y ∈ B) .
+
+   Plus généralement, des statistiques X1 , . . . , Xn sont indépendantes
+                                                                Qn          si, pour toute loi P ∈ C et
+tous A1 , . . . , An mesurables, P(X1 ∈ A1 , . . . , Xn ∈ An ) = i=1 P(Xi ∈ Ai ). Reprenons les modèles
+de Bernoulli et gaussien à n observations rencontrés plus haut (Section 1.2).
+1. LES FONDAMENTAUX                                                                                                      15
+
+    Exemple 1.9: Modèle de Bernoulli à n observations
+  Dans le modèle {0, 1}n , P({0, 1}n ), {Ber(θ)⊗n , θ ∈ [0, 1]} , les coordonnées X1 , . . . , Xn sont
+                                                               
+
+  des statistiques indépendantes, chacune de loi Ber(θ) sous Pθ : c’est la définition même de
+  la loi produit Ber(θ)⊗n . On dira communément que les observations sont indépendantes et
+  identiquement distribuées (i.i.d. ) de loi Ber(θ).
+
+
+   Exemple 1.10: Modèle gaussien à n observations
+  Dans le modèle (Z, Z, C) = Rn , B(Rn ), Pθ , θ = (µ, σ 2 ) ∈ R × R∗+ , avec Pθ = pθ · Leb⊗n
+                                                                        
+
+  et
+                                                               n
+                                                                             !
+                                               2 −n/2       1 X            2
+                   pθ (x1 , . . . , xn ) = (2πσ )     exp − 2     (xi − µ)     ,
+                                                           2σ i=1
+
+  les coordonnées X1 , . . . , Xn sont des statistiques indépendantes, chacune de loi N (µ, σ 2 ) sous
+  Pθ . On dira communément que les observations (X1 , . . . , Xn ) sont i.i.d. de loi N (µ, σ 2 ).
+
+
+   Démonstration
+                                                    Qn    Xi            Xi            2 −1/2
+  La densité se factorise, pθ (x1 , . . . , xn ) =  i=1 pθ (xi ) avec pθ (x) = (2πσ )       exp −
+   1          2                       2
+  2σ 2 (x − µ) , densité de N (µ, σ ). Par le théorème de Fubini, pour A1 , . . . , An ∈ B(R),
+                                      Z             n
+                                                    Y                                 n Z
+                                                                                      Y                        n
+                                                                                                               Y
+  Pθ (X1 ∈ A1 , . . . , Xn ∈ An ) =                        pX
+                                                            θ (xi ) dx1 · · · dxn =
+                                                              i
+                                                                                                 pX
+                                                                                                  θ (x) dx =
+                                                                                                    i
+                                                                                                                     Pθ (Xi ∈ Ai ) ,
+                                          A1 ×···×An i=1                              i=1   Ai                 i=1
+
+  c’est-à-dire Pθ = N (µ, σ 2 )⊗n .                                                                                    □
+
+
+   Exemple 1.11: Moyenne et variance empiriques du modèle gaussien : théorème de Gosset
+  Dans le modèle gaussien à n observations, avec n ≥ 2, la moyenne empirique et la variance
+  empirique
+                                n                        n
+                             1X                     1 X
+                       X̄n =       Xi ,     Sn2 =           (Xi − X̄n )2
+                             n i=1                n − 1 i=1
+
+  sont des statistiques indépendantes ; de plus, sous P(µ,σ2 ) , X̄n ∼ N (µ, σ 2 /n) et (n−1)Sn2 /σ 2 ∼
+  χ2 (n − 1). C’est le théorème de Gosset. On dira communément que, dans un échantillon
+  gaussien, la moyenne et la variance empiriques sont indépendantes.
+
+
+   Démonstration
+  Le théorème de Gosset est énoncé et démontré plus loin dans le cours (Section 1.9), à partir
+  du théorème de Cochran, appliqué à la décomposition Rn = R1n ⊕ (R1n )⊥ : la projection de
+  (X1 , . . . , Xn ) sur R1n est X̄n 1n et le carré de la norme de la projection sur l’orthogonal est
+  (n − 1)Sn2 . L’Exercice 3 (PC1) reprend ce calcul avec la somme des observations et la somme
+  de leurs carrés. Cette indépendance est propre au modèle gaussien : pour n observations i.i.d.
+  d’une loi à variance finie, l’indépendance de X̄n et de Sn2 caractérise la loi gaussienne (théorème
+  de Lukacs, 1942).                                                                                 □
+
+   Les statistiques canoniques d’un modèle P ne sont pas toujours indépendantes. Dans P       le même
+modèle gaussien, la somme des observations i Xi = nX̄n et la somme de leurs carrés i Xi2 =
+(n−1)Sn2 +nX̄n2 ne sont pas indépendantes, alors que X̄n et Sn2 le sont : c’est l’objet de l’Exercice 3
+(PC1). Dans le modèle de régression de l’Exercice 4 (PC1), les observations sont indépendantes
+mais pas identiquement distribuées.
+16                                                          CHAPITRE 1. MODÈLES STATISTIQUES
+
+1.6    Loi image d’une statistique et modèle induit
+    À partir d’un modèle de référence et d’une statistique, c’est-à-dire d’une transformation des
+observations, on obtient un nouveau modèle statistique, celui de l’observation transformée : c’est
+le modèle induit.
+Intuition. Un modèle induit est le modèle obtenu en transformant nos observations : si j’observe
+                                                       Pn
+(X1 , . . . , Xn ), je peux choisir de ne regarder que  i=1 Xi , ou X1 seule, ou le maximum. Chaque trans-
+formation produit un nouveau modèle statistique, en général plus « pauvre » – on a le droit de jeter de
+l’information, pas d’en créer.
+   Transformer les observations par une statistique T transporte chaque loi du modèle sur l’espace
+d’arrivée de T ; les lois ainsi obtenues forment un nouveau modèle statistique.
+Définition 5 (Modèle induit). Soient (Z, Z, C) un modèle statistique et T une statistique sur
+ce modèle, à valeurs dans l’espace mesurable (T, T ). Pour toute loi P ∈ C, on appelle loi image de
+P par T , et l’on note PT , la loi de probabilité sur (T, T ) définie par
+
+                    PT (A) := P(T ∈ A) = P ({z ∈ Z : T (z) ∈ A}) ,    A∈T .
+
+On pose C T := PT , P ∈ C . Le modèle statistique (T, T , C T ) est appelé modèle induit par la
+                
+
+statistique T .
+
+Sous P, l’application T est un élément aléatoire défini sur (Z, Z, P), dont PT est la loi. Le calcul
+pratique de la loi image repose sur la méthode de la fonction muette et le changement de variables,
+rappelés en Section 2 ; c’est l’objet de l’Exercice 2 (PC1).
+
+     Exemple 1.12: Modèle induit – Bernoulli
+  Considérons   le modèle {0, 1}n , P({0, 1}n ), {Ber(θ)⊗n , θ ∈ [0, 1]}               et la statistique Sn =
+                                                                                  
+  Pn
+    i=1 Xi . Le modèle induit est
+
+                         ({0, . . . , n}, P({0, . . . , n}), {Bin(n, θ) , θ ∈ [0, 1]}) .
+
+   Exemple 1.13: Modèle induit – loi uniforme
+  Considérons le modèle Rn , B(Rn ), U ([0, θ])⊗n , θ ∈ R∗+    : sous Pθ , chaque observation
+                                                           
+
+  a pour densité par rapport à Leb la fonction t 7→ θ1 1[0,θ] (t). Soit la statistique X(n) =
+  max1≤i≤n Xi . Le modèle induit est
+
+                                                                                  n tn−1
+                              qn,θ · Leb , θ ∈ R∗+        avec                           1[0,θ] (t) .
+                                                    
+              R, B(R),                                               qn,θ (t) =
+                                                                                    θn
+  Ce calcul sera repris en PC 4.
+
+     Exemple 1.14: Modèle induit – moyenne et variance empiriques du modèle gaussien
+  Reprenons l’Exemple 1.11 (moyenne et variance empiriques du modèle gaussien) : dans le
+  modèle gaussien à n observations, n ≥ 2, la statistique T = (X̄n , Sn2 ) est à valeurs dans R×R+ .
+  D’après le théorème de Gosset, sous P(µ,σ2 ) , X̄n ∼ N (µ, σ 2 /n) et (n − 1)Sn2 /σ 2 ∼ χ2 (n − 1),
+  ces deux variables étant indépendantes. Le modèle induit par T est donc
+                                n                                                       o
+                                                    σ2
+            R × R+ , B(R × R+ ), N (µ, σ 2 /n) ⊗ n−1    χ2 (n − 1) , (µ, σ 2 ) ∈ R × R∗+    ,
+
+                                             2                                     2
+                                       σ                                σ
+  où, par un léger abus de notation, n−1  χ2 (n − 1) désigne la loi de n−1 Y avec Y ∼ χ2 (n − 1),
+                                2                  2
+  c’est-à-dire la loi image de χ (n − 1) par y 7→ σ y/(n − 1).
+1. LES FONDAMENTAUX                                                                                                    17
+
+    Exemple 1.15: Modèle de sondage (suite)
+  Considérons tout d’abord le modèle statistique donné par
+                                                                             
+                (Z, Z, C) = {0, 1}n , P({0, 1}n ), Ber(θ)⊗n , θ ∈ Θ := [0, 1]
+                                                  
+                                                                                .
+
+  Notons Xi la statistique correspondant au résultat du i-ème sondage, i ∈ {1, . . . , n} : pour
+  tout x = (x1 , . . . , xn ) ∈ {0, 1}n , Xi (x) = xi . En notant Pθ = Ber(θ)⊗n , la loi image PX
+                                                                                                θ est
+                                                                                                  i
+
+
+  alors une loi de Bernoulli de paramètre θ ∈ Θ. On vérifie aussi que les statistiques X1 , . . . , Xn
+  sont indépendantes : pour tout (x1 , . . . , xn ) ∈ {0, 1}n , nous avons puisque Pθ est Ber(θ)⊗n
+                                                                   n
+                                                                   Y                         n
+                                                                                             Y
+   Pθ ({X1 = x1 , . . . , Xn = xn }) = PZ
+                                        θ ({x1 , . . . , xn }) =         θxi (1 − θ)1−xi =         Pθ ({Xi = xi }) ,
+                                                                   i=1                       i=1
+
+  où Z = (X1 , · · · , Xn ). Pour le modèle (Z, Z, C), les statistiques (X1 , . . . , Xn ) sont indépen-
+  dantes et identiquement distribuées (i.i.d. ) : pour tout θ ∈ Θ et i ∈ {1, . . . , n}, l’observation
+  Xi est distribuée suivant une loi de Bernoulli de paramètre θ.
+
+
+1.7     Modèle statistique du n-échantillon
+    L’exemple précédent est générique : étudier des systèmes d’observations indépendantes et de
+même loi correspond à la notion de n-échantillon. La construction générale (produit de modèles
+statistiques, tribu et mesure produit) est donnée en Section 2 ; nous en donnons ici la définition
+et la propriété fondamentale.
+Définition 6 (n-échantillon). Soient (X, X , C) un modèle statistique et n ∈ N∗ . On appelle n-
+échantillon de (X, X , C) le modèle statistique
+
+                              (X, X , C)n := (Xn , X ⊗n , Q⊗n , Q ∈ C ) .
+                                                         
+
+On appelle i-ème observation (canonique) la statistique Xi définie pour z = (x1 , . . . , xn ) ∈ Xn par
+Xi (z) = xi .
+
+Intuition. Q⊗n est la mesure produit de Q, n fois : c’est la formalisation de « répéter n fois la même
+expérience, de façon indépendante ». La propriété clé : (X1 , . . . , Xn ) ∼ Q⊗n si et seulement si (X1 , . . . , Xn )
+sont i.i.d. de loi Q.
+
+    Lemme 1.1
+  Soit (X, X , C)n un n-échantillon du modèle (X, X , C).
+      (i) Les observations Z = (X1 , . . . , Xn ) sont indépendantes.
+    (ii) Pour tout i ∈ {1, . . . , n}, le modèle induit par la statistique Xi est (X, X , C).
+
+    Démonstration
+  En effet, pour tout P = Q⊗n ∈ C ⊗n et (A1 , . . . , An ) ∈ X n , nous avons
+
+              PZ (A1 × · · · × An ) = P(X1 ∈ A1 , . . . , Xn ∈ An )
+                                                                Yn           n
+                                                                             Y
+                                    = Q⊗n (A1 × · · · × An ) =      Q(Ai ) =   P(Xi ∈ Ai ) .
+                                                                     i=1            i=1
+
+                                                                                                                  □
+
+    On adoptera la terminologie : « (X1 , . . . , Xn ) est un n-échantillon du modèle (X, X , C) ».
+18                                                               CHAPITRE 1. MODÈLES STATISTIQUES
+
+   Soit (X, X , {Qθ , θ ∈ Θ}) un modèle paramétrique. Supposons qu’il existe une mesure σ-finie
+µ sur (X, X ) telle que la famille paramétrique {Qθ , θ ∈ Θ} soit dominée par rapport à µ. Notons,
+pour tout θ ∈ Θ, qθ (·) la densité de la loi Qθ par rapport à la mesure de domination µ :
+
+                                                  Qθ = qθ (·) · µ .
+
+Pour tout θ ∈ Θ, la loi produit Pθ = Q⊗n
+                                      θ  est dominée par µ⊗n et admet pour densité
+                                                                               n
+                                                                               Y
+                              (x1 , . . . , xn ) 7→ pθ (x1 , . . . , xn ) :=         qθ (xi ) .        (1)
+                                                                               i=1
+
+Les modèles de translation et d’échelle, archétypes de n-échantillons dominés, sont étudiés dans
+l’Exercice 3 (PC1).
+
+1.8      Exemples et premiers estimateurs
+   L’exploration systématique des méthodes de construction d’estimateurs (méthode des mo-
+ments, maximum de vraisemblance) est l’objet du chapitre suivant. On peut néanmoins, dès main-
+tenant, « proposer » des estimateurs : un estimateur est une statistique à valeurs dans Θ (ou dans
+un espace contenant Θ), destinée à approcher le paramètre inconnu.
+
+Estimation du paramètre d’une Bernoulli. Revenons à la première question de l’introduc-
+tion (la pièce est-elle biaisée ? ). On considère un n-échantillon (X1 , . . . , Xn ) du modèle
+                                                                        
+                                {0, 1}, P({0, 1}), {Ber(θ) , θ ∈ [0, 1]} .
+
+On souhaite estimer θ. Sous Pθ , on a Eθ [X1 ] = θ ; on considère donc
+                                                                   n
+                                                              1X
+                                             θ̂n := X̄n =           Xi .
+                                                              n i=1
+
+On a Eθ [θ̂n ] = θ : l’estimateur est sans biais. La qualité de cette approximation (concentration,
+intervalles de confiance) sera quantifiée dans les chapitres suivants.
+
+Question sensible et réponses randomisées. Considérons la troisième question de l’intro-
+duction, en version sensible : quelle proportion d’élèves a utilisé un modèle d’IA alors que c’était
+interdit ? Si l’on pose directement la question, les réponses seront biaisées : on ne peut pas espérer
+observer (X1 , . . . , Xn ). Le protocole des réponses randomisées contourne cette difficulté :
+     1. on pose la question sensible ;
+     2. chaque participant observe secrètement une variable aléatoire Ui ∼ Ber(q), avec q connu
+        (par exemple q = 0,75), indépendante de Xi ;
+     3. si Ui = 1, il donne la vraie réponse ; si Ui = 0, il répond l’opposé.
+On observe donc les statistiques RRi = Ui Xi + (1 − Ui )(1 − Xi ), i = 1, . . . , n. Le modèle induit
+par (RR1 , . . . , RRn ) est un n-échantillon du modèle
+                                                                                   
+                        {0, 1}, P({0, 1}), {Ber( θq + (1 − θ)(1 − q)) , θ ∈ [0, 1]} .
+
+Intuition. Chaque répondant est protégé : une réponse « oui » ne révèle pas sa vraie réponse, puisqu’elle
+peut provenir du retournement aléatoire. Mais en moyenne, le signal survit : la proportion de « oui » reste
+une fonction connue et inversible de θ (dès que q ̸= 1/2), ce qui permet de remonter à θ.
+     Sous le modèle induit, Eθ [RRi ] = θq + (1 − θ)(1 − q) = θ(2q − 1) + 1 − q, donc
+                                                  Eθ [RRi ] − (1 − q)
+                                            θ=                        .
+                                                       2q − 1
+1. LES FONDAMENTAUX                                                                                    19
+
+On considère donc l’estimateur (dit par la méthode des moments)
+
+                                                 RRn − (1 − q)
+                                        θ̂n :=                 ,
+                                                    2q − 1
+
+que l’on peut de plus contraindre (clipper ) à l’intervalle [0, 1]. Pour q = 0,75 : θ̂n = 2(RRn − 0,25).
+On vérifie que Eθ [θ̂n ] = θ et
+                                               Varθ (RR1 )     q(1 − q)
+                               Varθ (θ̂n ) =              2
+                                                            ≥             .
+                                               n (2q − 1)     n (2q − 1)2
+Le prix de la confidentialité est une variance accrue (le facteur (2q − 1)−2 explose quand q → 1/2).
+
+
+    Illustration / animation : La confidentialité du protocole de réponses ran-
+    domisées se paie en variance
+    On illustre ici l’estimateur de θ obtenu par le protocole de réponses rando-
+    misées, pour q et n choisis, ainsi que l’évolution de sa variance lorsque q
+    s’approche de 1/2.                                                                        link
+
+
+
+
+1.9     Deux théorèmes fondamentaux — Théorèmes de Cochran et de
+        Gosset
+    Les deux théorèmes suivants sont extrêmement utiles, voire fondamentaux, pour tous les exer-
+cices portant sur des modèles gaussiens. Ce sont surtout des résultats de probabilité, et ils pour-
+raient donc à ce titre être placés dans les outils mathématiques ; mais comme ils sont très impor-
+tants, j’ai finalement choisi de les placer dans le cours principal.
+    Les deux théorèmes de cette partie décrivent la loi des projections orthogonales d’un vecteur
+gaussien de loi N (µ, σ 2 In ). Ils sont l’outil des questions gaussiennes de l’Exercice 3 (PC1) (loi du
+couple (Sn , Kn ), par le théorème de Gosset) et de l’Exercice 4 (PC1) (régression linéaire gaussienne,
+par le théorème de Cochran), et ils seront réutilisés tout au long du cours pour le modèle linéaire
+gaussien. Les vecteurs gaussiens en dimension n, la loi du χ2 et la loi de Student, qui interviennent
+dans les énoncés et les preuves, sont présentés dans les outils mathématiques (Section 2, Section 2).
+
+   Théorème 1.1: Théorème de Cochran
+  Soient X un vecteur aléatoire gaussien de Rn de loi N (µ, σ 2 In ), où µ ∈ Rn , σ > 0 et In
+  est la matrice identité de taille n, ainsi que F1 , . . . , Fm des sous-espaces vectoriels de Rn ,
+  orthogonaux deux à deux et de somme Rn , de sorte que Rn = F1 ⊕ · · · ⊕ Fm , la somme étant
+  orthogonale. Pour 1 ≤ i ≤ m, on note PFi la matrice de la projection orthogonale sur Fi et
+  di la dimension de Fi , avec d1 + · · · + dm = n. Alors :
+      (i) les vecteurs aléatoires PF1 X, . . . , PFm X sont indépendants et de lois respectives
+          N (PF1 µ, σ 2 PF1 ), . . . , N (PFm µ, σ 2 PFm ) ;
+   (ii) les variables aléatoires réelles ∥PF1 (X − µ)∥2 /σ 2 , . . . , ∥PFm (X − µ)∥2 /σ 2 sont indépen-
+        dantes et de lois respectives χ2 (d1 ), . . . , χ2 (dm ).
+  Si l’un des Fi est réduit à {0}, on convient que χ2 (0) désigne la masse de Dirac en 0.
+
+
+   Théorème 1.2: Théorème de Cochran (version simplifiée)
+  Soient X ∼ N (0Rn , In ), F un sous-espace vectoriel de Rn de dimension d, F ⊥ son orthogonal,
+  et PF , PF ⊥ les matrices des projections orthogonales sur F et sur F ⊥ . Alors PF X et PF ⊥ X
+  sont indépendants, de lois respectives N (0, PF ) et N (0, PF ⊥ ), et ∥PF X∥2 et ∥PF ⊥ X∥2 sont
+20                                                                       CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+   indépendantes, de lois respectives χ2 (d) et χ2 (n − d).
+
+   Cette version est le cas particulier m = 2, µ = 0, σ = 1 du théorème précédent. Elle lui est
+en fait équivalente : on passe d’un vecteur X ∼ N (µ, σ 2 In ) au vecteur (X − µ)/σ ∼ N (0, In )
+par la Proposition 2.4, et l’on traite m sous-espaces en appliquant la version simplifiée à F1 et
+F1⊥ = F2 ⊕ · · · ⊕ Fm , puis en raisonnant par récurrence dans F1⊥ .
+
+   Remarque.
+     (a) L’indépendance affirmée par le théorème est l’indépendance mutuelle de la famille
+         (PF1 X, . . . , PFm X), et de même pour les normes, et pas seulement l’indépendance deux à
+         deux : la loi du m-uplet est la loi produit.
+     (b) Dès que di < n, la matrice σ 2 PFi est de rang di < n : la loi N (PFi µ, σ 2 PFi ) est dégénérée,
+         portée par le sous-espace affine PFi µ + Fi = Fi , et n’a pas de densité sur Rn . C’est ici
+         que la définition générale des vecteurs gaussiens (Définition 10), qui n’exige pas l’existence
+         d’une densité, montre son utilité.
+     (c) Si PFi µ = 0, c’est-à-dire si µ ∈ Fi⊥ , alors ∥PFi (X − µ)∥2 = ∥PFi X∥2 : c’est sous cette
+         forme que le point (ii) est utilisé dans la démonstration du théorème de Gosset.
+
+Intuition. Si F1 est engendré par les d1 premiers vecteurs de la base canonique, F2 par les d2 suivants,
+et ainsi de suite, alors PF1 Z = (Z1 , . . . , Zd1 , 0, . . . , 0), PF2 Z = (0, . . . , 0, Zd1 +1 , . . . , Zd1 +d2 , 0, . . . , 0), etc.,
+et le théorème dit seulement que des paquets disjoints de coordonnées indépendantes sont indépendants. Le
+cas général s’y ramène parce que la loi N (0, In ) ne change pas quand on tourne les axes : dans une base
+orthonormée adaptée à la décomposition, les nouvelles coordonnées de Z sont encore indépendantes de loi
+N (0, 1).
+
+     Démonstration
+   Nous démontrons la version générale du théorème de Cochran.
+   Base orthonormée adaptée. Les sous-espaces F1 , . . . , Fm étant deux à deux orthogonaux et
+   de somme Rn , la réunion de bases orthonormées de F1 , . . . , Fm forme une base orthonormée
+   (u1 , . . . , un ) de Rn , avec n = d1 + · · · + dm . Notons Ii ⊂ {1, . . . , n} l’ensemble des indices des
+   vecteurs de cette base qui appartiennent à Fi , de cardinal di , et U = [u1 , . . . , un ] la matrice
+                                                             ⊤
+   orthogonale ayant ces      Pvecteurs⊤pour colonnes : U U P     = U U ⊤ = In . La projection orthogonale
+   sur Fi s’écrit PFi = j∈Ii uj uj , c’est-à-dire PFi x = j∈Ii (u⊤         j x) uj pour tout x ∈ R .
+                                                                                                     n
+
+   Réduction au cas N (0, In ). Posons Z := (X − µ)/σ : d’après la Proposition 2.4, Z ∼ N (0, In ).
+   Posons ensuite Y := U ⊤ Z, de coordonnées Yj = u⊤            j Z. Toujours d’après la Proposition 2.4,
+   Y ∼ N (0, U ⊤ U ) = N (0, In ) : par la Proposition 2.6, les variables Y1 , . . . , Yn sont indépen-
+   dantes, de loi N (0, 1).
+   Indépendance. Pour tout i, PFi Z = j∈Ii Yj uj est une fonction du bloc (Yj )j∈Ii . Les en-
+                                                  P
+   sembles d’indices I1 , . . . , Im étant disjoints, les blocs (Yj )j∈I1 , . . . , (Yj )j∈Im sont mutuelle-
+   ment indépendants (regroupement par paquets de variables indépendantes), et il en est donc
+   de même des vecteurs PF1 Z, . . . , PFm Z, puis des vecteurs PFi X = PFi µ + σPFi Z, 1 ≤ i ≤ m,
+   qui en sont des fonctions mesurables. Ceci prouve l’indépendance dans (i), et celle de (ii)
+   puisque ∥PFi (X − µ)∥2 /σ 2 = ∥PFi Z∥2 est une fonction de PFi Z.
+   Lois. Le vecteur PFi X est l’image de X par l’application linéaire PFi : d’après la Propo-
+   sition 2.4, PFi X ∼ N (PFi µ, σ 2 PFi In PF⊤i ) = N (PFi µ, σ 2 PFi ), car PFi est symétrique et
+   idempotente. Enfin, la famille (uj )j∈Ii étant orthonormée, le théorème de Pythagore donne
+
+                              ∥PFi (X − µ)∥2                               X               2       X
+                                             = ∥PFi Z∥2 =                         Y j uj       =          Yj2 ,
+                                    σ2
+                                                                           j∈Ii                    j∈Ii
+
+   somme des carrés de di variables indépendantes de loi N (0, 1) : sa loi est χ2 (di ) par définition,
+1. LES FONDAMENTAUX                                                                                  21
+
+
+  et la masse de Dirac en 0 si di = 0.                                                              □
+
+
+   Théorème 1.3: Théorème de Gosset
+  Soient n ≥ 2, µ ∈ R, σ 2 > 0, et X1 , . . . , Xn des variables aléatoires indépendantes et identi-
+  quement distribuées de loi N (µ, σ 2 ). On note
+                                     n                         n
+                                  1X                      1 X             2
+                         X̄n :=         Xi ,   Sn2 :=             Xi − X̄n ,
+                                  n i=1                 n − 1 i=1
+                                                                                        p
+  la moyenne empirique et la variance empirique corrigée de l’échantillon, et Sn =       Sn2 . Alors :
+    (i) X̄n ∼ N (µ, σ 2 /n) ;
+   (ii) (n − 1)Sn2 /σ 2 ∼ χ2 (n − 1) ;
+   (iii) les variables aléatoires X̄n et Sn2 sont indépendantes ;
+                                      √ X̄n − µ
+   (iv) la variable aléatoire Tn := n              suit la loi de Student t(n − 1).
+                                             Sn
+
+
+   Démonstration
+  Posons X = (X1 , . . . , Xn )⊤ . D’après le Lemme 2.1 (ii), un vecteur à coordonnées gaussiennes
+  indépendantes est gaussien : X ∼ N (µ1n , σ 2 In ), où 1n = (1, . . . , 1)⊤ . Appliquons le théorème
+  de Cochran (Théorème 1.1) à la décomposition orthogonale Rn = F ⊕ F ⊥ avec F := R1n ,
+  de dimension 1, et F ⊥ = {x ∈ Rn : x1 + · · · + xn√= 0}, de dimension n − 1. La projection
+  orthogonale sur F est PF = n1 1n 1⊤    n , puisque 1n / n est un vecteur unitaire de F , de sorte
+  que
+                                                                        ⊤
+  PF X = X̄n 1n ,       PF ⊥ X = X−X̄n 1n = X1 −X̄n , . . . , Xn −X̄n        ,    ∥PF ⊥ X∥2 = (n−1)Sn2 .
+
+  Comme µ1n ∈ F , on a PF ⊥ (µ1n ) = 0, donc PF ⊥ (X − µ1n ) = PF ⊥ X.
+  (iii) Le théorème de Cochran affirme que PF X et PF ⊥ X sont indépendants ; or X̄n =
+  1 ⊤                                          2            2
+  n 1n PF X est une fonction de PF X et Sn = ∥PF ⊥ X∥ /(n − 1) une fonction de PF ⊥ X :
+  elles sont indépendantes.
+  (ii) Toujours par le théorème de Cochran, ∥PF ⊥ (X − µ1n )∥2 /σ 2 = (n − 1)Sn2 /σ 2 ∼ χ2 (n − 1).
+  (i) X̄n = n1 1⊤
+                n X est l’image de X par une application linéaire : d’après la Proposition 2.4,
+                         2
+             1 ⊤
+                     , nσ2 1⊤                2
+                                   
+  X̄n ∼ N n 1n µ1n√         n In 1n = N (µ, σ /n).
+  (iv) Posons G := n(X̄n − µ)/σ et Y := (n − 1)Sn2 /σ 2 . D’après (i), G ∼ N (0, 1) ; d’après (ii),
+  Y ∼ χ2 (n − 1) ; d’après (iii), G et Y sont indépendantes, comme fonctions de X̄n et de Sn2 .
+  Or                                         √
+                               √ X̄n − µ       n(X̄n − µ)/σ         G
+                        Tn = n            =      p          =p             ,
+                                     Sn             2
+                                                   Sn /σ 2      Y /(n − 1)
+  qui suit la loi t(n − 1) par définition de la loi de Student (Définition 12).                     □
+
+                                                    Pn                 Pn
+    Dans l’Exercice 3 (PC1), les statistiques Sn = i=1 Xi et Kn = i=1 (Xi − n−1 Sn )2 s’écrivent
+Sn = nX̄n et Kn = (n − 1)Sn2 avec les notations du théorème de Gosset (attention, dans l’exercice,
+la lettre Sn désigne la somme des observations et non l’écart-type empirique) : le théorème donne
+directement la loi du couple (Sn , Kn ), donc le modèle induit. Dans l’Exercice 4 (PC1), le théorème
+de Cochran s’applique à la décomposition de Rn en l’image de la matrice des variables explicatives
+et son orthogonal.
+22                                                    CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+     Illustration / animation : Les coordonnées d’un vecteur gaussien isotrope
+     restent indépendantes après rotation des axes
+     Vous pouvez observer ici, pour un nuage de loi N (0, I2 ), les deux coordonnées
+     obtenues après rotation d’une base orthonormée, et comparer avec le cas où
+     la covariance n’est pas isotrope.                                                    link
+
+
+
+
+     Illustration / animation : La statistique de Student suit sa loi seulement
+     quand les observations sont gaussiennes
+     L’animation accessible par le QR code ci-contre permet de comparer, sur des
+     échantillons répétés, l’histogramme de Tn à la loi t(n − 1), pour un bruit
+     gaussien, exponentiel ou uniforme.                                                   link
+
+
+
+
+1.10     En pratique : programme des exercices
+   Les notions de ce chapitre sont mises en œuvre dans la feuille d’exercices (PC 1), intégrée au
+chapitre (voir le fascicule d’exercices en fin de chapitre). Exercices traités en petite classe :
+
+
+ Exercice                              Notions du cours                 Rappels de probabilités
+ Exo 1 – Un café pour commencer        Modélisation, estimation         Lois exponentielle et de Poisson
+ Exo 2 – Transformation de v.a.        Modèle induit                    Fonction muette, chgt de variable
+ Exo 3 – Translation et échelle        Modèle induit, th. de Gosset     Manipulation de lois, gaussiennes
+ Exo 4 – Régression gaussienne         Th. de Cochran                   Manipulation de lois, gaussiennes
+
+   L’exercice 4 sera poursuivi en PC 2, le modèle de régression linéaire gaussienne étant un sujet
+récurrent du cours. Les exercices bonus (score de football, prix d’un actif financier, identifiabilité
+des mélanges) sont accompagnés d’un guide de lecture dans le fascicule.
+Notions de probabilités clés utilisées cette semaine, à revoir : variable aléatoire, mesure
+produit, indépendance, densité, théorème de transfert et fonction muette (voir la partie Outils
+mathématiques ci-dessous).
+

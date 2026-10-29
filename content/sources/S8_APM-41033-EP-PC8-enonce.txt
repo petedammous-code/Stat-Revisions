@@ -1,0 +1,302 @@
+Ecole Polytechnique, promotion 2025                                     PC-8 Cours APM 41033 EP
+
+
+     Dans les exercices ci-dessous, sauf mention explicite, on considère un couple de variables
+aléatoires (X, Y ) d’attributs (la variable X) et de réponses (la variable Y ) définies sur (Ω, F, P) ;
+avec X ∈ Rd et Y ∈ {−1, 1}. On note
+
+                                       η : X 7→ P ( Y = 1 | X)
+
+la fonction de régression.
+
+Exercice 1. Nous considérons le problème de la classification binaire. A la place de la perte
+0/1 nous considérons la perte
+                                       
+                                       c si g(x) = −1, y = 1
+                                       
+                          ℓ(y, g(x)) := 1 si g(x) = 1, y = −1 ,
+                                       
+                                       
+                                         0 sinon
+
+où c > 0.
+   1. Déterminer l’expression du risque de classification R(g) := E[ℓ(Y, g(X))] d’une règle g
+      en fonction de {g(X) = −1}, de la fonction de régression η et du coût c.
+   2. Montrer que gc⋆ (X) := 21{η(X) ≥ 1 } − 1 est une règle de décision bayésienne pour ce
+                                           c+1
+      risque R.
+      Dans le cas c = 1, la fonction de perte est la fonction de perte 0 − 1 et la règle de
+      décision bayésienne g1⋆ coı̈ncide avec celle vue en Amphi.
+   3. A-t-on unicité de la règle de décision bayésienne ?
+
+
+Exercice 2. On considère un problème de classification binaire, pour la perte 0 − 1. On
+rappelle que un classifieur bayésien est donné par
+
+                                      g ⋆ (X) = 21η(X)≥1/2 − 1 .
+
+   1. Montrer que le risque bayésien R(g ⋆ ) vérifie
+
+                                     R(g ⋆ ) = E[min(η(X), 1 − η(X))]
+
+      On rappelle que pour deux réels a, b : min(a, b) + |b − a|/2 = (a + b)/2. En déduire que
+                                                  1 1
+                                      R(g ⋆ ) =    − E[|2η(X) − 1|] .
+                                                  2 2
+      Cela entraine que R(g ⋆ ) ≤ 1/2 et que R(g ⋆ ) = 1/2 ssi P(η(X) = 1/2) = 1.
+   2. Montrer que pour tout classifieur g, nous avons
+                                                                  
+                       R(g) = E 1{g(X)=−1} (2η(X) − 1) + (1 − η(X)) .                               (1)
+
+   3. Soient deux classifieurs g1 , g2 ; déduire de la question précédente que
+                                                                             
+                          |R(g1 ) − R(g2 )| ≤ E |2η(X) − 1|1{g1 (X)̸=g2 (X)} .
+
+      Puisque η(X) ∈ [0, 1], |2η(X) − 1| ≤ 1 et par suite, nous avons la majoration
+
+                                  |R(g1 ) − R(g2 )| ≤ P(g1 (X) ̸= g2 (X)) .
+
+                                                                                                Page 1
+Ecole Polytechnique, promotion 2025                                      PC-8 Cours APM 41033 EP
+
+
+   4. Etant donnée une fonction η̃ : X 7→ η̃(X) ∈ [0, 1], on définit le classifieur g̃ par
+
+                                          g̃(X) := 21{η̃(x)≥1/2} − 1 .
+
+      Déduire de la question 3 que
+                                                                             
+                          R(g̃) − R(g ⋆ ) ≤ 2 E |η(X) − η̃(X)|1{g⋆ (X)̸=g̃(X)} .
+
+   5. Appelons Q la loi de (X, Y ). En pratique, cette loi est inconnue ; aussi la fonction de
+      régression η est-elle inconnue, et le classifieur bayésien g ⋆ ne peut-il pas être appliqué.
+      Supposons que l’on dispose d’un ensemble d’apprentissage Dn := {(X1 , Y1 ), · · · , (Xn , Yn )},
+      modélisé comme un n-échantillon de la loi Q. A l’aide de Dn , on apprend une approxi-
+      mation η̃n : X 7→ η̃n (X) ∈ [0, 1] de la fonction η et on considère le classifieur
+
+                                       g̃n (X) := 21η̃n (X)≥1/2 − 1 .
+
+                                                                                            Pn −prob
+      En utilisant la question 4, montrer que si pour Q-presque tout x, η̃n (x) − η(x)         −→      0,
+      alors
+                                     lim En [R(g̃n ) − R(g ⋆ )] = 0.
+                                          n
+
+      L’exercice 3 donne un exemple d’apprentissage d’une approximation η̃n de la fonction
+      de régression η, à partir de Dn .
+
+
+Exercice 3. On considère un problème de classification binaire lorsque les attributs sont
+vectoriels (X ∈ Rd ). On suppose que la loi du couple (X, Y ) est donnée par
+  — Conditionnellement à Y = i, la loi des attributs X est une loi gaussienne de moyenne
+    µi ∈ Rd et de matrice de covariance Σi ; nous supposerons Σ−1 , Σ1 inversibles.
+  — La variable réponse Y suit une loi de Bernoulli de paramètre π1 . On pose π−1 := P(Y =
+    −1) = 1 − π1 .
+En pratique, les paramètres θ := (π1 , µ−1 , µ1 , Σ−1 , Σ1 ) qui définissent ces lois sont inconnus :
+ils vont être appris à l’aide d’un ensemble d’apprentissage Dn .
+   1. Montrer que la fonction de régression est donnée par
+                                                 1
+                               ηθ (x) =                    = sigm(ϕθ (x)) ,
+                                          1 + exp(−ϕθ (x))
+
+      où sigm est la fonction sigmoı̈de t 7→ 1/(1 + exp(−t)) et ϕθ est une fonction que l’on
+      précisera.
+      Interpréter la règle de classification
+
+                                       gθ (X) := 21{ηθ (X)≥1/2} − 1.
+
+   2. Montrer que si l’on modélise la loi de (X, Y ) en supposant que Σ−1 = Σ1 = Σ, alors il
+      existe wθ ∈ Rd et Aθ ∈ R tels que ϕθ (x) = wθT x + Aθ .
+      Interpréter la règle de classification dans ce cas.
+
+
+
+                                                                                               Page 2
+Ecole Polytechnique, promotion 2025                                         PC-8 Cours APM 41033 EP
+
+
+Dans le cas où Σ1 = Σ−1 , on parle de ”Linear Discriminant Analysis” (LDA) ; tandis que
+dans le cas général Σ1 ̸= Σ−1 , on parle de ”Quadratic Discriminant Analysis” (QDA).
+  On dispose d’un ensemble d’apprentissage {(Xi , Yi )}ni=1 vu comme un n-échantillon du
+modèle
+                                                                                       
+          Rd × {−1, 1}, B(Rd ) × {−1, 1}, {Qθ , θ ∈ Θ := ]0, 1[ × Rd × Rd × Md+ × Md+ }
+
+où Md+ est l’ensemble des matrices de covariance d × d inversibles.
+   3. Ecrire la log-vraisemblance des observations.
+   4. Calculer l’estimateur du maximum de vraisemblance θ̂n de θ.
+   5. Montrer qu’il est consistant.
+   6. Soit la règle de classification g̃n (X) := 21{ηθ̂ (X)≥1/2} − 1. En utilisant la question 5 de
+                                                        n
+      l’exercice 2, montrer que pour tout θ ∈ Θ,
+
+                                      lim En,θ [|R(g̃n ) − R(gθ⋆ )|] = 0,
+                                        n
+
+      où R(gθ⋆ ) est le risque bayésien i.e. le risque de la règle de classification
+
+                                        g ⋆ (X) := 21{ηθ (X)≥1/2} − 1.
+
+   7. Reprendre ces questions dans le cas du modèle plus simple où l’on suppose que les deux
+      classes ont même covariance (Σ−1 = Σ1 = Σ).
+   8. Dans cette configuration de covariance commune, comment étendre cette méthode à
+      plus de deux classes ?
+La figure 1 illustre cette situation. Nous avons X ∈ R2 et Y ∈ {−1, 1} : on représente des
+ensembles d’apprentissage Dn en indiquant en noir tous les attributs Xi de la classe −1 (i.e.
+tels que Yi = −1) ; et en rouge ceux de la classe 1.
+Ces ensembles d’apprentissage ont été simulés : on a choisi une valeur de π1⋆ et tiré des v.a.
+réponses Yi ∼ 2B(π1⋆ ) − 1 ; puis on a choisi une valeur µ⋆−1 , µ⋆1 , Σ⋆−1 , Σ⋆1 , et à chaque réponse
+Yi valant 0 on a associé un attribut Xi ∼ N (µ⋆−1 , Σ⋆−1 ) et à chaque réponse Yi valant 1 on a
+associé un attribut Xi ∼ N (µ⋆1 , Σ⋆1 ). Pour les ensembles Dn affichés lignes 1 et 2, nous avons
+pris Σ⋆−1 = Σ⋆1 tandis que pour ceux affichés lignes 3 et 4, nous avons pris Σ⋆−1 ̸= Σ⋆1 . Dans
+toutes les lignes, nous avons pris µ⋆−1 ̸= µ⋆1 .
+Pour chacun des quatre ensembles d’apprentissage (lignes 1 à 4), nous avons appris le pa-
+ramètre θbn ; puis l’avons utilisé pour construire un classifieur LDA (colonne de gauche) et
+un classifieur QDA (colonne de droite). Les frontières de classification (qui séparent l’en-
+semble des points X ∈ R2 qui seront tels que gθ̂n (X) = −1 de ceux tels que gθ̂n (X) = 1) sont
+représentées en gris.
+Enfin, nous avons utilisé le classifieur gθ̂n pour classer chaque point de l’ensemble d’appren-
+tissage (en ignorant leur vrai label Yi ). Afin de visualiser la qualité de ce classifieur, nous
+avons distingué les attributs correctement classés de ceux mal classés : un attribut Xi tel que
+gθ̂n (Xi ) ̸= Yi est indiqué par une croix.
+
+
+Exercice 4. Soient (X, Y ) et (X ′ , Y ′ ) deux couples de variables aléatoires définies sur
+(Ω, F, P) et de même loi. On suppose que E[|X|] < ∞.
+
+                                                                                                 Page 3
+Ecole Polytechnique, promotion 2025                                                                                        PC-8 Cours APM 41033 EP
+
+
+                                                                Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                            Linear Discriminant Analysis                   Quadratic Discriminant Analysis
+
+                               fixed covariance
+                                   Data with
+
+
+
+
+                                                                Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                            Linear Discriminant
+                                                            Linear Discriminant Analysis
+                                                                                Analysis                      Quadratic Discriminant
+                                                                                                              Quadratic Discriminant Analysis
+                                                                                                                                     Analysis
+                                      varying covariances
+                 covariance
+           fixedcovariance
+
+                                           Data with
+                    with
+               Datawith
+              Data
+          fixed
+
+
+
+
+                                                                Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                                            Linear Discriminant Analysis                      Quadratic Discriminant Analysis
+                 covariances
+                covariances
+              covariance
+                    with
+                   with
+                 with
+              Data
+              Data
+         varying
+            Data
+        varying
+        fixed
+        varying covariances
+             Data with
+
+
+
+
+Figure 1 – Exercice 3. Classifieurs LDA (colonne de gauche) et QDA (colonne de droite),
+et quatre ensembles d’apprentissage (lignes 1 à 4). La ligne grise correspond à la ligne de
+séparation des classes par le classifieur gθ̂n . Les moyennes de chaque classe sont représentées
+par les ⋆. Les attributs qui sont mal classés sont représentés par des ×. Deux premières lignes :
+les données d’apprentissage sont issues de deux populations avec même matrice de covariance
+(et sur la première ligne, Σ⋆−1 = Σ⋆1 = I) ; et dans les deux dernières lignes, ces matrices sont
+différentes. Adapted from https://scikit-learn.org/                                         Page 4
+Ecole Polytechnique, promotion 2025                                           PC-8 Cours APM 41033 EP
+
+
+     1. Soit f une fonction mesurable telle que E [ X | Y ] = f (Y ) P −p.s.. Montrer que E [ X ′ | Y ′ ] =
+        f (Y ′ ) P − p.s.. En déduire que E [ X | Y ] et E [ X ′ | Y ′ ] ont même loi.
+     2. Supposons que la loi de la variable X soit symétrique. Déterminer E [ X | |X|].
+     3. Soient (X1 , . . . , Xn ) des variables aléatoires réelles i.i.d. intégrables. Déterminer E [ Xi | X1 + · · · + Xn ].
+
+
+Exercice 5. Considérons le problème de la classification binaire pour la perte 0/1. On se
+place dans le cas d = 1, et suppose que P(Y = −1) = P(Y = 1) = 1/2 et que
+                                             
+                                             
+                                             0        si x ≤ 0
+                         P(X ≤ x|Y = −1) = x/2         si 0 < x ≤ 2
+                                             
+                                             
+                                               1       si x > 2
+
+et                                         
+                                           
+                                           0                          si x ≤ 1
+                           P(X ≤ x|Y = 1) = (x − 1)/3                  si 1 < x ≤ 4 .
+                                           
+                                           
+                                             1                         si x > 4
+     1. Déterminer la distribution marginale des attributs.
+     2. Calculer la fonction de régression η.
+     3. Utiliser les informations ci-dessus pour calculer le risque du classifieur bayésien.
+     4. Quel est l’excès de risque de la règle de classification g(x) = 21{x≥ 1} -1 ?
+
+
+Exercice 6. On suppose que les attributs sont à valeur réelle (d = 1) et on considère la
+classe C de règles de classification données par : pour x′ ∈ R et y ′ ∈ {−1, 1},
+                                                   (
+                                                     y′   si x ≤ x′
+                                 g(x′ ,y′ ) (x) :=                  .
+                                                     −y ′ autrement
+
+On note p := P(Y = 1) la probabilité de la classe 1 et Fi (x) la fonction de répartition des
+attributs conditionnellement à leur appartenance à la classe i ; i ∈ {−1, 1}.
+     1. Montrer que le minimum du risque R dans la classe C est donné par :
+                                                                                              
+          R = inf′ pF1 (x′ ) + (1 − p)(1 − F0 (x′ ))   ∧ inf′ p(1 − F1 (x′ )) + (1 − p)F0 (x′ ) .
+                  x                                                x
+
+     2. Montrer que R ≤ min(p, (1 − p)). En déduire que R ≤ 1/2.
+     3. On définit R⋆ comme étant le risque du classifieur Bayésien. Montrer que R = 1/2 si et
+        seulement si R⋆ = 1/2.
+     4. Montrer que
+                                  1 1
+                            R=     − sup |1 − 2 (p(1 − F1 (x)) + (1 − p)F0 (x))| .
+                                  2 2 x
+
+
+
+
+                                                                                                       Page 5
+Ecole Polytechnique, promotion 2025                                 PC-8 Cours APM 41033 EP
+
+
+Exercice 7. On considère un problème de classification binaire. On note η(X) la fonction
+de regression et g ∗ (X) := 21{η∗ (X)≥1/2} − 1 le classifieur bayésien pour la perte 0/1. Soit
+η : Rd → [0, 1] une fonction et g(x) := 21{η(x)≥1/2} − 1 la règle de décision associée.
+  1. Montrer que
+
+        R(g) − R(g ⋆ ) = P(g(X) ̸= Y ) − P(g ∗ (X) ̸= Y ) = 2E[1{g(X)̸=g∗ (X)} |η ∗ (X) − 1/2|] .
+
+  2. En déduire que
+
+              R(g) − R(g ⋆ ) = P(g(X) ̸= Y ) − P(g ∗ (X) ̸= Y ) ≤ 2E[|η ∗ (X) − η(X)|] .
+
+
+
+
+                                                                                            Page 6
+

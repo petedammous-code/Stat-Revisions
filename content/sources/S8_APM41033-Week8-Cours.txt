@@ -1,0 +1,931 @@
+Chapitre 8
+
+Introduction à l’apprentissage
+statistique
+
+ Les sept premiers chapitres relèvent de la statistique : on observe X1 , . . . , Xn ,
+ on choisit un modèle (X, X , {Pθ : θ ∈ Θ}), et on infère une information sur le
+ paramètre de la loi des observations, par estimation ou par test. La procédure
+ est évaluée sur θ : par son risque quadratique, par son niveau, par sa puissance.
+ Les trois chapitres qui suivent relèvent de l’apprentissage statistique. Le but
+ change : il s’agit de prédire une réponse Y en fonction d’attributs X, à partir
+ d’observations qui sont maintenant des paires (X1 , Y1 ), . . . , (Xn , Yn ). La pro-
+ cédure n’est plus évaluée sur un paramètre, mais par le risque de la règle de
+ prédiction qu’elle produit. Deux voies y mènent. La première, plus proche de
+ la statistique, modélise la loi jointe de (X, Y ), apprend les paramètres de ce
+ modèle et en déduit une règle de décision. La seconde, plus proche de l’appren-
+ tissage, choisit une classe de fonctions et une fonction de perte, et cherche la
+ meilleure règle dans cette classe pour ce risque.
+ Le cadre de l’apprentissage supervisé tient en quatre objets : des attributs,
+ une réponse, un prédicteur et une fonction de perte dont la moyenne définit
+ le risque. Lorsque la loi de (X, Y ) est connue, la règle de risque minimal se
+ calcule : c’est l’espérance conditionnelle de la réponse sachant les attributs
+ pour la perte quadratique, et le classifieur de Bayes, qui retourne le label le plus
+ probable, pour la perte 0–1 ; une formule explicite donne l’écart entre le risque
+ d’une règle quelconque et ce minimum. Mais le statisticien ne connaît pas la loi
+ de (X, Y ) : la règle de Bayes n’est pas une fonction des observations, et le risque
+ bayésien reste une référence théorique à laquelle se comparer. L’approche par
+ modélisation construit alors une règle en estimant les paramètres d’un modèle
+ pour la loi du couple, puis en les substituant dans l’expression de la règle de
+ Bayes ; l’analyse discriminante linéaire et quadratique, le modèle logistique et
+ le modèle linéaire gaussien en sont les trois exemples traités ici.
+ Les objectifs des chapitres 8 à 10 sont de comprendre et de maîtriser le cadre
+ de l’apprentissage statistique (données, pertes, risque) ; les concepts fondamen-
+ taux que sont le risque conditionnel et la règle de Bayes ; la façon dont on peut
+ « apprendre », c’est-à-dire construire des règles de décision à partir des don-
+ nées ; les compromis sous-jacents, absence de règle universellement bonne et
+ sur-apprentissage ; et la façon dont on établit des résultats théoriques sur la
+ qualité des règles ainsi apprises.
+
+                                                 7
+8                      CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+Statistique et apprentissage
+    Jusqu’ici, les observations X1 , . . . , Xn étaient modélisées par une famille de lois {Pθ : θ ∈ Θ}
+et l’inconnue était θ. L’apprentissage supervisé conserve une inconnue probabiliste – la loi du
+couple (X, Y ) – mais déplace la question : on ne cherche plus à décrire cette loi, on cherche une
+fonction g qui, à un attribut x, associe une prévision g(x) de la réponse. La qualité de g se mesure
+par la perte moyenne que l’on subit en prédisant g(X) alors que la réponse est Y .
+    L’intérêt porté à ce domaine vient du nombre de tâches qu’il permet de traiter : la traduction
+automatique, la reconnaissance d’images, la réponse automatique à des questions posées en langue
+naturelle, la génération d’images à partir d’une description textuelle, ou encore la prévision météo-
+rologique, où les modèles fondés sur l’apprentissage fournissent des prévisions plus rapides, et dans
+certains cas plus fiables, que la résolution numérique des équations de la dynamique atmosphérique.
+    Ce qui distingue l’apprentissage de l’informatique traditionnelle est la nature du raisonnement.
+L’informatique traditionnelle applique une règle donnée à l’avance pour obtenir une réponse : le
+raisonnement est déductif. L’apprentissage se propose d’apprendre la règle à partir des données,
+puis de l’utiliser : le raisonnement est inductif. L’apprentissage machine et l’apprentissage sta-
+tistique sont les deux faces d’un même domaine, l’une du côté de l’informatique, l’autre du côté
+des mathématiques et de la statistique. C’est à ces fondements statistiques que ce chapitre est
+consacré, dans le cadre de l’apprentissage supervisé.
+Intuition. On peut se représenter la différence de la façon suivante. En statistique, la loi des observations
+est la cible : on veut savoir quel θ l’a engendrée, et la réponse est d’autant plus précise que n est grand, au
+point que le risque d’estimation tend vers zéro. En apprentissage, la loi de (X, Y ) n’est qu’un intermédiaire :
+on veut savoir prédire Y à partir de X, et même en connaissant parfaitement la loi il reste une erreur
+irréductible, celle que l’on commet parce que X ne détermine pas Y . Le risque ne tend donc pas vers zéro,
+il tend au mieux vers le risque de Bayes.
+1. LES FONDAMENTAUX                                                                                         9
+
+1      Les fondamentaux
+1.1      Le cadre de l’apprentissage supervisé
+   On observe un individu par un vecteur de caractéristiques et on cherche à prédire une grandeur
+attachée à cet individu. Le cadre suivant fixe les notations qui serviront dans tout le chapitre.
+
+     Cadre 1.1: Apprentissage supervisé
+
+      — Les attributs X ∈ X = Rd , aussi appelés variables explicatives (features).
+      — La réponse Y ∈ Y.
+      — Le couple (X, Y ) suit une loi P sur X × Y, et P est inconnue.
+    Selon la nature de Y, on parle de
+      — classification binaire si Y = {−1, 1} ;
+      — classification multi-classe si Y = {0, 1, 2, . . . , K − 1} ;
+      — régression si Y = R.
+
+     Définition 1.1: Prédicteur, classifieur, régresseur
+    Un prédicteur (ou classifieur, ou régresseur ) est une fonction mesurable g : X → Y.
+
+
+    Objectif. On dispose d’un ensemble d’apprentissage (training set)
+
+                                      Dn = {(X1 , Y1 ), . . . , (Xn , Yn )} ,
+
+    formé de n paires indépendantes et de même loi P que (X, Y ), et l’on cherche à construire à
+    partir de ces données un prédicteur gbn .
+
+   Le vocabulaire est celui de la prédiction, mais l’objet mathématique est familier : Dn est un
+n-échantillon de la loi P sur X × Y, au sens du chapitre 1, et gbn est une statistique à valeurs
+dans un espace de fonctions. Rien n’est supposé sur la structure de dépendance entre X et Y ; en
+particulier, on n’exclut pas que deux individus de mêmes attributs portent des réponses différentes.
+
+Des exemples de problèmes d’apprentissage supervisé
+     Les trois exemples qui suivent fixent, sur des jeux de données usuels, ce que sont X, Y et n.
+
+     Exemple 1.1: Prix de vente de maisons
+    On observe les caractéristiques d’une maison et on cherche à prédire sa valeur de vente. Le
+    jeu de données House price prediction comporte n = 1500 exemples. La sortie est la valeur de
+    vente, donc Y ∈ R : c’est une tâche de régression. Les attributs sont les 81 caractéristiques
+    relevées pour chaque bien – année de construction, quartier, surface, étage, balcon –, de sorte
+    que X ∈ R81 . Ces caractéristiques sont de natures variées, quantitatives, qualitatives ou
+    ordinales, et leur mise sous forme de vecteur réel est une étape de traitement préalable que
+    l’on suppose faite.
+
+     Exemple 1.2: Reconnaissance de chiffres manuscrits
+    On cherche à reconnaître le chiffre représenté par une image. Le jeu de données MNIST
+    comporte 60 000 images, réparties en 50 000 images d’apprentissage et 10 000 images de test,
+    équilibrées entre les classes ; chaque image est un carré de 28×28 pixels en niveaux de gris, soit
+    X ∈ R784 et d = 784. Il y a dix classes, Y ∈ {0, 1, 2, . . . , 9} : c’est une tâche de classification
+10                   CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+
+  multi-classe.
+
+
+
+
+Figure 1 – Quelques images du jeu de données MNIST. Chaque image est décrite par les 784
+niveaux de gris de ses pixels, et sa réponse est le chiffre qu’elle représente.
+
+    D’autres tâches entrent dans le même cadre. La détection de courriels indésirables prend pour
+attributs une représentation du courriel – par exemple le vecteur, de la taille du dictionnaire, qui
+compte les occurrences de chaque mot – et pour réponse l’appartenance ou non à la classe des
+pourriels. La segmentation sémantique d’images associe à chaque pixel d’une image la catégorie
+de l’objet auquel il appartient. La classification de sentiments prend un texte et lui associe une
+polarité. La prévision du prix de l’électricité prend l’état du réseau et des marchés et prédit un
+prix, donc une réponse réelle.
+    Les trois exemples suivants n’ont qu’un seul attribut, d = 1 ; ils seront repris pour illustrer la
+règle de Bayes et le choix d’un modèle.
+
+     Exemple 1.3: Taille et genre
+  L’attribut est la taille d’une personne, X ∈ R, et la réponse est son genre, codé par Y ∈
+  {−1, 1} : c’est un problème de classification binaire. Conditionnellement à chacune des deux
+  valeurs de Y , la taille se répartit autour d’une valeur moyenne propre à la classe, avec une
+  dispersion du même ordre dans les deux classes ; une modélisation naturelle consiste donc à
+  prendre deux lois gaussiennes de moyennes différentes et de même variance. Si de plus les deux
+  classes sont également représentées, la règle optimale compare les deux densités et revient à
+  placer un seuil au milieu des deux moyennes : on prédit une classe en deçà du seuil, l’autre au-
+  delà. Les deux densités conditionnelles se recouvrent largement, et ce recouvrement empêche
+  la probabilité d’erreur de descendre à zéro, quelle que soit la règle employée.
+
+
+     Exemple 1.4: Âge et maladie cardiovasculaire
+  L’attribut est l’âge d’un patient, X ∈ R, et la réponse indique la présence ou l’absence d’une
+  maladie cardiovasculaire, Y ∈ {−1, 1}. Ici, ce que l’on sait décrire n’est pas la loi de l’âge dans
+  chaque classe, mais la probabilité d’être malade à âge donné : cette probabilité croît avec
+  l’âge, de façon régulière, en restant comprise entre 0 et 1. C’est la forme même du modèle
+  logistique, qui pose que cette probabilité vaut sigm(a + b x) pour deux réels a et b, où sigm est
+  la fonction sigmoïde de la Section 2.9. La règle optimale consiste alors à prédire la présence
+  de la maladie au-delà d’un âge seuil, celui où cette probabilité franchit 1/2.
+
+
+     Exemple 1.5: Note à l’examen et nombre d’heures de travail
+  L’attribut est le nombre d’heures de travail consacrées à la préparation d’un examen, X ∈ R,
+  et la réponse est la note obtenue, Y ∈ R : c’est un problème de régression. La note croît en
+  moyenne avec le temps de travail, mais deux élèves ayant travaillé le même nombre d’heures
+  n’obtiennent pas la même note. La règle optimale pour la perte quadratique est la note
+  moyenne à temps de travail fixé, c’est-à-dire la fonction x 7→ E [ Y | X = x] ; si l’on modélise
+  cette moyenne comme une fonction affine du temps de travail, on retrouve la régression linéaire
+  simple, dont l’estimateur des moindres carrés a été introduit au chapitre 2 (exemple 1.15).
+1. LES FONDAMENTAUX                                                                                11
+
+Perte et risque
+   Pour comparer deux prédicteurs, il faut d’abord chiffrer ce que coûte une prévision erronée.
+C’est le rôle de la fonction de perte, et la moyenne de cette perte définit le risque.
+
+   Définition 1.2: Fonction de perte
+  Une fonction de perte est une fonction mesurable positive ℓ : Y × Y → R+ ; la quantité
+  ℓ(y, g(x)) quantifie la qualité de la prévision g(x) de la réponse y.
+      — Perte 0–1 (classification), pour y ∈ Y = {−1, 1} ou y ∈ Y = {0, . . . , K − 1} :
+
+                                         ℓ01 (y, g(x)) = 1{y̸=g(x)} .
+
+      — Perte quadratique (régression), pour y ∈ R :
+
+                                         ℓ2 (y, g(x)) = (y − g(x))2 .
+
+   Définition 1.3: Risque d’une règle de décision
+  Le risque d’un prédicteur g est la perte moyenne
+                                                 Z
+                         R(g) := E [ℓ(Y, g(X))] = ℓ(y, g(x)) dP(x, y) ,
+
+  sous réserve que cette espérance existe. En particulier :
+      — le risque 0–1 en classification vaut R01 (g) = P(Y ̸= g(X)) ;
+      — le risque quadratique en régression vaut R2 (g) = E[(Y − g(X))2 ].
+
+    Pour la perte 0–1, le risque est une probabilité, donc un nombre de [0, 1], et il s’interprète
+comme la proportion d’individus que la règle g classe mal. Pour la perte quadratique, le risque
+peut être infini ; les énoncés de la Section 1.2 prendront soin de supposer que Y est de carré
+intégrable et de restreindre la comparaison aux prédicteurs g tels que g(X) l’est aussi.
+    Le cadre est maintenant complet : une règle de décision g : X → Y mesurable, une perte
+ℓ(Y, g(X)), un risque                             Z
+                            R(g) = E [ℓ(Y, g(X))] =     ℓ(y, g(x)) dP(x, y) ,
+
+et un ensemble d’apprentissage Dn = {(X1 , Y1 ), . . . , (Xn , Yn )} formé de n copies indépendantes
+de (X, Y ). Trois questions se posent alors.
+
+  Questions.
+      — Existe-t-il une règle de décision g ⋆ optimale, au sens où R(g ⋆ ) ≤ R(g) pour toute règle de
+        décision g ?
+      — Comment construire, à partir de Dn , une règle gbn qui approche g ⋆ ?
+                                     gn ) − R(g ⋆ ) ?
+      — Peut-on quantifier l’écart R(b
+
+    La Section 1.2 répond à la première question, la Section 1.3 donne une réponse à la deuxième,
+et la troisième, abordée ici sur l’exemple des règles obtenues par substitution, est le sujet des
+chapitres 9 et 10.
+
+1.2     Les règles bayésiennes
+   On suppose dans toute cette section que la loi P du couple (X, Y ) est connue, et on cherche la
+meilleure règle de prédiction possible. Cette règle, dite bayésienne, n’est pas calculable en pratique
+puisque P est inconnue ; elle sert de référence à laquelle comparer les règles construites sur des
+données.
+12                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+Lois jointe, marginales et conditionnelles
+    Le couple (X, Y ) porte une seule loi, dite loi jointe, et l’on en déduit les lois des deux va-
+riables prises séparément, dites lois marginales, ainsi que la loi de l’une sachant l’autre, dite loi
+conditionnelle. On note
+
+       PX,Y    la loi jointe,       PX et PY     les lois marginales des attributs et de la réponse,
+
+et PX|Y , PY |X les lois conditionnelles des attributs sachant la réponse et de la réponse sachant les
+attributs.
+    Tout le chapitre se place dans le cas où ces lois admettent des densités, au sens suivant : les
+deux espaces mesurés (X, X , µ) et (Y, Y, ν) étant donnés, on suppose que la loi de (X, Y ) admet
+une densité pX,Y par rapport à la mesure produit µ ⊗ ν. Les deux situations rencontrées dans
+ce chapitre sont (Y, Y, ν) = (R, B(R), Leb) et (X, X , µ) = (Rd , B(Rd ), Leb) en régression, et la
+même chose pour les attributs avec (Y, Y, ν) = ({−1, 1}, P({−1, 1}), c) en classification binaire,
+où c := δ{−1} + δ{1} est la mesure de comptage. Les formules ci-dessous valent dans les deux cas,
+la mesure dominante pouvant être discrète ou continue.
+    Les densités marginales s’obtiennent en intégrant la densité jointe par rapport à l’autre va-
+riable :                    Z                                   Z
+                  pX (x) =      pX,Y (x, y) ν(dy) ,    pY (y) =    pX,Y (x, y) µ(dx) .             (1)
+                                Y                                     X
+La densité jointe se factorise de deux façons,
+
+                         pX,Y (x, y) = qX|Y (x | y) pY (y) = qY |X (y | x) pX (x) ,                       (2)
+
+et la densité conditionnelle de la réponse sachant les attributs est, pour tout x tel que pX (x) > 0,
+                                                          pX,Y (x, y)
+                                        qY |X (y | x) =               .                                   (3)
+                                                            pX (x)
+La construction de ces objets et la vérification que (3) définit bien une densité de probabilité sur
+Y sont reprises dans la Section 2.5.
+Intuition. La factorisation (2) dit qu’il y a deux manières de « voir » la même expérience aléatoire.
+Dans la première, on tire d’abord la classe Y , puis les attributs X dans la loi propre à cette classe : c’est
+la vue qX|Y pY , celle que suit l’approche générative (analyse discriminante) dans la Section 1.3. Dans la
+seconde, on tire d’abord les attributs X, puis la réponse Y dans la loi propre à ces attributs : c’est la vue
+qY |X pX , celle que suivent le modèle logistique et le modèle linéaire gaussien. Les deux décrivent la même
+loi jointe, mais ne se modélisent pas aussi facilement selon le problème.
+
+
+Risque et règle bayésiens
+   La première des trois questions posées plus haut a une réponse : il existe une valeur minimale
+du risque, et l’on appelle règle bayésienne toute règle qui l’atteint.
+
+     Définition 1.4: Risque et règle bayésiens
+  Soit ℓ : Y × Y → R+ une fonction de perte et P une probabilité sur X × Y. Le risque minimum
+                                     Z                                          
+                 ⋆
+                Rℓ,P := inf Rℓ,P (g) = ℓ(y, g(x)) dP(x, y) , g : X → Y mesurable
+
+                                                                     ⋆
+  est le risque bayésien relatif à P et à ℓ. Une fonction mesurable gℓ,P : X → Y telle que
+                                                     ⋆
+                                                             ⋆
+                                               Rℓ,P gℓ,P   = Rℓ,P
+
+  est appelée règle de décision bayésienne.
+1. LES FONDAMENTAUX                                                                                    13
+
+                                                                                  ⋆
+    Lorsque le choix de la perte et de la loi ne prête pas à ambiguïté, on écrit gℓ,P = g ⋆ et Rℓ,P
+                                                                                                ⋆
+                                                                                                    = R⋆ .
+L’infimum définissant R⋆ existe toujours, puisque l’ensemble des risques est une partie non vide
+de R+ ∪ {+∞} ; en revanche, rien ne garantit a priori qu’il soit atteint, ni qu’il le soit par une
+seule règle. Les deux théorèmes qui suivent exhibent une règle qui l’atteint, en régression pour la
+perte quadratique et en classification binaire pour la perte 0–1.
+
+Le risque conditionnel
+    Pour calculer une règle bayésienne, on raisonne attribut par attribut. L’outil est la décompo-
+sition du risque comme moyenne d’un risque calculé à X fixé.
+
+
+   Proposition 1.1: Risque conditionnel
+  Supposons que (X, Y ) admette une densité pX,Y par rapport à µ ⊗ ν et soit ℓ : Y × Y → R+
+  une fonction de perte. Pour tout prédicteur mesurable g : X → Y,
+                                                                Z
+          Rℓ,P (g) = E [ℓ(Y, g(X))] = E [E [ ℓ(Y, g(X)) | X]] =   Rℓ,P (g, x) pX (x) µ(dx) ,
+                                                                   X
+
+  où le risque conditionnel au point x est
+                                          Z
+                           Rℓ,P (g, x) :=   ℓ(y, g(x)) qY |X (y | x) ν(dy) .
+                                            Y
+
+  Si une fonction mesurable g ⋆ : X → Y vérifie
+                                              Z
+                         Rℓ,P (g ⋆ , x) = inf   ℓ(y, a) qY |X (y | x) ν(dy)
+                                           a∈Y   Y
+
+                                             ⋆
+  pour pX · µ-presque tout x ∈ X, alors g est une règle de décision bayésienne.
+
+
+
+   Démonstration
+  L’intégrande (x, y) 7→ ℓ(y, g(x)) pX,Y (x, y) est mesurable et positive ; le théorème de Fubini-
+  Tonelli autorise l’intégration successive et donne
+                               Z
+                   Rℓ,P (g) =        ℓ(y, g(x)) pX,Y (x, y) µ(dx) ν(dy)
+                                 X×Y
+                               Z Z                                  
+                            =          ℓ(y, g(x)) qY |X (y | x) ν(dy) pX (x) µ(dx) ,
+                                X    Y
+
+  où l’on a utilisé (3) et le fait que l’ensemble {x : pX (x) = 0} est de mesure nulle pour pX ·
+  µ. La deuxième écriture, E[E [ ℓ(Y, g(X)) | X]], est la propriété de l’espérance de l’espérance
+  conditionnelle (proposition 2.2) jointe à l’expression de l’espérance conditionnelle dans le cas
+  à densité (proposition 2.6).
+  Soit maintenant g ⋆ comme dans l’énoncé et g un prédicteur mesurable quelconque. Pour pX ·µ-
+  presque tout x, on a Rℓ,P (g ⋆ , x) ≤ Rℓ,P (g, x), puisque g(x) ∈ Y et que le membre de gauche
+  est l’infimum sur a ∈ Y. L’intégration de cette inégalité contre la mesure positive pX · µ donne
+  Rℓ,P (g ⋆ ) ≤ Rℓ,P (g), d’où Rℓ,P (g ⋆ ) = Rℓ,P
+                                              ⋆
+                                                  .                                             □
+
+
+Régression : le prédicteur bayésien est l’espérance conditionnelle
+   On considère la régression, Y ∈ R, et la perte des moindres carrés ℓ2 (y, g(x)) = (y − g(x))2 .
+La meilleure prévision de Y à attributs fixés est la moyenne de Y à attributs fixés.
+14                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+
+
+     Théorème 1.1: Prédicteur bayésien en régression, perte quadratique
+  Supposons E[Y 2 ] < ∞ et posons gℓ⋆2 ,P (X) := E [ Y | X]. Alors, pour tout prédicteur mesurable
+  g : Rd → R tel que E[g 2 (X)] < ∞,
+                              h                2 i     h              i
+                                                                     2
+                             E Y − gℓ⋆2 ,P (X)      ≤ E (Y − g(X)) ,
+
+  et plus précisément
+                 h            i h                2 i    h                   2 i
+                            2
+                E (Y − g(X)) = E Y − gℓ⋆2 ,P (X)      + E gℓ⋆2 ,P (X) − g(X)      .
+
+  La fonction gℓ⋆2 ,P est donc une règle de décision bayésienne pour la perte quadratique, et elle
+  est unique à l’égalité P-presque sûre près.
+
+
+
+     Démonstration
+  L’espérance conditionnelle E [ Y | X] est, par définition (Section 2.1), la projection orthogonale
+  de Y sur le sous-espace fermé L2 (Ω, σ(X), P) de L2 (Ω, F, P), et la caractérisation de Doob
+  (proposition 2.1) fournit une fonction mesurable, notée ici gℓ⋆2 ,P , telle que gℓ⋆2 ,P (X) = E [ Y | X].
+  En particulier, E[(gℓ⋆2 ,P )2 (X)] < ∞.
+                                                                                                     
+  Soit g mesurable avec E[g 2 (X)] < ∞. En écrivant Y − g(X) = Y − gℓ⋆2 ,P (X) +
+                     
+    gℓ⋆2 ,P (X) − g(X) et en développant le carré,
+                                                                                      
+         E (Y − g(X))2 = E (Y − gℓ⋆2 ,P (X))2 + 2 E (Y − gℓ⋆2 ,P (X)) (gℓ⋆2 ,P (X) − g(X))
+                                                 
+                         + E (gℓ⋆2 ,P (X) − g(X))2 .
+
+  Les trois espérances sont finies car les trois variables Y , gℓ⋆2 ,P (X) et g(X) sont de carré in-
+  tégrable. La variable T := gℓ⋆2 ,P (X) − g(X) appartient à L2 (Ω, σ(X), P), donc la relation
+  d’orthogonalité qui caractérise la projection donne E[(Y − gℓ⋆2 ,P (X)) T ] = 0 : le terme croisé
+  est nul, ce qui établit l’identité annoncée. L’inégalité s’en déduit, le dernier terme étant positif.
+  Si g est un prédicteur mesurable tel que E[g 2 (X)] = ∞, alors Y − g(X) n’est pas de carré
+  intégrable, puisque Y l’est et que L2 (Ω, F, P) est un espace vectoriel ; on a donc E[(Y −
+  g(X))2 ] = +∞ et l’inégalité reste vraie. L’infimum de la définition 1.4 est donc atteint en
+  gℓ⋆2 ,P . Enfin, si g réalise aussi ce minimum, l’identité ci-dessus donne E[(gℓ⋆2 ,P (X)−g(X))2 ] = 0,
+  c’est-à-dire g(X) = gℓ⋆2 ,P (X) P-presque sûrement.                                                  □
+
+
+Intuition. L’énoncé est une propriété de projection : parmi toutes les fonctions des attributs, celle qui
+approche Y au mieux au sens quadratique est la projection de Y sur l’espace des fonctions des attributs, et
+cette projection est l’espérance conditionnelle. L’identité de décomposition se lit alors comme le théorème
+de Pythagore : l’erreur commise par g est la somme de l’erreur incompressible, celle que gℓ⋆2 ,P commet
+encore, et de la distance de g à gℓ⋆2 ,P . La première ne dépend que de la loi de (X, Y ) et ne peut pas être
+réduite ; c’est la part de Y que les attributs n’expliquent pas.
+
+
+
+Classification : le classifieur bayésien
+
+   On considère la classification binaire, Y ∈ {−1, 1}, et la perte 0–1, ℓ01 (y, g(x)) = 1{y̸=g(x)} . La
+quantité qui gouverne tout est la probabilité de la classe 1 sachant les attributs.
+1. LES FONDAMENTAUX                                                                                15
+
+   Définition 1.5: Fonction de régression
+  La fonction de régression est la fonction mesurable η : X → [0, 1], unique à l’égalité P-presque
+  sûre près, telle que                                             
+                            η(X) = P ( Y = 1 | X) = E 1{Y =1} X .
+
+    L’existence et l’unicité de η résultent de la définition de l’espérance conditionnelle et de la
+caractérisation des variables σ(X)-mesurables (proposition 2.1) ; la positivité de l’espérance
+                                                                                              condi-
+                                                                                                 
+tionnelle (proposition 2.4) donne 0 ≤ η ≤ 1 presque sûrement. On a de plus E 1{Y =−1} X =
+1 − η(X).
+
+
+   Théorème 1.2: Classifieur bayésien et excès de risque
+  Soit η la fonction de régression et soit
+                                                        (
+                                                            1  si η(x) ≥ 1/2 ,
+                        g (x) := 2 1{η(x)≥1/2} − 1 =
+                         ⋆
+                                                            −1 sinon .
+
+  Pour tout classifieur mesurable g : Rd → {−1, 1},
+
+                               E [ℓ01 (Y, g ⋆ (X))] ≤ E [ℓ01 (Y, g(X))] ,
+
+  c’est-à-dire P(g ⋆ (X) ̸= Y ) ≤ P(g(X) ̸= Y ) : g ⋆ est un classifieur bayésien pour la perte 0–1.
+  L’excès de risque d’un classifieur g vaut
+                                                                            
+                         R01 (g) − R01 (g ⋆ ) = E |2η(X) − 1| 1{g⋆ (X)̸=g(X)} ,                  (4)
+
+  et le risque bayésien vaut
+                                  ⋆
+                                 R01 = E [min (η(X), 1 − η(X))] .                               (5)
+
+
+
+   Démonstration
+  Soit g : Rd → {−1, 1} mesurable. On applique le lemme 2.2 à la fonction bornée ψg (x, y) :=
+  1{g(x)̸=y} . Comme g est à valeurs dans {−1, 1}, on a ψg (x, 1) = 1{g(x)=−1} et ψg (x, −1) =
+  1{g(x)=1} , d’où
+                                                                        
+                   R01 (g) = E 1{g(X)=−1} η(X) + E 1{g(X)=1} (1 − η(X)) .
+  En remplaçant 1{g(X)=1} par 1 − 1{g(X)=−1} , il vient
+                                                       
+                    R01 (g) = E 1{g(X)=−1} (2η(X) − 1) + E [1 − η(X)] .                         (6)
+  Le second terme ne dépend pas de g. Par conséquent, pour deux classifieurs g1 et g2 ,
+                                                                             
+              R01 (g1 ) − R01 (g2 ) = E 1{g1 (X)=−1} − 1{g2 (X)=−1} (2η(X) − 1) .               (7)
+  Appliquons (7) avec g1 = g et g2 = g ⋆ , et posons D := 1{g(X)=−1} − 1{g⋆ (X)=−1} , qui
+  prend ses valeurs dans {−1, 0, 1}. Les deux classifieurs étant à valeurs dans {−1, 1}, on a
+  D = 0 si et seulement si g(X) = g ⋆ (X). Si D = 1, alors g(X) = −1 et g ⋆ (X) = 1, donc
+  η(X) ≥ 1/2 et 2η(X) − 1 ≥ 0, de sorte que D (2η(X) − 1) = |2η(X) − 1|. Si D = −1, alors
+  g(X) = 1 et g ⋆ (X) = −1, donc η(X) < 1/2 et 2η(X) − 1 < 0, de sorte que l’on a encore
+  D (2η(X) − 1) = −(2η(X) − 1) = |2η(X) − 1|. Dans tous les cas,
+                         D (2η(X) − 1) = |2η(X) − 1| 1{g(X)̸=g⋆ (X)} ≥ 0 ,
+16                      CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+
+  ce qui donne (4) et, le membre de droite étant positif, l’optimalité de g ⋆ parmi les classifieurs
+  mesurables, donc R01 (g ⋆ ) = R01 ⋆
+                                      .
+  Il reste à calculer ce risque. En appliquant (6) à g ⋆ et en utilisant 1{g⋆ (X)=−1} = 1{η(X)<1/2} ,
+  on obtient                                                                    
+                     R01 (g ⋆ ) = E 1{η(X)<1/2} η(X) + 1{η(X)≥1/2} (1 − η(X)) .
+  Or min(η, 1 − η) = η si et seulement si η ≤ 1/2, et les deux quantités coïncident lorsque
+  η = 1/2 ; l’intégrande vaut donc min(η(X), 1 − η(X)), ce qui établit (5).              □
+
+
+  La règle g ⋆ consiste simplement à retourner le label le plus probable à la vue des attributs X :
+  on prédit 1 lorsque η(x) ≥ 1 − η(x), c’est-à-dire η(x) ≥ 1/2. Le choix de l’inégalité large est une
+  convention : sur l’événement {η(X) = 1/2} les deux décisions ont le même risque conditionnel,
+  et (4) montre que changer g ⋆ sur cet événement ne change pas son risque. Le classifieur bayésien
+  n’est donc pas unique en général.
+
+Intuition. La formule d’excès de risque (4) se lit ainsi : on ne paie que là où g décide autrement que g ⋆ , et
+le prix payé en un tel point x est |2η(x) − 1|, c’est-à-dire l’écart entre la probabilité de la classe majoritaire
+et celle de la classe minoritaire. Se tromper de décision là où η(x) est proche de 1/2 ne coûte presque
+rien, car les deux classes y sont presque également probables ; se tromper là où η(x) est proche de 0 ou de
+1 coûte cher. La formule (5) dit de même que le risque incompressible est la moyenne de la probabilité de
+la classe minoritaire : il est nul si et seulement si η(X) ∈ {0, 1} presque sûrement, c’est-à-dire lorsque les
+attributs déterminent la classe.
+
+
+Explicitation de la règle bayésienne en classification binaire
+    On explicite maintenant η et g ⋆ en fonction des lois conditionnelles des attributs dans chaque
+classe. On prend
+
+               (X, X , µ) = (Rd , B(Rd ), Leb) ,       (Y, Y, ν) = ({−1, 1}, P({−1, 1}), c) ,
+                                                               g
+où c = δ{−1} + δ{1} est la mesure de comptage, et l’on note Ber(p)    la loi de Bernoulli de paramètre
+                                                            g
+p ∈ [0, 1] à valeurs dans {−1, 1}, de sorte que L(Y ) = Ber(p) avec p = P(Y = 1). Pour écarter
+les situations triviales, on suppose p ∈ ]0, 1[. Les formules (1) à (3) s’appliquent telles quelles, la
+mesure dominante de la réponse étant ici la mesure de comptage : la densité marginale des labels
+est la fonction
+                             y 7−→ pY (y) = p 1{1} (y) + (1 − p) 1{−1} (y) .
+On note q1 et q−1 les densités de la loi des attributs conditionnellement à chacune des deux classes,
+
+                      q1 (x) := qX|Y (x | y = 1) ,        q−1 (x) := qX|Y (x | y = −1) ,
+
+de sorte que, par la factorisation (2), la loi jointe des labels et des attributs a pour densité
+
+                        pX,Y (x, y) = p q1 (x) 1{1} (y) + (1 − p) q−1 (x) 1{−1} (y) .                         (8)
+
+
+     Proposition 1.2: Loi marginale des attributs
+  La loi des attributs admet la densité
+                              Z
+                     pX (x) =   pX,Y (x, y) c(dy) = p q1 (x) + (1 − p) q−1 (x) :
+                                   Y
+
+  c’est un mélange des deux lois conditionnelles, de poids p et 1 − p.
+1. LES FONDAMENTAUX                                                                               17
+
+
+
+   Proposition 1.3: Loi conditionnelle des labels sachant les attributs
+  Pour tout x tel que pX (x) > 0,
+                  
+                                   pX,Y (x, 1)              p q1 (x)
+                  
+                  qY |X (1 | x)  =             =                             ,
+                                      pX (x)       p q1 (x) + (1 − p) q−1 (x)
+                  
+                                   p    (x, −1)           (1 − p) q−1 (x)
+                  qY |X (−1 | x) = X,Y           =                             .
+                                       pX (x)        p q1 (x) + (1 − p) q−1 (x)
+
+
+
+
+   Proposition 1.4: Fonction de régression
+  Pour tout x tel que pX (x) > 0, la fonction de régression vaut
+
+                                                 p q1 (x)                     1
+              η(x) = qY |X (1 | x) =                              =                      ,
+                                       p q1 (x) + (1 − p) q−1 (x)        (1 − p) q−1 (x)
+                                                                      1+
+                                                                             p q1 (x)
+
+  la dernière écriture valant lorsque q1 (x) > 0.
+
+
+
+   Démonstration
+  L’expression de l’espérance conditionnelle dans le cas à densité (proposition 2.6), appliquée à
+  la variable 1{Y =1} , donne
+                                    Z                              
+                               
+           η(X) = E 1{Y =1} X =          1{y=1} qY |X (y | x) c(dy)     = qY |X (1 | X) ,
+                                          Y                              x=X
+
+  et l’on conclut par la proposition 1.3. L’ensemble {x : pX (x) = 0} étant de probabilité nulle
+  sous la loi de X, cette identité détermine η à l’égalité presque sûre près.                 □
+
+    En reportant cette expression dans la définition de g ⋆ , on obtient une forme qui ne fait plus
+intervenir que les deux densités conditionnelles et la proportion des classes : pour tout x tel que
+pX (x) > 0,                 (
+                     ⋆        1    si et seulement si p q1 (x) ≥ (1 − p) q−1 (x) ,
+                    g (x) =                                                                     (9)
+                              −1 sinon .
+En effet, pX (x) étant strictement positif, l’inégalité η(x) ≥ 1/2 équivaut à 2 p q1 (x) ≥ p q1 (x) +
+(1 − p) q−1 (x), c’est-à-dire à p q1 (x) ≥ (1 − p) q−1 (x).
+
+   Exemple 1.6: Taille et genre, suite
+  Reprenons l’exemple 1.3 avec d = 1, deux densités conditionnelles gaussiennes q1 = N (µ1 , σ 2 )
+  et q−1 = N (µ−1 , σ 2 ) de même variance, et p = 1/2. La condition p q1 (x) ≥ (1 − p) q−1 (x)
+  de (9) s’écrit q1 (x) ≥ q−1 (x), c’est-à-dire, après passage au logarithme et simplification des
+  termes en x2 ,                                            
+                                                    µ1 + µ−1
+                                  (µ1 − µ−1 ) x −               ≥0.
+                                                        2
+  Si µ1 > µ−1 , la règle bayésienne prédit la classe 1 au-delà du point milieu (µ1 + µ−1 )/2 et la
+  classe −1 en deçà. La frontière de décision est un seuil, et ce seuil se déplace dès que p ̸= 1/2
+18                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+
+
+
+Figure 2 – Règle de décision du classifieur bayésien en dimension d = 1. La fonction η donne la
+probabilité de la classe 1 sachant les attributs ; la règle g ⋆ prédit la classe 1 sur l’ensemble des x
+où η(x) ≥ 1/2.
+
+
+  ou que les deux variances diffèrent.
+
+
+Bilan
+                                ⋆
+    Le prédicteur bayésien gℓ,P     est optimal pour la loi P et la perte ℓ. Mais le statisticien ne connaît
+                                ⋆
+pas la loi jointe de (X, Y ) : gℓ,P n’est pas une fonction des observations, et le risque bayésien est à ce
+titre un objet purement théorique, auquel on se compare. On dispose en revanche d’un ensemble
+d’apprentissage Dn = {(X1 , Y1 ), . . . , (Xn , Yn )}, formé de n copies indépendantes de (X, Y ), et
+c’est à partir de lui que l’on construira gbn .
+    Il faudra dès lors gérer un double aléa : celui du couple (X, Y ) sur lequel la règle est évaluée, et
+celui de l’ensemble d’apprentissage Dn à partir duquel elle est construite. Les deux ne jouent pas
+le même rôle et ne se moyennent pas au même endroit, ce que la Section 1.3 et les compléments
+précisent.
+    Deux exercices de la feuille reprennent ce calcul dans des situations où tout est explicite :
+l’exercice 1 détermine le prédicteur bayésien en classification binaire pour une perte asymétrique,
+et l’exercice 5 le calcule, ainsi que son risque, sur une distribution particulière en dimension un.
+
+1.3      L’approche par modélisation
+    La règle bayésienne n’est pas calculable parce que la loi de (X, Y ) est inconnue. Une première
+façon de contourner cet obstacle reprend le schéma suivi jusqu’ici en statistique : on se donne un
+modèle paramétrique pour cette loi, on estime le paramètre sur l’ensemble d’apprentissage, et on
+substitue l’estimateur au paramètre dans l’expression de la règle bayésienne.
+
+      Méthode 1.1: Règle par substitution
+       1. Modéliser la loi de (X, Y ) par un modèle paramétrique {Pθ : θ ∈ Θ}.
+       2. Calculer le prédicteur bayésien gθ⋆ sous chacune des lois Pθ .
+       3. Estimer θ par θ̂n à partir de l’ensemble d’apprentissage Dn .
+       4. Choisir la règle gbn := gθ̂⋆ (règle par substitution, ou plug-in).
+                                    n
+
+
+
+    La deuxième étape est un calcul exact, mené sous une loi connue : c’est le travail de la Sec-
+tion 1.2. La troisième relève des chapitres 2, 3 et 7. Reste à choisir la façon de modéliser la loi du
+couple, et la factorisation (2) en offre deux.
+     — Modéliser X | Y et Y : c’est l’approche générative, celle de l’analyse discriminante linéaire
+       et quadratique et du classifieur bayésien naïf.
+1. LES FONDAMENTAUX                                                                                        19
+
+  — Modéliser Y | X et X : c’est l’approche du modèle logistique, du modèle linéaire gaussien et
+    de l’algorithme des k plus proches voisins.
+
+Intuition. L’approche générative décrit comment les données sont produites : on tire une classe, puis
+des attributs conformes à cette classe. Elle demande donc de modéliser la loi des attributs dans chaque
+classe, ce qui est une information riche, et parfois trop riche pour être crédible en grande dimension. La
+seconde approche ne modélise que ce dont la règle a besoin, la probabilité de la classe à attributs donnés, et
+laisse la loi des attributs libre. Ce dernier point mérite d’être souligné : dans le modèle logistique et dans
+le modèle linéaire gaussien, la loi de X reste quelconque et n’intervient ni dans la règle bayésienne ni dans
+l’estimation du paramètre.
+
+
+Analyse discriminante linéaire et quadratique
+   On applique la méthode précédente à la classification binaire avec, pour chaque classe, une loi
+gaussienne sur Rd .
+
+   Cadre 1.2: Modèle de l’analyse discriminante
+  Le paramètre est θ = (p, µ1 , µ−1 , Σ1 , Σ−1 ), avec p ∈ ]0, 1[, µi ∈ Rd et Σi ∈ S+
+                                                                                    d l’ensemble des
+  matrices de covariance d × d inversibles, et le modèle s’écrit
+       (
+                 g
+         L(Y ) = Ber(p) ,
+         pour i ∈ {−1, 1} , L(X | Y = i) = qi,θ · Leb , avec qi,θ · Leb = N (µi , Σi ) .
+
+  La densité conditionnelle de la classe i est donc
+                                                                         
+                                    1               1        ⊤ −1
+                  qi,θ (x) =        √         exp − (x − µi ) Σi (x − µi ) .
+                             (2π)d/2 det Σi         2
+
+   L’hypothèse d’inversibilité des deux matrices de covariance est nécessaire : sans elle, la loi
+conditionnelle des attributs est portée par un sous-espace affine strict de Rd et n’admet pas de
+densité par rapport à la mesure de Lebesgue. Elle entraîne qi,θ (x) > 0 pour tout x, donc pX (x) > 0
+pour tout x, et la fonction de régression est définie partout.
+
+Deuxième étape : le prédicteur bayésien sous Pθ .                D’après (9),
+
+                     gθ⋆ (x) = 1 si et seulement si     p q1,θ (x) ≥ (1 − p) q−1,θ (x) .                 (10)
+
+Les deux membres étant strictement positifs, cette condition équivaut à ϕθ (x) ≥ 0, où
+                   p q1,θ (x)
+  ϕθ (x) := log
+               (1 − p) q−1,θ (x)
+                p       1     det Σ−1  1                         1
+         = log       + log            − (x − µ1 )⊤ Σ−1                      ⊤ −1
+                                                    1 (x − µ1 ) + (x − µ−1 ) Σ−1 (x − µ−1 ) ,
+               1−p 2           det Σ1  2                         2
+                                                                                           (11)
+
+et la proposition 1.4 s’écrit alors ηθ (x) = sigm(ϕθ (x)), où sigm : t 7→ 1/(1 + e−t ) est la fonction
+sigmoïde de la Section 2.9.
+     La fonction ϕθ est un polynôme de degré au plus deux en x, et son terme de degré deux est
+− 12 x⊤ (Σ−1     −1
+          1 − Σ−1 )x. Deux cas se présentent.
+   — Si Σ1 = Σ−1 = Σ, ce terme disparaît et
+
+                               ϕθ (x) = wθ⊤ x + Aθ ,       wθ := Σ−1 (µ1 − µ−1 ) ,
+                                            p   1 ⊤ −1                  
+                               Aθ := log      −   µ1 Σ µ1 − µ⊤
+                                                             −1 Σ
+                                                                  −1
+                                                                     µ−1 .
+                                           1−p 2
+20                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+        La frontière de décision {x : ϕθ (x) = 0} est un hyperplan affine : on parle d’analyse discri-
+        minante linéaire (LDA, pour linear discriminant analysis).
+     — Si Σ1 ̸= Σ−1 , la frontière est une quadrique de Rd – ellipsoïde, paraboloïde ou hyperboloïde
+       selon le signe des valeurs propres de Σ−1    −1
+                                              1 −Σ−1 . On parle d’analyse discriminante quadratique
+       (QDA, pour quadratic discriminant analysis).
+
+Troisième et quatrième étapes : estimation et substitution. Le paramètre θ est estimé
+par maximum de vraisemblance sur l’ensemble d’apprentissage : pbn est la proportion d’individus
+de la classe 1, µbi,n la moyenne empirique des attributs de la classe i et Σ       b i,n leur matrice de
+covariance empirique. Le calcul de cet estimateur et la démonstration de sa consistance font l’objet
+de l’exercice 3. La règle retenue est alors gbn = gθ̂⋆ : il suffit de remplacer θ par θ̂n dans (11).
+                                                    n
+
+
+
+
+Figure 3 – Analyse discriminante linéaire, sur deux ensembles d’apprentissage simulés (une
+ligne par ensemble). À gauche, les attributs, chaque couleur marquant une classe ; au milieu,
+les moyennes et la matrice de covariance commune estimées sur ces points ; à droite, la frontière
+de décision de la règle gθ̂⋆ , qui est une droite, et les attributs mal classés, marqués d’une croix.
+                           n
+
+
+
+
+Figure 4 – Analyse discriminante quadratique, sur les deux mêmes ensembles d’apprentissage.
+Chaque classe reçoit sa propre matrice de covariance, et la frontière de décision est une courbe du
+second degré.
+
+
+Classification : le modèle logistique
+      On modélise cette fois la loi de Y sachant X, en laissant la loi de X libre.
+1. LES FONDAMENTAUX                                                                                                         21
+
+                                             Linear Discriminant Analysis vs Quadratic Discriminant Analysis
+                                         Linear Discriminant Analysis                   Quadratic Discriminant Analysis
+
+
+            fixed covariance
+                Data with
+
+
+
+
+Figure 5 – Deux règles apprises sur le même ensemble d’apprentissage, par l’analyse discriminante
+linéaire (à gauche) et par l’analyse discriminante quadratique (à droite). Les attributs des deux
+classes sont distingués par leur couleur, les moyennes estimées sont marquées par une étoile, la
+                   varying covariances
+
+
+
+
+frontière de décision est tracée en gris et les attributs mal classés par la règle sont marqués d’une
+                        Data with
+
+
+
+
+croix. Cette figure est celle de l’exercice 3.
+
+
+   Cadre 1.3: Modèle logistique
+  Le paramètre est θ ∈ Rd et le modèle s’écrit
+              (                              
+                             g sigm θ⊤ X ,
+                L(Y | X) = Ber                                                                                    1
+                                                                                       où     sigm(t) =                .
+                L(X) quelconque ,                                                                              1 + e−t
+
+   La fonction de régression sous Pθ est donnée par le modèle lui-même : ηθ (X) = Pθ (Y = 1 |
+X) = sigm(θ⊤ X). Comme sigm est croissante et vaut 1/2 en 0, on a sigm(θ⊤ X) ≥ 1/2 si et
+seulement si θ⊤ X ≥ 0, de sorte que
+                                                   gθ⋆ (X) = 1 si et seulement si         θ⊤ X ≥ 0 :
+la règle bayésienne du modèle est une règle de séparation linéaire.
+    Le paramètre est estimé par maximum de vraisemblance. Comme la loi de X ne dépend pas
+de θ, elle se factorise dans la vraisemblance et seule la partie conditionnelle contribue ; par ailleurs
+1 − sigm(t) = sigm(−t), de sorte que Pθ (Y = y | X) = sigm(y θ⊤      PX)  pour y ∈ {−1, 1}. L’opposé
+                                                                       n
+de la log-vraisemblance conditionnelle normalisée vaut donc n−1 i=1 log(1 + exp(−Yi θ⊤ Xi )), et
+l’estimateur du maximum de vraisemblance est
+                                                                n
+                                            b                1X                         
+                                            θMLE,n = arg min       log 1 + exp −Yi θ⊤ Xi .                                 (12)
+                                                      θ∈R d  n i=1
+
+La règle retenue est gbn = gθ⋆b                             , c’est-à-dire
+                                                   MLE,n
+
+
+                                                              gbn (X) = 2 1{θb⊤           −1.
+                                                                             MLE,n X≥0}
+
+
+Le critère minimisé dans (12) revient à employer la perte ℓlog (y, t) = log(1 + e−yt ), dite perte
+logistique, sur la classe des fonctions linéaires x 7→ θ⊤ x : la démarche par modélisation rejoint ici
+celle qui consiste à choisir d’emblée une perte et une classe de fonctions.
+
+Régression : le modèle linéaire gaussien
+   Le même schéma s’applique en régression.
+22                      CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+     Cadre 1.4: Modèle linéaire gaussien homoscédastique
+  Le paramètre est θ ∈ Rd , la variance σ 2 > 0 est fixée, et le modèle s’écrit
+                                 (                            
+                                    L(Y | X) = N θ⊤ X, σ 2 ,
+                                    L(X) quelconque .
+
+
+    Le théorème 1.1 donne gθ⋆ (X) = Eθ [Y | X] = θ⊤ X : le prédicteur bayésien du modèle est
+linéaire. Le paramètre est estimé par maximum de vraisemblance, c’est-à-dire, la loi de X ne
+dépendant pas de θ et la densité conditionnelle étant gaussienne de variance connue,
+                                                       n
+                                                    1X ⊤            2
+                                  θbMLE,n = arg min       θ Xi − Y i ,
+                                             θ∈R d  n i=1
+
+et la règle retenue est gbn (X) = θbMLE,n
+                                    ⊤
+                                          X. On retrouve l’estimateur des moindres carrés du cha-
+pitre 2 (exemple 1.15), et, comme pour le modèle logistique, la démarche revient à employer la
+perte des moindres carrés sur la classe des fonctions linéaires.
+
+Ce que l’approche par modélisation garantit
+    L’approche par modélisation consiste à choisir un modèle pour la loi du phénomène – analyse
+discriminante linéaire ou quadratique, classifieur bayésien naïf, algorithme des k plus proches
+voisins – puis à exploiter ce modèle. C’est une approche de type statistique : on obtient des
+résultats sous l’hypothèse de modélisation.
+    Le résultat typique est le suivant. Pour l’énoncer, on note R01 (g) le risque d’une règle fixée et,
+lorsque la règle gbn est construite sur l’ensemble d’apprentissage, R01 (b
+                                                                         gn ) := P ( gbn (X) ̸= Y | Dn ) la
+probabilité d’erreur conditionnelle, où (X, Y ) est un couple indépendant de Dn et de même loi ;
+c’est une variable aléatoire, fonction de Dn , sur laquelle la Section 4.4 revient.
+
+
+     Proposition 1.5: Risque d’une règle par substitution
+  Soit {Pθ : θ ∈ Θ} un modèle de classification binaire et θ⋆ ∈ Θ. On suppose :
+      (i) que le modèle est bien spécifié, c’est-à-dire que la loi de (X, Y ) et celle des n paires de
+          Dn sont données par Pθ⋆ ; on note En,θ⋆ l’espérance sous la loi de Dn ;
+     (ii) que ηθ désigne la fonction de régression sous Pθ et gθ⋆ := 2 1{ηθ ≥1/2} −1 la règle bayésienne
+          associée ;
+                                                                                    Pn,θ⋆ −prob
+     (iii) que l’estimateur θ̂n , construit sur Dn , vérifie ηθ̂n (x) − ηθ⋆ (x)        −→         0 pour pX · µ-
+           presque tout x ∈ X.
+  Alors la règle par substitution gbn := gθ̂⋆ vérifie
+                                               n
+
+
+                                                    gn ) − R01 (gθ⋆⋆ )] = 0 .
+                                    lim En,θ⋆ [R01 (b
+                                   n→∞
+
+
+
+
+     Démonstration
+  L’exercice 7 établit que, pour toute fonction mesurable ηe : X → [0, 1] et la règle associée
+  ge := 2 1{eη≥1/2} − 1,
+                                    g ) − R01 (gθ⋆⋆ ) ≤ 2 E [|ηθ⋆ (X) − ηe(X)|] ,
+                               R01 (e                                                                       (13)
+  l’espérance portant sur le seul couple de test (X, Y ) ; la démonstration en est redonnée à la
+  Section 4.7. Appliquée à ηe = ηθ̂n , à Dn fixé, et compte tenu de l’indépendance de (X, Y ) et
+1. LES FONDAMENTAUX                                                                                    23
+
+
+  de Dn , elle donne
+                                                     Z
+                            gn ) − R01 (gθ⋆⋆ ) ≤ 2
+                   0 ≤ R01 (b                                ηθ⋆ (x) − ηθ̂n (x) pX (x) µ(dx) .
+                                                         X
+
+  En prenant l’espérance sous la loi de Dn et en intervertissant les deux intégrations, ce qui est
+  licite pour un intégrande positif (Fubini-Tonelli),
+                                                  Z     h                  i
+                           gn ) − R01 (gθ⋆⋆ )] ≤ 2 En,θ⋆ ηθ⋆ (x) − ηθ̂n (x) pX (x) µ(dx) .
+           0 ≤ En,θ⋆ [R01 (b
+                                                     X
+
+  Fixons x hors de l’ensemble négligeable de l’hypothèse (iii). La suite de variables aléatoires
+   ηθ⋆ (x) − ηθ̂n (x) converge vers 0 en probabilité sous Pn,θ⋆ et est majorée par 1, les deux
+  fonctions de régression étant à valeurs dans [0, 1] ;hle théorème de convergence
+                                                                        i          dominée pour
+  la convergence en probabilité donne donc En,θ⋆ ηθ⋆ (x) − ηθ̂n (x) → 0. Chacune de ces
+  espérances étant majorée par 1 et pX · µ étant une probabilité, une seconde application du
+  théorème de convergence dominée, cette fois en la variable x, montre que l’intégrale tend vers
+  zéro.                                                                                       □
+
+   Deux avertissements accompagnent cet énoncé.
+
+  La conclusion ne tient que si l’hypothèse de modélisation (i) est vérifiée, c’est-à-dire si la loi qui
+  a engendré les données appartient bien au modèle. Si le modèle est mal spécifié, ηθ̂n ne converge
+  pas vers la vraie fonction de régression, et l’excès de risque de gbn ne tend pas vers zéro.
+
+  La quantité qui tend vers zéro est une moyenne prise sous deux aléas distincts : celui d’un
+                                       gn ) − R01 (gθ⋆⋆ ), et celui de l’ensemble d’apprentissage, par
+  point de test, à l’intérieur de R01 (b
+  l’espérance En,θ⋆ . C’est le double aléa annoncé à la Section 1.2.
+
+    En résumé : si le modèle est bon, la méthode est bonne. En pratique, il est parfois difficile
+de disposer d’un modèle raisonnable pour la loi de (X, Y ), et c’est ce qui conduit à l’approche
+discriminative, étudiée aux chapitres 9 et 10, où l’on renonce à modéliser la loi et où l’on choisit
+directement une classe de règles et une perte. Le résultat typique ci-dessus est le sujet de l’exercice 2,
+et sa mise en œuvre complète sur le modèle de l’analyse discriminante est celui de l’exercice 3.
+
+
+1.4    Le programme des exercices
+   La feuille de ce chapitre comporte sept exercices.
+  — L’exercice 1 remplace la perte 0–1 par une perte asymétrique, qui pénalise d’un coût c > 0
+    le fait de prédire −1 lorsque la réponse vaut 1, et d’un coût 1 la situation inverse. On y
+    calcule le risque en fonction de η et de c, on montre que 2 1{η(X)≥1/(c+1)} − 1 est une règle
+    bayésienne, et l’on discute l’unicité de cette règle.
+  — L’exercice 2 reprend les formules du théorème 1.2 : le risque bayésien E[min(η(X), 1−η(X))],
+    l’écriture du risque d’un classifieur quelconque donnée par (6), la majoration |R(g1 ) −
+    R(g2 )| ≤ E[|2η(X) − 1| 1{g1 (X)̸=g2 (X)} ], puis la majoration de l’excès de risque d’une règle
+    construite sur une approximation de η, et enfin le passage à la limite qui donne la proposi-
+    tion 1.5.
+  — L’exercice 3 traite l’analyse discriminante de bout en bout : expression de la fonction de ré-
+    gression sous la forme sigm(ϕθ (x)), frontière linéaire lorsque les deux covariances coïncident,
+    log-vraisemblance de l’échantillon, estimateur du maximum de vraisemblance, consistance
+    de cet estimateur, et convergence vers zéro de l’excès de risque de la règle par substitution.
+    La dernière question étend la méthode à plus de deux classes.
+24                       CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+     — L’exercice 4 porte sur l’espérance conditionnelle elle-même : deux couples de même loi ont
+       des espérances conditionnelles de même loi, calcul de E [ X | |X|] pour une variable de loi
+       symétrique, et calcul de E [ Xi | X1 + · · · + Xn ] pour des variables indépendantes de même
+       loi intégrables.
+     — L’exercice 5 est un modèle jouet en dimension un où les deux lois conditionnelles des attributs
+       sont uniformes sur des intervalles qui se chevauchent. On y calcule la loi marginale des
+       attributs, la fonction de régression, le risque bayésien et l’excès de risque d’une règle à seuil
+       donnée.
+     — L’exercice 6 étudie, toujours en dimension un, la classe des règles à seuil g(x′ ,y′ ) , qui prédisent
+       y ′ à gauche de x′ et −y ′ à droite. On y exprime le minimum du risque dans cette classe à l’aide
+       des fonctions de répartition conditionnelles, on montre qu’il est majoré par min(p, 1 − p), et
+       on le relie au risque bayésien.
+     — L’exercice 7 démontre la majoration (13) de l’excès de risque d’une règle construite sur une
+       fonction η approchée, par 2 E[|η ⋆ (X)−η(X)|]. C’est le résultat employé dans la démonstration
+       de la proposition 1.5.
+

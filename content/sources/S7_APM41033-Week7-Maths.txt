@@ -1,0 +1,127 @@
+30                 CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+2      Les outils mathématiques
+    Vous retrouverez ci-dessous les résultats que la partie précédente mobilise : la loi des grands
+nombres sous la seule hypothèse d’intégrabilité, le lemme de continuité qui porte toute la dé-
+monstration de la loi uniforme des grands nombres, la formule de Taylor avec reste intégral, et
+les énoncés des chapitres antérieurs auxquels les démonstrations renvoient. La liste des résultats
+admis clôt la partie.
+
+
+2.1      La loi faible des grands nombres pour des variables intégrables
+   La loi faible des grands nombres du chapitre 6 (théorème 1.2) est énoncée pour des variables
+décorrélées, et suppose à ce titre l’existence d’un moment d’ordre deux. Les fonctions auxquelles
+on l’applique dans ce chapitre – le module de continuité wδ , la dérivée ψ ′ (θ⋆ , ·), le reste Rδ – ne
+sont supposées qu’intégrables. La version suivante, valable pour des variables indépendantes de
+même loi seulement intégrables, est celle qui convient.
+
+
+     Théorème 2.1: Loi faible des grands nombres, variables i.i.d. intégrables
+    Pour tout n ∈ N, soit (Zn , Zn , Pn ) un espace de probabilité et X1 , . . . , Xn des variables aléa-
+    toires réelles définies sur (Zn , Zn ), indépendantes, de même loi et telles que supn En [|X1 |] < ∞.
+    Alors
+                                         1X
+                                             n
+                                                             Pn −prob
+                                                Xk − En [X1 ] −→ 0 .
+                                         n
+                                         k=1
+
+
+
+
+    Cet énoncé est celui du théorème 4.2, rappelé dans les compléments du chapitre 6, où il est
+admis. Lorsque les variables X1 , . . . , Xn sont les images f (Y1 ), . . . , f (Yn ) d’un n-échantillon par
+une même fonction mesurable intégrable, l’espérance En [X1 ] ne dépend pas de n et la conclusion
+           P         Pn −prob
+s’écrit n−1 k f (Yk ) −→ E[f (Y1 )] ; c’est sous cette forme qu’elle est employée.
+
+
+2.2      Module de continuité et continuité de la fonction limite
+   Le lemme suivant est le cœur de la démonstration de la loi uniforme des grands nombres
+(théorème 1.2) : il transforme la continuité de θ 7→ ϕ(θ, x) à x fixé, qui ne dit rien en moyenne, en
+deux énoncés en moyenne.
+
+     Lemme 2.1: Module de continuité d’une famille dominée
+    Soit K un compact de Rd , soit Θ ⊆ K et soit ϕ : K × X → R. Pour δ > 0 et x ∈ X, on pose
+
+                             wδ (x) :=          sup          |ϕ(θ, x) − ϕ(ϑ, x)| .                   (12)
+                                         {θ,ϑ∈K : ∥θ−ϑ∥≤δ}
+
+
+    Supposons que, pour tout x ∈ X, la fonction θ 7→ ϕ(θ, x) est continue sur K, et que, pour tout
+    θ⋆ ∈ Θ,                       Z
+                                          sup |ϕ(θ, x)| Qθ⋆ (dx) < ∞ .
+                                          θ∈K
+                                                          R
+    Alors, pour tout θ⋆ ∈ Θ, la fonction θ 7→ Wθ⋆ (θ) := ϕ(θ, x)Qθ⋆ (dx) est continue sur K, et
+                                          Z
+                                      lim    wδ (x) Qθ⋆ (dx) = 0 .
+                                       δ→0+     X
+2. LES OUTILS MATHÉMATIQUES                                                                           31
+
+   Démonstration
+  Soit θ⋆ ∈ Θ et posons φ(x) := supθ∈K |ϕ(θ, x)|, fini pour tout x puisqu’une fonction continue
+  sur un compact y est bornée, et intégrable par hypothèse.
+  Soient θ ∈ K et {θn , n ∈ N} une suite d’éléments de K convergeant vers θ. Pour tout x ∈ X,
+  la continuité de θ 7→ ϕ(θ, x) donne ϕ(θn , x) → ϕ(θ, x), et |ϕ(θn , x)| ≤ φ(x) pour tout n. Le
+  théorème de convergence dominée donne Wθ⋆ (θn ) → Wθ⋆ (θ), ce qui est la continuité annoncée.
+  Pour le second point, le théorème de Heine assure que la fonction continue θ 7→ ϕ(θ, x) est
+  uniformément continue sur le compact K, de sorte que limδ→0+ wδ (x) = 0 pour tout x ∈ X.
+  Comme wδ ≤ 2φ pour tout δ > 0 et que δ 7→ wδ (x) est croissante, le  R théorème de convergence
+  dominée appliqué à toute suite {δn , n ∈ N} de limite nulle donne wδn dQθ⋆ → 0.             □
+
+
+2.3    La formule de Taylor avec reste intégral
+    Le développement (1) qui ouvre l’étude de la loi limite est une écriture de la formule de Taylor
+à l’ordre un dont le reste est exact, et non un simple o(·) : c’est ce qui permet de le contrôler
+uniformément en x.
+
+   Lemme 2.2: Formule de Taylor avec reste intégral à l’ordre un
+  Soit f : I → R une fonction continûment différentiable sur un intervalle ouvert I de R et soit
+  a ∈ I. Pour tout t tel que a + t ∈ I et [a, a + t] ⊆ I,
+                                                                Z 1
+           f (a + t) = f (a) + f ′ (a) t + r(t) t ,   r(t) :=         {f ′ (a + wt) − f ′ (a)} dw .
+                                                                 0
+
+  De plus, limt→0 r(t) = 0.
+
+
+   Démonstration
+                                                  R1                 R a+t
+  Le changement de variable s = a+wt donne 0 f ′ (a+wt) t dw = a f ′ (s)ds = f (a+t)−f (a),
+                                               R1
+  d’où la formule en retranchant f ′ (a)t = 0 f ′ (a) t dw. La continuité de f ′ en a donne |r(t)| ≤
+  sup|s−a|≤|t| |f ′ (s) − f ′ (a)| → 0 quand t → 0.                                                □
+
+    Appliqué à f = ψ(·, x) et a = θ⋆ , ce lemme donne (1) et (2), pour chaque x tel que θ 7→ ψ(θ, x)
+soit continûment différentiable sur V(θ⋆ ).
+
+2.4    Les résultats antérieurs mobilisés
+   Les énoncés suivants sont employés tels quels.
+  — Du chapitre 2 : la définition des M - et Z-estimateurs (définitions 1.8 et 1.3), la divergence
+    de Kullback-Leibler et sa positivité (définition 1.7, théorème 1.1), et la limite de la log-
+    vraisemblance normalisée (proposition 1.3).
+  — Du chapitre 3 : la définition du modèle régulier (définition 1.6), celles du score et de l’in-
+    formation de Fisher (définitions 1.7 et 1.8), leurs propriétés (proposition 1.2), l’inégalité de
+    Cauchy-Schwarz (proposition 2.1) et le théorème de dérivation sous le signe intégral (propo-
+    sition 2.2).
+  — Du chapitre 6 : la consistance (définition 1.2), les inégalités de Markov et de Bienaymé-
+    Tchebychev (lemme 2.1), le théorème de la limite centrale (théorème 1.6), le lemme de
+    Slutsky (lemme 1.1), le théorème de transformation continue (théorème 1.4), la méthode-δ
+    (théorème 1.7), la normalité asymptotique (définition 1.6), la comparaison par la variance
+    asymptotique (proposition 1.3) et le vocabulaire asymptotique des tests (définitions 1.9, 1.10
+    et 1.11).
+32                 CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+2.5      Les résultats admis
+      Trois énoncés de ce chapitre sont utilisés sans être démontrés ici.
+     — La loi faible des grands nombres pour des variables indépendantes de même loi intégrables
+       (théorème 2.1), déjà admise au chapitre 6.
+     — Le premier point du théorème 1.7, c’est-à-dire la normalité asymptotique de l’estimateur
+       du maximum de vraisemblance sous les seules conditions de régularité 1.1 sans hypothèse
+       supplémentaire ; la démonstration reprend celle du théorème 1.4 en tirant de la condition de
+       domination (R-2) le contrôle du reste. C’est le théorème II-3.3 du polycopié d’origine.
+     — La loi limite de la médiane empirique employée à l’exemple 1.9, qui relève de la théorie des
+       statistiques d’ordre et non de ce chapitre ; elle est rappelée plus bas (Section 4.8).
+

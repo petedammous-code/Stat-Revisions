@@ -1,0 +1,1179 @@
+Ecole Polytechnique, promotion 2025                                    PC-7 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 1
+  1. Notons F la fonction de répartition de la loi q. On pose qθ (·) := q(· − θ).
+      (a) ▶ définition du test. Sous Pn,θ0 , 1Xk ≥θ0 suit une de Bernoulli de paramètre
+          de succès
+                     Z +∞              Z +∞                Z ∞
+                          qθ0 (x) dx =      q(x − θ0 )dx =     q(y)dy = 1 − F (0).
+                      θ0                    θ0                     0
+
+          Puisque la médiane de q est 0, nous avons F (0) = 1/2. Par suite, par le théorème
+          central limite, il vient
+                                                    Pn,θ
+                                                 Mn =⇒0 N(0, 1/4).
+          En observant que sous Pn,θ pour θ > θ0 , la médiane des Xi est θ, nous en déduisons
+          une zone de rejet de la forme
+
+                                  Rn,1 := {(x1 , · · · , xn ) ∈ Rn : 2Mn > z1−α }
+
+          où z1−α est le quantile d’ordre 1 − α d’une loi N(0, 1). On peut verifier qu’avec ce
+          choix du seuil critique, on a
+
+                      lim Pn,θ0 (2Mn > z1−α ) = P(U > z1−α ) = α               U ∼ N(0, 1)
+                       n
+
+          de sorte que le test est de niveau asymptotique α.
+          En conclusion, nous posons tn := z1−α /2.
+          ▶ Vérification de la consistance. Posons Bn := n−1 nk=1 1Xk ≥θ0 . Pour θ ∈
+                                                                       P
+          R, nous avons :
+                                                                !
+                            √         Bn − (1 − F (θ0 − θ))       Pn,θ
+                              n p                                 =⇒ N(0, 1).
+                                     F (θ0 − θ)(1 − F (θ0 − θ))
+
+          par le TLC pour des v.a. i.i.d. en observant que
+                            Z +∞            Z ∞               Z ∞
+          Pn,θ (Xk ≥ θ0 ) =      qθ (x)dx =      q(x − θ)dx =     q(x) dx = 1 − F (θ0 − θ).
+                             θ0                    θ0                  θ0 −θ
+
+          Observons que pour θ > θ0 dans un voisinage de θ0 , on a l’inégalité stricte F (θ0 −
+          θ) < F (0) = 1/2 (cela est la conséquence de l’hypothèse qui suppose q(0) > 0
+          et q continue) ; et puisque la fonction de répartition est monotone, cela reste vrai
+                                           √
+          pour tout θ > θ0 . Donc limn n(F (θ0 − θ) − 1/2) = −∞. Par suite, en notant
+          σ 2 (θ) := F (θ0 − θ)(1 − F (θ0 − θ)), il vient
+                                                                
+                                                            z1−α
+                   Pn,θ (2Mn > z1−α ) = Pn,θ Bn − 1/2 > √
+                                                            2 n
+                                                                          
+                                                                      z1−α
+                   = Pn,θ Bn − 1 + F (θ0 − θ) > F (θ0 − θ) − 1/2 + √
+                                                                      2 n
+                            √                              √ F (θ0 − θ) − 1/2
+                                                                                     
+                                  Bn − 1 + F (θ0 − θ)                             z1−α
+                   = Pn,θ     n                           > n                 +
+                                          σ(θ)                      σ(θ)         2σ(θ)
+
+
+                                                                                             Page 8
+Ecole Polytechnique, promotion 2025                                        PC-7 Cours APM 41033 EP
+
+
+          Le terme qui précède dépend de n à la fois via la loi de la v.a., et via la borne de
+          l’intervalle ; pour appliquer la convergence en loi, on se ramène à un intervalle qui
+          ne bouge pas avec n - c’est l’objectif des calculs qui suivent.
+          Soit C > 0 ; il existe NC tel que pour tout n ≥ NC on a
+                                       √ F (θ0 − θ) − 1/2
+                                        n                 < −C;
+                                               σ(θ)
+
+          cela entraine que pour tout n ≥ NC
+                √                            √
+                                                                                 
+                                                  Bn − 1 + F (θ0 − θ)     z1−α
+          Pn,θ 2 n (Bn − 1/2) > z1−α ≥ Pn,θ    n                         >       −C
+                                                          σ(θ)             2σ(θ)
+
+          La convergence en loi entraine que (on note Φ la fonction de répartition d’une loi
+          N(0, 1))
+                                √
+                                                                             
+                                                                  z1−α
+                      lim Pn,θ 2 n (Bn − 1/2) > z1−α ≥ 1 − Φ             −C
+                        n                                          2σ(θ)
+          et ce pour tout C > 0 ; donc lorsque C → +∞, on obtient
+                                          √                   
+                                lim Pn,θ 2 n (Bn − 1/2) > z1−α = 1
+                                  n
+
+          et conclut la preuve de la consistance du test.
+      (b) ▶ Construction du test. Sous Pn,θ0 , les v.a. Xk sont i.i.d. d’espérance θ0 et de
+          variance σq2 . Par suite,
+
+                                      √                      Pn,θ
+                                          nσq−1 (X̄n − θ0 ) =⇒0 N(0, 1).
+
+          De plus, en observant que
+                                                       n
+                                                   1X 2
+                                           Sn2 =     Xk − (X̄n )2
+                                                   n
+                                                      k=1
+
+          nous avons par application de la loi des grands nombres faible que
+                                                     Pn,θ0 −prob
+                                               Sn2      −→         σq2 .
+
+          Nous en déduisons par la stabilité de la convergence en probabilité par une appli-
+          cation continue, puis par le lemme de Slutsky que
+                                                     Pn,θ
+                                               Tn =⇒0 N(0, 1).
+
+          Par suite, on propose le test de zone de rejet
+                                                          √ x̄n − θ0
+                              Rn,2 := {(x1 , · · · , xn ), n         > z1−α }.
+                                                               sn
+          En exploitant la convergence en loi de la statistique de test, on prouve que
+
+                                          lim Pn,θ0 (Tn > z1−α ) = α;
+                                           n
+
+
+                                                                                            Page 9
+Ecole Polytechnique, promotion 2025                                    PC-7 Cours APM 41033 EP
+
+
+          ce qui établit le niveau asymptotique du test.
+          ▶ Consistance du test. Soit θ > θ0 .
+          Méthode 1. Nous écrivons
+                                         √ X̄n − θ0
+                                                             
+                                                           Sn
+             Pn,θ (Tn > z1−α ) = Pn,θ     n         > z1−α
+                                              σq           σq
+                                         √ X̄n − θ                         √ θ0 − θ
+                                                                                 
+                                                            Sn
+                                = Pn,θ    n        − z1−α      − 1 > z1−α + n
+                                             σq             σq                 σq
+                                                                √
+          Sous Pn,θ , Sn converge en probabilités vers σq , et n X̄nσ−θ
+                                                                      q
+                                                                         0
+                                                                           converge en loi vers
+          N (0, 1). Par Slutsky,
+
+                                       √ X̄n − θ
+                                                                     
+                                                               Sn
+                                 Wn := n            − z1−α        −1
+                                             σq                σq
+
+          converge en loi vers N (0, 1). Par suite,
+
+                             lim Pn,θ (Tn > z1−α ) ≥ lim Pn,θ (Wn > z1−α − M ) ,
+                              n                       n
+
+          et ce pour tout M > 0 (voir question 1a pour un raisonnement analogue). Il vient
+          que pour tout M > 0,
+
+                                  lim Pn,θ (Tn > z1−α ) ≥ 1 − Φ (z1−α − M )
+                                   n
+
+          et le terme de droite tend vers 1 quand M → +∞.
+          Méthode 2.
+                                                                                
+                                                X̄n − θ0 θ − θ0    z1−α θ − θ0
+                     Pn,θ (Tn > z1−α ) = Pn,θ           −       > √ −
+                                                   Sn       σq       n      σq
+                                                        √
+          Il existe N tel que pour tout n ≥ N , z1−α / n − (θ − θ0 )/σq ≤ −(θ − θ0 )/(2σq ),
+          dont on déduit que
+                                                                       
+                                            X̄n − θ0 θ − θ0      θ − θ0
+                 Pn,θ (Tn > z1−α ) ≥ Pn,θ             −      >−           ,    n ≥ N.
+                                               Sn        σq       2σq
+
+          Sous Pn,θ ,
+                                                 X̄n − θ0 θ − θ0
+                                         Wn :=           −
+                                                    Sn      σq
+          converge en probabilité vers 0 ; par suite, nous avons
+                                           θ − θ0                       θ − θ0
+                        lim Pn,θ (Wn > −          ) ≥ lim Pn,θ (|Wn | <        ) = 1,
+                         n                  2σq         n                2σq
+
+          dont on déduit que
+                                          lim Pn,θ (Tn > z1−α ) = 1.
+                                           n
+
+
+
+
+                                                                                        Page 10
+Ecole Polytechnique, promotion 2025                                                     PC-7 Cours APM 41033 EP
+
+
+  2. En appliquant la condition (2), nous avons
+                               √                          Pn,θ                         Pn,θ0 −prob
+                                   n (Un − µ(θ0 )) =⇒0 N(0, σ 2 ),                Cn      −→         σ
+
+     donc nous déduisons par Slutsky que
+                                √
+                                                
+                                      Un − µ(θ0 ) Pn,θ0
+                                  n                =⇒ N(0, 1).
+                                          Cn
+
+     Par suite,
+                                       √
+                                                              
+                                             Un − µ(θ0 )
+                      lim Pn,θ0          n                 > z1−α = P (U > z1−α ) = α
+                       n                        Cn
+
+     où U ∼ N(0, 1). Cela établit le niveau asymptotique du test.
+  3. (a) Nous écrivons
+
+                                      n                               n
+                      "                                                                         #
+            1                         X                               X
+              En,θ0        sup              ∂θ2 log qθ0 +t (Xk ) −          ∂θ2 log qθ0 (Xk )
+            n          0≤t≤δn k=1                                     k=1
+                               n
+                                                    "                                                       #
+                             1X
+                           ≤                En,θ0        sup     ∂θ2 log qθ0 +t (Xk ) − ∂θ2 log qθ0 (Xk )
+                             n                          0≤t≤δn
+                                      k=1
+                                                    Z
+                                                ≤          sup     ∂θ2 log qθ0 +t (x) − ∂θ2 log qθ0 (x) qθ0 (x)dν(x).
+                                                        X 0≤t≤δn
+
+          Appliquons le théorème de convergence dominée. Soit V0 ⊂ Θ un voisinage ouvert
+          de θ0 . Nous pouvons supposer que θ0 + t ∈ V0 pour tout 0 ≤ t ≤ δn . Comme le
+          modèle est régulier, il existe une fonction h mesurable positive telle que
+                                                          Z
+                                 2
+                         sup ∂θ log qθ (x) ≤ h(x),          h(x)qθ0 (x)dν(x) < ∞.
+                               θ∈V0
+
+          De plus, pour tout x, θ 7→ ∂θ2 log qθ (x) est continue, et donc uniformément continue
+          sur tout compact ; ce qui entraine que
+
+                                      lim sup            ∂θ2 log qθ0 +t (x) − ∂θ2 log qθ0 (x) = 0.
+                                       n 0≤t≤δn
+
+
+          On en déduit par le théorème de convergence dominée que
+                         Z
+                     lim     sup ∂θ2 log qθ0 +t (x) − ∂θ2 log qθ0 (x) qθ0 (x)dν(x) = 0
+                           n       X 0≤t≤δn
+
+          ce qui conclut la preuve.
+          On peut vérifier cette condition sur les familles exponentielles canoniques : qθ (x) =
+          h(x) exp(θT (x) − A(θ)).
+          Nous avons log qθ (x) = log h(x) + θT (x) − A(θ), dont nous déduisons que
+
+                                                         ∂θ2 log qθ (x) = −A′′ (θ).
+
+
+                                                                                                                Page 11
+Ecole Polytechnique, promotion 2025                                        PC-7 Cours APM 41033 EP
+
+
+          Par suite
+                          n                        n
+                 "                                                    #
+          1               X                        X
+            En,θ0 sup       ∂θ2 log qθ0 +t (Xk ) −   ∂θ2 log qθ0 (Xk ) = sup A′′ (θ0 + t) − A′′ (θ0 ) .
+          n        0≤t≤δn                                               0≤t≤δn
+                              k=1                       k=1
+
+          Nous avons établi en PC2/Ex1/qu6 que la fonction θ 7→ A(θ) était de classe C ∞ .
+          Dans le cas gaussien où ln qθ (x) = C − 0.5(x − θ)2 σ −2 − 0.5 ln σ 2 , nous avons
+          A′′ (θ) = σ −2 pour tout θ.
+      (b) La condition de régularité du modèle nous permet de considérer le logarithme
+                            n                    n
+                                                                                !
+                           Y   qθn (Xk )        X
+                                         = exp     {ln qθn (Xk ) − ln qθ0 (Xk )}
+                               qθ0 (Xk )
+                            k=1                       k=1
+
+          puis de faire le développement suivant
+                                                                 1
+            ln qθn (x) − ln qθ0 (x) = (θn − θ0 )∂θ ln qθ0 (x) + (θn − θ0 )2 ∂θ2 ln qθ0 (x)
+                                                                 2
+                                                   Z 1
+                                      1
+                                    + (θn − θ0 )2        ∂θ2 ln q(1−t)θ0 +tθn (x) − ∂θ2 ln qθ0 (x) dt.
+                                                                                                  
+                                      2              0
+                                             √
+          Nous écrivons que θn = θ0 + hn / n où hn > 0 et limn hn = h > 0. Cela entraine
+
+                                          hn                 1 h2n 2
+                ln qθn (x) − ln qθ0 (x) = √ ∂θ ln qθ0 (x) +       ∂ ln qθ0 (x) + ∆n (x),
+                                           n                 2 n θ
+                                          1 h2n 1 2
+                                               Z
+                                                    ∂θ ln q(1−t)θ0 +tθn (x) − ∂θ2 ln qθ0 (x) dt.
+                                                                                            
+                               ∆n (x) :=
+                                          2 n 0
+          Par suite
+          n                                     n                         n                   n
+          X                                 hn X                    1 h2n X 2                 X
+            {ln qθn (Xk ) − ln qθ0 (Xk )} = √     ∂θ ln qθ0 (Xk ) +         ∂θ ln qθ0 (Xk ) +   ∆n (Xk ),
+                                              n                     2 n
+          k=1                                        k=1                       k=1                 k=1
+
+          et d’après la question 3a,
+                " n             #             "            n
+                                                                                                   #
+                 X                  h2n                    X
+                                                               2                    2
+          En,θ0        ∆n (Xk ) ≤       En,θ0      sup √     {∂θ ln qθ0 +t (Xk ) − ∂θ ln qθ0 (Xk )} → 0,
+                                    2n          0≤t≤hn / n
+                  k=1                                                k=1
+
+                           Pn                  Pn,θ0 −prob
+          entrainant que        k=1 ∆n (Xk )    −→ 0. Puisque nous avons
+                                                h                  i
+                                           En,θ0 (∂θ ln qθ0 (Xk ))2 = −En,θ0 ∂θ2 ln qθ0 (Xk ) = I(θ0 ),
+                                                                                            
+          En,θ0 [∂θ ln qθ0 (Xk )] = 0
+
+          la loi faible des grands nombres, le TCL et le lemme de Slutsky donnent
+                        n
+                        X                                     Pn,θ                 h2
+                              {ln qθn (Xk ) − ln qθ0 (Xk )} =⇒0 h N(0, I(θ0 )) −      I(θ0 )
+                                                                                   2
+                        k=1
+
+          On conclut en appliquant la stabilité par transformation continue x 7→ exp(x) de
+          la convergence en loi.
+
+                                                                                               Page 12
+Ecole Polytechnique, promotion 2025                                                   PC-7 Cours APM 41033 EP
+
+
+      (c) Notons
+                                                                           n
+                                                                           Y qθ (xk )
+                                                                                  n
+                                               Ln (x1 , · · · , xn ) :=                     .
+                                                                                qθ0 (xk )
+                                                                          k=1
+
+          Observons que En,θ0 [Ln (X1 , · · · , Xn )] = 1. Nous écrivons, pour tout y > 0,
+                                    Z    n
+                                         Y
+              Pn,θn (An ) =                  qθn (xk ) ν(dx1 ) · · · ν(dxn )
+                                    An k=1
+                                    Z                            n
+                                                                 Y
+                                =        Ln (x1 , · · · , xn )         qθ0 (xk ) ν(dx1 ) · · · ν(dxn )
+                                    An                           k=1
+                                = En,θ0 [1An Ln (X1 , · · · , Xn )]
+                                = En,θ0 1An 1Ln (x1 ,··· ,xn )≤y + 1Ln (x1 ,··· ,xn )>y Ln (X1 , · · · , Xn )
+                                                                                                           
+
+                                ≤ y Pn,θ0 (An ) + En,θ0 1Ln (X1 ,··· ,Xn )>y Ln (X1 , · · · , Xn )
+                                                                                                  
+
+
+          Puisque En,θ0 [Ln (X1 , · · · , Xn )] = 1, nous avons
+
+          En,θ0 1Ln (X1 ,··· ,Xn )>y Ln (X1 , · · · , Xn ) = 1 − En,θ0 1Ln (X1 ,··· ,Xn )≤y Ln (X1 , · · · , Xn ) .
+                                                                                                              
+
+
+          Pour tout y > 0, u 7→ 1u≤y u est une fonction bornée, et ses points de discontinuité
+          D sont tels que la P(W ∈ D) = 0 où sous P,
+
+                                                           h2
+                                                                    
+                                W ∼ exp h N(0, I(θ0 )) − I(θ0 ) .
+                                                            2
+
+          Par suite (voir Théorème IV-5.30)
+
+                      lim En,θ0 1Ln (X1 ,··· ,Xn )≤y Ln (X1 , · · · , Xn ) = E [1W ≤y W ] .
+                                                                         
+                            n
+
+          Notons que E[W ] = 1. ln W est une loi normale N(−h2 I(θ0 )/2; h2 I(θ0 )) i.e. W est
+          une loi log-normale de paramètres s1 = −h2 I(θ0 )/2 et s2 = h2 I(θ0 ). La moyenne
+          de cette loi est exp(s1 + s2 /2) soit ici exp(0) = 1.
+          Soit ε > 0. Choisissons y tel que E [1W ≤y W ] ≥ 1 − ε. D’une part,
+
+                     lim En,θ0 1Ln (X1 ,··· ,Xn )>y Ln (X1 , · · · , Xn ) ≤ 1 − (1 − ε) = ε.
+                                                                        
+                        n
+
+          D’autre part, nous savons par hypothèse que limn Pn,θ0 (An ) = 0. En conséquence,
+          nous avons
+                                         lim Pn,θn (An ) ≤ ε.
+                                                         n
+
+          Cette inégalité est vraie pour tout ε > 0. Ce qui conclut la preuve.
+      (d) Nous appliquons le résultat de la question précédente avec An ← {|Cn − σ| > ε}.
+          Puisque nous avons par hypothèse que limn Pn,θ0 (|Cn − σ| > ε) = 0, alors
+
+                                                 lim Pn,θn (|Cn − σ| > ε) = 0.
+                                                  n
+
+
+
+
+                                                                                                         Page 13
+Ecole Polytechnique, promotion 2025                                                   PC-7 Cours APM 41033 EP
+
+
+  4. Nous avons d’une part
+                                                            Pn,θn −prob
+                                                Cn − σ            −→        0,
+     et d’autre part
+                                        √                          Pn,θ
+                                            n (Un − µ(θn )) =⇒n N(0, σ 2 ).
+     Donc, en utilisant Slutsky, nous avons (noter que limn Pn,θn (Cn > 0) = 1 donc on peut
+     diviser par Cn )
+                         √       Un − µ(θ0 ) √ Un − µ(θn ) √ µ(θn ) − µ(θ0 )
+                             n              = n              + n
+                                    Cn               Cn             Cn
+                                            Pn,θn          ′
+                                                         hµ (θ0 )
+                                            =⇒ N(0, 1) +          .
+                                                           σ
+     On observera que seule l’existence de la dérivée à droite de µ en θ0 est requise. On peut
+     donc affaiblir l’hypothèse. Nous en déduisons que
+                           √                                                   µ′ (θ0 )
+                                                                                       
+                                                        
+                lim Pn,θn    n (Un − µ(θ0 )) > Cn z1−α = 1 − Φ z1−α − h
+                  n                                                               σ
+
+  5. Nous écrivons
+                                               n
+                    √                          X                           1
+                        n (Un − µ(θn )) =            Yn,k         Yn,k := √ (g(Xk ) − µ(θn )) ,
+                                                                            n
+                                               k=1
+
+     et vérifions les conditions du théorème de Lindeberg-Feller (Polycopié, Théorème IV.5-
+     41)
+     Sous Pn,θn , les v.a. {Yn,k }k≤n sont i.i.d. et de carré intégrable.
+     condition (i) Nous avons en utilisant la condition (A) :
+                          n                                 n
+                          X                        1X 2
+                                 Varn,θn (Yn,k ) =   σg (θn ) = σg2 (θn ) → σg2 (θ0 ).
+                                                   n
+                          k=1                           k=1
+
+     condition (ii) Nous avons en utilisant la condition (B), pour tout ε > 0,
+             n          h                   i      n      h           i
+                   En,θn |Yn,k |2 1|Yn,k |>ε ≤ ε−δ
+             X                                     X
+                                                     En,θn |Yn,k |2+δ
+             k=1                                            k=1
+                                                                          n
+                                                                          X          h                     i
+                                                 ≤ ε−δ n−1−δ/2                  En,θn |g(Xk ) − µ(θn )|2+δ
+                                                                          k=1
+                                                      −δ        −δ/2
+                                                 ≤ε         n          Dg (θn ) ∼ ε−δ n−δ/2 Dg (θ0 ).
+
+     Conclusion. Le théorème de Lindeberg entraine
+                                      √                Pn,θ
+                                       n (Un − µ(θn )) =⇒n N(0, σg2 (θ0 )).
+
+  6. (a) Nous avons établi en question 1a que pour tout θ, on a
+                                                              !
+                          √        Bn − (1 − F (θ0 − θ))        Pn,θ
+                            n p                                 =⇒ N(0, 1).
+                                  (1 − F (θ0 − θ)) F (θ0 − θ)
+
+                                                                                                               Page 14
+Ecole Polytechnique, promotion 2025                                       PC-7 Cours APM 41033 EP
+
+
+          Cela nous conduit à poser
+
+                              µ(θ) := 1 − F (θ0 − θ),           d’où µ′ (θ0 ) = q(0);
+
+          puis
+                      p                                 p
+           σ := lim    (1 − F (θ0 − θn )) F (θ0 − θn ) = (1 − F (0))F (0) = 1/2,         Cn := σ.
+                 n
+
+          Avec ces conventions, on peut vérifier (a) que la zone de rejet Rn,1 correspond bien
+            √
+          à n(Un − µ(θ0 )) > Cn z1−α ; (b) que l’on a la convergence en probabilité (3).
+      (b) Nous avons établi en question 1b que pour tout θ, on a
+                                      √
+                                                   
+                                            Tn − θ Pn,θ
+                                        n              =⇒ N(0, 1).
+                                               Sn
+          Cela nous conduit à poser
+
+                                      µ(θ) := θ,         d’où µ′ (θ0 ) = 1;
+
+          puis
+                                          σ := σq ,          Cn := Sn .
+          Avec ces conventions, on peut vérifier (a) que la zone de rejet Rn,2 correspond bien
+            √
+          à n(Tn − µ(θ0 )) > Cn Z1−α ; (b) que l’on a la convergence en probabilité (3).
+      (c) Dans le cas d’un mélange de loi bimodal, nous avons
+          ▶ pour le test de la médiane
+                       1                                                        1
+          µ′ (θ0 ) = √    exp(−(0 + a)2 /(2τ 2 )) + exp(−(0 − a)2 /(2τ 2 )) = √     exp(−a2 /(2τ 2 )),
+                                                                           
+                    2 2πτ                                                       2πτ
+                σ = 1/2
+
+          donc la pente est                 r
+                                                         a2
+                                                           
+                                                21
+                                                   exp − 2 .
+                                                πτ      2τ
+          ▶ pour le test de la moyenne
+
+                                       µ′ (θ0 ) = 1,         σ 2 = τ 2 + a2 ,
+
+          donc la pente est
+                                                         1
+                                                   √
+                                                       a2 + τ 2
+          ▶ En conclusion, le rapport des pentes est
+                                        r r
+                                                  a2           a2
+                                                                  
+                                          2
+                                              1 + 2 exp − 2 .
+                                          π       τ           2τ
+                                                                √                  √ √
+          La figure 5[gauche] montre l’évolution de u 7→ 1 + u exp(−u/2) 2/ π indi-
+          quant que lorsque le ratio a/τ devient grand, le ratio est très faible, indiquant la
+          supériorité du test de la moyenne. La figure 5[droite] montre la densité du mélange
+          pour deux valeurs différentes du rapport a/τ : la densité étant d’autant plus plate
+          autour de l’origine que a/τ est grand, l’estimateur de la médiane souffre quand
+          a/τ est grand.
+
+                                                                                          Page 15
+Ecole Polytechnique, promotion 2025                                                 PC-7 Cours APM 41033 EP
+
+
+            0.8                                              0.2
+                                                                                                a=1.5
+                                                            0.18                                a=3
+            0.7
+                                                            0.16
+            0.6
+                                                            0.14
+            0.5
+                                                            0.12
+
+            0.4                                              0.1
+
+                                                            0.08
+            0.3
+                                                            0.06
+            0.2
+                                                            0.04
+            0.1
+                                                            0.02
+
+              0                                                0
+                  0   1   2   3   4   5     6    7              -8   -6   -4   -2   0   2   4   6       8
+
+
+
+
+              Figure 5 – Cas du mélange de gaussienne avec a > 0, et τ = 1.
+
+
+      (d) Dans le cas d’un mélange de loi centrée en zero, nous avons
+          ▶ pour le test de la médiane
+                                                               
+                                        ′           1         1
+                                       µ (θ0 ) = √        1+
+                                                 2 2π         τ
+                                            σ = 1/2
+
+          donc la pente est                                       
+                                                      1          1
+                                                     √        1+     .
+                                                       2π        τ
+          ▶ pour le test de la moyenne
+                                                                          1
+                                          µ′ (θ0 ) = 1,            σ2 =     1 + τ2 ,
+                                                                                  
+                                                                          2
+          donc la pente est
+                                                   √       1
+                                                      2√         .
+                                                         1 + τ2
+          ▶ En conclusion, le rapport des pentes est
+                                                                    
+                                               1 p         2
+                                                                   1
+                                              √      1+τ 1+            .
+                                             2 π                   τ
+                                                                 √                 √
+          La figure 6[gauche] montre l’évolution de τ 7→ 1 + τ 2 (1 + 1/τ )/(2 π) indiquant
+          que le ratio est minimal lorsque τ = 1 (ce n’est plus un mélange !) ; qu’il devient très
+          grand lorsque les deux variances sont très désiquilibrées, indiquant la supériorité
+          du test de la médiane. La figure 6[droite] montre la densité du mélange pour deux
+          valeurs différentes de τ : la densité étant d’autant plus dispersée autour de zero
+          quand τ est très différent de 1, puisque l’estimateur de la moyenne sera troublé
+          par des réalisations X1 , · · · , Xn très dispersées.
+
+
+
+
+                                                                                                            Page 16
+Ecole Polytechnique, promotion 2025                                   PC-7 Cours APM 41033 EP
+
+
+
+
+      3.5                                                0.3
+                                                                                   tau=2
+                                                                                   tau=4
+        3                                               0.25
+
+
+
+      2.5                                                0.2
+
+
+
+        2                                               0.15
+
+
+
+      1.5                                                0.1
+
+
+
+        1                                               0.05
+
+
+
+      0.5                                                  0
+            0   0.5   1   1.5   2   2.5   3   3.5   4      -10   -5     0      5           10
+
+
+
+
+     Figure 6 – Cas du mélange de gaussiennes centrées et de variances différentes.
+
+
+
+
+                                                                                                Page 17
+Ecole Polytechnique, promotion 2025                                                PC-7 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 2
+   Notons Zn := (X1 , · · · , Xn ).
+  1. La vraisemblance est donnée par
+                                                             n
+                                                                         !
+                                                             Y                     Pn
+                               θ 7→ Ln (θ, Zn ) = θ     2n
+                                                                    Xi       e−θ    i=1 Xi   .
+                                                             i=1
+
+     La log-vraisemblance et ses dérivées sont données par
+                                                                               n
+                                                                               X
+                                 ℓn (θ, Zn ) = C + 2n ln(θ) − θ                      Xi
+                                                                               i=1
+                                                              n
+                                                        2n X
+                                 ℓ˙n (θ, Zn ) =            − Xi
+                                                         θ
+                                                              i=1
+                                                 2n
+                                 ℓ¨n (θ, Zn ) = − 2
+                                                 θ
+     où C désigne un terme qui ne dépend pas de θ. On en déduit que
+                                                                                     n
+                                          2n     2                         1X
+                               θ̂n := Pn      =     ,               X̄n :=    Xi .
+                                       i=1 Xi   X̄n                        n
+                                                                                   i=1
+
+
+     Pn Pn,θ , Xi ∼ Γ(2, θ) et X1 , · · · , Xn sont indépendants. Donc, en utilisant le rappel,
+  2. Sous
+       i=1 Xi ∼ Γ(2n, θ). On a alors
+                                              Z ∞
+                                                    1 θ2n x2n−1 −θx     2n
+                           En,θ [θ̂n ] = 2n                    e dx =        θ.
+                                               0    x Γ(2n)           2n − 1
+
+     Et donc le biais de θ̂n
+                                                                           1
+                                      b(θ̂n ) := En,θ [θ̂n − θ] =               θ.
+                                                                         2n − 1
+     On a de même
+                                                              4n2
+                                       En,θ [θ̂n2 ] =                    θ2
+                                                        (2n − 1)(2n − 2)
+     et donc
+                                                                                     4n2
+                                                                                                           
+                                  2                           2      2                              1
+     EQM (θ̂n ) := En,θ [(θ̂n −θ) ] = Varθ (θ̂n )+b(θ̂n ) = θ                                  +                .
+                                                                              (2n − 1) (2n − 2) (2n − 1)2
+                                                                                      2
+
+
+     On remarque ainsi une décroissance en 1/n compatible avec une vitesse pour le TCL
+                 √
+     classique en n.
+  3. Nous présentons trois solutions.
+     Solution 1 remarquons ici
+                                  √                √
+                                                                
+                                               θ        2
+                                   n θ̂n − θ =     × n     − X̄n
+                                               X̄n       θ
+
+
+
+                                                                                                    Page 18
+Ecole Polytechnique, promotion 2025                                     PC-7 Cours APM 41033 EP
+
+
+     et il ne reste plus qu’à appliquer Slutsky avec une partie LGN et l’autre le TCL usuel
+     pour avoir
+                           √           P θ2
+                                           n,θ
+                              n θ̂n − θ =⇒       N(0, 2/θ2 ) = N(0, θ2 /2).
+                                               2
+     Solution 2 le modèle est régulier et on peut donc appliquer le résultat sur la normalité
+     asymptotique de l’EMV et donc calculer l’Information de Fisher
+                                           Z
+                                I(θ) := − ¨l(θ, x)Qθ (dx) = 2/θ2 .
+
+     On obtient alors
+                                      √        P
+                                                   n,θ
+                                       n θ̂n − θ =⇒ N(0, θ2 /2).
+
+     Solution 3 on applique la méthode delta : par le TCL pour des v.a. i.i.d. admettant
+     un moment d’ordre 2, on a
+                               √
+                                           
+                                          2 Pn,θ
+                                 n X̄n −      =⇒ N(0, 2/θ2 ).
+                                          θ
+
+     Or θ̂n = g(X̄n ) avec g(x) = 2/x. La fonction g est C 1 sur R+
+                                                                  ⋆ donc en 2/θ. Il vient par
+
+     la méthode delta que
+                            √ 
+                                                                      
+                                            P
+                                               n,θ       2          2
+                              n θ̂n − g(2/θ) =⇒ N 0, 2 g ′ (2/θ)
+                                                         θ
+
+     soit encore
+                                      √        P
+                                                   n,θ
+                                       n θ̂n − θ =⇒ N(0, θ2 /2).
+
+  4. Notons z1−α/2 le quantile d’ordre 1 − α/2 d’une loi gaussienne centrée réduite. Nous
+     avons                                                  
+                                         √ θ̂n − θ
+                    lim Pn,θ −z1−α/2 ≤ n       √     ≤ z1−α/2  = 1 − α.
+                      n                       θ/ 2
+
+                                                                                      Pn,θ −prob
+     Par ailleurs, la normalité asymptotique de θ̂n entraine (par Slutsky) que θ̂n     −→         θ.
+     Nous en déduisons par Slutsky que
+                                                               
+                                           √     θ̂ n − θ
+                       lim Pn,θ −z1−α/2 ≤ n          √ ≤ z1−α/2  = 1 − α.
+                         n                      θ̂n / 2
+
+     puis un intervalle aléatoire              "                   #
+                                                             θ̂n
+                                         Ibn = θ̂n ± z1−α/2 √
+                                                               2n
+
+     vérifiant limn Pn,θ (θ ∈ Ibn ) = 1 − α.
+
+
+
+
+                                                                                         Page 19
+Ecole Polytechnique, promotion 2025                                       PC-7 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 3
+   Notons Zn := (X1 , · · · , Xn ) ; et Qθ la loi normale de paramètres (θ, θ).
+  1. La loi log-normale de paramètre (µ, σ 2 ) a pour densité
+                                                 1                2   2
+                                    f (x) = √         e−(log(x)−µ) /2σ 1{x>0} .
+                                                2π σx
+     Comment établir cette expression
+        Soit h une fonction mesurable positive. On a
+
+                       E [h(X)] = E [h(exp(Y ))]
+                                         Z
+                                     1
+                                =√         h(exp(y)) exp(−0.5(y − µ)2 /σ 2 ) dy
+                                    2πσ Z
+                                     1
+                                =√           h(z) z −1 exp(−0.5(ln z − µ)2 /σ 2 ) dz
+                                    2πσ R+
+          en ayant fait le changement de variable z = exp(y). Cette relation étant vraie pour
+          toute fonction h mesurable positive, on peut identifier la densité comme
+                                  √
+                            x 7→ ( 2πσx)−1 exp(−(log(x) − µ)2 /2σ 2 )1R+ (x).
+
+     La log-vraisemblance en posant Yi = log(Xi ) :
+                                                n
+                                       X (Yi − θ)2                  X Y 2 nθ      n
+                             n                            n            i
+         θ 7→ ℓn (θ; Zn ) = − log(θ) −             + C = − log(θ) −      −   +C
+                             2               2θ           2           2θ   2
+                                              i=1                                 i=1
+
+     où C désigne une constante (par rapport à θ) dont la valeur peut changer à chaque
+     utilisation. On a
+                                       n                           Pn         !
+                                            2          θ 2+θ− 1          Y  2
+                                    n  X Y                                 i
+                   2ℓ˙n (θ, Zn ) = − +     i
+                                              −n=−               n   i=1
+                                                                                ·
+                                    θ    θ2                    θ2 /n
+                                              i=1
+
+     Si les yi sont non tous nuls, le numérateur a une racine θ+ strictement positive et une
+     racine θ− strictement négative, il est strictement positif sur (0, θ+ ) et strictement négatif
+     sur (θ+ , +∞). L’estimateur du maximum de vraisemblance est donc uniquement défini
+     et vaut avec Yi = log(Xi ) :
+                                                  v
+                                                  u         n
+                                              1 u    1 1X 2
+                                    θ̂n = − + t +              Yi .
+                                              2      4 n
+                                                                 i=1
+
+
+  2. On pose T̄n := n1 ni=1 Yi2 . Notons que y 2 Qθ (dy) = θ + θ2 = θ(1 + θ) et que, en notant
+                      P                     R
+
+     G ∼ N(0, 1), la variance de Yi2 sous Qθ est
+
+                                                 2
+                 √
+          h                i       Z
+                       4
+                                                                                     2
+                                        y Qθ (dy) = θ4 + 6θ3 E G2 + θ2 E G4 − θ + θ2
+                                         2
+                                                                       
+        E (θ +       θG)       −
+
+                                                     = θ4 + 6θ3 + 3θ2 − θ2 − θ4 − 2θ3 = 4θ3 + 2θ2
+                                                     = 2θ2 (2θ + 1).
+
+
+                                                                                            Page 20
+Ecole Polytechnique, promotion 2025                                          PC-7 Cours APM 41033 EP
+
+
+     Le TCL assure que
+                  √                     Pn,θ
+                      n T̄n − (θ + θ2 ) =⇒ N(0, σ 2 (θ)),           σ 2 (θ) := 2θ2 (1 + 2θ).
+                                                                         q
+                                                                             1
+     On déduit de la méthode delta, avec la fonction φ(z) =                4 + z, que
+
+                       √                  √                          Pn,θ
+                           n(θ̂n − θ) =       n φ(T̄n ) − φ(θ + θ2 ) =⇒ N(0, σ02 (θ))
+
+     avec
+                                                                         2θ2
+                                  σ02 (θ) := φ′ (θ + θ2 )2 σ 2 (θ) =          ·
+                                                                       1 + 2θ
+     (On remarque en particulier que la variance asymptotique σ02 (θ) est inférieure à celle de
+     l’estimateur de la moyenne empirique qui vaut θ.)
+  3. On déduit du lemme de Slutsky que
+                                    √                        Pn,θ
+                                        n(θ̂n − θ)/σ0 (θ̂n ) =⇒ N(0, 1).
+
+     On note Φ−1 (u) le quantile d’ordre u de la loi gaussienne N(0, 1). L’intervalle de
+     confiance asymptotique de couverture 1 − α est donc
+
+                                                  Φ−1 (1 − α/2)
+                                                               
+                                  θ̂n ± σ0 (θ̂n )      √          .
+                                                         n
+
+
+
+
+                                                                                               Page 21
+Ecole Polytechnique, promotion 2025                                           PC-7 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 4
+  1. La log-vraisemblance est donnée par
+                                           n
+                         n         1X              n        n     n
+         θ 7→ ℓn (θ) := − ln(2π) −    (Xk − θ)2 = − ln(2π) − Sn2 − θ2 + nθX̄n
+                         2         2               2        2     2
+                                          k=1
+
+     en ayant posé
+                                           n
+                                           X                                n
+                                                                            X
+                           X̄n := n−1              Xk ,       Sn2 := n−1          Xk2 .
+                                           k=1                              k=1
+
+     Il s’agit donc d’une forme quadratique qui tend vers −∞ quand |θ| → +∞. Elle atteint
+     son maximum en X̄n . Par suite, deux cas :
+                                           
+                                             X̄n si X̄n ≥ 0
+                                    θ̂n :=
+                                             0     si X̄n < 0
+
+  2. Soit θ > 0. On a
+                           √                   √                   √
+                               n(θ̂n − θ) =        n(X̄n − θ) −        nX̄n 1{X̄n <0} .
+
+                  Pn,θ −prob    √              Pn,θ −prob
+     Or, 1{X̄n <0} −→ 0 et donc nX̄n 1{X̄n <0} −→ 0.
+              √                                                    √           Pn,θ
+     Comme n(X̄n − θ) ∼ N(0, 1), on déduit du lemme de Slutsky que n(θ̂n − θ) =⇒
+     N(0, 1).
+  3. Lorsque θ = 0, on a        √                   √
+                                    n(θ̂n − θ) =          nX̄n 1X̄n ≥0 = Z 1Z≥0
+                                √
+     où Z ∼ N(0, 1) puisque nX̄n ∼ N(0, 1) sous Pn,0 . Par construction, θ̂n ≥ 0 = θ ; on
+     retrouve que la loi limite est restreinte à R+ .
+
+
+
+
+                                                                                              Page 22
+Ecole Polytechnique, promotion 2025                                     PC-7 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 5
+  1. Soit n ≥ 1, et θ0 ∈ R. Puisque θ 7→ γ(θ) est croissante, la fonction θ 7→ Ψn (θ) est
+     décroissante Pn,θ0 -p.s. ; de plus,
+
+                     lim Ψn (θ) = − lim γ > 0,            lim Ψn (θ) = − lim γ < 0.
+                    θ→−∞                 −∞              θ→+∞                +∞
+
+     Donc θ̂n := sup{θ ∈ R : Ψn (θ) > 0} est fini. Il répond à la question, comme toute valeur
+     dans l’intervalle
+
+                          [sup{θ ∈ R : Ψn (θ) > 0}, inf{θ ∈ R; Ψn (θ) < 0}] .
+
+     Le cas γ = γ0 (voir Eq. 5) et n pair, est un exemple où θ̂n n’est pas unique (voir la
+     figure 3, gauche).
+      (a) La continuité de γ assure la continuité de Ψn et donc, par le théorème des valeurs
+          intermédiaires, il existe un point θ̂n tel que Ψn (θ̂n ) = 0. Voir la figure 3, centre ou
+          droite.
+      (b) La croissance stricte de γ assure la décroissance stricte de Ψn et donc l’unicité de
+          θ̂n . Le cas γ = γ∞ (voir Eq. 5) est un exemple où θ̂n est l’unique racine (voir la
+          figure 3, centre).
+      (c) i. Cas γ(x) = signe(x).θ̂n est la médiane    empirique : X(n+1)/2:n si n est impair
+                et toute valeur dans Xn/2:n , Xn/2+1:n si n est pair.
+            ii. Cas γ(x) = x. θ̂n = X̄n est la moyenne empirique.
+           iii. Cas mixte. La fonction γ est continue, θ̂n est une racine de Ψn mais rien
+                n’assure que θ̂n soit unique.
+  2. On a :
+                             Z                                    Z
+               Ψθ0 (θ0 ) =       γ(x − θ0 )f (x − θ0 )Leb(dx) =       γ(x)f (x)Leb(dx) = 0,
+                             R                                    R
+                          R
+     car γf est impaire et |γ|f dLeb < ∞ par hypothèse H1. Ainsi, une racine existe.
+     Comme pour tout θ0 , θ 7→ Ψθ0 (θ) = Ψ0 (θ − θ0 ) est monotone (au sens large) et stricte-
+     ment monotone sur [−δ, δ], cette racine est unique.
+  3. Soient θ0 et ε > 0 fixés. Par définition de θ̂n (soit la borne sup, soit toute valeur de
+     l’intervalle - voir question 1), on a sous Pn,θ0 ,
+
+                                    {θ̂n < θ0 − ε} ⊆ {Ψn (θ0 − ε) ≤ 0}.                           (8)
+
+     Etape 1. Montrons que Ψθ0 (θ0 − ε) > 0. La fonction θ 7→ Ψθ0 (θ) est strictement
+     décroissante sur [θ0 − δ, θ0 + δ]. Comme ε ∈ ]0, δ[, nous avons Ψθ0 (θ0 − ε) > 0.
+     Etape 2. Établissons la limite demandée. Puisque
+                                                    n
+                                                 1X
+                 Ψn (θ0 − ε) − Ψθ0 (θ0 − ε) =       {γ(Xk − θ0 + ε) − Ψθ0 (θ0 − ε)}
+                                                 n
+                                                   k=1
+
+     par la loi faible des grands nombres, nous avons
+
+                    lim Pn,θ0 (|Ψn (θ0 − ε) − Ψθ0 (θ0 − ε)| > Ψθ0 (θ0 − ε)/2) = 0,
+                    n→∞
+
+
+                                                                                              Page 23
+Ecole Polytechnique, promotion 2025                                         PC-7 Cours APM 41033 EP
+
+
+     dont nous déduisons que
+                              lim Pn,θ0 (Ψn (θ0 − ε) > Ψθ0 (θ0 − ε)/2) = 1.                         (9)
+                               n
+
+     Observons que les hypothèses de la loi des grands nombres sont vérifiées : sous Pn,θ0 ,
+     les v.a. X1 , · · · , Xn sont indépendantes et la condition d’intégrabilité est vraie par (4).
+     De la relation
+                                                                                                   
+       Pn,θ0 (Ψn (θ0 − ε) > Ψθ0 (θ0 − ε)/2) = Pn,θ0 Ψn (θ0 − ε) > Ψθ0 (θ0 − ε)/2, θ̂n ≥ θ0 − ε
+                                                                                                 
+                                             + Pn,θ0 Ψn (θ0 − ε) > Ψθ0 (θ0 − ε)/2, θ̂n < θ0 − ε
+
+     puis un passage à la limite quand n → +∞, puis les résultats (8), (9), mènent à
+                                                                                      
+       1 = lim Pn,θ0 Ψn (θ0 − ε) > Ψθ0 (θ0 − ε)/2, θ̂n ≥ θ0 − ε = lim Pn,θ0 θ̂n ≥ θ0 − ε .
+             n                                                                n
+
+  4. En mimant le raisonnement de la question précédente, en montre que
+                                                      
+                                lim Pn,θ0 θ̂n ≤ θ0 + ε = 1.
+                                       n
+
+     On en déduit que                                       
+                                     lim Pn,θ0 |θ̂n − θ0 | > ε = 0
+                                      n
+
+     ce qui établit la consistance de la suite {θ̂n , n ≥ 1}.
+  5. Vérifions les hypothèses du théorème II-2.15 du cours, donnant des conditions suffisantes
+     pour la normalité asymptotique des Z-estimateurs.
+     Par la question 2, on a Ψθ0 (θ0 ) = 0. Par H3 et (6),
+                      Z                                  Z
+                        γ ′ (x − θ0 )f (x − θ0 )Leb(dx) = γ ′ (x)f (x)Leb(dx) > 0.
+
+     Par (6), on a aussi
+                   Z                                Z
+                     γ (x − θ0 )f (x − θ0 )Leb(dx) = γ 2 (x)f (x)Leb(dx) < ∞.
+                      2
+
+
+
+     Par H3, pour tout x, θ 7→ γ(x − θ) est C 1 et en posant
+                                      g(x) :=       sup     γ ′ (x − θ) ,
+                                                |θ−θ0 |≤δ
+
+     on a        Z                              Z
+                     g(x)f (x − θ0 )Leb(dx) =         sup       γ ′ (x + θ0 − θ) f (x)Leb(dx)
+                                                    |θ−θ0 |≤δ
+
+     et le terme de droite est fini par (7). Enfin, puisque ψn (θ̂n ) = 0 pour tout n, alors
+     √           Pn,θ0 −prob
+       nψn (θ̂n ) −→          0. Toutes les hypothèses sont donc vérifiées.
+     Par application du théorème II-2.15 du cours, la variance asymptotique est donnée par
+                                                                R 2
+                         Qθ0 [γ 2 (· − θ0 )]      Q0 [γ 2 ]       γ (x)f (x)Leb(dx)
+                                ′            2 =       ′    2 = R ′               2 .
+                        (Qθ0 [γ (· − θ0 )])      (Q0 [γ ])       γ (x)f (x)Leb(dx)
+     On remarque que la variance asymptotique ne dépend pas de θ0 . On la note V [γ].
+
+                                                                                                Page 24
+Ecole Polytechnique, promotion 2025                                     PC-7 Cours APM 41033 EP
+
+
+  6. On suppose que f est la densité de N(0, σ 2 ).
+      (a) Cas γ∞ . Alors γ(x) = x et donc
+
+                                                 V [γ∞ ] = σ 2 .
+
+      (b) Cas γ0 . Les hypothèses sur γ ne sont pas satisfaites pour cet exemple. Néanmoins,
+          on peut prouver     : la dérivée de signe(x)                         2
+                        R                             p est 2δ0 . On a donc E0 [γ (X1 )] = 1 et
+          E0 [γ̇(X1 )] = R f (x)2δ0 (dx) = 2f (0) = 2/πσ 2 . On en déduit que
+
+                                                            πσ 2
+                                                V [γ0 ] =        .
+                                                             2
+      (c) Cas γk . Alors
+                                                      (|x| ∧ k)2 f (x) dx
+                                                 R
+                                      V [γk ] = RR                       2
+                                                     R 1{|x|<k} f (x) dx
+          On a
+                               lim V [γk ] = V [γ0 ]        lim V [γk ] = V [γ∞ ].
+                               k→0                          k→∞
+
+          On peut vérifier numériquement que la fonction k 7→ V [γk ] est décroissante (voir
+          figure 4(gauche)).
+  7. Cette fois,
+                                  f ≡ (1 − ε)N (0, 1) + εN (0, τ 2 ).
+      (a) Cas γ∞ . Lorsque γ(x) = x, on a
+                                R 2
+                                 R x f (x) dx                         2
+                                 R           2 = (1 − ε) × 1 + ε × τ
+                                  R f (x) dx
+
+          donc
+                                          V [γ∞ ] = (1 − ε) + ετ 2 .
+          En particulier, limτ →+∞ V [γ∞ ] = +∞.
+      (b) Cas γk . On a
+
+                                     (1 − ε) R (|x| ∧ k)2 fN(0,1) (x) dx + εk 2
+                                            R
+                       lim V [γk ] =                                    2      < +∞,
+                     τ →+∞
+                                                    R
+                                         (1 − ε)2 R 1{|x|≤k} f (x) dx
+
+          qui résulte du fait que (voir figure 7)
+                                              Z a
+                                          1
+                                  lim √            exp(−0.5x2 /τ 2 )dx = 0.
+                                 τ →∞    2πτ −a
+
+     L’estimation robuste (k fini) du paramètre de décalage θ est plus intéressante que l’es-
+     timation L1 (k = +∞) si les données sont polluées par des données prenant de grandes
+     valeurs, si les variables ne sont pas L1 , · · ·
+     On remarque que (pour k fini) limε→0+ limτ →+∞ V [γk ] est la variance V [γk ] trouvée
+     à la question précédente, ce qui assure que la variance asymptotique de l’estimateur
+     robuste est peu perturbée en présence d’un faible nombre (ε petit) de valeurs même très
+     aberrantes (τ grand).
+
+
+                                                                                        Page 25
+Ecole Polytechnique, promotion 2025                               PC-7 Cours APM 41033 EP
+
+
+
+
+                        0.2
+                                                             tau=2
+                       0.18                                  tau=4
+                                                             tau=7
+                       0.16                                  tau=10
+
+                       0.14
+
+                       0.12
+
+                        0.1
+
+                       0.08
+
+                       0.06
+
+                       0.04
+
+                       0.02
+
+                          0
+                          -10       -5        0         5             10
+
+
+
+
+        Figure 7 – Densité gaussienne, pour différentes valeurs de l’écart-type τ
+
+
+
+
+                                                                                       Page 26
+

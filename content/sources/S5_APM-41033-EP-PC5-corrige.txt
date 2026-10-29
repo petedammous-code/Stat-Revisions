@@ -1,0 +1,1137 @@
+Ecole Polytechnique, promotion 2025                                                PC-5 Cours APM 41033 EP
+
+
+1     Corrigés
+Corrigé de l’Exercice 1
+     Posons Z = (X1 , · · · , Xn ).
+    1. Dans l’exercice 1 de la PC4, étant données deux valeurs θ0 , θ1 telles que 0 < θ0 < θ1 ,
+       nous voulions tester
+                                    H0 : θ = θ 0         H1 : θ = θ 1 .
+       Nous avions commencé par observer que pour tout θ > 0, 2 ni=1 Xi /θ suit une loi
+                                                                          P
+       χ2 (2n) sous pθ ; puis avions cherché des tests de zone de rejet de la forme
+                                                                         n
+                                                                         X
+                                Rc := {z = (x1 , · · · , xn ) : 2θ0−1           xi > c} .
+                                                                          i=1
+
+                                                                         χ2 (2n)
+       Nous avions alors vu que pour tout c ≥ cα ou cα := q1−α                     est le quantile d’ordre (1−α)
+       d’une loi du χ2 (2n), le test de fonction critique
+                                                    ϕc (z) := 1Rc (z)
+       est de niveau α ; et que seul le test ϕcα est de taille α.
+       • Pour ce test simple, que donne la méthode de Neyman-Pearson de construction d’un
+       test UPP(α) ? Ecrivons le rapport de vraisemblance pour la loi du vecteur d’observation
+       Z = (X1 , · · · , Xn ). Nous avons
+                                                                   n
+                                         n                            !
+                                          θ0                      X
+                                r(Z) :=        exp (θ0−1 − θ1−1 )     Xi .
+                                          θ1
+                                                                  i=1
+
+       Sous pθ0 , ni=1 Xi (et par suite r(Z)) possède une densité par rapport à la mesure de
+                 P
+       Lebesgue sur R et on a donc pour tout c ∈ R,
+                                                 Pθ0 (r(Z) = c) = 0 .
+       Par conséquent, le test de Neyman-Pearson a pour fonction critique ϕ⋆ donnée par
+                                                 ϕ⋆ (z) := 1{z:r(z)>c̃α }
+       où c̃α est solution de c̃ :   1 − α = Pθ0 (r(Z) ≤ c̃). En observant que
+                                     ( n                                              )
+                                        X
+                        {r(Z) ≤ c̃} = 2     Xi /θ0 ≤ −2(θ0 /θ1 − 1)−1 ln(θ1n θ0−n c̃)
+                                              i=1
+                   Pn              2
+       Puisque 2     i=1 Xi /θ0 ∼ χ (2n) sous pθ0 , nous en déduisons que le test est équivalent à
+
+                                      ϕ⋆ (z) := 1{z=(x1 ,··· ,xn ) :2θ−1 Pn
+                                                                    0       i=1 xi >c̄α }
+                                                                        Pn
+       où c̄α est choisi de sorte que 1 − α = Pθ0 (2θ0−1        i=1 Xi ≤ c̄α ) = P(W ≤ c̄α ) avec
+                                           χ2 (2n)
+       W ∼ χ2 (2n) ; on obtient c̄    α = q1−α . Ainsi, le test UPP(α) donné par la construction de
+       Neyman-Pearson est le test de zone de rejet Rcα que nous avions trouvé dans l’exercice
+       1 de la PC4.
+       Une remarque importante pour expliquer le résultat que l’on trouvera dans la question 3
+       est que la règle de décision ne dépend pas de la valeur de θ1 .
+
+                                                                                                         Page 7
+Ecole Polytechnique, promotion 2025                                         PC-5 Cours APM 41033 EP
+
+
+  2. Sous Pθ , les variables (Xi )1≤i≤n sont i.i.d. de loi exponentielle de paramètre 1/θ > 0,
+     donc la densité de la loi de Z = (X1 , . . . , Xn ) par rapport à la mesure de Lebesgue sur
+     Rn est donnée par :
+                        n
+                                                                  ( n            )
+                          θ exp {−xi /θ} 1R+ (xi ) = θ exp −                xi /θ 1R+ (x1:n ) ,
+                       Y                                               X
+                            −1                              −n
+           pn,θ : z 7→
+                        i=1                                                     i=1
+
+     où x1:n := min(x1 , . . . , xn ). Fixons θ1 , θ2 tels que 0 < θ1 < θ2 . Pour tout z ∈ Rn+ ,
+                                                                       n
+                                                      (                      )
+                                 pn,θ2 (z)   θ1n                      X
+                                           = n exp −(θ2−1 − θ1−1 )        xi .
+                                 pn,θ1 (z)   θ2
+                                                                          i=1
+
+     La fonction t 7→ exp (θ1−1 − θ2−1 )t est strictement croissante. LaPfamille {Pθ , θ ∈ Θ}
+                              
+
+     est donc à rapports de vraisemblance monotones en la statistique ni=1 Xi .
+  3. Soit
+     Pn α ∈ (0, 1). On souhaite tester H0 : θ ≤ θ0 contre H1 : θ > θ0 . Sous Pθ , la statistique
+       i=1 Xi possède une densité par rapport à la mesure de Lebesgue. Par suite, un test
+     U.P.P.(α) est donné par :
+
+                                            1 si Pni=1 xi > c ,
+                                                 P
+                                 ϕ(z) =              n
+                                            0 si     i=1 xi ≤ c ,
+
+     où (c, γ) sont définis pour garantir le niveau du test : α = Eθ0 [ϕ(Z)]. On a donc
+                                                    n
+                                                              !
+                                                    X
+                                        α = Pθ 0       Xi > c
+                                                         i=1
+
+     Puisque Psous pθ , les (Xi )1≤i≤n sont i.i.d. de loi exponentielle de paramètre 1/θ, la sta-
+     tistique ni=1 Xi suit une loi Gamma de paramètres (n, θ−1 ). Elle a pour densité par
+     rapport à la mesure de Lebesgue sur R :
+
+                                          θ−n xn−1 exp{−x/θ}
+                                   x 7→                      1R+ (x) .
+                                                 Γ(n)
+
+     Ainsi,
+                                          n
+                                                         !
+                                                               θ−n
+                                          X                          Z +∞
+              α = Eθ0 [ϕ(Z)] = Pθ0              Xi > c       = 0            xn−1 exp{−x/θ0 }dx
+                                                              Γ(n)   c
+                                          i=1
+                                                                          Z +∞
+                                                                  1
+                                                             =                   un−1 exp(−u) du
+                                                               (n − 1)!   c/θ0
+                                                             = P (W > 2c/θ0 )         W ∼ χ2 (2n)
+
+On trace sur la figure 3 la densité d’une loi Gamma de paramètres n = 10 et θ0 = 1 (en
+rouge) ; le trait pointillé vertical marque la position du seuil critique c. On trace aussi la
+densité de deux lois Gamma de paramètres n = 10 et 1/θ = 0.5 (en bleu) ou 1/θ = 2 (en
+vert).
+    Remarque sur la règle de décision :
+
+
+                                                                                                    Page 8
+Ecole Polytechnique, promotion 2025                                PC-5 Cours APM 41033 EP
+
+
+                           0.3
+
+
+
+                          0.25
+
+
+
+                           0.2
+
+
+
+                          0.15
+
+
+
+                           0.1
+
+
+
+                          0.05
+
+
+
+                             0
+                                 0   5    10    15     20    25     30
+
+
+
+
+Figure 3 – En rouge : densité d’une loi Gamma de paramètres (10, 1/θ0 ) avec θ0 = 1 ; le
+seuil critique c est indiqué par un trait vertical. On trace aussi la densité de deux lois Gamma
+de paramètres (10, 1/θ1 ) avec θ1 = 0.5 (en bleu) et (10, 1/θ1′ ) avec θ1′ = 2 (en vert).
+
+
+      Sous Pθ , les v.a.Xk ont même espérance θ. Donc n−1 T (Z) est un estimateur de la
+      moyenne. La règle de décision consiste donc à
+       — calculer un estimateur de l’espérance
+       — si cet estimateur est trop élevé, on choisit H1 ; sinon, on choisit H0 .
+      Il reste à donner un sens à ”estimateur trop élevé”, ce que l’on fait en identifiant un
+      seuil critique c garantissant le niveau voulu du test.
+
+
+
+
+                                                                                          Page 9
+Ecole Polytechnique, promotion 2025                                                  PC-5 Cours APM 41033 EP
+
+
+Corrigé de l’exercice 2
+   pnθ désigne la densité de l’observation Z dans le modèle pθ .
+  1. Soit θ1 ̸= θ0 . On considère le test
+
+                                      H0 : θ = θ 0                 H1 : θ = θ 1                                 (6)
+
+     Nous avons pour tout θ ∈ R
+                                                                     n
+                                                                                      !
+                                           1                      1X
+                                pnθ (z) = √ n exp               −    (xi − θ)2
+                                                2π                2
+                                                                    i=1
+
+     où z = (x1 , · · · , xn ). Le rapport de vraisemblance est donc donné par
+                                              n                n
+                                                                               !
+                                           1X             2  1X              2
+                                 r(z) = −       (xi − θ1 ) +      (xi − θ0 )
+                                           2                 2
+                                               i=1                       i=1
+
+     ce qui après ré-ordonnement des termes est aussi égal à
+                                                             n
+                                                                         !
+                                    n          2
+                                                             X
+                        r(z) = exp − (θ1 − θ0 ) + (θ1 − θ0 )   (xi − θ0 ) .
+                                    2
+                                                                               i=1
+
+     La recette “Neyman-Pearson” nécessite de comprendre les ensembles de la forme {z :
+     r(z) > c} en particulier dans l’optique de calculer leur probabilité pour déterminer le
+     seuil critique de la règle dePdécision. Il est aisé de voir que {z : r(z) > c} est un ensemble
+     de la forme {z : (θ1 − θ0 ) ni=1 (xi − θ0 ) > c̃}.
+     Le test du rapport de vraisemblance est donné par
+                                                                 Pn
+                                   1 si Z ∈ {z : (θ1 − θ0 )P i=1 (xi − θ0 ) > c}
+                     ϕ⋆,1 (Z) =      γ si Z ∈ {z : (θ1 − θ0 ) Pni=1 (xi − θ0 ) = c}
+                                     0 si Z ∈ {z : (θ1 − θ0 ) ni=1 (xi − θ0 ) < c}
+                                  
+
+     pour γ, c vérifiant
+                                     n                                                 n
+                                                            !                                             !
+                                     X                                                 X
+            α = γPθ0    (θ1 − θ0 )         (xi − θ0 ) = c       + Pθ 0    (θ1 − θ0 )         (xi − θ0 ) > c .
+                                     i=1                                               i=1
+                                                                            √
+     Sous pθ0 , ni=1
+                P                                        Pn
+                     (X
+                    Pn  i − θ 0 ) ∼ N(0, n), soit encore  i=1 (X i − θ 0 )/   n ∼ N(0, 1). Par suite,
+                                                                   ⋆,1
+     Pθ0 ((θ1 − θ0 ) i=1 (Xi − θ0 ) = c) = 0 et on pose γ = 0 (ϕ (Z) prend cette valeur avec
+     probabilité zero donc toute valeur convient pour γ).
+     On cherche donc le seuil c tel que
+                                                     n
+                                                     X
+                                 Pθ0 ((θ1 − θ0 )           (Xi − θ0 ) > c) = α.                                 (7)
+                                                     i=1
+
+     Il faut distinguer deux cas, selon le signe de θ1 −θ0 : la forme de la zone {z : ϕ⋆,1 (z) = 1}
+     en dépend, et la définition du seuil c aussi.
+
+
+                                                                                                           Page 10
+Ecole Polytechnique, promotion 2025                                             PC-5 Cours APM 41033 EP
+
+
+     Lorsque θ1 > θ0 , on a
+                                        n
+                                        X                                n
+                                                                         X
+                      {z : (θ1 − θ0 )         (Xi − θ0 ) > c} = {z :           (Xi − θ0 ) > c̃}
+                                        i=1                              i=1
+
+     et la condition (7) entraine c̃ = q1−α . On obtient la règle de décision
+                                                                      √
+                                    1 si Z ∈ {z : P ni=1 (xi − θ0 ) > nq1−α }
+                                                  P
+                       ⋆,1                                            √
+                     ϕ (Z) =
+                                    0 si Z ∈ {z : ni=1 (xi − θ0 ) < nq1−α }
+
+     qui se re-écrit aussi
+                                                            n
+                                                (                                       )
+                                                                             q1−α
+                              ϕ⋆,1 (Z) = 1 Z : n−1
+                                                            X
+                                                                  X i > θ0 + √
+                                                                               n
+                                                            i=1
+
+     De façon analogue, lorsque θ1 < θ0 , on obtient la règle de décision
+                                                                        √
+                                   1 si Z ∈ {z : P ni=1 (xi − θ0 ) < nqα }
+                                                  P
+                       ⋆,2                                             √
+                      ϕ (Z) =
+                                   0 si Z ∈ {z : ni=1 (xi − θ0 ) > nqα }
+
+     qui se re-écrit aussi, en notant que qα = −q1−α < 0 (nous avons en effet α ∈ ]0, 1/2[)
+                                                   n
+                                          (                           )
+                                                                q
+                              ϕ⋆,2 (Z) = 1 Z : n−1
+                                                                  1−α
+                                                   X
+                                                     X i < θ0 − √       .
+                                                                   n
+                                                            i=1
+
+     Interprétons ces deux tests Ils comparent la valeur de la moyenne empirique n−1 ni=1 Xi
+                                                                                                   P
+     à θ0 ; si on en est trop loin (par valeur supérieure dans le premier cas, par valeur inférieure
+     dans le second cas), on rejette l’hypothèse nulle.
+     Une seconde remarque d’importance est que ces tests ne dépendent pas de θ1 .
+     La fonction puissance de ces tests est donnée par θ 7→ βϕ (θ) := Eθ [ϕ(Z)] et ici, dans le
+     cas ϕ = ϕ⋆,2 nous avons
+                                             n
+                                                                  !
+                                            X               q 1−α
+                      βϕ⋆,2 (θ) = Pθ n−1        X i < θ0 − √
+                                                               n
+                                            i=1
+                                                    n
+                                                              !                       !
+                                       √       −1
+                                                  X                √
+                                = Pθ     n n          Xi − θ < n(θ0 − θ) − q1−α
+                                                      i=1
+                                              √                      
+                              =P W <              n(θ0 − θ) − q1−α
+
+     où W ∼ N(0, 1). De même, nous obtenons
+                                                            √                       
+                                βϕ⋆,1 (θ) = P W >               n(θ0 − θ) + q1−α
+
+     La figure 4 trace ces deux fonctions puissance pour θ ∈ [−2, 2] dans le cas n = 10, θ0 = 0
+     et α = 0.05. On pourra remarquer que βϕ (θ0 ) = α - c’est la conséquence du niveau d’un
+     test UPP(α) ; et que la fonction puissance pour θ ̸= θ0 n’est pas toujours minorée par
+     ce niveau α : ces tests sont donc biaisés (une notion que nous verrons dans la suite de
+     l’exercice).
+
+
+                                                                                                  Page 11
+Ecole Polytechnique, promotion 2025                                                                 PC-5 Cours APM 41033 EP
+
+
+
+
+                                                                                                                       A droite
+            1                           A droite                                           1                           A gauche
+                                        A gauche
+                                                                                                                       Bilateral
+
+          0.8                                                                            0.8
+
+
+
+          0.6                                                                            0.6
+
+
+
+          0.4                                                                            0.4
+
+
+
+          0.2                                                                            0.2
+
+
+
+            0                                                                              0
+
+
+                -2   -1.5   -1   -0.5   0          0.5   1     1.5   2                         -2   -1.5   -1   -0.5   0           0.5   1   1.5   2
+
+
+
+
+Figure 4 – [gauche] Fonction puissance des tests ϕ⋆,1 (”à droite” dans la légende) et ϕ⋆,2
+(”à gauche” dans la légende). On a pris n = 10, α = 0.05 et θ0 = 0. [droite] on trace aussi la
+fonction puissance du test ϕ⋆,3 (”bilatéral”)
+
+  2. Cette fois on teste
+                                                             H0 : θ = θ 0         H1 : θ > θ 0 .                                                   (8)
+     On cherche un test UPP(α), deux façons de répondre.
+     méthode 1. on applique la méthode de Neyman-Pearson en vérifiant que nous sommes
+     dans le contexte du rapport de vraisemblance monotone (voir le théorème I-5.16). On
+     trouve le même qu’à la question précédente dans le cas θ1 > θ0 :
+                                                    n
+                                        (                               )
+                                                                   q1−α
+                            ϕ (Z) = 1 Z : n
+                                                   X
+                              ⋆,1               −1
+                                                       X i > θ0 + √
+                                                                     n
+                                                                            i=1
+
+     méthode 2. Nous avons montré à la question précédente pour ϕ⋆,1 que pour θ1 > θ0 :
+      — niveau : βϕ⋆,1 (θ0 ) = α
+      — plus puissant : pour toute fonction critique ϕ telle que βϕ (θ0 ) ≤ α, nous avons
+          βϕ (θ1 ) ≤ βϕ⋆,1 (θ1 ).
+     Le test ϕ⋆,1 ne dépendant pas de θ1 , nous avons donc
+      — niveau : βϕ⋆,1 (θ0 ) = α
+      — plus puissant : pour toute fonction critique ϕ telle que βϕ (θ0 ) ≤ α, nous avons
+          pour tout θ1 > θ0 , βϕ (θ1 ) ≤ βϕ⋆,1 (θ1 ).
+     Ce qui est la définition d’un test UPP pour le problème considéré dans cette question.
+     Par symétrie, le test ϕ⋆,2 trouvé à la question précédente est UPP(α) pour le test
+
+                                                             H0 : θ = θ 0         H1 : θ < θ 0 .                                                   (9)
+
+
+
+                                                                                                                                             Page 12
+Ecole Polytechnique, promotion 2025                                    PC-5 Cours APM 41033 EP
+
+
+  3. Raisonnons par l’absurde. Supposons qu’il existe un test UPP(α) ϕ⋆ pour
+
+                                      H0 : θ = θ 0       H1 : θ ̸= θ0 .                         (10)
+
+     Alors ce test est aussi UPP(α) pour le problème (6) dans le cas θ1 > θ0 ; et il l’est aussi
+     pour le problème (6) dans le cas θ1 < θ0 . L’unicité des tests UPP(α) entraine (voir
+     théorème I-5.5) d’une part
+                                                                          √
+                                 1 si Z ∈ {z : n−1 P ni=1 xi > θ0 + q1−α / n}
+                                                  P
+                       ⋆                                                  √
+                     ϕ (Z) =
+                                 0 si Z ∈ {z : n−1 ni=1 xi < θ0 + q1−α / n}
+
+     et d’autre part
+                                                                           √
+                                    si Z ∈ {z : n−1 P ni=1 xi < θ0 − q1−α / n}
+                                                   P
+                       ⋆          1
+                   ϕ (Z) =                                                 √
+                                  0si Z ∈ {z : n−1 ni=1 xi > θ0 − q1−α / n}
+                                                                                        √
+     Ceci donne une contradiction, puisque sur l’ensemble {z : n−1 ni=1 xi > θ0 + q1−α / n}
+                                                                     P
+     par exemple, nous avons à la fois ϕ⋆ = 1 et ϕ⋆ = 0.
+  4. Un test naturel pour le problème (10) est la règle
+                                                     n
+                                        (                          )
+                            ϕ⋆,3 (Z) = 1 Z : n−1
+                                                   X
+                                                        Xi − θ0 > c ;
+                                                       i=1
+                                                                             √
+     où c est choisi pour garantir le niveau du test. On trouve c = q1−α/2 / n. L’expression
+     de la fonction puissance de ce test est
+                                            √                          √         
+                βϕ⋆,3 (θ) = 1 − Φ q1−α/2 + n(θ0 − θ) + Φ −q1−α/2 + n(θ0 − θ)
+
+     où Φ est le fonction de répartition d’une loi N(0, 1).
+     La fonction puissance de ce test est tracée sur la figure 4[droite] ; on visualise le fait que
+     ce test n’est pas UPP(α) - et tant mieux, puisqu’on a démontré qu’il n’en existait pas
+     - puisque ϕ⋆,1 (resp. ϕ⋆,2 ) a une meilleure puissance pour θ > θ0 (resp. θ < θ0 ).
+  5. La fonction puissance d’un test UPP(α) domine la fonction puissance de tout test de
+     niveau α dont en particulier de la règle de décision associée à la fonction critique ϕ̄(Z) =
+     α pour tout Z ; la puissance de ce test ϕ̄ vaut α pour tout θ. Donc la fonction puissance
+     d’un test UPP(α) est minorée par α.
+  6. Par application du théorème de convergence dominée, on peut montrer que pour toute
+     fonction critique ϕ (i.e. toute fonction mesurable ϕ : Rn → [0, 1]), la fonction θ 7→ βϕ (θ)
+     est continue et dérivable et on a
+                                       Z
+                                ′
+                              βϕ (θ) =     ϕ(z) ∂θ log pn (z, θ) pnθ (z) dz.
+                                           Rn
+
+     • Puisqu’elle est continue, nous avons
+
+                                       α ≤ lim βϕ (θ) = βϕ (θ0 ) ≤ α
+                                            θ→θ0
+
+     ce qui entraine βϕ (θ0 ) = α.
+     • Nous avons donc βϕ (θ0 ) = α et βϕ (θ) ≥ α dans un voisinage de θ0 . Puisque la fonction
+     puissance est dérivable, cela entraine (caractérisation d’un minimum) βϕ′ (θ0 ) = 0.
+
+                                                                                            Page 13
+Ecole Polytechnique, promotion 2025                                          PC-5 Cours APM 41033 EP
+
+
+  7. La fonction puissance de ϕ⋆,3 évaluée en θ0 donne (voir question Q. 4)
+                βϕ⋆,3 (θ0 ) = 1 − Φ(q1−α/2 ) + Φ(−q1−α/2 ) = 1 − 1 + α/2 + α/2 = α.
+     Sa dérivée vaut
+                          √                 √                            √
+           βϕ′ ⋆,3 (θ) = − n −f0,1 (q1−α/2 + n(θ0 − θ)) + f0,1 (−q1−α/2 + n(θ0 − θ))
+                                                                                     
+
+     où f0,1 est la densité d’une loi N(0, 1). Evaluée en θ = θ0 , nous avons
+                                         √
+                        βϕ′ ⋆,3 (θ0 ) = − n −f0,1 (q1−α/2 ) + f0,1 (−q1−α/2 ) = 0
+                                                                             
+
+     puisque f0,1 (u) = f0,1 (−u).
+  8. (a) Nous avons
+                                                                         n
+                                                                                 !
+                                               1        1X
+                                     f1 (z) = √ n exp −       (xi − θ0 )2
+                                               2π       2
+                                                          i=1
+                                                n
+                                                X
+                                     f2 (z) =         (xi − θ0 )f1 (z)
+                                                i=1
+                                                                         n
+                                                                                !
+                                             1        1X
+                                 f3,θ (z) = √ n exp −       (xi − θ)2               .
+                                             2π       2
+                                                        i=1
+
+          On observe donc que
+                                            n                       n
+                                                                                !
+                    f3,θ (z)         1X                1X
+                             = exp −       (xi − θ)2 +       (xi − θ0 )2
+                     f1 (z)          2                 2
+                                       i=1               i=1
+                                             n
+                                                                 !
+                                             X       n 2      2
+                             = exp (θ − θ0 )    xi − (θ − θ0 )
+                                                     2
+                                                 i=1
+                                                  n
+                                                                                            !
+                                                 X          n
+                            = exp (θ − θ0 )     (xi − θ0 ) − (θ2 − θ02 − 2θ0 (θ − θ0 ))
+                                                            2
+                                            i=1
+                                             n
+                                                                        !
+                                            X               n
+                            = exp (θ − θ0 )     (xi − θ0 ) − (θ − θ0 )2
+                                                            2
+                                                  i=1
+
+
+
+          On décrit alors l’ensemble demandé en :
+                                                        
+                        n   f3,θ (z)              f2 (z)
+          A := z ∈ R :                > κ1 + κ2
+                             f1 (z)               f1 (z)
+                                              n                                          n
+              (                                                          !                             )
+                       n
+                                           X                  n        2
+                                                                                        X
+            = z ∈ R : exp (θ − θ0 )             (xi − θ0 ) − (θ − θ0 )     > κ1 + κ2        (xi − θ0 )
+                                                              2
+                                            i=1                                         i=1
+                                              n
+              (                                            !
+                                           X                        n                
+                       n                                                            2
+            = z ∈ R : exp (θ − θ0 )             (xi − θ0 ) > κ1 exp       (θ − θ0 )
+                                                                        2
+                                            i=1
+                                                n
+                                                             )
+                 exp n2 (θ − θ0 )2
+                                   
+                                               X
+            +κ2                      (θ − θ0 )     (xi − θ0 ) .
+                       θ − θ0
+                                                 i=1
+
+          On obtient alors la relation demandée.
+
+                                                                                                Page 14
+Ecole Polytechnique, promotion 2025                                               PC-5 Cours APM 41033 EP
+
+
+      (b) D’après la question précédente, en définissant γ1,θ et γ2,θ qui sont indépendantes
+          de z dans l’expression précédente :
+                                                                    exp n2 (θ − θ0 )2
+                                    n                                               
+                                                  2
+                      γ1,θ = κ1 exp     (θ − θ0 )     et γ2,θ = κ2                      ,    (11)
+                                      2                                   θ − θ0
+          on a alors que
+                                               
+                    n f3,θ (z)           f2 (z)
+              z∈R :            > κ1 + κ2
+                        f1 (z)           f1 (z)
+                                                                   n
+                               (                                                       !
+                                                                   X
+                                =     z ∈ Rn : exp (θ − θ0 )              (xi − θ0 )       > γ1,θ
+                                                                    i=1
+                                                                                                    n
+                                                                                                                   )
+                                                                                                    X
+                                                                                +γ2,θ (θ − θ0 )           (xi − θ0 ) .
+                                                                                                    i=1
+
+          D’autre part, nous avons vu dans la construction de ϕ⋆,3 que :
+                                                                         n
+                                                                         X
+                                          n    ⋆,3
+                             {z ∈ R : ϕ              (z) = 1} = {z : |         (xi − θ0 )| ≥ C}
+                                                                         i=1
+          pour une constante C. Et quelque soit le signe de θ − θ0 , nous avons aussi
+                                                                         n
+                                                                         X
+                            n       ⋆,3
+                    {z ∈ R : ϕ            (z) = 1} = {z : |(θ − θ0 )           (xi − θ0 )| ≥ c|θ − θ0 |}.
+                                                                         i=1
+
+          Fixons θ ∈ R, et notons t(z) = (θ −θ0 ) ni=1 (xi −θ0 ), nous devons donc démontrer
+                                                 P
+          que
+                               {z ∈ Rn : t(z) ∈
+                                              / [−c|θ − θ0 |, c|θ − θ0 |]}
+          s’écrit sous la forme proposée.
+          En utilisant la convexité de la fonction exponentielle, on observe que t 7→ exp(t) est
+          en dessous de ses cordes. Considérons en particulier la droite passant par les points
+          (−c|θ − θ0 |, exp(−c|θ − θ0 |)) et (c|θ − θ0 |, exp(c|θ − θ0 |)), d’équation t 7−→ aθ + bθ t,
+          on a alors :
+                          {t ∈ R : |t| > c|θ − θ0 |} = {t ∈ R : exp(t) > aθ + bθ t}
+          D’après l’équation (11) donnant les expressions de γ1,θ et γ2,θ en fonction de κ1 et
+          κ2 , et comme θ ̸= θ0 , on sait que pour les choix :
+                               n                                          n           
+                κ1,θ = aθ exp − (θ − θ0 )2      et κ2,θ = bθ (θ − θ0 ) exp − (θ − θ0 )2 ,
+                                  2                                           2
+          on obtient que :
+                                         aθ = γ1,θ et bθ = γ2,θ .
+          Ainsi, pour tout θ ̸= θ0 , il existe (κ1,θ , κ2,θ ), tel que :
+                                                                                      
+                            n       ⋆,3                n f3,θ (z)               f2 (z)
+                     {z ∈ R : ϕ (z) = 1} = z ∈ R :                > κ1,θ + κ2,θ          .
+                                                          f1 (z)                f1 (z)
+          On notera en particulier que si l’ensemble de gauche ne dépend pas de θ, en réalité
+          il correspond pour un jeu de coefficients κ1 et κ2 bien choisis dépendant de θ à
+                                                f (z)
+          seuiller le rapport de vraisemblance f3,θ
+                                                 1 (z)
+                                                        .
+
+                                                                                                                Page 15
+Ecole Polytechnique, promotion 2025                                              PC-5 Cours APM 41033 EP
+
+
+      (c) Considérons une fonction critique ϕ, on considère la partition de l’espace f3,θ >
+          κ1,θ f1 + κ2,θ f2 et f3,θ < κ1,θ f1 + κ2,θ f2 , nous écrivons
+                                Z
+          Iθ (ϕ⋆,3 ) − Iθ (ϕ) =                         ϕ⋆,3 − ϕ(z) (f3,θ (z) − κ1,θ f1 (z) − κ2,θ f2 (z)) dz
+                                                                     
+                                    f   −κ1,θ f1 −κ2,θ f2 >0
+                                Z 3,θ
+                                                                 ϕ⋆,3 − ϕ(z) (f3,θ (z) − κ1,θ f1 (z) − κ2,θ f2 (z)) dz
+                                                                            
+                            +
+                                    f   −κ1,θ f1 −κ2,θ f2 <0
+                                Z 3,θ
+                            =                                   (1 − ϕ(z)) (f3,θ (z) − κ1,θ f1 (z) − κ2,θ f2 (z)) dz
+                                    f3,θ −κ1,θ f1 −κ2,θ f2 >0
+                                Z
+                            +                                   (−ϕ(z)) (f3,θ (z) − κ1,θ f1 (z) − κ2,θ f2 (z)) dz
+                                    f3,θ −κ1,θ f1 −κ2,θ f2 <0
+
+                            ≥ 0.
+
+          La dernière inégalité utilise le fait que par définition, ϕ ∈ [0, 1].
+      (d) Considérons désormais un test sans biais de fonction critique ϕ vérifiant les condi-
+          tions (2), nous avons :
+
+                         Iθ (ϕ) = βϕ (θ) − κ1,θ βϕ (θ0 ) − κ2,θ βϕ′ (θ0 ) = βϕ (θ) − κ1,θ α.
+
+          On observera en effet que l’intégrale sous f1 correspond à βϕ (θ0 ) = α ; que l’intégrale
+          sous f2 correspond à βϕ′ (θ0 ) = 0 ; et que celle sous f3,θ correspond à βϕ (θ). La
+          fonction ϕ⋆,3 vérifie aussi les conditions (2) d’après la question Q. 7. La question
+          précédente donne donc
+
+                                βϕ⋆,3 (θ) − κ1,θ α ≥ βϕ (θ) − κ1,θ α,              ∀θ ̸= θ0 ;
+
+          ce qui établit le résultat demandé.
+      (e) D’après la question 7, ϕ⋆,3 est un test sans biais de niveau α. D’après la question
+          8d, sa fonction puissance domine (pour tout θ ∈ R) celle de toute fonction critique
+          ϕ vérifiant les conditions (2), et donc en particulier d’après la question 6, domine
+          (pour tout θ ∈ R) celle de toute fonction critique ϕ sans biais de niveau α. En
+          conclusion, ϕ⋆,3 est UMPU(α) pour le problème (1).
+
+
+
+
+                                                                                                        Page 16
+Ecole Polytechnique, promotion 2025                                        PC-5 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 3
+  1. La vraisemblance du modèle linéaire Gaussien s’écrit
+                                                                
+                                        1                1     2
+                       L(θ, Y) =               exp − 2 ∥Y − Xβ∥ .
+                                   (2πσ 2 )n/2         2σ
+
+     Quelle que soit la valeur de σ 2 , le maximum de la fonction β 7→ L(β, σ 2 , Y) est atteint
+     en β̂ minimisant la fonction
+                                         Q(β) = ∥Y − Xβ∥2 .
+     Le gradient de cette fonction vérifie ∇Q(β) = 2(X T Xβ − X T Y). Comme X est de rang
+     plein, X T X est inversible et on a
+
+                                             β̂ = (X T X)−1 X T Y .
+
+     D’autre part, la fonction σ 2 7→ L(β̂, σ 2 , Y) est dérivable et une étude de fonction
+     élémentaire montre qu’elle atteint son minimum en
+                                  1              1
+                         σ̂ 2 =     ∥Y − X β̂∥2 = ∥(In − X(X T X)−1 X T )Y∥2 .
+                                  n              n
+     Il s’en suit que, pour tout θ ∈ Θ,
+
+                                  L(θ, Y) ⩽ L((β̂, σ 2 ), Y) ⩽ L((β̂, σ̂ 2 ), Y) ,
+
+     donc que θ̂ = (β̂, σ̂ 2 ). On a en outre
+                                                                       1
+                            sup L(θ, Y) = L((β̂, σ̂ 2 ), Y) =                    e−n/2 .
+                            θ∈Θ                                   (2π)n/2 σ̂ n
+
+  2. La vraisemblance étant inchangée, pour toute valeur de σ 2 , le maximum de L(θ, Y) sous
+     la contrainte Kβ = 0 est atteint par un minimiseur de Q(β)Psous la contrainte Kβ = 0.
+     Considérons la fonction Γ : (β, κ) ∈ Rp × Rp−r 7→ Q(β) − p−r     i=1 κi βr+i . Cette fonction
+     admet pour gradient
+
+                                             2(X T Xβ − X T Y)1
+                                                                       
+                                                      ..               
+                                                       .               
+                                                 T Xβ − X T Y)
+                                                                       
+                                            2(X                 r      
+                                        2(X T Xβ − X T Y)r+1 − κ1 
+                                                                       
+                                                         ..
+                                                                       
+                            ∇Γ(β, κ) =                                  .
+                                                                       
+                                                          .
+                                        2(X T Xβ − X T Y)p − κp−r 
+                                                                       
+                                                                       
+                                        
+                                                    βr+1               
+                                                                        
+                                                       ..              
+                                                        .              
+                                                      βp
+
+     Ses points critiques vérifient donc
+                                                           
+                     T              T                    0r
+        (Ip − K)(X X β̂0 − X Y) = 0,                          = 2K(X T X β̂0 − X T Y),     K β̂0 = 0 .
+                                                         κ0
+
+                                                                                                Page 17
+Ecole Polytechnique, promotion 2025                                   PC-5 Cours APM 41033 EP
+
+
+     La fonction β 7→ Γ(β, κ0 ) étant strictement convexe, elle admet donc pour unique mi-
+     nimiseur β̂0 . Comme K β̂0 = 0, la première relation se réécrit
+
+                             (Ip − K)(X T X)(Ip − K)β̂0 = (Ip − K)X T Y .
+
+     La matrice X(Ip − K) n’est pas de rang plein, mais l’application linéaire associée, res-
+     treinte aux vecteurs tels que Kβ = 0 est injective. De plus, l’image de (Ip −K)(X T X)(Ip −
+     K) est l’ensemble des u ∈ Rp tels que Ku = 0, donc il existe un unique vecteur β̂0 dans
+     la préimage de (Ip − K)X T Y par (Ip − K)(X T X)(Ip − K) tel que K β̂0 = 0.
+     β̂0 est donc un minimiseur de Q(β) − p−r
+                                             P
+                                                i=1 κ0,i βr+i vérifiant K β̂0 = 0, donc un mini-
+     miseur de Q(β) parmi les vecteurs β ∈ Rp tels que Kβ = 0 d’après le résultat de la
+     question 6 de l’exercice 5. On conclut comme en question 1 que σ̂02 = n1 ∥Y − X β̂0 ∥2 ,
+     puis que
+                                                      1
+                                   sup L(θ, Y) =              e−n/2 .
+                                  θ∈Θ0            (2π) σ̂0n
+                                                      n/2
+
+     Il est clair que X β̂ est la projection orthogonale ΠY de Y sur l’espace V engendré par
+     les colonnes de X et que X β̂0 est la projection orthogonale Π0 Y de Y sur l’espace V0
+     engendré par les r premières colonnes de X. On déduit donc du théorème de Pythagore
+     que
+
+        nσ̂02 = ∥(Ip − Π0 )Y∥2 = ∥(Ip − Π)Y∥2 + ∥(Π − Π0 )Y∥2 = nσ̂ 2 + ∥(Π − Π0 )Y∥2 .
+
+     La matrice Π est donnée par X(X T X)−1 X T et Π0 par X0 (X0T X0 )−1 X0T . Comme Π et
+     Π0 sont des projecteurs orthogonaux dans des espaces imbriqués, M = Π − Π0 est aussi
+     un projecteur orthogonal, donc
+
+                             ∥MY∥2 = YT MT MY = YT M2 Y = YT MY .
+
+  3. Par définition, le test du rapport de vraisemblance rejette H0 si
+                                                                     n/2
+                                 supθ∈Θ0 L(θ, Y)              σ̂ 2
+                                                   
+                           cα >                  =                        .
+                                 supθ∈Θ L(θ, Y)      σ̂ 2 + n1 YT MY
+     Ceci est équivalent à rejeter H0 si F > kα , où kα peut s’exprimer en fonction de cα .
+  4. On a σ̂ 2 = n1 ∥(Ip − Π)Y∥2 et σ̂02 = n1 ∥(Π − Π0 )Y∥2 . Fixons θ ∈ Θ0 , on a Π0 Eθ [Y] =
+     Eθ [Y] = ΠEθ [Y], donc
+                       1                                       1
+              σ̂ 2 =     ∥(In − Π)(Y − Eθ [Y])∥2 ,    σ̂02 =     ∥(Π − Π0 )(Y − Eθ [Y])∥2 .
+                       n                                       n
+     Comme, sous Pθ , (Y − Eθ [Y])/σ ∼ N(0, In ), on a nσ̂ 2 /σ 2 ∼ χ2 (n − p) et nσ̂02 /σ 2 ∼
+     χ2 (p−r). De plus, comme (In −Π)(Π−Π0 )T = (In −Π)(Π−Π0 ) = Π−Π2 −Π0 +ΠΠ0 =
+     0, nσ̂ 2 /σ 2 et nσ̂02 /σ 2 sont indépendants. Il s’en suit que F suit une loi de Fisher de
+     paramètres p − r et n − p.
+  5. On a, sous Pθ , Y ∼ N(Eθ , σ 2 In ), avec
+                                                                                         
+                     1n 1 0 . . . 0            µ1      1n 1     0    ...       0           µ1
+                   0 1n                     µ 2   1n      1n2                    µ2 − µ1 
+                              2               2
+            Eθ =  .                         ..  =  ..                                  ..   .
+                                                                                             
+                      .         . .                                  ..              
+                   .               .       .   .                     .                .  
+                      0   . . . 0 1nr          µr      1nr     ...   0        1n r        µr − µ1
+
+                                                                                                    Page 18
+Ecole Polytechnique, promotion 2025                                     PC-5 Cours APM 41033 EP
+
+                                                           
+                1n 1    0     ...      0                 µ1
+               1n     1n 2                         µ2 − µ1 
+               2
+     Soit X =  .                           et β =      ..  , X est de rang plein et le test revient
+                                                            
+               ..            ..
+                                   .                     .  
+                  1nr . . . 0 1nr                       µr − µ1
+     à tester β2 = . . . = βr = 0.
+
+
+
+
+                                                                                              Page 19
+Ecole Polytechnique, promotion 2025                                        PC-5 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 4
+  1. Solution 1. Par construction, pour tout α ∈ ]0, 1[, pour un test U. P. P.(α),
+
+                          P0 (p1 (Z) > cα p0 (Z)) ≤ α ≤ P0 (p1 (Z) ≥ cα p0 (Z)) .
+
+     On en déduit que, pour α1 < α2 ,
+
+                        cα1 = inf {c ∈ R+ : P0 (p1 (Z) > cp0 (Z)) ≤ α1 } ,
+                            ≥ inf {c ∈ R+ : P0 (p1 (Z) > cp0 (Z)) ≤ α2 } = cα2 .
+
+     Solution 2. La paire (c, γ) doit satisfaire
+
+                                      α = P0 (r(Z) > c) + γP0 (r(Z) = c)
+
+     ou de façon équivalente
+
+                            1 − α = (1 − γ) P0 (r(Z) ≤ c) + γ P0 (r(Z) < c).
+
+     i.e. 1 − α s’écrit comme un point de l’intervalle [P0 (r(Z) < c); P0 (r(Z) ≤ c)]. En notant
+     Fr,0 la fonction de répartition du ratio p1 (Z)/p0 (Z) quand Z ∼ p0 , on a
+                                                     −1
+                                              cα := Fr,0 (1 − α).
+
+     Donc si α1 < α2 , alors 1 − α1 > 1 − α2 et donc cα1 ≥ cα2 .
+  2. Supposons que 0 < α1 < α2 < 1. Le test de fonction critique ϕα1 est de niveau α1 , il est
+     donc également de niveau α2 . Puisque le test de fonction critique ϕα2 est U. P. P.(α2 ),
+     on a
+                                    E1 [ϕα1 (Z)] ≤ E1 [ϕα2 (Z)] .
+  3. Supposons que E1 [ϕα1 (Z)] = E1 [ϕα2 (Z)]. Montrons d’abord que cα2 = 0.
+     Puisque E1 [ϕα1 (Z)] = E1 [ϕα2 (Z)], le test de fonction critique ϕα1 est aussi U. P. P.(α2 ).
+     Le théorème d’unicité des tests U. P. P.(α) montre que
+
+                 {ϕα1 (z) − ϕα2 (z)}{p1 (z) − cα2 p0 (z)} = 0 ,        µ − presque-partout .
+
+     Par conséquent, en intégrant sous dµ,
+
+            E1 [ϕα1 (Z)] − E1 [ϕα2 (Z)] = cα2 {E0 [ϕα1 (Z)] − E0 [ϕα2 (Z)]} = cα2 (α1 − α2 ) .
+
+     Or le terme de gauche est nul par hypothèse, donc cα2 = 0 puisque α1 − α2 ̸= 0.
+     Si cα2 = 0, alors 1 E1 [ϕα2 (Z)] = 1. Et donc E1 [ϕα1 (Z)] = 1.
+     ϕα1 est donc la fonction critique d’un test U. P. P.(α2 ), de taille α1 strictement inférieure
+     à α2 et de puissance 1.
+  1. On peut remarquer en effet que
+
+                          E1 [ϕα2 (Z)] = P1 (r(Z) > cα2 ) + γα2 P1 (r(Z) = cα2 )
+                                        = P1 (r(Z) > 0) + γα2 P1 (r(Z) = 0)
+                                        = P1 (r(Z) > 0) + γα2 P1 (p1 (Z) = 0)
+                                        = P1 (r(Z) > 0) = P1 (r(Z) ≥ 0) = 1.
+
+
+
+
+                                                                                               Page 20
+Ecole Polytechnique, promotion 2025                                 PC-5 Cours APM 41033 EP
+
+
+   Remarque
+     • On a démontré que si ϕα est la fonction critique donnée par
+                                   
+                                    1 si r(Z) > c                  p1 (Z)
+                        ϕα (Z) :=     γ si r(Z) = c         r(Z) :=
+                                                                    p0 (Z)
+                                      0 si r(Z) < c
+                                   
+
+     avec c = 0, alors nécessairement E1 [ϕα (Z)] = 1. Si cette fonction critique est utilisée
+     pour le test H0 : p = p0 contre H1 : p = p1 , alors le test est de puissance 1.
+     • Dans la dernière question, on a construit un test U. P. P.(α2 ) de puissance 1 et de
+     taille strictement inférieure à α2 ; il n’y a pas unicité de ces tests puisque tout test de
+     fonction critique ϕα avec α ∈ [α1 , α2 [ convient.
+
+
+
+
+                                                                                          Page 21
+Ecole Polytechnique, promotion 2025                                             PC-5 Cours APM 41033 EP
+
+
+Corrigé de l’Exercice 5
+   Notons X1:n le minimum de X1 , · · · , Xn .
+  1. La vraisemblance de l’échantillon s’écrit
+                                                         Pn
+                                         Ln (θ) = enθ−     i=1 Xi   1θ<X1:n .
+     Le rapport de vraisemblance s’écrit donc, pour θ1 > θ0 , si θ0 < X1:n ,
+                                               Ln (θ1 )
+                                     r(Z) =             = en(θ1 −θ0 ) 1θ1 <X1:n .
+                                               Ln (θ0 )
+
+  2. Les tests du rapport de vraisemblance s’écrivent sous la forme
+
+                                            ϕ = 1r(Z)>c + γ 1r(Z)=c .
+
+     Ici, r(Z) ne prend que les valeurs 0 et en(θ1 −θ0 ) , et on a
+
+               {r(Z) = 0} = {θ0 < X1:n ≤ θ1 },              {r(Z) = en(θ1 −θ0 ) } = {X1:n > θ1 }.
+
+     D’où les cas
+       — Si c > en(θ1 −θ0 ) , ϕ est toujours nul.
+       — Si 0 < c ≤ en(θ1 −θ0 ) , ϕ est de la forme ϕ2 .
+       — Si c = 0, ϕ est de la forme ϕ1 .
+       — Si c < 0, ϕ vaut toujours 1.
+  3. Si α ≥ e−n(θ1 −θ0 ) , le test s’écrit d’après la question 2.
+
+                       ϕα (Z) = 1r(Z)>0 + γ 1r(Z)=0 = 1X1:n ≥θ1 + γ 1θ0 ≤X1:n <θ1 .                    (12)
+
+     Pour garantir le niveau α, il faut alors choisir γ solution de l’équation
+
+                               α = Pθ0 (min Xi ≥ θ1 ) + γPθ0 (θ0 ≤ min Xi < θ1 )
+                                 = e−n(θ1 −θ0 ) + γ(1 − e−n(θ1 −θ0 ) ) ,
+
+     i.e., choisir
+                                                     αen(θ1 −θ0 ) − 1
+                                               γ=                     .
+                                                     en(θ1 −θ0 ) − 1
+  4. On a
+                                                                     Z +∞               n
+                  n(θ1 −θ0 )                                                   −(x−θ0 )
+     Pθ0 r(Z) = e              = Pθ0 (X1:n > θ1 ) = Pθ0 (X1:n > θ1 ) =       e          dx    = e−n(θ1 −θ0 ) .
+                                                                                    θ1
+
+     Si α < e−n(θ1 −θ0 ) , on doit prendre c(α) = e−n(θ1 −θ0 ) et, pour garantir une taille de test
+     α, il faut alors prendre γ solution de
+
+                                     α = γPθ0 (X1:n ≥ θ1 ) = γe−n(θ1 −θ0 ) ,
+
+     i.e. γ = αen(θ1 −θ0 ) .
+     On a finalement
+                                         ϕα (Z) = αen(θ1 −θ0 ) 1X1:n >θ1 .
+
+                                                                                                    Page 22
+Ecole Polytechnique, promotion 2025                                 PC-5 Cours APM 41033 EP
+
+
+   Remarque sur le test (12)
+     - La règle de décision est la suivante : si toutes les observations sont supérieures à θ1 ,
+     on rejette H0 . En revanche, si au moins une est dans [θ0 , θ1 ], alors on décide d’accepter
+     H0 ou de rejeter en tirant une v.a. de Bernoulli. Ceci est assez contre-intuitif puisque
+     l’on peut être amené à rejetter H0 alors qu’on observe des données X1 , · · · , Xn qui sont
+     interdites par H1 (puisque H1 contraint les v.a. Xk à être supérieures à θ1 ).
+     - Le niveau de ce test est α (et même α est sa taille, par construction). La puissance de
+     ce test est
+
+                   Pθ1 [X1:n > θ1 ] + γPθ1 [θ0 < X1:n ≤ θ1 ] = Pθ1 [X1:n > θ1 ] = 1.
+
+     - On peut remarquer que le test plus intuitif
+                                        
+                                           1 si X1:n > θ1
+                              ϕ⋆ (Z) =
+                                           0 si θ0 < X1:n ≤ θ1
+
+     est un test de taille (donc de niveau)
+
+                           α⋆ = Pθ0 (X1:n > θ1 ) = exp(−n(θ1 − θ0 )) < α
+
+     et que sa puissance vaut 1. Ce test est donc aussi un U. P. P.(α).
+     - Cette discussion illustre le résultat de la question 3 de l’exercice 5.
+
+
+
+
+                                                                                           Page 23
+Ecole Polytechnique, promotion 2025                                               PC-5 Cours APM 41033 EP
+
+
+Corrigé Exercice 6
+  1. Pour tout (k1 , . . . , kn ) ∈ Nn , en utilisant le fait que les (Xi )1≤i≤n sont indépendantes et
+     de même loi de Bernoulli de paramètre θ, pour tout (k1 , . . . , kn ) ∈ Nn ,
+                                                                       n
+                                                                                  !
+                                                                      X
+     Pθ (Y1 = k1 , . . . , Yn = kn ) = Pθ T1 = k1 + 1, . . . , Tn =        ki + n
+                                                                            i=1
+                                                                                                           
+                                  = Pθ       ∩ni=1 {XPi−1 kj +i = . . . = XPi kj +i−1 = 0, XPi kj +i = 1}
+                                                      j=1                   j=1              j=1
+                                      n
+                                      Y
+                                  =         (1 − θ)ki θ .
+                                      i=1
+
+     Les (Yi )1≤i≤n sont donc bien indépendantes de loi géométrique de paramètre θ.
+  2. La densité de Z = (Y1 , . . . , Yn ) par rapport à la mesure de comptage est donnée par :
+                                                                       Pn
+                                    (k1 , . . . , kn ) 7→ θn (1 − θ)    i=1 ki    .
+     Ainsi, pour 0 ≤ θ1 < θ2 < 1,
+                                                                            n        n
+                                             (                                  )        !
+     Pθ2 (Y1 = k1 , . . . , Yn = kn )  θ2n                                  X        X
+                                      = n exp (log(1 − θ2 ) − log(1 − θ1 ))   ki = φ   ki .
+     Pθ1 (Y1 = k1 , . . . , Yn = kn )  θ1
+                                                                                       i=1        i=1
+
+     Il s’en suit que le rapport de vraisemblance s’écrit
+                                                                            n
+                                                                            X
+                                  r(Z) = φ(T (Z))             T (Z) :=            Yi
+                                                                            i=1
+                                                                       θn
+     ce qui démontre le résultat puisque la fonction φ(t) = θ2n exp {(log(1 − θ2 ) − log(1 − θ1 )) t}
+                                                               1
+     est bien strictement décroissante lorsque θ1 < θ2 .
+  3. Solution 1. On note H(n) la loi dont la densité h(n, ·) par rapport à la mesure de
+     comptage est définie, pour tout k ∈ N, par :
+                                                  
+                                            n+k−1 n
+                                h(n, k) =            θ (1 − θ)k .
+                                               k
+     Remarquons tout de suite que Y1 a pour loi H(1). On calcule maintenant la transformée
+     de Laplace de cette loi, il s’agit, pour tout u > 0, d’évaluer la somme suivante :
+                                   +∞                
+                                        −uk n + k − 1
+                                  X
+                                      e                 θn (1 − θ)k .
+                                                 k
+                                   k=0
+
+     Pour cela, on remarque que, pour tout réel x ∈ (−1, 1) et tout entier k ≥ 0,
+                                      (k)      +∞
+                                                        !(k) +∞
+                       k!           1            X             X (k + ℓ)!
+                           k+1
+                               =            =        xℓ     =              xℓ .
+                   (1 − x)         1−x                                ℓ!
+                                                            ℓ=0               ℓ=0
+
+     Il s’en suit, en appliquant ce résultat à x = (1 − θ)e−u et k = n − 1 que
+                      +∞                                                  n
+                            −uk n + k − 1                          θ
+                      X
+                                              n        k
+                          e                  θ (1 − θ) =                        .
+                                    k                        1 − e−u (1 − θ)
+                      k=0
+
+
+                                                                                                  Page 24
+Ecole Polytechnique, promotion 2025                                        PC-5 Cours APM 41033 EP
+
+
+     On en
+         Pdéduit donc que, pour tous entiers n et k, H(n) ∗ H(k) = H(n + k) et donc que
+           n
+     T = i=1 Yi a pour loi H(1)∗n = H(n).
+     Solution 2. Déterminons la loi de la somme en utilisant la fonction génératrice des
+     moments. On a
+                          X k                 X                                 θ
+                      Eθ s Y1 = s Pθ (Y1 = k) =   sk (1 − θ)k θ =
+                                                                             1 − s(1 − θ)
+                                k≥0                      k≥0
+
+     définie pour tout s ∈ R tel que |s|(1 − θ) < 1. En utilisant l’indépendance des v.a. Yi et
+     le fait qu’elles aient même loi, il vient pour tout s tel que |s|(1 − θ) < 1,
+                                                                   n
+                                     Y1 +···+Yn           θ
+                                 Eθ s              =                   .
+                                                       1 − s(1 − θ)
+
+     Puis en utilisant la relation
+                                                                      n
+                                                                      X
+                             ∂s(q)
+                                        Y1 +···+Yn 
+                                     Eθ s              |s=0 = q! Pθ (   Yi = q)
+                                                                     i=1
+
+     et le fait que
+
+                   ∂s(q) Eθ sY1 +···+Yn |s=0 = θn n(n + 1) · · · (n + q − 1)(1 − θ)q
+                                      
+
+
+     on obtient le résultat demandé.
+  4. La famille de loi étant à rapports de vraisemblance strictement décroissants, un test du
+     rapport de vraisemblance s’écrit
+
+         ϕα (Z) = 1{T (Z)<c} + γ 1{T (Z)=c} ,      où   Pθ0 (T (Z) < c) + γPθ0 (T (Z) = c) = α .
+
+     De façon équivalente, (c, γ) sont choisis tels que
+
+                          1 − α = (1 − γ) Pθ0 (T (Z) ≤ c) + γ Pθ0 (T (Z) < c) .
+
+     En particulier,
+                                             cα := Fθ−1
+                                                     0 ,T (Z)
+                                                              (α)
+
+     où Fθ−1
+            0 ,T (Z)
+                     désigne la fonction de répartition de la v.a. T (Z) lorsque les v.a. (Xk )k sont
+     i.i.d. B(θ0 ).
+     On a vu que T (Z) était à valeur entière donc Fθ0 ,T (Z) est une fonction en escalier. On
+     est alors dans une des configurations suivantes.
+      (a) Soit il existe qα ∈ N tel que P(T (Z) < qα ) < α < P(T (Z) ≤ qα ) et dans ce cas
+
+                                                         α − P(T (Z) < qα )
+                             c α = qα       γα =                                   .
+                                                   P(T (Z) ≤ qα ) − P(T (Z) < qα )
+
+      (b) Soit il existe qα ∈ N tel que P(T (Z) = qα ) = α et dans ce cas
+
+                                               c α = qα        γα = 0.
+
+
+
+                                                                                              Page 25
+

@@ -1,0 +1,1073 @@
+42                                                        CHAPITRE 1. MODÈLES STATISTIQUES
+
+4      Les compléments
+
+
+   Les contenus de cette partie ne sont pas exigibles ; ils enrichissent la culture statistique et
+préparent certains chapitres ultérieurs.
+
+
+
+
+Exemples introductifs supplémentaires
+
+
+
+   Avant de procéder à la construction mathématique d’un modèle statistique, il est utile d’avoir
+en tête quelques exemples de problèmes concrets de statistique. Ceux qui suivent complètent les
+exemples de la partie principale (Section 1.2, Section 1.2 et Section 1.2).
+
+
+
+     Exemple 4.1: Sondage
+    Une élection entre deux candidats A et B a lieu : on effectue un sondage à la sortie des
+    urnes. On interroge n votants, le nombre n étant considéré comme petit devant le nombre
+    total de votants, et on obtient ainsi les nombres nA et nB de voix pour les candidats A et
+    B respectivement (nA + nB = n, en ne tenant pas compte des votes blancs ou nuls pour
+    simplifier). Les questions naturelles auxquelles nous tâcherons de répondre sont typiquement
+    les suivantes.
+      — Quelle est la proportion d’électeurs ayant voté pour le candidat A ?
+      — Peut-on affirmer que A ou B a gagné au vu de nA et nB seulement ?
+      — Si l’on décide d’annoncer A (ou B) vainqueur, comment quantifier l’erreur de décision ?
+    Le modèle statistique associé à ce sondage, dans le cas d’un tirage avec remise, est construit
+    dans l’Section 1.2 ; le cas d’un tirage sans remise est traité en Section 4.
+
+
+
+
+     Exemple 4.2: Reconstruction d’un signal
+    On souhaite apprendre une fonction t 7→ f (t), et pour ce faire on dispose d’observations
+    affectées par une erreur de mesure de la fonction inconnue f aux instants multiples de Te ,
+    sur un intervalle de temps [0, T ] : les relevés yk , k = 1, . . . , n dont on dispose sont donc des
+    approximations des quantités inconnues f (kTe ), k = 1, . . . , n, où n := ⌊T /Te ⌋ - la partie
+    entière inférieure de T /Te .
+    Dans ce problème, on est typiquement intéressé par “estimer” la fonction            f . Ceci signifie
+    que nous allons chercher à construire une fonction t 7→ fb t; {yk }nk=1 ne dépendant que de
+    l’échantillon mesuré {yk }nk=1 , qui soit en un certain sens “proche” de la fonction inconnue f .
+    La difficulté ici va dépendre de la période d’échantillonnage, du rapport entre l’amplitude
+    du signal à reconstruire f et celle des erreurs de mesure {yk − f (kTe )}nk=1 , et bien sûr de la
+    “complexité" de la fonction f . Intuitivement, une fonction constante f (t) = µ ou ayant une
+    forme prescrite, par exemple f (t) = β0 + β1 t sera plus facile à reconstruire qu’une fonction
+    très irrégulière.
+4. LES COMPLÉMENTS                                                                                          43
+
+
+
+
+                              50
+                              0
+                      accel
+
+                              −50
+                              −100
+
+
+
+
+                                     10      20         30       40        50
+
+                                                       times
+
+
+
+
+                     Accélération de la tête en fonction du temps suite à un impact.
+
+ On peut s’intéresser au même problème en dimension supérieure, par exemple en dimension
+ 2 où f peut représenter une image. La fonction f est alors définie sur le pavé [0, 1] × [0, 1].
+ En pratique, cette image est discrétisée en pixels et la valeur de f en ce pixel quantifie un
+ niveau de gris dans {0, . . . , M − 1}. On collecte donc n = N 2 données yk,ℓ pour 1 ≤ k, ℓ ≤ N ,
+ qui sont des mesures bruitées de la quantité inconnue f (k/N, ℓ/N ). On cherche à reconstruire
+ l’image f ou bien à décider si une certaine caractéristique est présente dans l’image.
+
+
+  Exemple 4.3: Modèle gaussien pour la reconstruction de signal
+ Dans le problème de reconstruction d’un signal (Section 4), les observations sont clairement
+ à valeurs dans Z := Rn avec n := ⌊T /Te ⌋. Il est naturel de munir cet ensemble de sa tribu
+ borélienne (voir ??) : Z := B(Rn ). Pour construire un modèle statistique, il faut se donner
+ un ensemble C de lois possibles pour les observations. Supposons que :
+   — la fonction
+            Pp f est modélisée par une combinaison linéaire de fonctions de base connues
+     f (t) = k=1 βk ϕk (t) ∈ R,
+   — les erreurs de mesure sont modélisées comme la réalisation de variables aléatoires gaus-
+     siennes centrées et de même variance σ 2 .
+ L’ensemble des paramètres inconnus est donc ici θ = (β1 , . . . , βp , σ 2 ) où (β1 , . . . , βp ) ∈ Rp et
+ σ 2 ∈ R+ . Nous poserons donc Θ := Rp × R∗+ . Par suite, pour tout θ ∈ Θ, dans le modèle Pθ , la
+                                                         n
+ loi du vecteur
+             Ppd’observations est la loi Gaussienne sur R , d’espérance      (µ1 (θ), µ2 (θ), . . . , µn (θ))
+ avec µi = ℓ=1 βℓ ϕℓ (iTe ) et de matrice de covariance σ 2 In×n . Nous écrivons le modèle sta-
+ tistique suivant :                                                        
+                         Rn , B(Rn ), pθ · Leb⊗n , θ ∈ Θ := Rp × R∗+ ,
+ où                                                                                     !2 
+                                                          n       p
+                                          2 −n/2      1 X        X
+                                                                                             .
+             pθ (x1 , . . . , xn ) := (2πσ )     exp − 2     xi −   βk ϕk (iTe )
+                                                      2σ i=1
+                                                                         k=1
+
+
+
+
+  Exemple 4.4: Influence d’une variable sur une autre
+ On s’intéresse à étudier le lien entre la qualité d’un greffon de rein (caractérisée par une
+ note agrégeant un certain nombre de caractéristiques) et l’âge du donneur. On considère une
+ population de n donneurs potentiels. Pour chaque donneur i ∈ {1, . . . , n}, on note xi son âge
+ et yi la qualité du greffon.
+44                                                             CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+
+
+                              4
+                              2
+                              0
+                        tot
+
+                              −2
+                              −4
+                              −6
+
+
+
+
+                                   20   30   40     50          60   70   80     90
+
+                                                         age
+
+
+
+
+     Qualité d’un greffon de rein en fonction de l’âge du donneur (données du laboratoire de néphrologie
+                                  du Dr. B. Myers, Université de Stanford).
+
+  Il est bien entendu irréaliste de postuler l’existence d’une fonction f : R → R telle que
+  y = f (x). Toutefois, il est raisonnable d’introduire un modèle statistique exprimant que yi est
+  en partie expliquée par xi ; ce qui peut être fait en exprimant que chaque mesure yi est une
+  observation dans un bruit de mesure de f (xi ) où f est une fonction inconnue. Le problème
+  du statisticien sera ici de reconstruire la fonction de régression f et de caractériser l’erreur de
+  modélisation.
+  Le problème est proche de celui de l’section 4, à ceci près que les points kTe sont remplacés
+  par les âges xi . Les variables explicatives xi ne sont pas nécessairement scalaires, on peut
+  ainsi remplacer xi par un vecteur xi ∈ Rk qui collecte un ensemble de variables explicatives
+  possibles. Dans ce cas, f est une fonction Rk → R.
+  On peut, si cette information est disponible, incorporer une information a priori sur la fonction
+  f : par exemple, postuler que la fonction f est de la forme f (x) = t(θ ⊤ x), où t : R → R
+  est une fonction connue et θ = (θ1 , . . . , θk )T ∈ Rk sont des paramètres inconnus. Dans les
+  cas les plus élémentaires, t(z) = z, et on parle de régression linéaire. Il est bien entendu
+  possible de considérer des modèles de régression plus généraux incorporant explicitement des
+  non-linéarités et des interactions entre les différentes variables explicatives. La nature des
+  informations exploitables pour construire un tel modèle dépend naturellement fortement des
+  applications considérées. Nous reviendrons dans la suite sur l’importance centrale des modèles
+  en statistique et des méthodes pour construire de tels modèles.
+  Il existe aussi des situations où yi est une variable qualitative, c’est-à-dire ne prenant qu’un
+  nombre fini de valeurs (instances). On peut penser que le risque d’être victime d’un infarctus
+  est influencé par un ensemble de facteurs : consommation de tabac, d’alcool, taux de cholesté-
+  rol, indice de masse corporelle, âge, terrain familial, pression artérielle, ces différents facteurs
+  étant eux-mêmes souvent liés.
+
+
+Sondage sans remise et loi hypergéométrique
+   Reprenons l’Section 4 et le modèle de l’Section 1.2, et supposons maintenant que les tirages sont
+sans replacement. On dispose d’une population de N individus (N est typiquement très grand).
+On veut introduire un modèle qui exprime que dans la population, N θ individus votent pour le
+candidat A, où θ ∈ Θ := {k/N , k ∈ {0, . . . , N }}. L’espace des observations est Z := {0, . . . , n} et
+Z := P(Z). La loi des observations est cette fois donnée par
+                      N θ N −N θ
+                      ( k )( n−k ) ,   si k ∈ {max(n − N (1 − θ), 0), . . . , min(N θ, n)},
+          Pθ ({k}) =        (Nn )
+                     0,                si k ∈ / {max(n − N (1 − θ), 0), . . . , min(N θ, n)}.
+4. LES COMPLÉMENTS                                                                                           45
+
+C’est le nombre de façons de choisir k individus dans une population de taille N θ, puis indépen-
+damment (n − k) individus dans une population de taille N (1 − θ) divisé par le nombre total de
+façons de choisir n individus parmi N . La loi Pθ définie ci-dessus est appelée hypergéométrique,
+notée Hyper(N θ, N, n).
+
+Données censurées
+
+
+   Exemple 4.5: Contrôle de qualité, données censurées
+  On cherche – en laboratoire – à tester la fiabilité d’un dispositif. On fait fonctionner en
+  parallèle n appareils jusqu’à ce qu’ils tombent tous en panne. On note x1 , . . . , xn les instants
+  de panne observés. On cherche alors à obtenir des informations sur la fiabilité du dispositif,
+  par exemple
+      - garantir qu’avec une probabilité donnée, le système fonctionnera plus qu’un temps T
+        donné.
+      - donner une valeur “représentative” de la durée de vie du dispositif.
+  Répondre à ces deux questions nécessite bien entendu de formaliser ce qu’on entend ici par
+  probabilité ou “valeur représentative”. Nous nous y attacherons dans la suite de l’exposé.
+  Si les appareils sont fiables et que le nombre n d’appareils testés est grand, attendre que tous
+  les dispositifs soient tombés en panne peut s’avérer impossible. Une idée fréquemment utilisée
+  en fiabilité est de fixer a priori un temps terminal τ et d’observer les temps de défaillance
+  des systèmes apparaissant avant l’horizon τ , ce qui revient à observer x⋆i = min{xi , τ }, pour
+  i ∈ {1, . . . , n}. Une question importante consiste à quantifier la perte d’information associée
+  à l’horizon τ dans cette seconde expérience plus réaliste.
+
+   Exemple 4.6: Modèle exponentiel censuré
+  Pour l’section 4 du contrôle de qualité, un modèle classique de durée de vie est fourni par
+  la famille de lois exponentielles de paramètre θ ∈ R∗+ , de densité par rapport à la mesure de
+  Lebesgue Leb donnée par
+                                        qθ (x) := θe−θx 1R+ (x) .                            (2)
+                                                                               
+  Le n-échantillon du modèle statistique R+ , B(R+ ), qθ · Leb , θ ∈ Θ := R∗+ est
+                                                                  
+                                Rn+ , B(Rn+ ), qθ⊗n · Leb⊗n , θ ∈ Θ ,
+
+  où Leb⊗n est la mesure de Lebesgue sur Rn et
+                                                                   n
+                                                                   Y
+                                       qθ⊗n (x1 , . . . , xn ) =         qθ (xi ).
+                                                                   i=1
+
+  Pour tout θ ∈ Θ, sous Pθ , les observations (X1 , . . . , Xn ), définies par Xi (x1 , . . . , xn ) = xi pour
+  tout i ∈ {1, . . . , n} et (x1 , . . . , xn ) ∈ Rn+ sont indépendantes. Pour tout i, le modèle statistique
+  induit par Xi est                                                         
+                                      R+ , B(R+ ), qθ · Leb , θ ∈ Θ := R∗+     .
+  Supposons que les observations (X1 , . . . , Xn ) soient censurées à un instant terminal τ connu.
+  Pour i ∈ {1, . . . , n}, nous considérons les statistiques
+
+                                   Xi∗ := min(Xi , τ ) ,       i ∈ {1, . . . , n} .
+                                              X∗
+  Pour θ ∈ Θ, notons Q∗θ la loi image Qθ i . Le modèle statistique induit par la variable Xi∗ est
+  donc
+                                 ([0, τ ] , B([0, τ ]), {Q∗θ , θ ∈ Θ}) .
+46                                                      CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+ Notons que la loi Q∗θ n’est pas absolument continue par rapport à la mesure de Lebesgue. En
+ revanche, la famille {Q∗θ , θ ∈ Θ} est dominée par µ = Leb + δτ , où δτ désigne la mesure de
+ Dirac en τ . Pour tout θ ∈ Θ, la densité de Q∗θ par rapport à µ est donnée par
+                                                                         Z +∞
+            qθ∗ (x) := θe−θx 1{x<τ } + c(θ)1{x=τ } ,   avec c(θ) :=             θe−θt dt = e−θτ .
+                                                                         τ
+
+ Le modèle statistique induit par (X1∗ , . . . , Xn∗ ) est donc donné par
+                                    n           n                        
+                             [0, τ ] , B([0, τ ] ), (qθ∗ )⊗n · µ⊗n , θ ∈ Θ .
+
+ C’est un n-échantillon du modèle statistique ([0, τ ] , B([0, τ ]), {qθ∗ · µ , θ ∈ Θ}).
+
+
+
+
+     Illustration / animation : L’atome en τ grossit à mesure que la censure
+     devient plus sévère
+     On illustre ici l’histogramme des durées observées min(Xi , τ ), qui garde la
+     forme exponentielle en dessous de τ et concentre une masse croissante en τ à
+     mesure que τ diminue.                                                                          link
+
+
+
+
+Régression logistique
+
+
+     Exemple 4.7: Régression logistique
+ Une nouvelle molécule anti-cancéreuse est en cours de développement. Pour déterminer la
+ dose à administrer aux futurs patients, un “bio-essai” est mené. Celui-ci consiste à injecter des
+ doses croissantes x1 < · · · < xq de cette molécule à des populations de n1 , n2 , . . . , nq souris
+ et à mesurer dans chaque population le nombre de souris yi qui décèdent. On dispose donc
+ de q-couples de données {(xi , yi )}qi=1 . Rappelons tout d’abord que la loi binomiale Bin(n, π),
+ π ∈ ]0, 1[, est la loi sur {0, . . . , n} de densité par rapport à la mesure de comptage donnée par
+                                         
+                                         n k
+                              k 7→          π (1 − π)n−k , k ∈ {0, . . . , n} .
+                                         k
+
+ L’application                                                      
+                                                                π
+                                     π 7→ logit(π) = log
+                                                               1−π
+ est appelée “application logit”. C’est une fonction croissante, limπ↓0+ logit(π) = −∞ et
+ limπ↑1− logit(π) = ∞. Les chercheurs postulent un lien linéaire entre la dose x et le taux
+ de mortalité. Pour chaque population individuelle i ∈ {1, . . . , q}, nous postulons donc le mo-
+ dèle statistique binomial
+                                                                                                   
+         Ei := {0, . . . , ni }, P({0, . . . , ni }), Bin(ni , π(θ, xi )) , θ = (θ0 , θ1 ) ∈ Θ = R2
+
+ où
+                                                   exp(θ0 + θ1 x)
+                                    π(θ, x) :=                      .
+                                                 1 + exp(θ0 + θ1 x)
+ On vérifie aisément que
+                                      logit(π(θ, x)) = θ0 + θ1 x .
+4. LES COMPLÉMENTS                                                                                                  47
+
+
+  Considérons le modèle statistique
+                q                            q
+                                                                   ! ( q                             )!
+                Y                            Y                        O
+                      {0, . . . , ni }, P          {0, . . . , ni } ,    Bin(ni , π(θ, xi )) , θ ∈ Θ    .
+                i=1                          i=1                     i=1
+
+  Pour i ∈ {1, . . . , q} on note Yi la i-ème observation qui est la statistique définie, pour tout
+  z = (y1 , . . . , yq ) ∈ Z par Yi (z) = yi . Pour tout θ ∈ Θ, sous Pθ , les observations (Y1 , . . . , Yq )
+  sont indépendantes et le modèle induit par chaque observation est le modèle binomial Ei . Par
+  abus de langage, nous dirons que “les observations (Y1 , . . . , Yq ) sont indépendantes et pour
+  i ∈ {1, . . . , q}, Yi est distribuée suivant le modèle binomial de paramètre π(θ, xi )”.
+
+
+
+Exemples détaillés développés en cours (annexe des slides)
+
+    Les slides du cours 1 se terminent par trois exemples développés en annexe : un modèle de
+survie, un modèle de régression pour des données de température et une formalisation statistique
+des systèmes de recommandation. Nous les reprenons ici avec le même niveau de détail que les
+slides, en corrigeant au passage quelques coquilles de ces dernières. Ces exemples mettent en œuvre
+les notions du chapitre (modèle dominé, n-échantillon, modèle induit, identifiabilité) et anticipent
+sur les méthodes d’estimation du cours 2.
+
+
+
+Modèles de survie.
+  Exemple 4.8: Modèle de survie
+  Un modèle classique de durée de vie est fourni par la famille des lois exponentielles de para-
+  mètre θ ∈ R∗+ , de densité par rapport à la mesure de Lebesgue Leb donnée par
+
+                                                    qθ (x) := θe−θx 1R+ (x) .
+                                                                            
+  Le n-échantillon du modèle statistique R+ , B(R+ ), qθ · Leb , θ ∈ Θ := R∗+ est
+                                                                            
+                                    Rn+ , B(Rn+ ), Pθ := qθ⊗n · Leb⊗n , θ ∈ Θ ,
+
+  où Leb⊗n est la mesure de Lebesgue sur Rn et
+                                             n
+                                             Y                           n
+                                                                          X   
+                qθ⊗n (x1 , . . . , xn ) :=          qθ (xi ) = θn exp − θ   xi 1Rn+ (x1 , . . . , xn ) .
+                                             i=1                            i=1
+
+  L’observation (X1 , . . . , Xn ) est définie par Xi (x1 , . . . , xn ) := xi pour tout i ∈ {1, . . . , n} et
+  (x1 , . . . , xn ) ∈ Rn+ . D’après le Section 1.7, pour tout θ ∈ Θ, les statistiques Xi et Xj sont
+  indépendantes sous Pθ pour i ̸= j, et le modèle statistique induit par Xi est
+
+                                            (R+ , B(R+ ), {qθ · Leb , θ ∈ Θ}) .
+                                                                                             R +∞
+  Absence de mémoire. Pour tous a, b > 0 et θ ∈ Θ, comme Pθ (X1 ≥ a) =                        a
+                                                                                                    θe−θx dx = e−aθ ,
+
+                                                    Pθ (X1 ≥ a + b)   e−(a+b)θ
+          Pθ ( X1 ≥ a + b | X1 ≥ a) =                               =          = e−bθ = Pθ (X1 ≥ b) .
+                                                      Pθ (X1 ≥ a)       e−aθ
+
+  Un dispositif qui a déjà fonctionné pendant une durée a a donc la même loi de durée de vie
+  résiduelle qu’un dispositif neuf : le modèle exponentiel ne rend pas compte de l’usure.
+48                                                                 CHAPITRE 1. MODÈLES STATISTIQUES
+
+     Lemme 4.1: Moments de la loi exponentielle
+  Pour tout θ ∈ R∗+ et tout k ∈ N∗ , Eθ [X1k ] = k!/θk .
+
+
+
+     Démonstration
+  La fonction génératrice des moments de X1 est finie pour |s| < θ et vaut
+                                         Z +∞                               Z +∞
+                         Eθ [esX1 ] =              esx θe−θx dx = θ                   e−(θ−s)x dx
+                                          0                                    0
+                                                          X sk           +∞
+                                           θ       1
+                                        =     =         =      .
+                                          θ−s   1 − s/θ     θk
+                                                                         k=0
+                                                                       P
+  D’autre part, en développant l’exponentielle en série entière, esX1 = k≥0 sk X1k /k!, et l’in-
+                                                              P
+  terversion de la somme et de l’espérance est licite puisque k≥0 |s|k X1k /k! = e|s|X1 est Pθ -
+  intégrable pour |s| < θ. Ainsi
+                                                             +∞ k
+                                                             X
+                                                  sX1          s
+                                          Eθ [e         ]=              Eθ [X1k ] .
+                                                                   k!
+                                                             k=0
+
+  En identifiant les coefficients des deux développements en série entière, valables sur ]−θ, θ[,
+  on obtient directement Eθ [X1k ] = k!/θk pour tout k ∈ N∗ .                                  □
+
+
+
+    Construction d’estimateurs par la méthode des moments. Considérons les fonctions T (x) = x
+et T̃ (x) = x2 . D’après le lemme précédent,
+
+
+                                Z                            Z +∞
+                                                                       1
+                      e(θ) :=       T (x) Qθ (dx) =                 x θ exp(−θx) dx =
+                                                                         ,
+                                                 0                     θ
+                              Z                 Z +∞
+                                                                         2
+                      ẽ(θ) := T̃ (x) Qθ (dx) =      x2 θ exp(−θx) dx = 2 .
+                                                 0                      θ
+
+
+Les estimateurs des moments associés sont les solutions en θ des équations obtenues en remplaçant
+les moments théoriques e(θ) et ẽ(θ) par leurs contreparties empiriques :
+
+
+                                    n                                             n
+                              1  1X                                        2   1X 2
+                        e(θ) = =       Xi                    et    ẽ(θ) = 2 =      X .
+                              θ  n i=1                                    θ    n i=1 i
+
+
+
+Bien entendu, chacun des moments utilisés donne dans ce contexte un estimateur différent. Ces
+équations ont des solutions uniques dans R∗+ (dès que les observations ne sont pas toutes nulles,
+ce qui est le cas Pθ -presque sûrement) :
+
+
+                                                                                           1/2
+                                   1                                             2
+                       θ̂n,1 := 1 Pn                    et θ̂n,2 :=           1
+                                                                                Pn      2
+                                                                                                    .
+                                    n    i=1 Xi                               n    i=1 Xi
+4. LES COMPLÉMENTS                                                                                     49
+
+
+                                                   Comparaison
+
+
+
+
+                  2.0
+                  1.5
+                  1.0
+                  0.5
+
+
+
+
+                                     theta1                           theta2
+
+
+
+
+                                                  P                          −1 Pn
+                                                                                          
+                                                                                      2 1/2
+    Comparaison des estimateurs θ̂n,1 = 1/(n−1 n    i=1 Xi ) et θ̂n,2 = 2/(n     i=1 Xi )    : boîtes à
+   moustaches des valeurs prises par chacun des deux estimateurs sur un grand nombre d’échantillons
+simulés de taille n sous Pθ , pour θ = 1. Les deux estimateurs se concentrent autour de la vraie valeur du
+                        paramètre, mais θ̂n,2 est nettement plus dispersé que θ̂n,1 .
+
+
+
+
+    Illustration / animation : Les deux estimateurs des moments se concentrent
+    tous deux autour de θ, mais pas à la même vitesse
+    L’animation accessible par le QR code ci-contre permet de comparer, sur des
+    échantillons répétés de taille n, les boîtes à moustaches de θ̂n,1 et de θ̂n,2 , tous
+    deux centrés sur la vraie valeur mais dispersés différemment.                             link
+
+
+
+   Pour étudier ces estimateurs, nous utilisons les lois Gamma (voir aussi la Section 2).
+
+   Définition 4.1: Lois Gamma
+    (i) Pour tout réel p > 0, on appelle loi Gamma réduite de paramètre de forme p (et l’on
+        note Gamma(p)) la loi sur R+ de densité
+                                                1
+                                   fp (x) :=        exp(−x) xp−1 ,      x>0,
+                                               Γ(p)
+                        R +∞ −x p−1
+        où Γ(p) :=       0
+                            e x dx est la fonction Gamma d’Euler.
+   (ii) Pour λ > 0, on appelle Gamma(p, λ) la loi de X = Z/λ où Z ∼ Gamma(p) ; λ est le
+        paramètre d’intensité (l’échelle est 1/λ) et p le paramètre de forme. La densité de la loi
+        Gamma(p, λ) est donnée par
+
+                                                λp
+                                  fp,λ (x) =        exp(−λx) xp−1 ,        x>0.
+                                               Γ(p)
+
+   La loi exponentielle d’intensité λ > 0 est la loi Gamma(1, λ). Si Z ∼ Gamma(p), alors pour
+tout r > −p,
+                                       Z +∞
+                              r     1                        Γ(p + r)
+                         E[Z ] =             e−x xp+r−1 dx =          ,                   (3)
+                                   Γ(p) 0                      Γ(p)
+50                                                              CHAPITRE 1. MODÈLES STATISTIQUES
+
+l’intégrale étant divergente pour r ≤ −p. Par changement d’échelle, si X ∼ Gamma(p, λ), alors
+E[X r ] = λ−r Γ(p + r)/Γ(p) pour r > −p.
+
+     Lemme 4.2: Convolution des lois Gamma
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes P        distribuées suivant des lois
+                                                                          n
+  Gamma(pi , λ),P    avec λ > 0 et pi > 0 pour i ∈ {1, . . . , n}. Alors i=1 Xi est distribuée suivant
+                       n
+  la loi Gamma( i=1 pi , λ).
+
+   Ce lemme se démontre par récurrence sur n, par exemple avec la méthode de la fonction
+muette (Section 2). En particulier, la somme X1 + X2 de deux variables aléatoires exponentielles
+indépendantes et de même paramètre θ suit une loi Gamma(2, θ) : en notant ⋆ le produit de
+convolution, E(θ) ⋆ E(θ) = Gamma(2, θ).
+
+   Proposition 4.1: Biais et erreur quadratique du premier estimateur des moments
+                            Pn
+  Pour tout θ ∈ Θ, sous Pθ , i=1 Xi ∼ Gamma(n, θ). Par conséquent, pour n ≥ 2,
+                                                                n
+                                               Eθ [θ̂n,1 ] =       θ,
+                                                               n−1
+  et, pour n ≥ 3,
+                                                                 n+2
+                                      Eθ [(θ̂n,1 − θ)2 ] =                  θ2 .
+                                                             (n − 1)(n − 2)
+
+
+     Démonstration
+  Sous P
+       P θ , les Xi sont indépendantes de loi Gamma(1, θ) ; le lemme de convolution montre que
+           n                                                θn
+  Y := i=1 Xi suit la loi Gamma(n, θ), de densité y 7→ (n−1)!    e−θy y n−1 sur R∗+ (rappelons que
+  Γ(n) = (n − 1)!). Comme θ̂n,1 = n/Y , la formule de transfert donne, pour n ≥ 2,
+                           hni       Z +∞
+                                               θn              n       n θn (n − 2)!    n
+        Eθ [θ̂n,1 ] = Eθ         =                   e−θy y n−1 dy =                 =     θ,
+                           Y         0      (n − 1)!           y     (n − 1)! θn−1     n−1
+                     R +∞
+  où l’on a utilisé 0 e−θy y n−2 dy = Γ(n − 1)/θn−1 ; cette intégrale diverge pour n = 1, auquel
+  cas Eθ [θ̂1,1 ] = Eθ [1/X1 ] = +∞. De même, pour n ≥ 3,
+                      Z +∞
+             2                    θn              n2       n2 θn (n − 3)!         n2
+       Eθ [θ̂n,1 ]=                     e−θy y n−1 2 dy =                 =                θ2 .
+                      0        (n − 1)!           y       (n − 1)! θn−2     (n − 1)(n − 2)
+
+  Il est important de remarquer que ces calculs reviennent à utiliser des renormalisations de lois
+  Gamma : d’après (3), pour Y ∼ Gamma(n, θ) et k ∈ N, Eθ [Y −k ] = θk Γ(n − k)/Γ(n) est fini
+  si et seulement si n > k. En développant le carré,
+
+             Eθ [(θ̂n,1 − θ)2 ] = Eθ [θ̂n,1
+                                        2
+                                            ] − 2θ Eθ [θ̂n,1 ] + θ2
+                                            n2              n
+                                 = θ2                − 2θ2      + θ2
+                                      (n − 1)(n − 2)       n−1
+                                      n2 − 2n(n − 2) + (n − 1)(n − 2)       n+2
+                                 = θ2                                 =                θ2 .
+                                               (n − 1)(n − 2)           (n − 1)(n − 2)
+
+                                                                                                    □
+
+
+  Remarque. L’estimateur θ̂n,1 est donc biaisé : son biais Eθ [θ̂n,1 ]P
+                                                                      − θ = θ/(n − 1) est strictement
+                                                                        n
+  positif, mais tend vers 0 quand n → +∞ ; l’estimateur (n − 1)/ i=1 Xi est, lui, sans biais. Le
+4. LES COMPLÉMENTS                                                                                         51
+
+                                   n+2
+  carré de l’erreur en moyenne, (n−1)(n−2) θ2 , est d’autant plus grand que θ est grand ; l’erreur
+                                      n+2
+  relative Eθ [(θ̂n,1 /θ − 1)2 ] = (n−1)(n−2) ne dépend pas, elle, de θ. On pourrait mener les mêmes
+  calculs pour le second estimateur des moments θ̂n,2 ; la figure ci-dessus suggère qu’il est moins
+  précis.
+
+Modèle de régression. Le Goddard Institute for Space Studies (GISS) de la NASA publie
+chaque année l’anomalie de température moyenne à l’échelle du globe, c’est-à-dire l’écart entre la
+température moyenne de l’année et celle de la période de référence 1951–1980. La série de 1880 à
+2022 est représentée ci-dessous.
+
+                         1.5
+
+
+
+
+                          1
+
+
+
+
+                         0.5
+
+
+
+
+                          0
+
+
+
+
+                      -0.5
+                        1880          1900      1920       1940        1960   1980   2000   2020
+
+
+
+ Anomalie de température moyenne à l’échelle du globe (en degrés Celsius), année par année de 1880 à
+    2022, par rapport à la période 1951–1980. Source : NASA, Goddard Institute for Space Studies
+                                            (GISTEMP).
+
+   Exemple 4.9: Construction du modèle
+    — Observations : les déviations des températures annuelles par rapport à la moyenne 1951–
+      1980, (x1 , . . . , xn ) ∈ Rn , où xi est l’anomalie de l’année d’indice i ; on note t(i) l’année
+      correspondante (l’index de temps).
+    — Modèle statistique paramétrique, dominé par la mesure de Lebesgue Leb⊗n , de densité
+                                                         n
+                                                         Y                                        
+                                                                   1           1               2
+                     p   β,σ 2   (x1 , . . . , xn ) :=         √         exp − 2 {xi − m(β, i)}        ,
+                                                         i=1       2πσ 2      2σ
+
+        où β ∈ Rp est un paramètre et, pour tout β ∈ Rp , i 7→ m(β, i) est une fonction donnée
+        (la tendance).
+    — Paramètre : θ := (β, σ 2 ) ∈ Θ := Rp × R∗+ .
+  Le modèle statistique est donc
+                                                                        
+                                          Rn , B(Rn ), pθ · Leb⊗n , θ ∈ Θ .
+
+    Hypothèses du modèle. Ici Z = Rn et Z = (X1 , . . . , Xn ) avec Xi (x1 , . . . , xn ) = xi pour i ∈
+{1, . . . , n}. La forme produit de la densité traduit trois hypothèses :
+  (i) pour tout θ ∈ Θ, les statistiques Xi et Xj , i ̸= j, sont indépendantes sous Pθ ;
+52                                                                       CHAPITRE 1. MODÈLES STATISTIQUES
+
+  (ii) sous Pθ , pour tout i ∈ {1, . . . , n}, la loi de Xi est gaussienne de variance σ 2 ;
+ (iii) sous Pθ , pour tout i ∈ {1, . . . , n}, la moyenne de Xi est m(β, i).
+Autrement dit, Xi = m(β, i) + εi où les erreurs ε1 , . . . , εn sont i.i.d. de loi N (0, σ 2 ). Ce sont des
+hypothèses de modélisation, qui peuvent (et doivent) être discutées :
+   — est-il raisonnable de supposer que la variance est constante au cours du temps (modèle
+       homoscédastique) ?
+   — a-t-on une bonne raison de penser que la distribution des erreurs est gaussienne ?
+   — les observations sont-elles indépendantes ? Pour une série chronologique, deux années consé-
+       cutives peuvent être liées par des phénomènes climatiques persistants.
+
+     Exemple 4.10: Tendance linéaire
+  Hypothèse 1 : tendance linéaire sur l’ensemble de la période,
+
+                               m(β, i) := β0 + β1 t(i) ,                 β = (β0 , β1 ) ∈ R2 ,
+
+  où t(i) est l’index de temps (ici p = 2). On construit un estimateur de β en minimisant l’erreur
+  quadratique (moindres carrés), puis on estime la variance à partir des résidus :
+                                                         n
+                                                         X
+                                       β̂ := arg min           (Xi − β0 − β1 t(i))2 ,
+                                                β∈R2     i=1
+                                                            n
+                                                            X
+                                      σ̂ 2 := (n − 2)−1            (Xi − β̂0 − β̂1 t(i))2 .
+                                                            i=1
+
+  Dans le modèle gaussien, minimiser l’erreur quadratique en β revient à maximiser la vraisem-
+  blance des observations. En effet,
+                                                                         n
+                                                      n               1 X
+                log pβ,σ2 (X1 , . . . , Xn ) = −        log(2πσ 2 ) − 2     (Xi − β0 − β1 t(i))2 ,
+                                                      2              2σ i=1
+
+  de sorte que, quelle que soit la valeur de σ 2 , le maximum en β est atteint en β̂ ; en maximisant
+  ensuite en σ 2 , on trouve
+                                                                                              n
+                                                                                              X
+            2                                                                   2
+     (β̂, σ̂MV )=     arg max         pβ,σ2 (X1 , . . . , Xn ) ,         avec σ̂MV := n−1           (Xi − β̂0 − β̂1 t(i))2 .
+                    (β,σ 2 )∈R2 ×R∗
+                                  +                                                           i=1
+
+  L’estimateur du maximum de vraisemblance de σ 2 est donc σ̂MV2
+                                                                   = n−2    2
+                                                                       n σ̂ ; la normalisation
+  par n−2 (nombre d’observations moins nombre de coefficients estimés) fait de σ̂ 2 un estimateur
+  sans biais de σ 2 , comme on le verra ci-dessous.
+
+   Proposition 4.2: Solution explicite des moindres carrés
+                  Pn                        Pn
+  Notons t̄ := n−1 i=1 t(i) et X̄n := n−1 i=1 Xi . Si les dates t(1), . . . , t(n) ne sont pas toutes
+  égales (au moins deux dates distinctes), la solution des moindres carrés est unique et explicite :
+                           Pn
+                                 (t(i) − t̄)(Xi − X̄n )
+                      βb1 = i=1Pn                  2
+                                                        ,    βb0 = X̄n − βb1 t̄ ,
+                                   i=1 (t(i) − t̄)
+
+  ou, de façon plus compacte,
+                                                                                               
+                                                               1          t(1)                X1
+                                                              ..           ..     et X :=  ...  .
+                b = (Φ⊤ Φ)−1 Φ⊤ X                                                                
+                β                              avec     Φ :=  .             . 
+                                                                     1    t(n)                        Xn
+4. LES COMPLÉMENTS                                                                                       53
+
+
+  La condition sur les dates équivaut à ce que Φ soit de rang 2, c’est-à-dire à l’inversibilité de
+  Φ⊤ Φ. L’estimateur de la variance s’écrit
+                                      n
+                                      X                                                   2
+                   σ̂ 2 = (n − 2)−1         {Xi − βb0 − βb1 t(i)}2 = (n − 2)−1 X − Φβ̂        .
+                                      i=1
+
+
+
+
+   Démonstration
+                                 2
+  La fonction β 7→ ∥X − Φβ∥ est une forme quadratique convexe, de gradient −2Φ⊤ (X − Φβ) ;
+  elle est strictement convexe dès que Φ⊤ Φ est inversible, et son unique minimum est alors
+                                            ⊤
+  caractériséPpar les équations
+                        P        normales
+                                     P Φ ΦβP      = Φ⊤ X. Explicitement,
+                                                               P           ces équations s’écrivent
+  nβ0 + β1 i t(i) = i Xi et β0 i t(i) + β1 Pi t(i)2 = i t(i)X      P i  ; la première donne β0 =
+  X̄n − β1 t̄ et, en reportant dans la seconde, β1 i (t(i) − t̄)2 = i (t(i) − t̄)(Xi − X̄n ).    □
+
+
+
+
+   Proposition 4.3: Lois des estimateurs
+  Pour tout (β, σ 2 ) ∈ R2 × R∗+ , sous Pβ,σ2 ,
+
+                                             
+                        b ∼ N β, σ 2 (Φ⊤ Φ)−1 ,             (n − 2) σ̂ 2
+                        β                                                ∼ χ2 (n − 2) ,
+                                                                σ2
+                      b et σ̂ 2 sont indépendantes. En particulier, Eβ,σ2 [β]
+  et les statistiques β                                                    b = β et Eβ,σ2 [σ̂ 2 ] = σ 2 .
+
+
+
+
+    Ces résultats découlent du théorème de Cochran, énoncé dans le cours principal (voir l’énoncé),
+                                                                      b est la projection orthogonale
+que nous ne redémontrons pas ici : sous Pβ,σ2 , X ∼ N (Φβ, σ 2 In ), Φβ
+de X sur l’image de Φ, sous-espace de dimension 2, et X − Φβ    b est sa projection sur l’orthogonal
+de ce sous-espace, de dimension n − 2. Le modèle de régression linéaire gaussienne est l’objet de
+l’exercice 4 de la PC1, poursuivi en PC 2.
+
+
+
+
+               1
+
+
+             0.5
+
+
+               0
+
+
+             -0.5
+               1880       1900         1920        1940      1960      1980       2000        2020
+   Anomalie de température moyenne à l’échelle du globe par rapport à la période 1951–1980 (NASA,
+   GISS), en bleu, et droite t 7→ βb0 + βb1 t ajustée par moindres carrés, en rouge. La pente estimée est
+ β1 = 0,0072 ◦ C par an, avec un écart-type estimé seβ1 = 0,0008 ◦ C par an ; l’écriture βb1 ± seβ1 est une
+ b
+  estimation accompagnée de son écart-type estimé et non un intervalle de confiance (un intervalle de
+           confiance à 95 % serait βb1 ± 1,96 seβ1 , soit environ de 0,0056 à 0,0088 ◦ C par an).
+54                                                                   CHAPITRE 1. MODÈLES STATISTIQUES
+
+             0.5
+
+
+
+
+               0
+
+
+
+
+             -0.5
+               1880       1900        1920           1940            1960      1980      2000   2020
+Résidus de l’ajustement linéaire, R̂i := Xi − β̂0 − β̂1 t(i), en fonction de l’année. Si le modèle à tendance
+linéaire était adéquat, les résidus devraient se comporter comme un bruit sans structure ; on observe au
+   contraire des résidus négatifs sur de longues périodes (1905–1930, 1950–1980) et positifs aux deux
+extrémités de la série et autour de 1940, ce qui suggère que la tendance n’est pas linéaire sur l’ensemble
+                                                de la période.
+
+     Exemple 4.11: Modèle avec rupture de pente
+  Hypothèse 2 : rupture de pente à une date inconnue. On pose
+                                            
+  m(β, i) := β0 + β1 t(i) + β2 t(i) − t(β3 ) 1{i>β3 } , β = (β0 , β1 , β2 , β3 ) ∈ R3 × {1, . . . , n} .
+  La tendance est ainsi affine par morceaux et continue : de pente β1 jusqu’à la date t(β3 ), puis
+  de pente β1 + β2 ensuite ; le paramètre β3 est l’indice de la date de rupture. On construit les
+  estimateurs en minimisant l’erreur quadratique,
+                                                               n
+                                                               X
+                                   β̂ :=      arg min                (Xi − m(β, i))2 ,
+                                           β∈R3 ×{1,...,n}     i=1
+                                                 n
+                                                 X
+                                  σ̂ 2 := n−1          (Xi − m(β̂, i))2 ,
+                                                 i=1
+
+  ce qui fournit, par le même argument que pour la tendance linéaire, l’estimateur du maximum
+  de vraisemblance
+                              (β̂, σ̂ 2 ) = arg max pβ,σ2 (X1 , . . . , Xn ) .
+                                                     β,σ 2
+
+  Le paramètre β3 étant discret, la minimisation se fait en deux temps.
+                                                                                          Pn
+    (i) Pour β3 – la position de la rupture de pente – fixé, le critère (β0 , β1 , β2 ) 7→ i=1 (Xi −
+        m(β, i))2 est à nouveau un critère de moindres carrés linéaire, et les paramètres
+        (β0 , β1 , β2 ) peuvent être calculés de façon explicite :
+                                                   
+                                          β̂0 (β3 )                    −1
+                             β̂(β3 ) :=  β̂1 (β3 )  = Φ(β3 )⊤ Φ(β3 )     Φ(β3 )⊤ X ,
+                                          β̂2 (β3 )
+        où                                                                              
+                                             1               t(1)              0
+                                            ..                ..              ..         
+                                            .                  .               .         
+                                                                                         
+                                            1           t(β3 )                0          
+                                 Φ(β3 ) := 
+                                            1
+                                                                                           ,
+                                                      t(β3 + 1)       t(β3 + 1) − t(β3 ) 
+                                                                                          
+                                            .             ..                   ..        
+                                            ..             .                    .        
+                                                 1           t(n)         t(n) − t(β3 )
+        pourvu que Φ(β3 ) soit de rang 3, ce qui impose au moins deux dates distinctes de part
+        et d’autre de la rupture ; en pratique, on restreint donc β3 à un ensemble de valeurs
+        admissibles.
+4. LES COMPLÉMENTS                                                                                                                   55
+
+
+   (ii) On estime ensuite β3 en maximisant la vraisemblance profilée β3                             7→
+                                                                                                 −n/2
+        max(β0 ,β1 ,β2 ,σ2 ) pβ,σ2 (X1 , . . . , Xn ). À β3 fixé, ce maximum vaut 2πe RSS(β3 )/n
+                                                           2
+           avec RSS(β3 ) := X − Φ(β3 ) β̂(β3 ) ; c’est une fonction décroissante de la somme des
+           carrés des résidus, de sorte que maximiser la vraisemblance profilée revient à minimiser
+           cette somme :
+                                                                       2
+                                     β̂3 := arg min X − Φ(β3 ) β̂(β3 ) ,
+                                                    β3 ∈{1,...,n}
+                                  
+           puis β̂ = β̂(β̂3 ), β̂3 . Cette dernière minimisation se fait par simple énumération des
+           valeurs admissibles de β3 .
+
+
+
+
+   Illustration / animation : La vraisemblance profilée désigne la position de
+   rupture qui minimise les résidus
+   Vous pouvez retester ici, pour chaque position candidate de rupture, l’ajuste-
+   ment obtenu et la vraisemblance profilée associée, dont le maximum désigne
+   la position de rupture retenue.                                                                                          link
+
+
+
+
+       2
+                                                                    0.25
+
+     1.9                                                             0.2
+
+                                                                    0.15
+     1.8
+                                                                     0.1
+
+     1.7                                                            0.05
+
+                                                                       0
+     1.6
+                                                                    -0.05
+
+     1.5                                                             -0.1
+
+                                                                    -0.15
+     1.4
+                                                                     -0.2
+
+     1.3                                                            -0.25
+       1900      1920    1940         1960      1980        2000        1880   1900   1920   1940    1960   1980     2000     2020
+                                                                                                2
+  À gauche : somme des carrés des résidus RSS(β3 ) = X − Φ(β3 )β̂(β3 )                              en fonction de l’année de
+ rupture t(β3 ), pour les années de rupture admissibles de 1900 à 2003 ; la vraisemblance profilée en est
+une fonction décroissante, et son maximum, atteint vers 1975, correspond au minimum de la courbe. À
+   droite : résidus Xi − m(β̂, i) du modèle avec rupture de pente, qui ne présentent plus la structure
+                                    observée pour la tendance linéaire.
+
+               1.5
+
+                 1
+
+               0.5
+
+                 0
+
+               -0.5
+                 1880      1900              1920        1940           1960          1980          2000           2020
+ Anomalie de température moyenne à l’échelle du globe par rapport à la période 1951–1980 (NASA,
+GISS), en bleu, et tendance ajustée i 7→ m(β̂, i) du modèle avec rupture de pente, en rouge : une pente
+                   faible jusqu’au milieu des années 1970, puis nettement plus forte.
+56                                                           CHAPITRE 1. MODÈLES STATISTIQUES
+
+Systèmes de recommandation. Les plateformes de diffusion de films ou de musique et les
+sites de vente en ligne cherchent à prédire l’intérêt d’un utilisateur pour un produit qu’il n’a pas
+encore noté, à partir des notes déjà attribuées par l’ensemble des utilisateurs.
+
+
+
+
+Extrait d’une matrice de notes : chaque ligne correspond à un utilisateur et chaque colonne à un film. Les
+    notes observées vont de 1 à 5 ; les points d’interrogation signalent les notes manquantes, que l’on
+        souhaite prédire pour recommander à chaque utilisateur les films susceptibles de lui plaire.
+
+     Exemple 4.12: Une formalisation statistique possible
+     — m1 : le nombre de sujets (utilisateurs) ;
+     — m2 : le nombre d’objets (films, produits, etc.) ;
+     — Y : la matrice m1 × m2 dont l’entrée Yi,j est la note du sujet i au produit j ;
+     — données : les notes Yi,j pour (i, j) ∈ I, où I ⊂ {1, . . . , m1 } × {1, . . . , m2 } est l’ensemble
+       des couples pour lesquels une note est observée, et
+
+                               n = nombre d’observations = card(I) ≪ m1 m2 .
+
+  Les notes prennent leurs valeurs dans {1, . . . , K} (K = 5 dans l’illustration). On suppose
+  que les notes Yi,j , (i, j) ∈ I, sont indépendantes et que Yi,j suit une loi catégorielle (loi
+  multinomiale d’ordre 1) sur {1, . . . , K}, de probabilités
+
+                                           exp(θi,j,ℓ )
+                         Pθ (Yi,j = ℓ) = PK                ,          ℓ ∈ {1, . . . , K} .
+                                          k=1 exp(θi,j,k )
+
+  Par convention, on fixe θi,j,K = 0 : autrement le modèle n’est pas identifiable, puisque rempla-
+  cer (θi,j,1 , . . . , θi,j,K ) par (θi,j,1 +c, . . . , θi,j,K +c) ne change pas ces probabilités. Le paramètre
+  est θ = (θi,j,ℓ ) pour (i, j) ∈ {1, . . . , m1 } × {1, . . . , m2 } et ℓ ∈ {1, . . . , K − 1}. L’espace des ob-
+  servations est Z := {1, . . . , K}I , muni de la tribu de ses parties, et la densité de l’observation
+  par rapport à la mesure de comptage µ sur Z est
+                                                K
+                                                                                 !1{y
+                                                                                        i,j =ℓ}
+                                             Y Y              exp(θi,j,ℓ )
+                      pθ {yi,j }(i,j)∈I =                  PK                                     .
+                                            (i,j)∈I ℓ=1       k=1 exp(θi,j,k )
+
+                                                     
+  Le modèle statistique est Z, P(Z), {pθ · µ , θ ∈ Θ} avec Θ = Rm1 ×m2 ×(K−1) .
+4. LES COMPLÉMENTS                                                                                      57
+
+    Une hypothèse sur la structure de θ. Tel quel, le modèle comporte (K − 1) m1 m2 paramètres
+réels pour seulement n ≪ m1 m2 observations, et les paramètres θi,j,· des couples (i, j) ∈    / I n’ap-
+paraissent même pas dans la densité : sans hypothèse supplémentaire, les données n’apportent
+aucune information sur les notes manquantes. Il est donc nécessaire de faire une hypothèse sur la
+structure de θ, qui soit raisonnable pour l’application considérée, et plusieurs possibilités existent.
+Considérons pour simplifier des notes binaires, K = 2 (par exemple « j’aime » ou « je n’aime
+pas ») : avec la convention θi,j,2 = 0, il reste un seul paramètre θi,j := θi,j,1 par couple (i, j),
+
+                                                         exp(θi,j )
+                                     Pθ (Yi,j = 1) =                  ,
+                                                       1 + exp(θi,j )
+
+et θ = (θi,j ) est une matrice m1 × m2 . L’hypothèse de rang faible exprime que les préférences des
+utilisateurs sont des mélanges d’un petit nombre q de comportements « prototypes », c’est-à-dire
+que la matrice θ est de rang au plus q :
+
+                             θ = UV ⊤ ,       U ∈ Rm1 ×q ,      V ∈ Rm2 ×q ,
+
+soit θi,j = ⟨ui , vj ⟩, où ui ∈ Rq (la i-ème ligne de U ) décrit l’utilisateur i et vj ∈ Rq (la j-ème ligne
+de V ) décrit le produit j dans un même espace de « facteurs latents ». Le nombre de paramètres est
+                                                                                                         ⊤
+alors q(m1 + m2 ), à q 2 près : la factorisation n’est pas unique, puisque U V ⊤ = (U A) V (A−1 )⊤
+pour toute matrice inversible A de taille q×q, et l’ensemble des matrices de rang q est de dimension
+q(m1 + m2 ) − q 2 . Le rang q est souvent choisi de telle sorte que
+
+                                      q(m1 + m2 ) ≪ n ≪ m1 m2 .
+
+Seule la matrice θ, et non le couple (U, V ), est identifiable ; c’est bien elle, c’est-à-dire l’ensemble
+des probabilités Pθ (Yi,j = 1) pour tous les couples (i, j), qui importe pour la recommandation.
+   Recommandation.
+  — Estimer les matrices U et V , ou plutôt leur produit θ = U V ⊤ , à partir des notes observées.
+    Dans ce cas, comme dans la plupart des applications « réelles », il n’y a pas de méthode
+    d’estimation « élémentaire » : les méthodes générales (maximum de vraisemblance, méthode
+    des moments) sont l’objet du cours 2.
+  — Imputer les données manquantes : pour (i, j) ∈         / I, la note Yi,j n’a pas été observée, mais
+    l’estimation θ̂i,j = ⟨ûi , v̂j ⟩ fournit une prédiction de la probabilité que le sujet i apprécie le
+    produit j ; on lui recommande alors les produits pour lesquels cette probabilité est la plus
+    élevée.
+  — C’est la base des systèmes de recommandation ou de filtrage collaboratif : les notes des autres
+    utilisateurs, à travers les facteurs latents partagés, renseignent sur les goûts de chacun. Dans
+    un système opérationnel, il y a bien entendu un certain nombre de raffinements à apporter,
+    mais le principe est celui-là.
+
+Pour aller plus loin : mesures de domination et modèles non dominés
+    La mesure de domination peut être choisie de multiples façons. Soient µ et ν deux me-
+sures σ-finies distinctes sur (Z, Z). Supposons que le modèle statistique paramétrique (Z, Z, C) =
+(Z, Z, {Pθ , θ ∈ Θ}) est dominé par rapport à µ et à ν. Cette hypothèse implique que, pour tout
+θ ∈ Θ, nous pouvons associer deux fonctions mesurables positives, pθ et qθ telles que
+
+                                          Pθ = pθ · µ = q θ · ν .
+
+La fonction pθ est la densité de Pθ par rapport à µ et qθ est la densité de Pθ par rapport à ν. Il
+est facile de montrer que ces deux densités diffèrent d’un facteur multiplicatif. Le raisonnement
+élémentaire est le suivant. Notons tout d’abord que les mesures σ-finies µ et ν sont absolument
+continues par rapport à λ := µ + ν. En effet, pour tout B ∈ Z, λ(B) = µ(B) + ν(B) = 0 implique
+que µ(B) = 0 et ν(B) = 0. En appliquant le ??, il existe donc des fonctions mesurables positives
+58                                                       CHAPITRE 1. MODÈLES STATISTIQUES
+
+m et n, uniques à une λ-équivalence près, telles que µ = m · λ et ν = n · λ. Nous avons donc, pour
+tout θ ∈ Θ,
+
+                             P θ = pθ · µ = p θ m · λ = q θ · ν = q θ n · λ ,
+
+et donc pour tout θ ∈ Θ, pθ m = qθ n    λ-p.p. Posons Z0 = {z ∈ Z , m(z) > 0}. Notons que
+                                             Z
+                                   µ(Zc0 ) =    m(z)λ(dz) = 0 ,
+                                               Zc0
+
+et donc, pour tout θ ∈ Θ, Pθ (Zc0 ) = 0. Pour tout z ∈ Z0 et θ ∈ Θ, nous avons
+                                                     n(z)
+                                  pθ (z) = qθ (z)         ,   λ − p.p.
+                                                     m(z)
+
+  Remarque. (Experte, et pas du tout au programme.) L’identité précédente ne vaut que λ-
+  presque partout : une densité n’est définie qu’à un ensemble négligeable près, et l’argument
+  montre que le facteur n/m ne dépend pas de θ. L’invariance des points de maximum de la
+  vraisemblance, invoquée dans les fondamentaux et au chapitre 2, vaut donc pour des versions
+  fixées des densités. La réserve n’est pas gratuite : la vraisemblance s’évalue aux points observés,
+  qui forment eux-mêmes un ensemble négligeable pour les lois à densité, et modifier chaque
+  pθ sur un ensemble µ-négligeable qui dépend de θ produit une autre famille de versions, tout
+  aussi légitime, dont les points de maximum peuvent être différents. Y. Baraud et L. Birgé
+  (Rho-estimators revisited : general theory and applications, Annals of Statistics, vol. 46, 2018,
+  proposition 1) construisent ainsi, dans le modèle {N (θ, 1) , θ ∈ R} dominé par µ = N (0, 1), des
+  versions des densités modifiées au seul point z = θ pour lesquelles l’estimateur du maximum
+  de vraisemblance vaut max(X1 , . . . , Xn ) avec une probabilité qui tend vers un, quelle que soit
+  la vraie valeur du paramètre : la consistance est perdue. Les versions continues des densités,
+  utilisées dans tout ce cours, écartent cette pathologie. Merci à Matthieu Lerasle pour cette
+  référence.
+     Les deux exemples qui suivent sont plus avancés et peuvent être omis en première lecture.
+
+     Exemple 4.13
+  Un exemple où il n’existe pas de mesure dominante est la famille paramétrique {Pθ = δθ , θ ∈
+  Θ = R}, où δθ est la mesure de Dirac au point θ. Cet exemple correspond à l’“expérience
+  parfaite” où une seule réalisation de la loi permet de déterminer sans erreur la valeur du
+  paramètre. Montrons que ce modèle n’est pas dominé. Nous procédons par contradiction et
+  supposons que ce modèle est dominé par une mesure σ-finie µ. Alors, nous avons µ({θ}) > 0
+  pour tout θ ∈ Θ (car Pθ ≪ µ et Pθ ({θ}) > 0), ce qui est impossible car une mesure σ-finie a
+  au plus un nombre dénombrable d’atomes.
+  Nous allons prouver cette dernière propriété par contradiction. CommeSµ est σ-finie, il existe
+                                                                          ∞
+  une suite {Fk , k ∈ N} telle que µ(Fk ) < ∞ pour tout k ∈ N, et R = k=1 Fk . On note I =
+               S∞ > 0} et on rappelle que, par hypothèse, cet ensemble n’est pas dénombrable.
+  {θ ∈ R : µ({θ})
+  Comme I = k=1 Fk ∩ I, il existe n ∈ N tel que I ∩ Fn est non dénombrable.
+                                                                    S∞         Pour tout p ∈ N,
+  notons alors Ip = {θ ∈ I ∩ Fn : µ({θ}) > 1/p}. Comme I ∩ Fn = p=1 Ip , il existe q ∈ N tel
+  que Iq est non dénombrable. En particulier, Iq est donc infini. Pour tout sous-ensemble J de
+  cardinal N de Iq , nous avons
+                                                          X                N
+                            µ(Fn ) ≥ µ(Iq ) ≥ µ(J) =            µ({θ}) ≥     .
+                                                                           p
+                                                          θ∈J
+
+  Comme p est fixé et que N peut être choisi arbitrairement grand, nous avons nécessairement
+  µ(Fn ) = ∞, ce qui conduit à une contradiction.
+4. LES COMPLÉMENTS                                                                           59
+
+  Exemple 4.14
+ Un exemple plus subtil est donné par le modèle statistique dont la famille de lois est donnée
+ par
+                       X∞
+                 Pθ =      e−k δθk , où θ ∈ Θ = R+ \ {0} est le paramètre.
+                       k=1
+
+ Dans ce cas, la loi de l’observation est non dégénérée (réduite à un point). Le modèle n’est
+ pas dominé car là aussi, toute mesure de domination aurait alors nécessairement une infinité
+ non dénombrable d’atomes.
+

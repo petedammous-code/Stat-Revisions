@@ -1,0 +1,1241 @@
+Chapitre 3
+
+Bases de la théorie de la décision
+
+   Le chapitre précédent a construit des estimateurs sans dire lequel choisir. Or
+   un même modèle en admet toujours plusieurs, et un estimateur, pour être utile,
+   doit être « proche », en un certain sens, de la quantité qu’il estime. Ce chapitre
+   définit les outils qui permettent de comparer deux estimateurs et d’établir des
+   bornes quantitatives sur leur performance : le biais, la fonction de perte,
+   le risque, l’erreur quadratique moyenne et sa décomposition en biais et
+   variance, puis l’admissibilité. Comme le risque est une fonction du paramètre,
+   la comparaison ne fournit qu’un ordre partiel ; il faut restreindre la classe des
+   estimateurs pour espérer une notion d’optimalité, et l’on retient la classe des
+   estimateurs sans biais.
+   Dans cette classe, la variance est minorée. C’est l’objet de la seconde moitié
+   du chapitre : le modèle régulier, le score, l’information de Fisher et le
+   théorème de Cramér-Rao, qui borne inférieurement la variance de tout
+   estimateur sans biais régulier. Un estimateur qui atteint cette borne est dit
+   efficace ; il est alors de variance minimale parmi les estimateurs sans biais.
+   La partie principale suit le déroulé du cours en amphi. Elle est suivie d’une
+   partie Outils mathématiques, qui rassemble les prérequis mobilisés, comme l’in-
+   égalité de Cauchy-Schwarz, dérivation sous le signe intégral, matrice hessienne
+   et matrices symétriques positives, décomposition biais-variance vectorielle, puis
+   de la feuille d’exercices, et enfin d’une partie Compléments, hors programme
+   d’examen, qui donne le cadre général de la théorie de la décision, les approches
+   minimax et bayésienne, la caractérisation des estimateurs efficaces et l’estima-
+   teur à rétrécissement.
+
+
+Comment comparer deux estimateurs ?
+    Un estimateur ponctuel de g(θ) est une statistique quelconque (définition du chapitre 2) : la
+seule contrainte est d’être calculable à partir des observations. Le chapitre précédent a donné deux
+méthodes pour en construire, la méthode des moments et le maximum de vraisemblance, et l’on a
+vu qu’un même modèle peut en fournir plusieurs, sans que rien ne dise lequel retenir. Par exemple,
+on a vu deux estimateurs des moments dans le modèle exponentiel, et un estimateur des moments
+et un estimateur du maximum de vraisemblance qui ne coïncident pas dans le modèle uniforme.
+    Il existe donc de nombreux estimateurs ; lequel est le meilleur, et cette question a-t-elle seule-
+ment un sens ? Y répondre demande d’abord de mesurer l’erreur commise, ce qui se fait par une
+fonction de perte et le risque associé, puis de comparer ces mesures d’un estimateur à l’autre. On
+verra que cette comparaison n’est pas simple, et peut échouer en général, parce que le risque est
+une fonction du paramètre inconnu, et que l’ordre sur les fonctions n’est pas total, et que l’on doit
+se restreindre à une sous-classe d’estimateurs pour obtenir un résultat d’optimalité. C’est dans la
+
+                                                  7
+8                                CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+classe des estimateurs sans biais que le chapitre pourra aboutir, avec la borne de Cramér-Rao, un
+des plus beaux résultats de statistique mathématique élementaire.
+1. LES FONDAMENTAUX                                                                                        9
+
+1      Les fondamentaux
+1.1      Un exemple pour commencer : le paramètre de translation
+   Avant toute définition, il est utile de voir sur un exemple ce que veut dire « comparer des esti-
+mateurs ». Le modèle de translation, déjà rencontré au chapitre 2, s’y prête bien : nos observations
+sont des réalisations d’une variable aléatoire de loi Qθ , qui correspond à une valeur inconnue θ à
+laquelle s’ajoute un bruit de loi connue (de densité p), et l’on dispose de plusieurs façons naturelles
+de récupérer la valeur inconnue à partir des mesures.
+
+     Exemple 1.1: Estimation d’un paramètre de translation
+    Soit p une densité de probabilité sur R, symétrique au sens où p(x) = p(−x) pour tout x. On
+    considère le modèle
+                                                         
+                   R, B(R), {Qθ = qθ · Leb , θ ∈ Θ := R} ,       qθ (x) := p(x − θ) ,
+
+    et (X1 , . . . , Xn ) un n-échantillon de ce modèle. De façon équivalente, Xi = θ + εi où les bruits
+    εi sont indépendants de densité p : on mesure une vraie valeur à laquelle s’ajoute un bruit
+    de densité connue, et l’on cherche à estimer le paramètre de centrage θ. Trois estimateurs se
+    présentent :
+                                       (1)        Pn
+       1. la moyenne empirique θ̂n := n−1 i=1 Xi ;
+                                   (2)
+       2. la médiane empirique θ̂n := med(X1 , . . . , Xn ) ;
+                                       (3)
+       3. la demi-somme des extrêmes θ̂n := min(X1 , . . . , Xn ) + max(X1 , . . . , Xn ) /2.
+                                                                                         
+
+    Les deux premiers ont été identifiés au chapitre 2 comme des Z-estimateurs, associés respec-
+    tivement à ψ(ϑ, x) = x − ϑ et à ψ(ϑ, x) = signe(x − ϑ) (Exemple 1.6).
+
+   Aucun de ces trois estimateurs ne s’impose. Pour les départager, on peut simuler : on tire
+m = 1000 échantillons de taille n = 100 sous Q0 , on calcule les trois estimateurs sur chaque
+échantillon, et l’on compare les distributions obtenues. Les deux figures ci-dessous donnent le
+résultat pour un bruit gaussien puis pour un bruit de Laplace.
+
+
+
+
+Distribution des trois estimateurs sur m = 1000 échantillons de taille n = 100, pour un bruit gaussien de
+                                2
+   densité p(x) = (2π)−1/2 e−x /2 (à gauche) et pour un bruit de Laplace de densité p(x) = e−|x| /2 (à
+ droite). Les trois estimateurs se concentrent autour de la vraie valeur θ = 0, mais leur dispersion n’est
+                        pas la même, et l’ordre entre eux change d’un bruit à l’autre.
+
+
+Intuition. Les valeurs des variances asymptotiques, c’est-à-dire les limites de n fois la variance de
+l’estimateur lorsque n tend vers l’infini, peuvent permettre de comparer les estimateurs, mais dans un
+cadre asymptotique : elles ne décrivent le graphique qu’approximativement, et leur justification sera donnée
+au cours 6. Pour un bruit gaussien centré réduit, la moyenne empirique a une variance de l’ordre de 1/n
+et la médiane empirique de l’ordre de π/(2n) : la moyenne est la meilleure des deux. Pour un bruit de
+10                                  CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+Laplace de densité e−|x| /2, dont la variance vaut 2, la moyenne empirique a une variance de l’ordre de
+2/n tandis que la médiane empirique a une variance asymptotique 1/(4np(0)2 ) = 1/n : c’est cette fois la
+médiane qui l’emporte. Le meilleur estimateur dépend donc du modèle, et il n’y a aucune raison qu’un
+même estimateur soit préférable dans tous les cas.
+
+
+
+
+     Illustration / animation : Comparer les trois estimateurs du paramètre de
+     translation, pour un bruit choisi parmi les quatre lois de l’exemple
+     Vous pouvez y tirer des échantillons sous chacune des quatre lois de bruit
+     et observer, sur des répétitions, comment la moyenne empirique, la médiane
+     empirique et la demi-somme des extrêmes se dispersent différemment autour              link
+     de la vraie valeur selon le bruit choisi.
+
+
+    Ces simulations ne constituent pas une comparaison : elles décrivent le comportement des
+estimateurs pour une seule valeur du paramètre et pour une seule taille d’échantillon. Il faut une
+mesure de la qualité d’un estimateur, définie pour toute valeur du paramètre. Les deux notions
+qui suivent, le biais puis le risque, fournissent de premiers exemples.
+
+
+1.2     Biais d’un estimateur
+   La première mesure compare l’estimateur à sa cible en moyenne : si l’on répétait l’expérience
+un grand nombre de fois, l’estimateur tomberait-il en moyenne sur la bonne valeur ?
+
+     Définition 1.1: Biais d’un estimateur
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique, g : Θ → Rp une fonction
+  mesurable et T un estimateur de g : θ 7→ g(θ) tel que Eθ [∥T (Z)∥] < ∞ pour tout θ ∈ Θ. Le
+  biais de T est la fonction
+
+                                b : θ 7−→ b(θ, T ) := Eθ [T (Z)] − g(θ) .
+
+  L’estimateur T est dit sans biais si b(θ, T ) = 0 pour tout θ ∈ Θ, c’est-à-dire si Eθ [T (Z)] = g(θ)
+  pour tout θ ∈ Θ.
+
+    Le biais d’un estimateur est une fonction du paramètre, et non un nombre : un estimateur peut
+être sans biais en un point et biaisé ailleurs, et la définition de « sans biais » exige l’égalité pour
+toutes les valeurs du paramètre.
+
+     Exemple 1.2: Modèle de Bernoulli : la fréquence empirique est sans biais
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle {0, 1}, P({0, 1}), {Ber(θ) , θ ∈ Θ :=P
+                                                                                          [0, 1]} .
+                                                                                                 
+                                                                                            n
+  Comme Eθ [Xi ] = θ pour tout i, on a Eθ [X̄n ] = θ : la fréquence empirique X̄n = n−1 i=1 Xi
+  est un estimateur sans biais de θ. Plus généralement, dès que Eθ [|X1 |] < ∞ pour tout θ, la
+  moyenne empirique est un estimateur sans biais de l’espérance g(θ) := Eθ [X1 ].
+
+
+    Exemple 1.3: Modèle uniforme : le maximum est biaisé
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle R+ , B(R+ ), U ([0, θ]) , θ ∈ Θ := R∗+ , dont
+                                                                                           
+
+  l’estimateur du maximum de vraisemblance est Xn:n = max(X1 , . . . , Xn ) (chapitre 2,
+  Exemple 1.11). Cet estimateur est biaisé, et son biais vaut −θ/(n + 1) : il sous-estime systé-
+  matiquement le paramètre, ce qui n’a rien d’étonnant puisque Xn:n ≤ θ presque sûrement. Le
+  calcul est repris en détail à l’Exemple 1.9 et fait l’objet de l’Exercice 1 (PC3).
+1. LES FONDAMENTAUX                                                                                    11
+
+   L’exemple suivant montre qu’un estimateur naturel peut être biaisé sans que cela se voie : la
+variance empirique doit être normalisée correctement pour être sans biais.
+
+   Exemple 1.4: Variance empirique : quelle normalisation ?
+  Reprenons un n-échantillon d’un modèle R, B(R), {Pθ , θ ∈ Θ} tel que Eθ [X12 ] < ∞ pour
+                                                               
+
+  tout θ, et cherchons à estimer la variance g(θ) := Varθ (X1 ). L’estimateur naturel, qui
+  est aussi l’estimateur du maximum de vraisemblance dans le modèle gaussien (chapitre 2,
+  Exemple 1.10), est
+                                             n
+                                          1X
+                                  σ̂n2 :=       (Xi − X̄n )2 .
+                                          n i=1
+  Pour tout a ∈ R, un développement direct donne
+               n                    n                            n
+            1X                   1X                           1X
+                  (Xi − X̄n )2 =       (Xi − a)2 − 2(X̄n − a)       (Xi − a) + (X̄n − a)2
+            n i=1                n i=1                        n i=1
+                                       n
+                                   1X
+                                 =       (Xi − a)2 − (X̄n − a)2 .
+                                   n i=1
+
+  En appliquant cette identité avec a = Eθ [X1 ] puis en prenant l’espérance sous Pθ , il vient
+                         n
+                      1X                                            Varθ (X1 )   n−1
+       Eθ [σ̂n2 ] =         Varθ (Xi ) − Varθ (X̄n ) = Varθ (X1 ) −            =     Varθ (X1 ) ,
+                      n i=1                                            n          n
+
+  de sorte que le biais de σ̂n2 vaut − Varθ (X1 )/n. L’estimateur
+                                                        n
+                                                   1 X
+                                        Sn2 :=             (Xi − X̄n )2
+                                                 n − 1 i=1
+
+  est, lui, sans biais : c’est la raison de la normalisation par n − 1.
+
+   Être sans biais est une contrainte, et non une propriété gratuite : il existe des fonctions du
+paramètre qu’aucun estimateur n’estime sans biais.
+
+   Exemple 1.5: Une fonction sans estimateur sans biais
+  Considérons le modèle binomial {0, . . . , n}, P({0, . . . , n}), {Bin(n, θ) , θ ∈ Θ := ]0, 1]} , où n
+                                                                                                 
+
+  est connu, et cherchons à estimer g(θ) = 1/θ. Pour tout estimateur T , l’observation Z suivant
+  la loi Bin(n, θ),
+                                           n  
+                                          X      n
+                             Eθ [T (Z)] =          T (k) θk (1 − θ)n−k .                             (1)
+                                                 k
+                                                 k=0
+
+  Vue comme fonction de θ sur ]0, 1], cette quantité est un polynôme, donc bornée. Or g(θ) = 1/θ
+  tend vers +∞ quand θ tend vers 0 : aucune fonction mesurable T ne peut vérifier Eθ [T (Z)] =
+  g(θ) pour tout θ. Il n’existe donc pas d’estimateur sans biais de 1/θ dans ce modèle. La relation
+  (1) dit en fait davantage : une fonction g admet un estimateur sans biais si et seulement si
+  c’est un polynôme en θ de degré au plus n, et cet estimateur est alors unique. Ce point est
+  démontré dans les compléments (Section 4).
+
+
+  Remarque. Le biais mesure une erreur systématique : il dit de combien l’estimateur se trompe
+  en moyenne, mais ne dit rien de sa dispersion. Un estimateur sans biais peut être très mauvais :
+  l’observation X1 seule est un estimateur sans biais de l’espérance, aussi bon en moyenne que
+  X̄n et bien plus dispersé. Par ailleurs, on le verra, un estimateur biaisé peut être préférable à un
+12                                  CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+  estimateur sans biais. Le biais n’est donc qu’une des deux composantes de l’erreur ; la seconde
+  est la variance, et c’est leur combinaison que mesure le risque quadratique.
+
+
+1.3     Perte et risque d’un estimateur
+    Pour comparer deux estimateurs, on se donne d’abord une façon de chiffrer l’erreur commise
+lorsqu’on répond a alors que la bonne réponse est g(θ) : c’est la fonction de perte. Le risque est la
+valeur moyenne de cette perte sous la loi des observations.
+
+     Définition 1.2: Risque d’un estimateur
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique avec Θ ⊆ Rd , et T : (Z, Z) →
+  (Rp , B(Rp )) un estimateur de g : θ 7→ g(θ). Soit ℓ : Θ × Rp → R+ une fonction de perte,
+  mesurable en sa seconde variable. Le risque de l’estimateur T pour la perte ℓ est
+                                                        
+                             Rℓ (θ, T ) := Eθ ℓ(θ, T (Z)) ,  θ∈Θ.
+
+    Les pertes usuelles se construisent à partir d’une distance W : Rp × Rp → R+ en posant
+ℓ(θ, a) := W (g(θ), a) : la perte représente alors l’écart entre la valeur à estimer et l’action choisie.
+Deux choix reviennent constamment.
+
+     Exemple 1.6: Pertes quadratique et absolue
+  Pour l’estimation d’une fonction g : Θ → Rp ,
+                                                        2    Pp                     2
+      — la perte quadratique est ℓ2 (θ, a) := ∥a − g(θ)∥2 =     i=1 a
+                                                                      (i)
+                                                                          − g(θ)(i) , associée au
+        carré de la norme euclidienne ;
+                                                       Pp
+      — la perte absolue est ℓ1 (θ, a) := ∥a − g(θ)∥1 = i=1 a(i) − g(θ)(i) , associée à la norme 1.
+
+    Cette définition est un cas particulier d’une définition plus générale, celle du risque d’une
+règle de décision, dans laquelle l’estimateur est remplacé par une application à valeurs dans un
+espace d’actions quelconque. Ce cadre, qui contient aussi les tests d’hypothèses, est donné dans
+les compléments (Section 4) ; tout ce qui suit s’y transpose sans changement.
+
+  Remarque. Le choix de la perte n’est pas neutre : il encode ce que l’on considère comme une
+  erreur grave. La perte quadratique pénalise beaucoup les grands écarts, ce qui la rend sensible
+  aux valeurs extrêmes ; la perte absolue les pénalise proportionnellement. Le fait qu’une même
+  paire d’estimateurs puisse être classée dans un sens pour l’une et dans l’autre sens pour l’autre
+  n’est pas une pathologie : la question « quel est le meilleur estimateur ? » n’a de sens qu’une
+  fois la perte fixée. Dans tout ce chapitre, sauf mention contraire, c’est la perte quadratique qui
+  est retenue.
+
+1.4     Erreur quadratique moyenne et décomposition biais-variance
+  Le risque associé à la perte quadratique est appelé risque quadratique ou erreur quadratique
+moyenne. Comme il est employé dans toute la suite, on le note simplement R, sans indice.
+
+     Définition 1.3: Risque quadratique, erreur quadratique moyenne
+  Soit T un estimateur de g : Θ → R tel que Eθ [T (Z)2 ] < ∞ pour tout θ ∈ Θ. Le risque associé
+  à la perte quadratique,
+
+                          R(θ, T ) := Rℓ2 (θ, T ) = Eθ (T (Z) − g(θ))2 ,
+                                                                     
+
+
+  est appelé risque quadratique, ou erreur quadratique moyenne, de l’estimateur T .
+1. LES FONDAMENTAUX                                                                                         13
+
+    Comme le biais, l’erreur quadratique moyenne d’un estimateur est une fonction du paramètre.
+Elle se décompose en deux termes, dont l’un est le carré du biais.
+
+   Proposition 1.1: Décomposition biais-variance
+  Sous les hypothèses de la Définition 1.3, pour tout θ ∈ Θ,
+                                                                        2
+                                   R(θ, T ) = Varθ (T (Z)) + b(θ, T )        ,
+
+  où b(θ, T ) = Eθ [T (Z)] − g(θ) est le biais de T .
+
+
+   Démonstration
+  En insérant Eθ [T (Z)] et en développant,
+                                  h                                        2 i
+                     R(θ, T ) = Eθ T (Z) − Eθ [T (Z)] + Eθ [T (Z)] − g(θ)
+                                  h                    2 i                     2
+                              = Eθ T (Z) − Eθ [T (Z)]       + Eθ [T (Z)] − g(θ)
+                                                                              
+                                  + 2 Eθ [T (Z)] − g(θ) Eθ T (Z) − Eθ [T (Z)]
+                                                       2
+                              = Varθ (T (Z)) + b(θ, T ) ,
+
+  le double produit étant nul puisque Eθ [T (Z) − Eθ [T (Z)]] = 0 et que Eθ [T (Z)] − g(θ) est un
+  nombre.                                                                                       □
+
+    La version vectorielle de cette décomposition, portant sur la matrice Eθ [(T (Z) − g(θ))(T (Z) −
+g(θ))⊤ ], dont l’énoncé ci-dessus se déduit en prenant la trace, est donnée dans les outils (Proposi-
+tion 2.3).
+Intuition. La décomposition sépare deux sources d’erreur de nature différente. La variance mesure l’insta-
+bilité de l’estimateur d’un échantillon à l’autre ; le biais mesure son décalage systématique. Un estimateur
+sans biais a un risque quadratique égal à sa variance, ce qui explique pourquoi, dans la classe des estima-
+teurs sans biais, minimiser le risque revient à minimiser la variance. En revanche, rien n’oblige à annuler
+le biais : accepter un peu de biais pour réduire beaucoup la variance peut faire baisser le risque total, comme
+le montrent l’Exemple 1.8 et l’estimateur à rétrécissement des compléments (Section 4).
+
+    Dans l’exemple interactif qui suit, on effectue une telle décomposition sur l’estimateur à ré-
+trécissement, qui consiste à multiplier un estimateur sans biais par un facteur γ ∈ [0, 1] pour le
+tirer vers zéro. On va voir qu’une telle opération, quoique source de biais, peut réduire le risque
+quadratique pour certaines valeurs de θ.
+
+
+
+    Illustration / animation : Le risque de Tγ se décompose en biais au carré
+    et en variance, qui varient en sens opposés avec γ
+    On illustre ici, sur la famille Tγ = γT , la décomposition biais-variance et le
+    risque R(γ, θ), en déplaçant γ, θ et la taille de l’échantillon, et en superposant
+    à la distribution empirique de Tγ sur des tirages répétés la valeur vraie et la               link
+    valeur estimée.
+
+
+
+   Exemple 1.7: Modèle de Poisson : erreur quadratique moyenne de la moyenne empirique
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle N, P(N), Poi(λ) , λ ∈ R∗+ , dont l’estima-
+                                                                              
+
+  teur du maximum de vraisemblance de λ est λ̂n = X̄n (chapitre 2, Exemple 1.9). Comme
+14                                        CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+  Eλ [X1 ] = λ, cet estimateur est sans biais, et la décomposition biais-variance donne
+
+                                                                    Varλ (X1 )  λ
+                                   R(λ, λ̂n ) = Varλ (X̄n ) =                  = .
+                                                                       n        n
+  Le risque décroît en n−1 et croît avec λ : le paramètre est d’autant plus difficile à estimer qu’il
+  est grand.
+
+
+    L’exemple suivant compare les deux estimateurs de la variance de l’Exemple 1.4 et montre que
+l’estimateur biaisé a le plus petit risque quadratique.
+
+     Exemple 1.8: Estimation de la variance dans le modèle gaussien
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle
+
+                            R, B(R), N (µ, σ 2 ) , θ = (µ, σ 2 ) ∈ Θ := R × R∗+
+                                                                               
+                                                                                  ,
+
+  et comparons, pour n ≥ 2, les risques quadratiques des deux estimateurs Sn2 et σ̂n2 de g(θ) = σ 2 .
+  Le théorème de Gosset (chapitre 1, Théorème 1.3) donne la loi de (n − 1)Sn2 /σ 2 , à savoir
+  χ2 (n − 1), dont la variance vaut 2(n − 1) ; il s’ensuit
+
+                                          2σ 4                                         2σ 4
+                          Varθ (Sn2 ) =        ,          et donc       R(θ, Sn2 ) =        ,
+                                          n−1                                          n−1
+
+  puisque Sn2 est sans biais. Comme σ̂n2 = n−1
+                                            n Sn , on a
+                                               2
+
+
+                               n−1 2                               (n − 1)2 2σ 4   2(n − 1)σ 4
+                Eθ [σ̂n2 ] =      σ ,             Varθ (σ̂n2 ) =           ·     =             ,
+                                n                                     n2     n−1       n2
+  d’où, par la décomposition biais-variance,
+                          n − 1             2       2(n − 1)σ 4  σ4  2(n − 1)σ 4   (2n − 1)σ 4
+          R(θ, σ̂n2 ) =            σ2 − σ2        +         2
+                                                                  = 2+       2
+                                                                                   =             .
+                               n                          n        n       n             n2
+  La différence des deux risques vaut
+
+                                                   2σ 4   (2n − 1)σ 4   (3n − 1)σ 4
+                   R(θ, Sn2 ) − R(θ, σ̂n2 ) =           −       2
+                                                                      =             >0,
+                                                   n−1        n          (n − 1)n2
+
+  et ceci pour toute valeur de θ. L’estimateur σ̂n2 est biaisé, mais son risque quadratique est
+  strictement plus petit que celui de Sn2 : le carré du biais est plus que compensé par la réduction
+  de variance. Pour le risque quadratique, l’estimateur sans biais Sn2 n’est donc pas le meilleur.
+
+
+    Le dernier exemple de cette série reprend le modèle uniforme, où le maximum de vraisemblance
+est biaisé, et calcule les risques de toute une famille d’estimateurs.
+
+   Exemple 1.9: Estimation du support d’une loi uniforme
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle R+ , B(R+ ), U ([0, θ]) , θ ∈ Θ := R∗+ , et
+                                                                                           
+
+  considérons la statistique d’ordre Xn:n = max(X1 , . . . , Xn ).
+  Loi de Xn:n . Pour tout θ ∈ Θ et tout x ∈ [0, θ], par indépendance,
+
+                           Pθ (Xn:n ≤ x) = Pθ (X1 ≤ x, . . . , Xn ≤ x) = (x/θ)n ,
+
+  de sorte que Xn:n admet la densité x 7→ n xn−1 /θn sur [0, θ].
+1. LES FONDAMENTAUX                                                                                    15
+
+
+  Biais. Il vient                                  Z θ
+                                                             n xn−1       n
+                                    Eθ [Xn:n ] =         x          dx =     θ,
+                                                     0         θn        n+1
+  donc b(θ, Xn:n ) = −θ/(n + 1), et
+                                                             n+1
+                                                  Tn(1) :=       Xn:n
+                                                              n
+  est un estimateur sans biais de θ.              Rθ
+  Risque de la famille a Xn:n . Comme Eθ [Xn:n
+                                           2
+                                               ] = 0 x2 nxn−1 θ−n dx = nθ2 /(n + 2), on a pour
+  tout a ∈ R
+                                nθ2          nθ           n na2   2an   o
+           Eθ (aXn:n − θ)2 = a2                 + θ2 = θ2
+                         
+                                    − 2aθ ·                     −     +1 .
+                                n+2         n+1            n+2 n+1
+  L’accolade est un trinôme en a de coefficient dominant strictement positif, dont le minimum
+  est atteint en an := (n + 2)/(n + 1), et ceci quelle que soit la valeur de θ. Pour ce choix, le
+  risque vaut
+                                                       θ2
+                                   R θ, an Xn:n =             ,
+                                                     (n + 1)2
+                (1)
+  tandis que Tn , qui correspond à a = (n + 1)/n, a un risque strictement plus grand pour tout
+                               (1)
+  θ. L’estimateur sans biais Tn n’est donc pas le meilleur estimateur de la famille.
+  Vitesse. Le risque de ces estimateurs décroît en n−2 , et non en n−1 comme dans les exemples
+  précédents. On reviendra sur ce point à l’Exemple 1.16.
+
+    Ces calculs, ainsi que la comparaison complète des estimateurs de la famille, font l’objet de
+l’Exercice 1 (PC3).
+
+1.5    Comparer des risques : admissibilité
+   On dispose maintenant, pour chaque estimateur, d’une fonction du paramètre qui mesure
+sa qualité. Comparer deux estimateurs, c’est comparer deux fonctions ; or deux fonctions ne se
+comparent pas toujours, et c’est là toute la difficulté.
+   Le risque définit un ordre partiel sur l’espace des estimateurs : on dit que T est préférable à T ′ ,
+ou uniformément meilleur que T ′ pour la perte ℓ, si
+                                  Rℓ (θ, T ) ≤ Rℓ (θ, T ′ )      pour tout θ ∈ Θ .
+On dit que T est uniformément optimal pour la perte ℓ s’il est uniformément meilleur que tout
+autre estimateur. Deux estimateurs dont les fonctions de risque se croisent ne sont, eux, pas
+comparables. La définition suivante retient la propriété la plus faible que l’on puisse exiger.
+
+   Définition 1.4: Admissibilité
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique et ℓ une fonction de perte. Un estimateur T
+  de g : Θ → Rp est dit inadmissible (pour la perte ℓ) s’il existe un estimateur T ∗ tel que
+
+                      Rℓ (θ, T ∗ ) ≤ Rℓ (θ, T )                    pour tout θ ∈ Θ ,
+                              ∗
+                      Rℓ (θ, T ) < Rℓ (θ, T )                      pour au moins un θ ∈ Θ .
+
+  Un estimateur qui n’est pas inadmissible est dit admissible : c’est un élément maximal pour
+  l’ordre partiel induit par la fonction de risque.
+
+
+Intuition. La différence entre les deux notions se comprend sur une analogie. Dire que je suis admissible
+parmi les élèves de la promotion, c’est dire qu’il n’existe pas d’élève qui ait une meilleure note que moi
+16                                    CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+dans toutes les matières ; dire que je suis uniformément optimal, c’est dire que je suis le meilleur dans
+toutes les matières. La première propriété est facile à obtenir et n’apprend presque rien – il suffit d’être le
+meilleur dans une matière ; la seconde est très forte, et l’on va voir qu’elle est en général hors d’atteinte.
+    L’admissibilité est un prérequis un peu minimal : dire qu’un estimateur est inadmissible signifie
+qu’il en existe un autre dont le risque est partout inférieur, et qui est strictement meilleur quelque
+part – il n’y a alors aucune raison de garder le premier. C’est ainsi que l’Exemple 1.8 montre que
+                                                                           (1)
+Sn2 est inadmissible dans le modèle gaussien, et l’Exemple 1.9 que Tn est inadmissible dans le
+modèle uniforme. En revanche, il existe en général beaucoup d’estimateurs incomparables, et des
+estimateurs admissibles parfaitement indésirables.
+
+     Exemple 1.10: Un estimateur admissible mais indésirable
+  Considérons un n-échantillon du modèle de Bernoulli,
+
+                      {0, 1}n , P({0, 1}n ), Ber(θ)⊗n , θ ∈ Θ := [0, 1] ,
+                                                                       
+
+
+  le risque quadratique, et l’estimation de θ. Fixons ϑ ∈ ]0, 1[ et considérons l’estimateur
+  constant θ̂ϑ : Z 7→ ϑ. Son risque vaut
+
+                                     R(θ, θ̂ϑ ) = (θ − ϑ)2 ,     θ∈Θ,
+
+  et il s’annule en θ = ϑ. Cet estimateur est admissible. En effet, supposons qu’il soit inad-
+  missible : il existerait alors un estimateur T tel que R(θ, T ) ≤ R(θ, θ̂ϑ ) pour tout θ, donc
+  en particulier R(ϑ, T ) = 0. Compte tenu de la perte quadratique, cela signifie T (Z) = ϑ Pϑ -
+  presque sûrement, donc T (z) = ϑ pour tout z ∈ {0, 1}n , puisque Pϑ charge tous les points de
+  {0, 1}n dès que ϑ ∈ ]0, 1[ ; ainsi T = θ̂ϑ , et l’inégalité stricte demandée par la définition ne peut
+  être réalisée en aucun point. L’estimateur constant est donc admissible, alors qu’il n’estime
+  correctement qu’une seule valeur du paramètre et ignore complètement les observations.
+  Ce contre-exemple montre du même coup qu’il n’existe pas d’estimateur uniformément optimal
+  pour le risque quadratique. Si T ⋆ était uniformément optimal, on aurait, pour tout ϑ ∈ ]0, 1[,
+  R(ϑ, T ⋆ ) ≤ R(ϑ, θ̂ϑ ) = 0, donc T ⋆ serait constant égal à ϑ pour toute valeur de ϑ, ce qui est
+  impossible. Le résultat s’étend à d’autres pertes, à d’autres modèles statistiques dominés et à
+  d’autres fonctions du paramètre.
+
+
+
+
+     Illustration / animation : Le risque quadratique compare les estimateurs
+     point par point, et deux courbes peuvent se croiser
+     L’animation accessible par le QR code ci-contre permet de choisir un modèle
+     et plusieurs estimateurs à la fois, afin de tracer leur risque en fonction de θ et
+     de voir directement lequel domine l’autre, ou si aucun ordre ne s’impose entre               link
+     eux.
+
+
+
+1.6     Restreindre la classe des estimateurs
+    Puisqu’aucun estimateur n’est uniformément optimal parmi tous les estimateurs, deux voies
+s’ouvrent. La première consiste à changer de critère, en agrégeant la fonction de risque en un
+seul nombre : c’est ce que font l’approche minimax, qui retient le risque dans le pire des cas, et
+l’approche bayésienne, qui en fait une moyenne pondérée par une loi a priori. Ces deux approches
+sont définies dans les compléments (Section 4) et ne sont pas développées ici. La seconde voie, celle
+que suit ce chapitre, consiste à restreindre la classe des estimateurs : on cherche un estimateur
+optimal, non plus parmi tous, mais parmi ceux d’une classe assez petite pour que l’optimum existe,
+et assez grande pour qu’il soit intéressant.
+1. LES FONDAMENTAUX                                                                                    17
+
+   Trois restrictions reviennent souvent.
+  1. Absence de biais : on cherche l’estimateur de risque quadratique minimal dans la classe des
+     estimateurs sans biais. C’est la restriction retenue dans la suite de ce chapitre ; elle exclut
+     en particulier l’estimateur constant.
+  2. Invariance sous l’action d’un groupe de transformations : on cherche le meilleur estimateur
+     dans une classe possédant une propriété d’invariance. Dans un modèle de translation, par
+     exemple, on se limite aux estimateurs vérifiant T (x1 + c, . . . , xn + c) = c + T (x1 , . . . , xn )
+     pour tout c ; le risque d’un tel estimateur ne dépend alors pas du paramètre, ce qui rend la
+     comparaison immédiate (Section 4).
+  3. Linéarité : on cherche le meilleur estimateur dans la classe  Pn des estimateurs obtenus par
+     transformation affine des observations, T (X1 , . . . , Xn ) = i=1 ai Xi + b.
+   L’exemple suivant combine les deux dernières idées et donne le premier résultat d’optimalité
+du chapitre.
+
+   Exemple 1.11: Meilleur estimateur linéaire sans biais de l’espérance
+  Soit (X1 , . . . , Xn ) un n-échantillon d’un modèle R, B(R), {Pθ , θ ∈ Θ} tel que Eθ [X12 ] < ∞
+                                                                                
+
+  pour tout θ, et cherchons à estimer g(θ) := Eθ [X1 ] en nous limitant aux estimateurs de la
+  forme
+                            n
+                            X                                                 n
+                                                                              X
+                     µ̂α :=    α i Xi ,   α = (α1 , . . . , αn ) ∈ Rn tel que   αi = 1 .
+                       i=1                                                         i=1
+
+  Notons σ (θ) := Varθ (X1 ). La contrainte i αi = 1 assure que µ̂α est sans biais, donc, par la
+           2
+                                               P
+  décomposition biais-variance et par indépendance des observations,
+                                                                     n
+                                                                     X
+                                R(θ, µ̂α ) = Varθ (µ̂α ) = σ 2 (θ)         αi2 .
+                                                                     i=1
+
+  Le risque est minimisé,
+                   P 2 pour toute valeur de θ simultanément, par les poids de somme 1
+  qui minimisent     i αi . Par l’inégalité de Cauchy-Schwarz (Proposition 2.1), ou par stricte
+  convexité de la fonction carré,
+                                           n              n
+                                       1 X 2  1 X 2
+                                            α ≥       αi ,
+                                       n i=1 i  n i=1
+
+  avec égalité si et seulement si α1 = · · · = αn ; la somme valant 1, le minimum est atteint en
+  α1⋆ = · · · = αn⋆ = 1/n. La moyenne empirique est donc le meilleur estimateur linéaire sans
+  biais de l’espérance, au sens du risque quadratique. Si de plus σ 2 (θ) > 0 pour au moins un θ,
+  tout µ̂α avec α ̸= (1/n, . . . , 1/n) est inadmissible.
+
+   L’Exercice 4 (PC3) reprend cette question dans un modèle de translation, en levant la contrainte
+d’absence de biais.
+   Dans la classe des estimateurs sans biais, la décomposition biais-variance réduit le risque qua-
+dratique à la variance, ce qui conduit à la définition suivante.
+
+   Définition 1.5: Estimateur sans biais de variance minimale
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique, g : Θ → R une fonction et T, T ′ des estima-
+  teurs sans biais de g(θ), de carré intégrable.
+    — On dit que T est uniformément meilleur que T ′ si Varθ (T (Z)) ≤ Varθ (T ′ (Z)) pour tout
+      θ ∈ Θ.
+    — On dit que T est un estimateur sans biais de variance minimale, en abrégé E.S.B.V.M.,
+      s’il est uniformément meilleur que tout estimateur sans biais de g(θ).
+18                                    CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+    Un estimateur E.S.B.V.M. est donc optimal au sein de la classe des estimateurs sans biais
+de g(θ). Reste à savoir comment en exhiber un. La stratégie de la fin du chapitre est indirecte :
+on établit une borne inférieure valable pour la variance de tout estimateur sans biais, et tout
+estimateur sans biais qui atteint cette borne est automatiquement E.S.B.V.M..
+
+
+Résumé. Le fil de cette première moitié de chapitre peut se résumer ainsi. On veut parler
+d’optimalité d’un estimateur ; on définit pour cela une perte, puis le risque associé, par exemple
+le risque quadratique. On obtient un risque pour chaque valeur du paramètre, donc une fonction,
+et comparer des fonctions n’est pas immédiat. On définit alors l’admissibilité, qui n’est qu’un
+prérequis minimal, et l’on constate que des estimateurs triviaux sont admissibles et qu’aucun
+estimateur n’est uniformément optimal. Il faut donc restreindre la classe des estimateurs : c’est la
+classe des estimateurs sans biais que l’on retient.
+
+1.7    Une borne inférieure pour la variance : le calcul
+   Avant d’écrire les hypothèses, faisons le calcul qui conduit à la borne : c’est lui qui dicte les
+hypothèses à poser, et non l’inverse. On travaille sur un modèle (Z, Z, {pθ · µ , θ ∈ Θ}) où Θ est
+un ouvert de R, et l’on se donne un estimateur T sans biais de θ. L’absence de biais s’écrit, pour
+tout θ ∈ Θ,                                     Z
+                               θ = Eθ [T (Z)] =   T (z) pθ (z) µ(dz) .
+                                                      Z
+Dérivons les deux membres par rapport à θ, en admettant provisoirement que la dérivation puisse
+se faire sous le signe intégral :
+                          ∂                                  ∂
+                Z                            Z
+           1=       T (z) pθ (z) µ(dz) =         T (z) − θ       pθ (z) µ(dz)
+                  Z       ∂θ                   Z              ∂θ
+                                ∂                                              ∂
+                Z                                                    h                         i
+                                               
+             =       T (z) − θ      log pθ (z) pθ (z) µ(dz) = Eθ T (Z) − θ           log pθ (Z) ,
+                  Z              ∂θ                                               ∂θ
+où la deuxième égalité utilise Z ∂θ pθ (z) µ(dz) = ∂θ Z pθ (z) µ(dz) = ∂θ 1 = 0, encore une dérivation
+                                  R                       R
+
+sous le signe intégral. En élevant au carré et en appliquant l’inégalité de Cauchy-Schwarz,
+                                    h ∂               2 i                       ∂             
+         1 ≤ Eθ (T (Z) − θ)2 · Eθ
+                               
+                                            log pθ (Z)      = Varθ (T (Z)) · Varθ      log pθ (Z) ,
+                                       ∂θ                                          ∂θ
+la première égalité parce que T est sans biais, la seconde parce que la dérivée de la log-vraisemblance
+est d’espérance nulle sous Pθ , comme on vient de le voir. La variance de l’estimateur est donc
+minorée, en tout point, par l’inverse d’une quantité qui ne dépend que du modèle et du paramètre.
+    Le même calcul, mené pour un estimateur T sans biais de g(θ) au lieu de θ, donne
+                                          h              ∂            i
+                              g ′ (θ) = Eθ T (Z) − g(θ)      log pθ (Z) ,
+                                                          ∂θ
+puis
+                                                         {g ′ (θ)}2
+                                   Varθ (T (Z)) ≥                      .
+                                                    Varθ ∂θ log pθ (Z)
+
+Intuition. Ce calcul est remarquable par ce qu’il produit : une borne inférieure valable pour tous les esti-
+mateurs sans biais à la fois, alors que la statistique fournit d’ordinaire des bornes supérieures sur l’erreur
+d’un estimateur particulier. Il dit qu’aucun estimateur sans biais, aussi ingénieux soit-il, ne descendra en
+dessous d’un certain niveau de variance, fixé par le modèle seul. Encore faut-il donner un sens à chacune
+des étapes : les deux dérivations sous le signe intégral ne sont licites que sous des hypothèses de domi-
+nation, et l’inégalité de Cauchy-Schwarz demande des moments d’ordre 2. La suite du chapitre pose ces
+hypothèses (qui sont la régularité du modèle et celle de l’estimateur), et nomme les deux quantités qui
+apparaissent (le score et l’information de Fisher) et énonce le résultat sous sa forme générale.
+1. LES FONDAMENTAUX                                                                                    19
+
+
+  Remarque. Disposer d’une borne inférieure pour la variance de tout estimateur sans biais est
+  un très beau résultat. La statistique, est fondamentalement, l’étude de l’information contenue
+  dans les données : être capable de “quantifier” cette information, en obtenant des résultats
+  d’optimalité d’un estimateur, est un résultat très puissant.
+
+
+
+1.8     Modèles réguliers
+   Le calcul précédent demande que la densité dépende du paramètre de façon suffisamment
+régulière pour qu’on puisse la dériver, et que cette dérivation puisse s’échanger avec l’intégrale.
+C’est ce qu’exprime la définition suivante, où les conditions techniques sont écrites sous forme de
+dominations locales.
+   Rappelons d’abord deux notations, employées dans cette définition et dans toute la suite. Si
+F : Θ × Z → R est telle que θ 7→ F (θ, z) soit deux fois dérivable, on note HF (θ, z) sa matrice
+hessienne, de terme général ∂ 2 F/∂θ(i) ∂θ (j)
+                                               (θ, z). Si A ∈ Matd (R), on note ∥A∥ sa norme de
+                           2
+Frobenius, définie par ∥A∥ := Tr A A . Ces deux objets sont repris dans les outils (Section 2).
+                                      ⊤
+                                         
+
+
+   Définition 1.6: Modèle régulier
+  Soit (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle paramétrique, où Θ est un ouvert de Rd . Ce modèle
+  est dit régulier s’il satisfait les propriétés suivantes.
+      (i) Le modèle est dominé par une mesure σ-finie µ sur (Z, Z), de densité pθ pour tout θ ∈ Θ,
+          c’est-à-dire Pθ = pθ · µ. On pose alors, pour tout θ ∈ Θ et tout z ∈ Z,
+
+                                              ℓ(θ, z) := log pθ (z) .                               (2)
+
+   (ii) Pour µ-presque tout z ∈ Z, la fonction θ 7→ pθ (z) est deux fois continûment différentiable
+        sur Θ.
+   (iii) Pour tout θ0 ∈ Θ, il existe un voisinage V0 de θ0 dans Θ et deux fonctions mesurables
+         positives h0 , h1 : (Z, Z) → R+ telles que
+                                       Z
+                                         {1 + h1 (z)} h0 (z) µ(dz) < ∞                     (3)
+                                        Z
+
+         et, pour tout θ ∈ V0 et µ-presque tout z ∈ Z,
+                                2
+                    ∥∇θ ℓ(θ, z)∥ ≤ h1 (z) ,       ∥Hℓ (θ, z)∥ ≤ h1 (z) ,    pθ (z) ≤ h0 (z) .       (4)
+
+   (iv) Pour tout θ ∈ Θ, la matrice Eθ [Hℓ (θ, Z)], bien définie par la condition (iii), est inversible.
+
+
+  Remarque. Les slides du cours donnent une version allégée de cette définition, où seules
+  trois conditions sont demandées : la différentiabilité      continue de θ 7→ pθ (z), la validité de
+  la dérivation sous le signe intégral ∇θ pθ (z)µ(dz) = ∇θ pθ (z)µ(dz) = 0, et la finitude de
+                                            R                  R
+                2
+    ∥∇θ ℓ(θ, z)∥ pθ (z)µ(dz). Ces trois conditions suffisent à démontrer le théorème de Cramér-
+  R
+
+  Rao ; les conditions ci-dessus, plus fortes, sont celles qui permettent en outre d’écrire l’informa-
+  tion de Fisher à l’aide de la hessienne (Proposition 1.2 (ii)), expression qui rend les calculs bien
+  plus courts en pratique.
+
+    Toutes les conditions ci-dessus portent sur la dépendance de la densité en le paramètre, et non
+sur la régularité de z 7→ pθ (z) : c’est la variation de θ 7→ pθ (z) qui est en jeu. La vérification est
+fastidieuse mais généralement sans surprise, et l’on admettra le plus souvent la régularité dans les
+exercices.
+20                                    CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+     Exemple 1.12: Quels modèles sont réguliers ?
+  Les modèles   suivants   sont réguliers : le modèle exponentiel   E(θ) , θ ∈ R∗+ , le modèle gaus-
+                                                                  
+
+  sien N (µ,
+            σ ) , (µ, σ ) ∈ R × R+ , le modèle de Bernoulli {Ber(θ) , θ ∈ ]0, 1[}, le modèle de
+                2          2          ∗
+       
+
+  Poisson Poi(θ) , θ ∈ R∗+ et le modèle géométrique {G(θ) , θ ∈ ]0, 1[}, où G(θ) désigne la loi
+  du rang du premier succès     dans une suite de tirages de Bernoulli indépendants de paramètre θ.
+  Le modèle uniforme U ([0, θ]) , θ ∈ R∗+ , en revanche, n’est pas régulier. Sa densité par rap-
+                          
+
+  port à la mesure de Lebesgue est pθ (x) = θ−1 1[0,θ] (x) ; pour x > 0 fixé, la fonction θ 7→ pθ (x)
+  est nulle sur ]0, x[ et vaut 1/θ sur [x, +∞[, donc discontinue en θ = x. La condition (ii) est en
+  défaut, et déjà la simple différentiabilité.
+
+   Noter que l’espace des paramètres doit être ouvert pour qu’il soit question de dériver par
+rapport au paramètre : c’est pourquoi le modèle de Bernoulli est ici écrit sur ]0, 1[ et non sur [0, 1].
+
+
+1.9     Score et information de Fisher
+   Un modèle régulier autorise à dériver la log-vraisemblance par rapport au paramètre. Cette
+dérivée porte un nom : elle indique dans quelle direction, et avec quelle intensité, la vraisemblance
+d’une observation change quand on déplace le paramètre.
+
+     Définition 1.7: Log-vraisemblance et score
+  Soit (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle régulier. Pour tout θ ∈ Θ et tout z ∈ Z, on appelle
+  log-vraisemblance la fonction ℓ(θ, z) := log pθ (z) définie en (2), et score le gradient
+
+                                        S(θ, z) := ∇θ ℓ(θ, z) ∈ Rd .
+
+
+Intuition. En dimension 1, le score évalué en une observation z est la pente de la log-vraisemblance au
+point θ : il dit de combien la log-vraisemblance de cette observation augmente ou diminue si l’on déplace un
+peu le paramètre. En dimension d, c’est un gradient, qui pointe dans la direction où la log-vraisemblance
+croît le plus vite. La proposition qui suit établit qu’en moyenne sous Pθ , cette quantité est nulle : si, pour
+une observation, la log-vraisemblance croît quand le paramètre augmente, il existe d’autres observations
+pour lesquelles la même variation la fait décroître, et les deux effets se compensent exactement. Ce qui
+reste, une fois la moyenne annulée, c’est la dispersion du score : des valeurs souvent grandes en valeur
+absolue signifient qu’une petite variation du paramètre change beaucoup la vraisemblance des observations,
+donc que les observations sont discriminantes et le paramètre facile à cerner. C’est cette dispersion que
+mesure l’information de Fisher.
+
+
+     Définition 1.8: Information de Fisher
+  L’information de Fisher du modèle régulier (Z, Z, {pθ · µ , θ ∈ Θ}) est la fonction I : Θ →
+  Matd (R) définie par
+
+                    I(θ) := Eθ ∇θ ℓ(θ, Z) ∇θ ℓ(θ, Z)⊤ = Eθ S(θ, Z) S(θ, Z)⊤ .              (5)
+                                                                        
+
+
+    Cette matrice est bien définie et ne dépend pas du choix de la mesure dominante ; c’est l’objet
+du Lemme 2.1 des outils. Comme le score est d’espérance nulle sous Pθ , l’information de Fisher
+est la matrice de covariance du score sous Pθ ; en dimension 1, c’est simplement sa variance,
+                                          h ∂             2 i                 
+                              I(θ) = Eθ          ℓ(θ, Z)          = Varθ S(θ, Z) .
+                                            ∂θ
+1. LES FONDAMENTAUX                                                                                       21
+
+
+                      Point d’histoire : Ronald Aylmer Fisher (1890-1962)
+                      Fisher arrive en 1919 à Rothamsted, station d’agronomie au nord de Londres,
+                      avec plusieurs décennies de relevés d’essais de fertilisation à dépouiller. Il en
+                      tire la planification des expériences, l’analyse de la variance et le maximum de
+                      vraisemblance, nommé dans ses articles de 1922 et 1925, qui introduisent aussi
+                      la quantité d’information portant son nom : on la retrouvera au dénominateur
+                      de la borne démontrée plus loin.
+                      Portrait : Wikimedia Commons, domaine public.
+
+
+
+
+  Proposition 1.2: Propriétés du score et de l’information de Fisher
+ Soit (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle statistique régulier. Les propriétés suivantes sont véri-
+ fiées.
+   (i) Pour tout θ ∈ Θ, le score est d’espérance nulle :
+
+                                                                                                    (6)
+                                                      
+                                         Eθ ∇θ ℓ(θ, Z) = 0 .
+
+  (ii) L’information de Fisher admet l’expression alternative
+
+                                                                                                    (7)
+                                                          
+                                      I(θ) = −Eθ Hℓ (θ, Z) .
+
+  (iii) Soient deux modèles réguliers (Z1 , Z1 , {P1,θ , θ ∈ Θ}) et (Z2 , Z2 , {P2,θ , θ ∈ Θ}) de
+        même espace de paramètres, d’informations de Fisher I1 et I2 . L’information de Fisher
+        I12 du modèle produit
+                                                                        
+                              Z1 × Z2 , Z1 ⊗ Z2 , {P1,θ ⊗ P2,θ , θ ∈ Θ}
+
+       vérifie I12 (θ) = I1 (θ) + I2 (θ) pour tout θ ∈ Θ. En particulier, si (X1 , . . . , Xn ) est un
+       n-échantillon du modèle régulier M = (X, X , {qθ · µ , θ ∈ Θ}), alors, pour tout θ ∈ Θ et
+       tout n ≥ 1,
+                                            IMn (θ) = n IM (θ) .
+
+
+ Remarque. L’information de Fisher est une caractéristique du modèle, et non du seul para-
+ mètre : la notation complète serait I(M, θ), où M désigne le modèle. On écrit I(θ) lorsque
+ le modèle est clair d’après le contexte, I1 (θ) ou IM (θ) pour l’information associée à une seule
+ observation, et IMn (θ) pour celle du n-échantillon. Le point (iii) énonce alors que l’information
+ de Fisher est additive pour des observations indépendantes : l’information du n-échantillon vaut
+ n fois celle d’une observation.
+
+ Remarque. Pour tout z ∈ Z et tout θ ∈ Θ, la matrice ∇θ ℓ(θ, z) ∇θ ℓ(θ, z)⊤ est symétrique
+ et semi-définie positive ; l’information de Fisher, qui en est l’espérance, l’est donc aussi. Par
+ l’expression (7) et la condition (iv) de la Définition 1.6, elle est de plus inversible, donc définie
+ positive. C’est ce qui donne un sens à I(θ)−1 dans l’énoncé du théorème de Cramér-Rao.
+
+  Démonstration
+ Commençons par noter que, pour tout θ ∈ Θ et µ-presque tout z ∈ Z,
+                                                      1
+                                     ∇θ ℓ(θ, z) =          ∇θ pθ (z) ;                              (8)
+                                                    pθ (z)
+22                                   CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+  en différenciant une seconde fois,
+               1                   1                              1
+  Hℓ (θ, z) =       Hp (θ, z) −         ∇θ pθ (z) ∇θ pθ (z)⊤ =         Hp (θ, z) − ∇θ ℓ(θ, z) ∇θ ℓ(θ, z)⊤ .
+             pθ (z)             pθ (z)2                         pθ (z)
+                                                                                                        (9)
+  On peut alors écrire, pour tout θ ∈ Θ,
+                    Z                              Z                          Z
+                                                                     (∗)
+  Eθ ∇θ ℓ(θ, Z) =      ∇θ ℓ(θ, z) pθ (z) µ(dz) =      ∇θ pθ (z) µ(dz) = ∇θ pθ (z) µ(dz) = ∇θ 1 = 0 ,
+                      Z                             Z                         Z
+
+  ce qui établit (i), sous réserve que l’interversion (∗) soit justifiée. De même, en intégrant (9)
+  contre pθ µ,
+                         Z                    Z
+                                                                                 (∗∗)
+                            Hp (θ, z) µ(dz) − ∇θ ℓ(θ, z) ∇θ ℓ(θ, z)⊤ pθ (z) µ(dz) = 0 − I(θ) ,
+                    
+       Eθ Hℓ (θ, Z) =
+                          Z                     Z
+
+  ce quiR établit (ii), sous réserve que l’interversion (∗∗), qui affirme Z Hp (θ, z) µ(dz) =
+                                                                              R
+
+  H(θ) Z pθ (z) µ(dz) = 0, soit valide.
+  Justifions les deux dérivations sous le signe intégral. Soient θ0 ∈ Θ, V0 un voisinage de θ0 et
+  h0 , h1 comme dans la condition (iii) de régularité. Pour tout θ ∈ V0 et µ-presque tout z, par
+  (8),
+                                                               2
+           ∥∇θ pθ (z)∥ = ∥∇θ ℓ(θ, z)∥ pθ (z) ≤ 1 + ∥∇θ ℓ(θ, z)∥ pθ (z) ≤ {1 + h1 (z)}h0 (z) ,
+
+  majorant intégrable par (3). La Proposition 2.2 de dérivation sous le signe intégral, appliquée
+  coordonnée par coordonnée à (θ, z) 7→ pθ (z), garantit alors que (∗) est correcte. De même,
+                                        2
+  par (9) et par l’identité aa⊤ = ∥a∥ valable pour tout a ∈ Rd ,
+                                                          
+                                                         2
+                 ∥Hp (θ, z)∥ ≤ ∥Hℓ (θ, z)∥ + ∥∇θ ℓ(θ, z)∥ pθ (z) ≤ 2 h1 (z)h0 (z) ,
+
+  qui est µ-intégrable ; comme Hp (θ, z) est la matrice des dérivées partielles des coordonnées de
+  ∇θ pθ (z), la même proposition appliquée à chacune d’elles montre que (∗∗) est valide.
+  Enfin, le troisième point découle du second et du fait que, pour le modèle produit, la
+  log-vraisemblance se décompose en ℓ12 (θ, (z1 , z2 )) = ℓ1 (θ, z1 ) + ℓ2 (θ, z2 ), de sorte que
+  Hℓ12 (θ, (z1 , z2 )) = Hℓ1 (θ, z1 ) + Hℓ2 (θ, z2 ) ; en prenant l’espérance sous P1,θ ⊗ P2,θ et en chan-
+  geant de signe, il vient I12 = I1 + I2 . Le cas du n-échantillon s’obtient par récurrence, les n
+  facteurs étant identiques.                                                                            □
+
+
+    Les trois exemples qui suivent calculent le score et l’information de Fisher sur les modèles
+rencontrés au chapitre 2. Le schéma de calcul est toujours le même : écrire la densité, en prendre
+le logarithme, dériver, puis calculer soit la variance du score, soit l’espérance de la dérivée seconde
+changée de signe.
+
+
+   Exemple 1.13: Information de Fisher du modèle exponentiel
+  Considérons le modèle E(θ) , θ ∈ Θ := R∗+ pour une observation.
+                       
+
+     1. Densité par rapport à la mesure de Lebesgue : pθ (z) = θe−θz 1R+ (z).
+     2. Log-vraisemblance : ℓ(θ, z) = log θ − θz pour z > 0.
+     3. Score : S(θ, z) = ∂θ ℓ(θ, z) = 1/θ − z. On vérifie que Eθ [S(θ, Z)] = 1/θ − Eθ [Z] = 0.
+     4. Information de Fisher : I(θ) = Varθ (S(θ, Z)) = Varθ (1/θ − Z) = Varθ (Z) = 1/θ2 .
+1. LES FONDAMENTAUX                                                                                        23
+
+   Exemple 1.14: Information de Fisher du modèle de Poisson
+  Considérons le modèle Poi(θ) , θ ∈ Θ := R∗+ pour une observation.
+                       
+
+     1. Densité par rapport à la mesure de comptage sur N : pθ (z) = e−θ θz /z!.
+     2. Log-vraisemblance : ℓ(θ, z) = −θ + z log θ − log(z!).
+     3. Score : S(θ, z) = z/θ − 1, d’espérance Eθ [Z]/θ − 1 = 0.
+     4. Information de Fisher : I(θ) = Varθ (Z/θ − 1) = Varθ (Z)/θ2 = θ/θ2 = 1/θ.
+  Par additivité, l’information de Fisher du n-échantillon vaut n/θ.
+
+   Exemple 1.15: Information de Fisher du modèle de Bernoulli
+  Considérons le modèle {Ber(θ) , θ ∈ Θ := ]0, 1[}, dominé par la mesure de comptage sur {0, 1},
+  de densité pθ (x) = θx (1 − θ)1−x . Alors
+                                                             x 1−x                         x    1−x
+  ℓ(θ, x) = x log θ+(1−x) log(1−θ) ,          ∂θ ℓ(θ, x) =    −    ,        ∂θ2 ℓ(θ, x) = − 2 −       ,
+                                                             θ 1−θ                         θ (1 − θ)2
+
+  d’où, en utilisant l’expression par la dérivée seconde,
+                                                                          1  1       1
+       I1 (θ) = −Eθ ∂θ2 ℓ(θ, X1 ) = −θ ∂θ2 ℓ(θ, 1) − (1 − θ) ∂θ2 ℓ(θ, 0) = +
+                                
+                                                                                =          .
+                                                                          θ 1−θ   θ(1 − θ)
+
+  L’information de Fisher d’un n-échantillon de Bernoulli vaut donc I(θ) = n/(θ(1 − θ)). On
+  note au passage que le calcul par la dérivée seconde est ici plus court que le calcul de la
+  variance du score.
+
+
+
+
+    Illustration / animation : Le score est la pente de la log-vraisemblance en
+    θ, et sa dispersion sous Pθ est l’information de Fisher
+    Vous pouvez y observer, sur quatre modèles au choix, la courbe de log-
+    vraisemblance d’une observation tirée et sa tangente au point choisi, puis
+    reconstituer par tirages répétés la distribution du score et comparer la cour-
+    bure de la divergence de Kullback-Leibler à la parabole que dicte l’information              link
+    de Fisher.
+
+
+
+    Illustration / animation : Le score et l’information de Fisher se retrouvent
+    à partir de la seule log-densité, sur le modèle de votre choix
+    L’animation accessible par le QR code ci-contre reprend, pour un modèle choisi
+    parmi Bernoulli, Poisson et exponentiel, le calcul de la log-densité, du score
+    puis de l’information de Fisher par la dérivée seconde, et fait interpréter sa               link
+    variation avant de dérouler la solution rédigée.
+
+
+Intuition. Pourquoi appelle-t-on cette quantité une information ? Le raisonnement qui suit n’est pas une
+démonstration : il enchaîne des dérivations sous le signe intégral sans les justifier et suppose la divergence
+deux fois différentiable en son second argument, ce qui demanderait des hypothèses supplémentaires. Il
+éclaire cependant le nom. Supposons que la vraie valeur du paramètre soit θ⋆ , et écrivons KL(θ⋆ , θ) :=
+KL(Pθ⋆ , Pθ ). La quantité log pθ⋆ (Z)/pθ (Z) traduit le pouvoir discriminant du modèle pour trancher entre
+θ⋆ et θ au vu de l’observation : elle est nulle si les deux lois coïncident, et vaut +∞ si θ est exclu par
+l’observation. Sa valeur moyenne sous Pθ⋆ est la divergence de Kullback-Leibler KL(θ⋆ , θ), introduite au
+chapitre 2 (Définition 1.7), qui est positive et ne s’annule qu’en θ = θ⋆ lorsque le modèle est identifiable.
+24                                   CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+La fonction θ 7→ KL(θ⋆ , θ) atteint donc son minimum en θ⋆ , où son gradient est nul – c’est l’espérance
+nulle du score. Sa dérivée seconde en ce point vaut
+
+                              ∇2θ KL(θ⋆ , θ) θ=θ⋆ = −Eθ⋆ Hℓ (θ⋆ , Z) = I(θ⋆ ) .
+                                                                   
+
+
+L’information de Fisher est ainsi la courbure de la divergence de Kullback-Leibler au voisinage de la vraie
+valeur : une grande information correspond à une divergence qui remonte vite dès qu’on s’écarte de θ⋆ ,
+donc à des lois voisines faciles à distinguer, donc à un paramètre facile à estimer. La borne de Cramér-Rao,
+où l’information apparaît au dénominateur, confirme cette lecture.
+
+
+1.10      Estimateur régulier et théorème de Cramér-Rao
+   La régularité du modèle justifie la première des deux dérivations sous le signe intégral du calcul
+de la Section 1.7. La seconde, qui porte sur θ 7→ Eθ [T (Z)], dépend de l’estimateur ; on la pose
+comme hypothèse.
+
+     Définition 1.9: Estimateur régulier
+  Soit (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle régulier, où Θ est un ouvert de Rd . Un estimateur
+  T : (Z, Z) → R d’une fonction g : Θ → R est dit régulier si
+     (i) T (Z) est de carré intégrable, c’est-à-dire Eθ [{T (Z)}2 ] < ∞ pour tout θ ∈ Θ ;
+     (ii) la fonction θ 7→ Eθ [T (Z)] est différentiable sur Θ et, pour tout θ ∈ Θ,
+                                                     Z
+                                    ∇θ Eθ [T (Z)] =     T (z) ∇θ pθ (z) µ(dz) .                     (10)
+                                                      Z
+
+
+
+  Remarque. Par la Proposition 2.2 de dérivation sous le signe intégral, la seconde condition
+  est assurée dès que la condition suivante est vérifiée : pour tout Rθ0 ∈ Θ, il existe un voisinage
+  V0 de θ0 dans Θ et une fonction mesurable positive h telle que Z |T (z)| h(z) µ(dz) < ∞, et il
+  existe Z0 ∈ Z avec µ(Zc0 ) = 0 tel que, pour tout z ∈ Z0 , la fonction θ 7→ pθ (z) soit différentiable
+  sur Θ et vérifie ∥∇θ pθ (z)∥ ≤ h(z) pour tout θ ∈ V0 . Comme pour la régularité du modèle, la
+  vérification est fastidieuse et sans surprise ; on l’admettra dans les exercices.
+
+     Théorème 1.1: Borne de Cramér-Rao
+  Soient (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle régulier, où Θ est un ouvert de Rd , g : Θ → R une
+  fonction dérivable à valeurs réelles, et T un estimateur sans biais et régulier de g : θ 7→ g(θ).
+  Alors, pour tout θ ∈ Θ,
+                                                          ⊤
+                               Varθ (T (Z)) ≥ ∇θ g(θ)          I(θ)−1 ∇θ g(θ) .                     (11)
+
+
+     Démonstration
+  Comme T est sans biais et régulier, il vient
+                                            Z
+               ∇θ g(θ) = ∇θ Eθ [T (Z)] =        T (z) ∇θ pθ (z) µ(dz)
+                                              Z
+                          Z
+                                                                               
+                       =     T (z) ∇θ ℓ(θ, z) pθ (z) µ(dz) = Eθ T (Z) ∇θ ℓ(θ, Z) ,
+                                Z
+
+  la troisième égalité par (8). Or le score est d’espérance nulle (Proposition 1.2 (i)), donc
+  Eθ [g(θ)∇θ ℓ(θ, Z)] = 0 et l’égalité précédente se réécrit
+                                                                    
+                               ∇θ g(θ) = Eθ {T (Z) − g(θ)} ∇θ ℓ(θ, Z) .
+1. LES FONDAMENTAUX                                                                                         25
+
+
+  Soit u ∈ Rd . En prenant le produit scalaire avec u puis en appliquant l’inégalité de Cauchy-
+  Schwarz (Proposition 2.1),
+
+                                     2
+                                                                          2
+                        ∇θ g(θ)⊤ u       = Eθ {T (Z) − g(θ)} ∇θ ℓ(θ, Z)⊤ u
+                    
+
+                                         ≤ Eθ {T (Z) − g(θ)}2 Eθ {∇θ ℓ(θ, Z)⊤ u}2 .
+                                                                              
+
+
+  Comme T est sans biais, Eθ [{T (Z) − g(θ)}2 ] = Varθ (T (Z)). Par ailleurs, pour tout a ∈ Rd ,
+  {a⊤ u}2 = u⊤ aa⊤ u = u⊤ (aa⊤ )u ; en appliquant cette identité à a = ∇θ g(θ) et à a = ∇θ ℓ(θ, Z),
+  l’inégalité précédente devient
+
+                    u⊤ ∇θ g(θ) ∇θ g(θ)⊤ u ≤ Varθ (T (Z)) · u⊤ I(θ)u ,             u ∈ Rd .
+
+  En particulier, pour u = I(θ)−1 ∇θ g(θ), licite puisque I(θ) est inversible, on obtient
+                                             2
+                 ∇θ g(θ)⊤ I(θ)−1 ∇θ g(θ)          ≤ Varθ (T (Z)) · ∇θ g(θ)⊤ I(θ)−1 ∇θ g(θ) .
+                                                                                          
+
+
+  Le facteur ∇θ g(θ)⊤ I(θ)−1 ∇θ g(θ) est positif, puisque I(θ)−1 est définie positive. S’il est nul,
+  l’inégalité (11) est triviale ; sinon, on simplifie par ce facteur strictement positif, ce qui donne
+  (11).                                                                                             □
+
+
+
+
+                         Point d’histoire : Calyampudi Radhakrishna Rao (1920-2023)
+                         Rao a vingt-cinq ans et assure un cours de statistique à l’Indian Statistical
+                         Institute de Calcutta lorsqu’il publie, en 1945 au Bulletin of the Calcutta Ma-
+                         thematical Society, l’inégalité démontrée ci-dessus. Le même article contient le
+                         théorème de Rao-Blackwell, qui améliore un estimateur en le conditionnant par
+                         une statistique exhaustive. Harald Cramér publie indépendamment le même
+                         résultat l’année suivante : d’où le nom sous lequel la borne est connue.
+                         Portrait : Prateek Karandikar, Wikimedia Commons, CC BY-SA 4.0.
+
+
+
+
+   Le théorème prend trois formes selon la quantité estimée et la dimension du paramètre. La
+première est le cas unidimensionnel, qui reprend le calcul de la Section 1.7.
+
+   Corollaire 1.1: Cas unidimensionnel
+  Si Θ est un ouvert de R, sous les hypothèses du Théorème 1.1, on a pour tout θ ∈ Θ
+
+                                     {g ′ (θ)}2                              ∂          
+                  Varθ (T (Z)) ≥                ,       où     I(θ) = Varθ        ℓ(θ, Z) .
+                                       I(θ)                                  ∂θ
+
+   La deuxième forme concerne l’estimation du paramètre lui-même, lorsqu’il est vectoriel ; l’in-
+égalité est alors une inégalité entre matrices symétriques, au sens rappelé dans les outils (Section 2).
+
+   Corollaire 1.2: Estimation d’un paramètre vectoriel
+  Soient (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle régulier, où Θ est un ouvert de Rd , et T (Z) un
+  estimateur sans biais et régulier de θ, au sens où chaque coordonnée λ⊤ T (Z), λ ∈ Rd , est un
+  estimateur sans biais et régulier de λ⊤ θ. Alors, pour tout θ ∈ Θ,
+
+                                            Varθ (T (Z)) ≥ I(θ)−1 ,
+
+  c’est-à-dire que la matrice symétrique Varθ (T (Z)) − I(θ)−1 est positive.
+26                                   CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+
+     Démonstration
+  Soit λ ∈ Rd et considérons la fonction g : θ 7→ λ⊤ θ, dérivable, de gradient ∇θ g(θ) = λ. Par
+  hypothèse, λ⊤ T (Z) est un estimateur sans biais et régulier de g(θ). Le Théorème 1.1 donne
+  alors, en notant que Varθ (λ⊤ T (Z)) = λ⊤ Varθ (T (Z))λ,
+
+                                    λ⊤ Varθ (T (Z))λ ≥ λ⊤ I(θ)−1 λ .
+
+  Cette inégalité valant pour tout λ ∈ Rd , la matrice Varθ (T (Z)) − I(θ)−1 est positive.            □
+
+    La troisième forme est celle sous laquelle la borne s’emploie en pratique, pour un n-échantillon ;
+elle combine le théorème et l’additivité de l’information de Fisher.
+
+     Corollaire 1.3: Borne de Cramér-Rao pour un n-échantillon
+  Soient (X1 , . . . , Xn ) un n-échantillon du modèle régulier (X, X , {qθ · µ , θ ∈ Θ}) et
+  Tn (X1 , . . . , Xn ) un estimateur sans biais et régulier de g : Θ → R. En notant
+
+                    I1 (θ) := Eθ ∇θ ℓ1 (θ, X1 ) ∇θ ℓ1 (θ, X1 )⊤ ,
+                                                              
+                                                                    ℓ1 (θ, x) := log qθ (x) ,
+
+  l’information de Fisher associée à une seule observation, on a pour tout θ ∈ Θ
+                                                    1
+                        Varθ Tn (X1 , . . . , Xn ) ≥ ∇θ g(θ)⊤ I1 (θ)−1 ∇θ g(θ) .
+                                                  
+                                                    n
+
+
+Intuition. On dispose donc de trois bornes de Cramér-Rao, qui sont trois lectures du même énoncé :
+la borne scalaire pour une fonction réelle d’un paramètre réel, la borne matricielle pour l’estimation d’un
+paramètre vectoriel, et la borne en 1/n pour un n-échantillon. La dernière porte le message le plus direc-
+tement utilisable : dans un modèle régulier, la variance d’un estimateur sans biais, donc aussi son risque
+quadratique, est au moins d’ordre n−1 . Aucun raffinement de la construction ne fera mieux que cette
+vitesse.
+
+
+     Exemple 1.16: Vitesse d’estimation et modèles non réguliers
+  La variance de la moyenne empirique X̄n , estimateur sans biais de l’espérance, est d’ordre
+  n−1 , tout comme celle de Sn2 , estimateur sans biais de la variance dans le modèle gaussien
+  (Exemple 1.8). Ces vitesses sont compatibles avec la borne de Cramér-Rao, d’ordre n−1 , ce
+  qui montre que la dépendance en n de la borne ne peut pas être améliorée.
+                                                                                  (1)
+  En revanche, dans le modèle uniforme de l’Exemple 1.9, l’estimateur sans biais Tn = n+1
+                                                                                        n Xn:n
+  a pour variance θ /{n(n+2)}, qui décroît en n : la borne de Cramér-Rao, si elle s’appliquait,
+                     2                           −2
+
+  serait violée. Il n’y a pourtant aucune contradiction, puisque le modèle uniforme n’est pas
+  régulier (Exemple 1.12). L’Exercice 3 (PC3) construit une borne inférieure valable, elle, sans
+  hypothèse de régularité, et retrouve la vitesse n−2 pour ce modèle.
+
+
+1.11     Efficacité
+    La borne de Cramér-Rao est une inégalité ; il reste à savoir si elle est atteinte, c’est-à-dire si
+la constante qu’elle donne est la bonne. Les exemples ci-dessous montrent que oui, dans plusieurs
+modèles usuels.
+
+     Définition 1.10: Efficacité
+  Soient (Z, Z, {pθ · µ , θ ∈ Θ}) un modèle régulier et g : Θ → R une fonction dérivable. Un
+  estimateur sans biais et régulier T de g(θ) est dit efficace si sa variance atteint la borne de
+1. LES FONDAMENTAUX                                                                               27
+
+
+  Cramér-Rao, c’est-à-dire si
+                                            ⊤
+                   Varθ (T (Z)) = ∇θ g(θ)        I(θ)−1 ∇θ g(θ)    pour tout θ ∈ Θ .
+
+    Un estimateur efficace est un estimateur sans biais de variance minimale, au sens de la Défi-
+nition 1.5 : sa variance minore, par le théorème, celle de tout autre estimateur sans biais régulier.
+La réciproque est fausse en général – un estimateur peut être de variance minimale sans atteindre
+la borne.
+
+   Exemple 1.17: Fréquence empirique dans le modèle de Bernoulli
+  Pour un n-échantillon du modèle de Bernoulli sur Θ = ]0, 1[, l’information de Fisher vaut
+  I(θ) = n/(θ(1 − θ)) (Exemple 1.15), de sorte que la borne de Cramér-Rao pour l’estimation
+  sans biais de θ vaut θ(1 − θ)/n. Elle est atteinte par la fréquence empirique, puisque
+
+                                                 Varθ (X1 )   θ(1 − θ)
+                                 Varθ (X̄n ) =              =          .
+                                                    n            n
+  La fréquence empirique est donc efficace, et par conséquent E.S.B.V.M..
+
+
+   Exemple 1.18: Le maximum de vraisemblance du modèle de Poisson est efficace
+  Considérons le modèle Mn = Poi(θ)⊗n , θ ∈ Θ := R∗+ .
+                            
+
+     1. L’information de Fisher pour une observation vaut I(M, θ) = 1/θ (Exemple 1.14).
+     2. Par additivité, I(Mn , θ) = n/θ.
+     3. L’estimateur du maximum de vraisemblance est θ̂n = X̄n (chapitre 2).
+     4. Il est sans biais, puisque Eθ [X̄n ] = θ.
+     5. Sa variance vaut Varθ (θ̂n ) = θ/n = 1/I(Mn , θ).
+  L’estimateur du maximum de vraisemblance est donc efficace dans ce modèle.
+
+   Exemple 1.19: Moyenne empirique dans le modèle gaussien
+  Soit (X1 , . . . , Xn ) un n-échantillon du modèle R, B(R), N (θ, σ02 ) , θ ∈ R , où σ02 > 0 est
+                                                                                      
+
+  connue. On a
+                        (x − θ)2                                  x−θ                          1
+                                      q
+       ℓ1 (θ, x) = −         2   − log 2πσ02 ,    ∂θ ℓ1 (θ, x) =       ,     ∂θ2 ℓ1 (θ, x) = − 2 ,
+                          2σ0                                      σ02                        σ0
+
+  donc I1 (θ) = 1/σ02 et I(θ) = n/σ02 pour l’échantillon. L’estimateur sans biais X̄n a pour
+  variance σ02 /n = I(θ)−1 : il atteint la borne de Cramér-Rao et il est efficace.
+
+     L’existence d’un estimateur efficace n’est cependant pas garantie : elle caractérise une famille
+particulière de modèles, les familles exponentielles, comme le montrent les compléments (Section 4).
+Le cours reviendra sur cette question au chapitre consacré au comportement asymptotique des
+estimateurs, où l’on verra que l’estimateur du maximum de vraisemblance est asymptotiquement
+efficace sous des hypothèses générales, c’est-à-dire que sa variance approche la borne de Cramér-
+Rao lorsque la taille de l’échantillon grandit, même lorsqu’aucun estimateur ne l’atteint à n fixé.
+
+
+1.12    En pratique : programme des exercices
+   Les notions de ce chapitre sont mises en œuvre dans la feuille d’exercices (PC 3), intégrée au
+chapitre (Section 3). Exercices traités en petite classe :
+28                                 CHAPITRE 3. BASES DE LA THÉORIE DE LA DÉCISION
+
+     Exercice                      Notions du cours             Rappels
+     Exo 1 – Modèle uniforme       biais, risque quadratique,   Statistiques d’ordre, loi de Xn:n
+                                   admissibilité
+     Exo 2 – Régression linéaire   information de Fisher ma-    Vecteurs gaussiens, th. de Cochran
+     gaussienne                    tricielle, efficacité
+     Exo 3 – Cramér-Rao sans ré-   borne de type covariance     Inégalité de Cauchy-Schwarz, pas-
+     gularité                                                   sage à la limite
+
+    L’Exercice 1 (PC3)Preprend et prolonge l’Exemple 1.9 : on y montre qu’aucun estimateur sans
+biais de la forme n−1 i T (Xi ) n’existe, on construit un estimateur sans biais fonction de Xn:n ,
+puis on compare les risques quadratiques de toute la famille aXn:n et l’on conclut à l’inadmissibilité
+de plusieurs d’entre eux. L’Exercice 2 (PC3) poursuit l’Exercice 1 (PC2) sur le modèle de régression
+linéaire gaussienne : c’est le seul endroit du cours où l’information de Fisher est une matrice 2 × 2,
+et l’on y calcule la borne de Cramér-Rao pour l’estimation d’un coefficient, puis du produit des
+deux. L’Exercice 3 (PC3) établit, pour toute statistique Ψ de carré intégrable, la borne Varθ (T ) ≥
+Covθ (T, Ψ)2 / Varθ (Ψ), dont la borne de Cramér-Rao est un cas limite, et qui s’applique à des
+modèles non réguliers comme le modèle uniforme.
+    Les exercices bonus portent sur les estimateurs linéaires dans un modèle de translation (Exer-
+cice 4 (PC3)), qui généralise l’Exemple 1.11 en levant la contrainte d’absence de biais, et sur les
+statistiques d’ordre d’un échantillon exponentiel (Exercice 5 (PC3)).
+Notions de probabilités clés utilisées cette semaine, à revoir : espérance, variance et
+covariance, inégalité de Cauchy-Schwarz, dérivation sous le signe intégral, matrices symétriques
+positives, statistiques d’ordre, vecteurs gaussiens et loi du χ2 (voir la partie Outils mathématiques
+ci-dessous).
+

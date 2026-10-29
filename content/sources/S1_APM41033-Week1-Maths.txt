@@ -1,0 +1,742 @@
+2. LES OUTILS MATHÉMATIQUES                                                                              23
+
+2     Les outils mathématiques
+   Cette partie rassemble les outils utilisés dans le chapitre et dans la feuille d’exercices. Les
+éléments de théorie de la mesure sont développés dans l’annexe du polycopié.
+
+Tribu produit, mesure produit
+   Soient (X, X ) et (X′ , X ′ ) deux espaces mesurables. La tribu produit X ⊗ X ′ sur X × X′ est la
+plus petite tribu contenant les pavés mesurables A × A′ , A ∈ X , A′ ∈ X ′ (voir ??). Pour deux
+probabilités Q sur X et Q′ sur X ′ , la mesure produit Q ⊗ Q′ (voir ??) est définie par
+                                     Q ⊗ Q′ (A × A′ ) := Q(A) Q′ (A′ ) .
+On note Q⊗n le produit de n copies de Q.
+
+Produit de deux modèles statistiques
+    Soient (X, X , C) et (X′ , X ′ , C ′ ) deux modèles statistiques. Un élément z de l’espace des obser-
+vations Z := X × X′ est un couple z := (x, x′ ) avec x ∈ X et x′ ∈ X′ . Nous munissons cet espace de
+la tribu produit Z := X ⊗ X ′ .
+Définition 7 (Produit de modèles statistiques). Soient (X, X , C) et (X′ , X ′ , C ′ ) deux modèles
+statistiques. On appelle produit de ces deux modèles et on note (X, X , C) ⊗ (X′ , X ′ , C ′ ) le modèle
+statistique (X × X′ , X ⊗ X ′ , C ⊗ C ′ ) où :
+                               C ⊗ C ′ := {P = Q ⊗ Q′ , Q ∈ C, Q′ ∈ C ′ } .
+Soient X : Z → X et X ′ : Z → X′ les statistiques définies pour tout z = (x, x′ ) ∈ Z par X(x, x′ ) = x
+et X ′ (x, x′ ) = x′ . Pour tout P = Q ⊗ Q′ ∈ C ⊗ C ′ et (A, A′ ) ∈ X × X ′ , nous avons
+                  ′
+             PX,X (A × A′ ) = P(X ∈ A, X ′ ∈ A′ )
+                              = Q ⊗ Q′ (A × A′ ) = Q(A)Q′ (A′ ) = P(X ∈ A)P(X ′ ∈ A′ ) .
+Les statistiques X et X ′ sont donc indépendantes. Les modèles statistiques induits par X et
+X ′ sont respectivement (X, X , C) et (X′ , X ′ , C ′ ). Considérer des produits de modèles statistiques
+correspond, dans la pratique, à étudier des systèmes d’observations indépendantes.
+    Remarquons que le n-échantillon (X, X , C)n n’est pas (en général) égal au produit des expé-
+riences (X, X , C). Pour n = 2 par exemple,
+                      (X, X , C) ⊗ (X, X , C) = (X2 , X ⊗2 , {Q ⊗ Q′ , Q ∈ C, Q′ ∈ C})
+alors que
+                                  (X, X , C)2 = (X2 , X ⊗2 , Q⊗2 , Q ∈ C ) .
+                                                            
+
+Intuition. Dans le produit général, les deux coordonnées peuvent suivre des lois différentes de la famille ;
+dans le n-échantillon, c’est la même loi qui est répétée. Le n-échantillon est donc une sous-famille (une
+« diagonale ») du modèle produit.
+
+
+Transfert, fonction muette, changement de variables
+   Pour identifier la loi image PT , on utilise la méthode de la fonction muette : pour toute fonction
+h mesurable positive sur T,
+                            Z                 Z
+                                     T
+                              h(t) P (dt) =       h ◦ T (z) P(dz) = E[h(T )] .
+                              T                   Z
+
+Si l’on trouve une mesure ν et une fonction q ≥ 0 telles que E[h(T )] = h q dν pour toute fonction
+                                                                       R
+
+muette h, alors PT = q · ν. Quand la statistique est une transformation régulière d’une variable à
+densité, cette méthode conduit à la formule du changement de variables, que l’on énonce d’abord
+en dimension 1.
+24                                                    CHAPITRE 1. MODÈLES STATISTIQUES
+
+Changement de variable en dimension 1.
+  Proposition 2.1: Changement de variable, dimension 1
+
+ RSoient I un intervalle ouvert de R et X une variable aléatoire   1
+                                                                           réelle de loi p · Leb avec
+   I
+     p dLeb =    1. Soit  ϕ  : I → R une  application de  classe C   telle  que ϕ′ (x) ̸= 0 pour tout
+ x ∈ I. Alors ϕ est strictement monotone, J := ϕ(I) est un intervalle ouvert, ϕ−1 : J → I est
+  de classe C 1 , et la loi de Y := ϕ(X) est q · Leb avec
+
+                                                                     p ϕ−1 (y)
+                                                                                 
+                      q(y) = 1J (y) p ϕ (y) (ϕ ) (y) = 1J (y) ′ −1  .
+                                       −1
+                                             −1 ′
+                                                                     ϕ ϕ (y)
+
+
+     Démonstration
+ Soit h mesurable positive sur R. Par le théorème de transfert, E[h(ϕ(X))] = I h(ϕ(x)) p(x) dx.
+                                                                                 R
+
+ La fonction ϕ étant un C 1 -difféomorphisme de I sur J, la formule de changement de va-
+ riable  dans l’intégrale de Lebesgue (x = ϕ−1 (y), dx = |(ϕ−1 )′ (y)| dy) donne E[h(Y )] =
+     h(y) p(ϕ−1 (y)) |(ϕ−1 )′ (y)| dy pour toute fonction muette h, ce qui identifie la densité de
+ R
+   J
+ Y . L’égalité (ϕ−1 )′ (y) = 1/ϕ′ (ϕ−1 (y)) vient de la dérivation de ϕ ◦ ϕ−1 = idJ .           □
+
+
+     Exemple 2.1: Translation et échelle
+ Si X a pour densité p sur R et si ϕ(x) = a + b x avec b ̸= 0, alors ϕ−1 (y) = (y − a)/b et
+ Y = a + bX a pour densité
+                                           1 y − a
+                                   q(y) =     p       .
+                                          |b|    b
+ C’est le calcul de l’Exercice 2 (PC1), coordonnée par coordonnée : pour X ∼ N (0, 1) on
+ retrouve la densité de N (a, b2 ).
+
+
+     Exemple 2.2: Une transformation non injective
+ Si ϕ n’est pas injective, on découpe I en morceaux sur lesquels elle l’est et l’on somme les
+                                                                           √
+ contributions. Pour X ∼ N (0, 1) et ϕ(x) = x2 , les deux branches x = ± y donnent, pour
+ y > 0,
+                                       1   1             1
+                           q(y) = 2 × √ √ e−y/2 = √          e−y/2 ,
+                                     2 y 2π              2πy
+ qui est la densité de la loi χ2 (1) = Gamma(1/2, 1/2) (Section 2).
+
+
+Changement de variables en dimension k.            On reprend les notations du rappel de l’Exercice 2
+(PC1).
+
+  Proposition 2.2: Changement de variables, dimension k
+ Soient un ouvert O de Rk et p·Leb⊗k une loi sur Rk telle que O p dLeb⊗k = 1. Soit ϕ : O → Rk
+                                                              R
+
+ une application continûment différentiable, injective sur O et dont le jacobien ne s’annule pas
+ sur O (de façon équivalente, ϕ est un C 1 -difféomorphisme de O sur ϕ(O), c’est-à-dire une
+ bijection de O sur ϕ(O) telle que ϕ et ϕ−1 sont de classe C 1 ). Si X ∼ p · Leb⊗k , alors la loi
+ de ϕ(X) est q · Leb⊗k , où la densité u 7→ q(u) est donnée par
+
+                          q(u) = 1ϕ(O) (u) p ϕ−1 (u) Det Jϕ−1 (u) ,
+                                                                   
+
+
+ Jψ désignant, pour toute application différentiable ψ, sa matrice jacobienne (matrice des
+ dérivées partielles). Lorsque ϕ est un C 1 -difféomorphisme, la relation Jϕ (ϕ−1 (u)) Jϕ−1 (u) = I
+2. LES OUTILS MATHÉMATIQUES                                                                         25
+
+
+  entraîne
+                                                         1
+                                Det Jϕ−1 (u) =                     .
+                                                  Det Jϕ (ϕ−1 (u))
+
+    La dimension 1 est le cas k = 1, où Jϕ = ϕ′ . La preuve est la même :R théorème de trans-
+fert, puis formule du changement de variables dans les intégrales multiples, O h(ϕ(x)) p(x) dx =
+       h(u) p(ϕ−1 (u)) | Det Jϕ−1 (u)| du, pour toute fonction muette h.
+R
+  ϕ(O)
+
+   Exemple 2.3: Transformation affine de Rk
+  Soit ϕ(x) = Ax + b avec A une matrice k × k inversible et b ∈ Rk . Alors ϕ−1 (u) = A−1 (u − b),
+  Jϕ−1 = A−1 et
+                                          1
+                                                p A−1 (u − b) .
+                                                              
+                                q(u) =
+                                       | Det A|
+  Pour A diagonale, A = diag(b1 , . . . , bk ), on retrouve le produit des formules de translation et
+  d’échelle de l’Exercice 2 (PC1) ; pour X ∼ N (0, Ik ), c’est ce calcul qui donne la densité de
+  N (b, AA⊤ ) (Section 2).
+
+
+Lois usuelles utilisées cette semaine
+  — Bernoulli    Ber(θ) sur {0, 1}, P({1}) = θ ; Binomiale Bin(n, θ) sur {0, . . . , n}, P({k}) =
+     n k           n−k
+                       .
+       
+     k   θ (1 − θ)
+  — Gaussienne N (µ, σ 2 ) sur R, de densité (2πσ 2 )−1/2 exp(−(x − µ)2 /(2σ 2 )).
+  — Exponentielle de paramètre λ > 0, de densité λe−λx 1R+ (x), de moyenne λ−1 . Absence de
+    mémoire : pour tous a, b > 0, Pλ ( X ≥ a + b | X ≥ a) = Pλ (X ≥ b).
+                                                                                   1
+  — Gamma. Pour p > 0, la loi Gamma réduite Gamma(p) a pour densité fp (x) = Γ(p)    e−x xp−1 ,
+    x > 0. Pour λ > 0, Gamma(p, λ) est la loi de Z/λ où Z ∼ Gamma(p), de densité fp,λ (x) =
+     λp −λx p−1
+    Γ(p) e       x , x > 0. La loi exponentielle de paramètre λ est Gamma(1, λ). Additivité : si
+                                                                   Pn              Pn
+    X1 , . . . , Xn sont indépendantes de lois Gamma(pi , λ), alors i=1 Xi ∼ Gamma( i=1 pi , λ).
+                                                                        k
+  — Poisson de paramètre λ > 0, sur N, de densité pλ (k) = e−λ λk! par rapport à la mesure de
+    comptage. Moyenne et variance λ ; la somme de deux Poisson indépendantes de paramètres
+    λ1 , λ2 suit une loi de Poisson de paramètre λ1 + λ2 (voir l’Exercice 5, PC1).
+
+Vecteurs gaussiens
+    Le modèle gaussien N (µ1n , σ 2 In ) des exemples des tailles et de l’échantillon gaussien, comme
+le modèle de régression linéaire gaussienne de l’Exercice 4 (PC1), reposent sur la notion de vecteur
+gaussien. Nous en rappelons la définition et les propriétés utilisées dans ce chapitre, en commençant
+par le cas réel.
+
+Lois gaussiennes sur R.
+Définition 8 (Loi gaussienne réduite). Une variable aléatoire réelle X est dite gaussienne
+centrée réduite, ce que l’on note X ∼ N (0, 1), si sa loi admet pour densité par rapport à la
+mesure de Lebesgue sur R
+                                            2
+                                     1          x
+                             g(x) = √ exp −          ,     x∈R.
+                                     2π         2
+Sa fonction caractéristique vaut
+                                                  2
+                                     itX          t
+                            φ(t) = E e      = exp −   ,            t∈R.
+                                                    2
+26                                                           CHAPITRE 1. MODÈLES STATISTIQUES
+
+On l’obtient par exemple en remarquant que φ est dérivable (dérivation sous le signe intégral),
+puis, par une intégration par parties utilisant xg(x) = −g ′ (x), que φ′ (t) = −t φ(t) avec φ(0) = 1.
+                                                          (k)         k      k
+Comme X admet des    Pmoments de tous ordres et que φ (0) = i E[X ], le développement en
+série entière φ(t) = k≥0 (−1)k t2k /(2k k!) fournit les moments de la loi gaussienne réduite : les
+moments d’ordre impair sont nuls et, pour tout k ∈ N,
+                                     (2k)!
+                              E X 2k = k
+                               
+                                            = 1 × 3 × 5 × · · · × (2k − 1) .
+                                      2 k!
+En particulier E[X] = 0, E[X 2 ] = 1 et E[X 4 ] = 3.
+Définition 9 (Loi gaussienne N (µ, σ 2 )). Soient µ ∈ R et σ 2 ≥ 0. Une variable aléatoire réelle
+       la loi gaussienne (ou normale) N (µ, σ 2 ) si elle a même loi que σXr + µ, où Xr ∼ N (0, 1)
+X suit √
+et σ = σ 2 ≥ 0. On a alors E[X] = µ et Var(X) = σ 2 .
+La convention adoptée dans ce cours est d’autoriser σ 2 = 0 : la loi N (µ, 0) est la masse de Dirac
+δµ , et l’on parle de loi gaussienne dégénérée. La densité, elle, n’existe que pour σ 2 > 0 : dans ce
+cas, la formule de changement de variables de la Section 2, appliquée à x 7→ σx + µ, montre que
+N (µ, σ 2 ) admet pour densité par rapport à Leb
+                                                   (x − µ)2
+                                                           
+                                        1
+                           gµ,σ2 (x) = √ exp −                  ,     x∈R,
+                                      σ 2π           2σ 2
+alors que pour σ 2 = 0, la loi δµ n’est pas absolument continue par rapport à Leb (Section 2). Dans
+tous les cas (σ 2 ≥ 0), la fonction caractéristique de N (µ, σ 2 ) vaut
+                                                                      σ 2 t2
+                             h            i                                 
+                               it(σXr +µ)      iµt
+              φµ,σ2 (t) = E e               = e φ(σt) = exp iµt −              , t∈R.
+                                                                        2
+Comme la fonction caractéristique caractérise la loi, on en déduit la stabilité de la famille gaus-
+sienne par transformation affine et par somme de variables indépendantes.
+
+     Lemme 2.1: Stabilité de la famille gaussienne
+
+     (i) Si X ∼ N (µ, σ 2 ) et a, b ∈ R, alors aX + b ∼ N (aµ + b, a2 σ 2 ).
+     (ii) Si X1 , . . . , Xn sont indépendantes, de lois respectives N (µ1 , σ12 ), . . . , N (µn , σn2 ), alors
+          X1 + · · · + Xn ∼ N (µ1 + · · · + µn , σ12 + · · · + σn2 ).
+
+     Démonstration
+  Pour (i), E[eit(aX+b) ] = eitb φµ,σ2 (at) = exp i(aµ + b)t − a2 σ 2 t2 /2 , qui est la fonction caracté-
+                                                                           
+                                                                                        Qn
+  ristique de N (aµ + b, a2 σ 2 ). Pour (ii), par indépendance, E[eit(X1 +···+Xn ) ] = j=1 φµj ,σj2 (t) =
+         Pn              Pn
+  exp it j=1 µj − t2 j=1 σj2 /2 . Dans les deux cas, on conclut par le fait que la fonction
+                                      
+
+  caractéristique caractérise la loi.                                                                   □
+
+
+Vecteurs gaussiens.
+                                                                                                       n
+Définition 10 (Vecteur gaussien). Un vecteur aléatoire X = (X1 , . . . , Xn )⊤ à valeurs      Pndans R
+                                                         n
+est dit gaussien si, pour tout t = (t1 , . . . , tn ) ∈ R , la variable aléatoire réelle t X = j=1 tj Xj
+                                                     ⊤                                    ⊤
+
+est gaussienne, éventuellement dégénérée.
+Soit X un vecteur gaussien. Chaque coordonnée Xi = e⊤    i X est gaussienne, donc de carré inté-
+grable ; on peut ainsi définir l’espérance µ :=  E[X] = (E[X          . , E[Xn ])⊤ ∈ Rn et la matrice
+                                                             1 ], . . 
+de covariance Σ := Cov(Xi , Xj ) 1≤i,j≤n = E (X − µ)(X − µ) de X. Pour tout t ∈ Rn , par
+                                                                   ⊤
+                                               
+
+linéarité de l’espérance,
+                                                            n
+                                                            X
+                   E t ⊤ X = t⊤ µ ,               ⊤
+                                                                    ti tj Cov(Xi , Xj ) = t⊤ Σ t ,
+                                                     
+                                            Var t X =
+                                                            i,j=1
+2. LES OUTILS MATHÉMATIQUES                                                                        27
+
+de sorte que t⊤ X ∼ N (t⊤ µ, t⊤ Σ t). La matrice Σ est symétrique et semi-définie positive, puisque
+t⊤ Σt = Var(t⊤ X) ≥ 0 ; elle n’est pas nécessairement inversible. On écrit X ∼ N (µ, Σ) pour dire
+que X est un vecteur gaussien d’espérance µ et de matrice de covariance Σ ; la Proposition 2.3
+ci-dessous montre que ces deux paramètres déterminent la loi de X.
+    D’après le Lemme 2.1 (ii), un vecteur dont les coordonnées sont des variables gaussiennes
+indépendantes est un vecteur gaussien ; en particulier, si Z1 , . . . , Zn sont indépendantes de loi
+N (0, 1), alors Z = (Z1 , . . . , Zn )⊤ ∼ N (0, In ). Sans l’hypothèse d’indépendance, un vecteur dont
+chaque coordonnée est gaussienne n’est pas nécessairement gaussien (voir la remarque qui suit la
+Proposition 2.6).
+
+   Proposition 2.3: Fonction caractéristique d’un vecteur gaussien
+  Soient µ ∈ Rn et Σ une matrice symétrique semi-définie positive de taille n × n. Un vecteur
+  aléatoire X à valeurs dans Rn suit la loi N (µ, Σ) si et seulement si, pour tout t ∈ Rn ,
+                                                                
+                               h ⊤ i                      1
+                              E ei t X = exp i t⊤ µ − t⊤ Σ t .
+                                                          2
+
+  En particulier, la loi d’un vecteur gaussien est entièrement déterminée par son espérance et
+  sa matrice de covariance.
+
+   Démonstration
+  Si X ∼ N (µ, Σ), alors t⊤ X ∼ N (t⊤ µ, t⊤ Σt), et il suffit d’évaluer en 1 la fonction caracté-
+                                       ⊤
+  ristique de cette loi réelle : E[ei t X ] = φt⊤ µ, t⊤ Σt (1). Réciproquement, supposons la formule
+  vérifiée. Pour t ∈ Rn et u ∈ R, en l’appliquant au vecteur ut,
+
+                                                                 u2 ⊤
+                                 h          i                           
+                                       ⊤
+                              E eiu (t X) = exp iu t⊤ µ −           t Σt ,
+                                                                  2
+
+  qui est la fonction caractéristique de N (t⊤ µ, t⊤ Σt) : ainsi t⊤ X ∼ N (t⊤ µ, t⊤ Σt) pour tout
+  t, et X est un vecteur gaussien. En prenant t = ei , on obtient E[Xi ] = µi ; en notant Σ′
+  la matrice de covariance de X, on a t⊤ Σ′ t = Var(t⊤ X) = t⊤ Σt pour tout t, d’où Σ′ = Σ
+  (appliquer l’égalité à t = ei puis à t = ei + ej , les deux matrices étant symétriques). Enfin, la
+  fonction caractéristique caractérisant la loi, deux vecteurs gaussiens de mêmes espérance et
+  matrice de covariance ont même loi.                                                             □
+
+   Proposition 2.4: Transformation affine d’un vecteur gaussien
+  Soient X ∼ N (µ, Σ) un vecteur gaussien de Rn , A une matrice réelle de taille m×n et b ∈ Rm .
+  Alors
+                                AX + b ∼ N Aµ + b, AΣA⊤ .
+                                                             
+
+
+   Démonstration
+  Posons Y = AX + b. Pour tout s ∈ Rm , s⊤ Y = (A⊤ s)⊤ X + s⊤ b est une transformation affine
+  de la variable gaussienne (A⊤ s)⊤ X, donc est gaussienne d’après le Lemme 2.1 (i) : Y est un
+  vecteur gaussien. Par linéarité de l’espérance, E[Y ] = Aµ + b, et
+
+               E (Y − E[Y ])(Y − E[Y ])⊤ = E A(X − µ)(X − µ)⊤ A⊤ = A Σ A⊤ .
+                                                                   
+
+
+                                                                                                  □
+
+    On prendra garde à l’ordre des facteurs : la matrice de covariance de AX + b est AΣA⊤ , de
+taille m × m, et non A⊤ ΣA.
+28                                                         CHAPITRE 1. MODÈLES STATISTIQUES
+
+     Proposition 2.5: Représentation d’un vecteur gaussien
+ Soient µ ∈ Rn et Σ une matrice symétrique semi-définie positive de taille n × n, de rang k ≥ 1.
+ Il existe une matrice A de taille n × k telle que AA⊤ = Σ, et pour toute telle matrice :
+     (i) si Z ∼ N (0, Ik ), alors AZ + µ ∼ N (µ, Σ) ;
+     (ii) si X ∼ N (µ, Σ), il existe un vecteur aléatoire Z ∼ N (0, Ik ) tel que X = AZ + µ presque
+          sûrement.
+ En particulier, la loi N (µ, Σ) existe pour tout couple (µ, Σ) (le cas Σ = 0 correspondant à la
+ masse de Dirac en µ).
+
+     Démonstration
+ Existence de A. La matrice Σ étant symétrique semi-définie positive, le théorème spec-
+ tral fournit une base orthonormée (u1 , . . . , un ) de vecteurs propres,
+                                                                    √      de valeurs
+                                                                               √      propres
+ λ1 ≥ · · · ≥ λk > 0 = λk+1 = · · · = λn ; la matrice A = [ λ1 u1 , . . . , λk uk ] vérifie
+          Pk
+ AA⊤ = j=1 λj uj u⊤    j = Σ.
+ (i) C’est la Proposition 2.4 : AZ + µ ∼ N (A0 + µ, A Ik A⊤ ) = N (µ, Σ).
+ (ii) Soit A de taille n × k telle que AA⊤ = Σ. Pour y ∈ Rn , AA⊤ y = 0 implique ∥A⊤ y∥2 =
+ y ⊤ AA⊤ y = 0 : les matrices Σ et A⊤ ont même noyau, donc même rang k, et A est de rang
+ k, c’est-à-dire injective. De même, A⊤ Ax = 0 implique ∥Ax∥2 = 0 puis x = 0 : la matrice
+ A⊤ A, de taille k × k, est inversible. Posons A# := (A⊤ A)−1 A⊤ , de sorte que A# A = Ik , et
+ Z := A# (X − µ). D’après la Proposition 2.4,
+
+                  Z ∼ N 0, A# Σ(A# )⊤ = N 0, (A# A)(A# A)⊤ = N (0, Ik ) .
+                                                                 
+
+
+ Il reste à voir que AZ + µ = X presque sûrement. La matrice P := AA# = A(A⊤ A)−1 A⊤
+ est symétrique et vérifie P 2 = P : c’est la matrice de la projection orthogonale sur l’image
+ de A, et AZ + µ = P (X − µ) + µ. Or X − µ appartient presque sûrement à l’image de
+ A. En effet, l’image de Σ = AA⊤ est contenue dans celle de A et ces deux sous-espaces
+ sont de dimension k, donc Im(A) = Im(Σ) = (Ker Σ)⊥ , la matrice Σ étant symétrique. Si
+ v ∈ Ker Σ, la variable gaussienne v ⊤ (X − µ) est centrée, de variance v ⊤ Σv = 0 : elle est nulle
+ presque sûrement. En appliquant ceci aux vecteurs d’une base (finie) de Ker Σ, on obtient
+ que X − µ ∈ (Ker Σ)⊥ = Im(A) presque sûrement, d’où P (X − µ) = X − µ et X = AZ + µ
+ presque sûrement.                                                                               □
+
+     Proposition 2.6: Indépendance et décorrélation
+ Soient X ∼ N (µ, Σ) un vecteur gaussien de Rn et n = n1 + · · · + nm une décomposition
+ de n en entiers strictement positifs. On découpe X = (X(1)           ⊤            ⊤
+                                                                        , . . . , X(m) )⊤ en sous-vecteurs
+ de tailles n1 , . . . , nm , de même µ = (µ⊤
+                                            (1) , . . . , µ(m) ) , et Σ = (Σij )1≤i,j≤m par blocs, où
+                                                           ⊤    ⊤
+
+ Σij = E (X(i) −µ(i) )(X(j) −µ(j) ) est de taille ni ×nj . Alors les sous-vecteurs X(1) , . . . , X(m)
+                                      ⊤
+                                       
+
+ sont (mutuellement) indépendants si et seulement si Σij = 0 pour tous i ̸= j.
+
+     Démonstration
+                                                                                                          ⊤
+ Si les sous-vecteurs sont indépendants, alors pour i ̸= j, Σij = E X(i) −µ(i) E X(j) −µ(j) =
+                                                                                     
+
+ 0. Réciproquement, supposons Σij = 0 pour tous i ̸= j. Pour t = (t⊤                   , . . . , t⊤
+                                                                                                  (m) )
+                                                                                                        ⊤
+                                                                                                          ∈ Rn
+                                        Pm ⊤                           Pm ⊤ (1)
+ découpé de la même façon, t µ = ⊤
+                                           i=1 t(i) µ(i) et t Σt =
+                                                               ⊤
+                                                                          i=1 t(i) Σii t(i) , de sorte que,
+ d’après la Proposition 2.3,
+                              m                                    Y m
+                  h ⊤ i Y                           1 ⊤                     h ⊤           i
+                E ei t X =       exp i t⊤  µ
+                                        (i) (i) −     t    Σ  t
+                                                        (i) ii (i)  =     E ei t(i) X(i) ,
+                             i=1
+                                                    2                 i=1
+2. LES OUTILS MATHÉMATIQUES                                                                          29
+
+
+  la dernière égalité venant de ce que X(i) ∼ N (µ(i) , Σii ) (Proposition 2.4, appliquée à la matrice
+  qui extrait les coordonnées du bloc i). La fonction caractéristique de X est donc celle de la
+  loi produit P1 ⊗ · · · ⊗ Pm , où Pi désigne la loi de X(i) ; comme la fonction caractéristique
+  caractérise la loi sur Rn , la loi de X est cette loi produit, ce qui est l’indépendance des X(i) .
+  □
+
+  Remarque. Dans un vecteur gaussien, la décorrélation de deux sous-vecteurs équivaut donc
+  à leur indépendance. Cette équivalence est propre aux vecteurs gaussiens et ne s’étend pas
+  à des variables gaussiennes qui ne formeraient pas un vecteur gaussien. Soient par exemple
+  X ∼ N (0, 1) et ε une variable aléatoire indépendante de X telle que P(ε = 1) = P(ε = −1) =
+  1/2, et posons Y = εX. Alors Y ∼ N (0, 1), car la loi de X est symétrique, et Cov(X, Y ) =
+  E[ε] E[X 2 ] = 0, mais X et Y ne sont pas indépendantes puisque |Y | = |X|. Le vecteur (X, Y )
+  n’est pas gaussien : X + Y = (1 + ε)X est nulle avec probabilité 1/2 sans être presque sûrement
+  constante, donc n’est ni dégénérée ni à densité.
+
+   Corollaire 2.1: Transformations linéaires indépendantes
+  Soient σ > 0, Z ∼ N (0, σ 2 In ), et A1 , A2 deux matrices réelles de tailles respectives m1 × n
+                                                                           m1 +m2
+  et m2 × n telles que A1 A⊤  2 = 0. Alors le vecteur (A1 Z, A2 Z) de R             est gaussien et
+  les vecteurs aléatoires A1 Z et A2 Z sont indépendants. En particulier, si P1 et P2 sont deux
+  matrices symétriques, par exemple deux projecteurs orthogonaux, telles que P1 P2 = 0, alors
+  P1 Z et P2 Z sont indépendants.
+
+   Démonstration
+                                                   
+                                                 A1
+  Le vecteur (A1 Z, A2 Z) s’écrit AZ avec A =          de taille (m1 + m2 ) × n : il est gaussien
+                                                 A2
+  d’après la Proposition 2.4, de matrice de covariance
+                                        ⊤
+                                                   2
+                                           A1 A⊤        σ A1 A⊤
+                                                                            
+                     2   ⊤      2 A1 A1        2               1        0
+                   σ AA = σ                        =                           .
+                                    A2 A⊤
+                                        1  A2 A⊤
+                                               2           0       σ 2 A2 A⊤
+                                                                           2
+
+  Les blocs croisés sont nuls, et la Proposition 2.6 conclut. Pour des matrices symétriques,
+  P1 P2⊤ = P1 P2 .                                                                        □
+
+   On rencontre aussi ce corollaire sous la forme suivante, qui lui est équivalente : si B1 et B2
+sont deux matrices ayant n lignes et telles que B1⊤ B2 = 0, alors B1⊤ Z et B2⊤ Z sont indépendants
+(prendre Ai = Bi⊤ ).
+
+   Proposition 2.7: Densité d’un vecteur gaussien
+  Soient µ ∈ Rn et Σ une matrice symétrique définie positive de taille n × n. La loi N (µ, Σ)
+  admet pour densité par rapport à la mesure de Lebesgue Leb⊗n sur Rn
+                                                                
+                             1              1
+            gµ,Σ (x) =        √                     ⊤ −1
+                                     exp − (x − µ) Σ (x − µ) ,            x ∈ Rn .
+                       (2π)n/2 det Σ        2
+
+
+   Démonstration
+  Traitons d’abord le cas µ = 0, Σ = In . Si Z ∼ N (0, In ), la Proposition 2.6, appliquée
+  avec des blocs de taille 1, montre que les coordonnées Z1 , . . . , Zn sont indépendantes,
+                                                                                    Qn        cha-
+  cune de loi N (0, 1) : la loi de Z est la loi produit N (0, 1)⊗n , de densité i=1 g(zi ) =
+  (2π)−n/2 exp(−∥z∥2 /2) par rapport à Leb⊗n (densité produit, comme en (1)).
+  Dans le cas général, Σ est de rang n : la Proposition 2.5 fournit une matrice A de taille n × n,
+30                                                      CHAPITRE 1. MODÈLES STATISTIQUES
+
+
+  inversible, telle que AA⊤ = Σ, et X ∼ N (µ, Σ) a même loi que AZ + µ avec Z ∼ N (0, In ).
+  L’application ϕ : z 7→ Az + µ est un C 1 -difféomorphisme de Rn sur lui-même, d’inverse
+  ϕ−1 (x) = A−1 (x − µ), dont la matrice jacobienne est constante, égale à A−1 . La formule de
+  changement de variables de la Section 2 donne pour densité de X
+                                                                      
+                                   1                  1              2
+                        q(x) =          (2π)−n/2 exp − A−1 (x − µ)       ,
+                               | det A|               2
+
+  et l’on conclut avec ∥A−1 (x−µ)∥2 = (x−µ)⊤ (A−1 )⊤ A−1 (x−µ) = (x−µ)⊤ (AA⊤ )−1 (x−µ) =
+  (x − µ)⊤ Σ−1 (x − µ) et (det A)2 = det(AA⊤ ) = det Σ.                                □
+
+   Lorsque Σ est de rang k < n, la démonstration de la Proposition 2.5 montre que X − µ prend
+presque sûrement ses valeurs dans le sous-espace Im(Σ), de dimension k, qui est de mesure de
+Lebesgue nulle dans Rn : la loi N (µ, Σ) n’est alors pas absolument continue par rapport à Leb⊗n
+et n’admet pas de densité (loi dégénérée). C’est le cas des lois N (PF µ, σ 2 PF ) du théorème de
+Cochran (Section 1.9). Pour Σ = σ 2 In , on retrouve la densité produit de l’exemple de l’échantillon
+gaussien de la Section 1.5.
+
+
+     Illustration / animation : Les ellipses de niveau de la densité gaussienne
+     suivent les axes propres de la covariance
+     On illustre ici, pour Γ choisie par σ1 , σ2 , ρ, la carte de densité de N (0, Γ)
+     sur R2 et ses ellipses de niveau, orientées selon les axes principaux de Γ ; la
+     covariance empirique du nuage X = AZ s’affiche une fois demandée.                   link
+
+
+
+
+Fonction Gamma, lois Gamma, du χ2 et de Student
+La fonction Gamma. Pour α > 0, l’intégrale
+                                     Z +∞
+                            Γ(α) :=        y α−1 e−y dy
+                                                0
+
+converge et définit un réel strictement positif : au voisinage de 0, l’intégrande est équivalent à
+y α−1 , intégrable car α > 0, et à l’infini la décroissance exponentielle l’emporte. On a Γ(1) =
+R +∞ −y
+ 0
+       e dy = 1 et, pour α > 1, une intégration par parties donne
+                     h           i+∞             Z +∞
+              Γ(α) = − y α−1 e−y      + (α − 1)        y α−2 e−y dy = (α − 1) Γ(α − 1) .
+                                   0                0
+
+Par récurrence, pour tout entier n ≥ 1, Γ(n) = (n − 1)(n
+                                                      √ − 2) · · · 1 · Γ(1) = (n − 1)! : la fonction
+Gamma prolonge la factorielle. On a aussi Γ(1/2) = π : le changement de variable y = x2 /2
+                 √ R +∞     2        √ √            √
+donne Γ(1/2) = 2 0 e−x /2 dx = 2 · 2π/2 = π, la dernière intégrale se calculant à partir
+de la densité gaussienne réduite. Par construction, Γ(p) est la constante de normalisation de la
+densité fp de la loi Gamma réduite Gamma(p) définie en Section 2.
+
+Moments et fonction caractéristique des lois Gamma. Soit Z ∼ Gamma(p), avec p > 0.
+Pour tout réel r > −p,
+                                      Z +∞
+                                   1                       Γ(p + r)
+                       E [Z r ] =          xr+p−1 e−x dx =          ,
+                                  Γ(p) 0                     Γ(p)
+
+et E[Z r ] = +∞ si r ≤ −p. En particulier E[Z] = p, E[Z 2 ] = p(p + 1) et Var(Z) = p. Pour
+X = Z/λ ∼ Gamma(p, λ), on en déduit E[X r ] = λ−r Γ(p + r)/Γ(p), en particulier E[X] = p/λ,
+2. LES OUTILS MATHÉMATIQUES                                                                            31
+
+Var(X) = p/λ2 et, pour p > 1, E[1/X] = λ/(p − 1). Ce sont ces formules, avec des exposants r
+négatifs, qui donnent l’espérance et l’erreur quadratique de l’estimateur θ̂n,1 = 1/X̄n du modèle
+                                   Pn                                                        n
+exponentiel (Section 4) : sous Pθ , i=1 Xi ∼ Gamma(n, θ) et Eθ [θ̂n,1 ] = nθ Γ(n−1)/Γ(n) = n−1 θ.
+   La fonction caractéristique de la loi Gamma(p, λ) vaut
+                                                                −p
+                                                            it
+                           ϕp,λ (t) = E eitX =
+                                           
+                                                       1−              ,    t∈R,
+                                                            λ
+
+où la puissance est définie par la détermination principale du logarithme, le nombre complexe
+1 − it/λ étant de partie réelle strictement positive. On l’obtient en calculant d’abord, pour s < λ
+                 λp
+                     R +∞ p−1 −(λ−s)x
+réel, E[esX ] = Γ(p)  0
+                          x e             dx = (1−s/λ)−p (changement de variable u = (λ−s)x), puis
+en observant que les deux membres sont des fonctions holomorphes de s sur le demi-plan {Re(s) <
+λ} qui coïncident sur un segment réel : elles coïncident sur tout le demi-plan, en particulier en
+s = it. Cette expression démontre la propriété d’additivité énoncée en Section 2 : si XQ  1 , . . . , Xn
+                                                                                              n
+sont indépendantes de P  lois Gamma(pi , λ), la fonction P
+                                                         caractéristique de leur somme est i=1 (1 −
+                        − i pi
+it/λ) −pi
+          = (1 − it/λ)         , qui est celle de Gamma( i pi , λ).
+
+Loi du χ2 .
+Définition 11 (Loi du χ2 à ν degrés de liberté). Soient ν ∈ N∗ et X1 , . . . , Xν des variables
+aléatoires indépendantes de loi N (0, 1). La loi de la variable aléatoire
+                                                   ν
+                                                   X
+                                              U=          Xi2
+                                                    i=1
+
+est appelée loi du χ2 ( khi-deux) centrée à ν degrés de liberté, et notée χ2 (ν).
+
+   Proposition 2.8: La loi du χ2 est une loi Gamma
+
+    (i) Si X ∼ N (0, 1), alors X 2 ∼ Gamma(1/2, 1/2).
+   (ii) Pour tout ν ∈ N∗ , χ2 (ν) = Gamma(ν/2, 1/2) : la loi χ2 (ν) admet pour densité par
+        rapport à Leb
+                                           1
+                              fν (x) = ν/2     xν/2−1 e−x/2 1R∗+ (x) ,
+                                      2 Γ(ν/2)
+        et si U ∼ χ2 (ν), alors E[U ] = ν et Var(U ) = 2ν.
+
+   Démonstration
+  (i) Utilisons la méthode de la fonction muette (Section 2). Pour h mesurable positive sur√R,
+                                                                             2
+  par parité de
+              √la densité gaussienne puis par le changement de variable u = x sur R+ (x = u,
+                                                                                   ∗
+
+  dx = du/(2 u)),
+                              Z +∞             2            Z +∞
+                                           e−x /2                            1
+              E h(X 2 ) = 2          h(x2 ) √                          h(u) √ u−1/2 e−u/2 du .
+                      
+                                                  dx =
+                               0              2π             0               2π
+                     √                 √                                                 1/2
+  Comme Γ(1/2) = π, on a 1/ 2π = (1/2)1/2 /Γ(1/2), et la fonction u 7→ (1/2)         Γ(1/2) u
+                                                                                              1/2−1 −u/2
+                                                                                                   e
+  est la densité f1/2,1/2 de la loi Gamma(1/2, 1/2).
+  (ii) Les variables X12 , . . . , Xν2 sont indépendantes, de loi Gamma(1/2, 1/2) ; par additivité des
+  lois Gamma de même paramètre λ = 1/2, leur somme             Pν suit la2 loi Gamma(ν/2, 1/2), dont
+  la densité fν/2,1/2 est celle annoncée. Enfin      E[U  ] =     i=1 E[Xi ] = ν et, par indépendance,
+  Var(U ) = ν Var(X12 ) = ν E[X14 ] − E[X12 ]2 = 2ν, d’après les moments de la loi gaussienne
+                                                   
+
+  réduite.                                                                                            □
+32                                                      CHAPITRE 1. MODÈLES STATISTIQUES
+
+     Proposition 2.9: Formes quadratiques de vecteurs gaussiens
+     (i) Soit X ∼ N (µ, Σ) un vecteur gaussien de Rn dont la matrice de covariance Σ est définie
+         positive. Alors (X − µ)⊤ Σ−1 (X − µ) ∼ χ2 (n).
+     (ii) Soient σ > 0, Z ∼ N (0, σ 2 In ) et Π la matrice d’une projection orthogonale de Rn de
+          rang k ≥ 1. Alors ∥ΠZ∥2 /σ 2 ∼ χ2 (k).
+
+     Démonstration
+  (i) D’après la Proposition 2.5, X a même loi que AZ + µ où A est inversible, AA⊤ = Σ et
+  Z ∼ N (0, In ), dont les coordonnées sont indépendantes de loi N (0, 1) P      (Proposition 2.6). Alors
+                                                                                   n
+  (X − µ)⊤ Σ−1 (X − µ) a même loi que Z ⊤ A⊤ (AA⊤ )−1 AZ = Z ⊤ Z = i=1 Zi2 ∼ χ2 (n).
+  (ii) Soit H = [h1 , . . . , hk ] la matrice de taille n × k dont les colonnes forment une base ortho-
+  normée de l’image de Π : on a H ⊤ H = Ik et Π = HH ⊤ , les deux membres étant symétriques,
+  égaux à l’identité sur Im(Π) et nuls sur son orthogonal. Comme Π est symétrique et idem-
+  potente, ∥ΠZ∥2 = Z ⊤ Π⊤ ΠZ = Z ⊤ ΠZ = Z ⊤ HH ⊤ Z = ∥H ⊤ Z∥2 . La Proposition 2.4 donne
+  H ⊤ Z ∼ N (0, σ 2 H ⊤ H) = N (0, σ 2 Ik ) : le vecteur H ⊤ Z/σ a des coordonnées indépendantes de
+  loi N (0, 1), et ∥ΠZ∥2 /σ 2 = ∥H ⊤ Z/σ∥2 ∼ χ2 (k).                                                   □
+
+
+  Remarque. Si dans (ii) le vecteur Z suit la loi N (µ, σ 2 In ) avec µ ̸= 0, le même calcul donne
+  ∥ΠZ∥2 /σ 2 = ∥E∥2 avec E ∼ N (H ⊤ µ/σ, Ik ). La loi de ∥E∥2 ne dépend de m = H ⊤ µ/σ que
+  par ∥m∥2 = ∥Πµ∥2 /σ 2 , car la loi N (0, Ik ) est invariante par les transformations orthogonales
+  (Proposition 2.4) : on l’appelle loi du χ2 à k degrés de liberté non centrée, de paramètre de
+  non-centralité ∥Πµ∥2 /σ 2 . Elle n’est pas utilisée dans ce chapitre.
+
+Loi de Student.
+Définition 12 (Loi de Student à r degrés de liberté). Soient r ∈ N∗ , X ∼ N (0, 1) et Y ∼
+χ2 (r) deux variables aléatoires indépendantes. La loi de la variable aléatoire
+                                                   X
+                                               T =p
+                                                    Y /r
+est appelée loi de Student à r degrés de liberté, et notée t(r).
+La variable Y est strictement positive presque sûrement, de sorte que T est bien définie. On montre,
+par la formule de changement de variables appliquée au couple (X, Y ), que la loi t(r) admet pour
+densité
+                                                      − r+1
+                                    Γ r+1
+                                            
+                                        2          t2     2
+
+                          fr (t) =    r √
+                                              1+            ,     t∈R.
+                                   Γ 2 rπ          r
+Cette densité est symétrique et décroît polynomialement : la loi de Student a des queues plus
+lourdes que la loi gaussienne. Pour r = 1, on retrouve la loi de Cauchy, de densité 1/(π(1 + t2 )),
+qui n’a pas d’espérance ; lorsque r → +∞, la loi t(r) converge vers N (0, 1), car Y /r converge vers
+1 en probabilité d’après la loi des grands nombres. Ces compléments sont démontrés dans l’annexe
+du polycopié.
+
+Domination, densités, théorème de Radon-Nikodym
+    Le théorème de Radon-Nikodym (??) montre que le modèle (Z, Z, C) est dominé par µ si et
+seulement si toute loi P ∈ C est absolument continue par rapport à µ (voir ??). Les mesures de
+référence usuelles sont la mesure de Lebesgue Leb (lois « à densité » classiques) et les mesures de
+comptage (lois discrètes). La mesure de domination n’est pas unique, mais ce choix n’affecte pas
+les quantités utilisées en statistique (rapports de densités, vraisemblance) : deux densités relatives
+à deux mesures dominantes diffèrent d’un facteur multiplicatif qui ne dépend pas de θ (Section 4,
+où l’on trouve aussi des exemples de modèles non dominés).
+2. LES OUTILS MATHÉMATIQUES                                                                        33
+
+Compléments de théorie de la mesure
+    Les notions rappelées ici interviennent dès la définition d’un modèle statistique : la tribu
+borélienne B(Rn ) des exemples des tailles et de l’échantillon gaussien, et les mesures à densité
+p · µ de la définition d’un modèle dominé (Définition 1). Elles sont développées dans l’annexe du
+polycopié (??, ?? et ??) ; nous nous contentons ici d’en rappeler les énoncés.
+
+Tribu engendrée, tribu borélienne. Soit E un ensemble. L’ensemble P(E) de toutes les parties
+de E est une tribu, et l’intersection d’une famille quelconque de tribus sur E est encore une tribu.
+Étant donnée une classe C de parties de E, on peut donc parler de la plus petite tribu contenant
+C.
+
+Définition 13 (Tribu engendrée, tribu borélienne). Soit C ⊂ P(E). La tribu engendrée par
+C est l’intersection de toutes les tribus sur E contenant C ; on la note σ(C).
+   Soient E un espace topologique et O la classe de ses ouverts. La tribu σ(O) s’appelle la tribu
+borélienne de E et se note B(E).
+
+    La tribu borélienne est aussi engendrée par les fermés. Dans ce cours, l’espace topologique
+est presque toujours Rd muni de sa topologie usuelle (celle de la distance euclidienne) ; la tribu
+B(Rd ) est alors aussi engendrée par les boules, par les pavés, et même par les pavés à coordonnées
+rationnelles (cette dernière famille ayant l’avantage d’être dénombrable). Elle coïncide avec la tribu
+produit B(R)⊗d de la Section 2, ce qui justifie que le n-échantillon d’un modèle sur (R, B(R)) ait
+pour espace des observations (Rn , B(Rn )). Enfin, toute application continue de Rd dans Rk est
+mesurable pour les tribus boréliennes : les statistiques usuelles (moyenne empirique, maximum,
+médiane empirique) sont donc bien des applications mesurables.
+
+Mesures à densité, absolue continuité.
+
+Définition 14 (Mesure à densité, absolue continuité, domination). Soient (E, E) un es-
+pace mesurable et µ une mesure sur E.
+                                                                       R
+  (i) Pour toute fonction mesurable positive f , l’application ν : B 7→ B f dµ est une mesure sur
+      E, appelée mesure de densité f Rpar rapport
+                                                R à µ et notée ν = f · µ. Pour toute fonction
+      mesurable positive h, on a alors h dν = hf dµ.
+ (ii) Une mesure ν sur E est dite absolument continue par rapport à µ, ce que l’on note ν ≪ µ,
+      si pour tout B ∈ E, µ(B) = 0 implique ν(B) = 0. On dit aussi que µ domine ν.
+
+    Une mesure à densité f · µ est absolument continue par rapport à µ : l’intégrale de f sur
+un ensemble µ-négligeable est nulle. Le théorème de Radon-Nikodym affirme la réciproque, sous
+l’hypothèse que µ est σ-finie, c’est-à-dire que E est réunion dénombrable d’ensembles de µ-mesure
+finie : c’est le cas de la mesure de Lebesgue sur Rd , des mesures de comptage sur les ensembles
+dénombrables et de toutes les mesures finies.
+
+   Théorème 2.1: Théorème de Radon-Nikodym
+  Soient µ une mesure σ-finie sur un espace mesurable (E, E) et ν une mesure absolument
+  continue par rapport à µ. Il existe une fonction mesurable positive f , unique à un ensemble
+  µ-négligeable près, telle que ν = f · µ. Cette fonction est appelée densité (ou dérivée de
+                                                        dν
+  Radon-Nikodym) de ν par rapport à µ et se note f = dµ    . De plus,
+    (i) f est µ-presque partout finie si et seulement si ν est σ-finie ;
+   (ii) f est µ-intégrable si et seulement si ν est une mesure finie.
+
+   Ce théorème est admis dans ce cours ; il est énoncé et commenté dans l’annexe du polycopié
+(??). Appliqué à une loi de probabilité P, qui est une mesure finie, il dit que P admet une densité
+par rapport à µ si et seulement si P ≪ µ, la densité étant alors µ-intégrable et d’intégrale 1. C’est
+34                                                  CHAPITRE 1. MODÈLES STATISTIQUES
+
+ce qui justifie l’équivalence rappelée en Section 2 : le modèle (Z, Z, C) est dominé par la mesure
+σ-finie µ si et seulement si toute loi P ∈ C est absolument continue par rapport à µ. Ainsi, la loi
+N (m, σ 2 ) avec σ 2 > 0 et la mesure de Lebesgue Leb sont absolument continues l’une par rapport
+à l’autre, car la densité gaussienne est strictement positive ; en revanche, la masse de Dirac δa
+n’est pas absolument continue par rapport à Leb, puisque Leb({a}) = 0 alors que δa ({a}) = 1 :
+elle n’admet pas de densité par rapport à Leb. Nous retrouverons cette situation avec les lois
+gaussiennes dégénérées de la Section 2.
+

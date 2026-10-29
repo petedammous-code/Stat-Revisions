@@ -1,0 +1,963 @@
+4. LES EXERCICES                                                                                           39
+
+4     Les exercices
+    Par convention, les vecteurs sont des vecteurs colonne, et pour un vecteur a, a⊤ désigne sa
+transposée.
+
+
+4.1     Questions courtes : avez-vous assimilé le chapitre ?
+   Avant d’aborder les exercices, vérifiez votre compréhension du chapitre en répondant – de tête,
+sans revenir au texte – aux questions suivantes. En cas d’hésitation, la référence entre parenthèses
+renvoie au passage concerné.
+    1. Rappeler la définition d’une région de confiance et de son niveau de couverture 1 − α.
+       Sur quoi porte l’aléa dans l’énoncé de cette garantie : sur le paramètre, ou sur la région ?
+       (Définition 1.1)
+    2. Vrai ou faux : si l’intervalle de confiance calculé sur un jeu de données particulier vaut [0, 2],
+       alors Pθ (θ ∈ [0, 2]) ≥ 1 − α. (Définition 1.1, paragraphe « Qui est aléatoire ? »)
+    3. Qu’est-ce qu’une fonction pivotale ? La condition qui la caractérise signifie-t-elle que G ne
+       dépend pas du paramètre ? (Définition 1.2)
+    4. Rappeler les quatre étapes de la construction d’une région de confiance à partir d’une fonction
+       pivotale. (Méthode 1.1)
+    5. Qu’est-ce qu’un test pur ? Définir sa région de rejet et sa région d’acceptation. (Définition 2.1)
+    6. Définir la fonction puissance d’un test. Comment s’expriment, à partir d’elle, la taille et le
+       niveau du test ? (Définition 2.2, Définition 2.3)
+    7. Pourquoi ne peut-on pas, en général, minimiser simultanément l’erreur de première espèce
+       et l’erreur de seconde espèce d’un test ? Quel parti adopte l’approche de Neyman-Pearson ?
+       (Section 2.4)
+    8. Définir la p-valeur d’une observation pour une famille de tests emboîtés. Que peut-on en
+       conclure si elle vaut 2 % ? (Définition 2.4)
+    9. Vrai ou faux : sous l’hypothèse nulle, la p-valeur suit toujours exactement la loi uniforme
+       sur ]0, 1[. (Proposition 2.2)
+ 10. Qu’est-ce que la fonction quantile d’une loi de probabilité, y compris lorsque sa fonction de
+     répartition n’est pas inversible ? (Définition 3.1)
+
+
+4.2     Groupe 1 — Exercices traités en petite classe
+   Les trois exercices de ce groupe couvrent, dans l’ordre du chapitre, les deux notions qu’il
+développe : la construction d’une région de confiance par une fonction pivotale (exercices 1 et 3),
+puis celle d’un test à partir du même pivot (exercices 1 et 2). L’exercice 1 est le seul de la feuille
+à porter sur un modèle non gaussien ; l’exercice 2, annoncé en amphi comme étant à savoir faire,
+redémontre le théorème de Gosset ; l’exercice 3 construit le seul intervalle de confiance du cours
+dont l’optimum n’est pas symétrique.
+
+Objectif : fonction pivotale, test et intervalle de confiance dans le modèle exponentiel
+Cet exercice applique la méthode de construction par un pivot (Section 1.2) au seul modèle non
+gaussien de la feuille : on y établit qu’une transformation simple de la somme des observations
+suit une loi χ2 (2n), on en tire un test unilatéral de niveau α, sa fonction puissance, sa taille et sa
+p-valeur, puis un intervalle de confiance bilatéral et les deux bornes unilatérales qui s’en déduisent.
+
+Exercice 1 (Modèle exponentiel (⋆⋆)). Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle statistique
+                                                                         
+                                 R+ , B(R+ ), {E(1/θ) , θ ∈ Θ := R∗+ } ,
+40                                              CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+où E(λ) désigne, comme au Section 1.1, la loi exponentielle d’intensité λ, de densité x 7→ λe−λx sur R+ .
+Dans cet exercice, θ est l’espérance de la loi et non son intensité : la densité du modèle s’écrit donc
+
+                                                pθ (x) := θ−1 e−x/θ .
+
+Soient α ∈ ]0, 1[ et θ0 > 0. On effectuera les applications numériques avec θ0 = 2, α = 5 % et le n-
+échantillon de taille n = 10 donné par
+
+                     {2,9, 4,2, 5,9, 1,7, 6,8, 1,3, 1,5, 0,2, 0,4, 3,2} ,         de somme 28,1 .
+
+     1. On souhaite tester H0 : θ = θ0 ,      contre   H1 : θ > θ0 .
+                                              P
+         (a)   Montrer que, sous pθ ·Leb, 2θ−1 n                     2
+                                                i=1 Xi suit une loi χ (2n). On pourra utiliser la décomposition
+             d’une loi exponentielle comme loi Gamma et la stabilité de cette famille par somme (Section 2) ;
+             la figure 1 trace la densité de la loi du χ2 pour différents degrés de liberté.
+         (b) Proposer un estimateur de θ. On pourra comparer l’estimateur du maximum de vraisemblance
+             et l’estimateur des moments associé à la statistique T (x) = x.
+         (c) En déduire un test de niveau α.
+         (d) Donner l’expression de la fonction puissance et calculer la taille du test. La figure 1 donne
+             l’allure de la fonction puissance pour différentes valeurs de la valeur critique.
+         (e) Calculer la p-valeur.
+     2. On souhaite tester H0 : θ ≤ θ0 ,      contre   H1 : θ > θ0 .
+         (a) Donner la forme d’une région de rejet de niveau α.
+         (b) Étudier la fonction puissance du test.
+         (c) Calculer la p-valeur.
+     3. Intervalles de confiance pour θ.
+                                                                P
+         (a) En utilisant la fonction pivotale G(Z, θ) := 2θ−1 n  i=1 Xi , construire un intervalle de confiance
+             bilatéral exact de niveau 1 − α pour θ.
+         (b) En déduire des bornes de confiance unilatérales exactes de niveau 1−α pour θ (borne supérieure
+             seule, puis borne inférieure seule).
+                                                                    Pn
+         (c) Application numérique avec α = 5 %, n = 10 et            i=1 Xi = 28,1 : donner l’intervalle de
+             confiance bilatéral pour θ, sachant que χ20,025 (20) ≈ 9,59 et χ20,975 (20) ≈ 34,17.
+Corrigé : page 46.                                                                                            ♢
+
+
+Objectif : test bilatéral sur la moyenne et théorème de Gosset
+Cet exercice traite le test bilatéral sur la moyenne d’un échantillon gaussien, d’abord à variance
+connue, puis à variance inconnue : la seconde moitié redémontre, par la projection orthogonale sur
+la droite engendrée par le vecteur constant, l’indépendance de X̄n et Sn2 et la loi de (n − 1)Sn2 /σ 2 ,
+c’est-à-dire le théorème de Gosset du chapitre 1, avant d’en tirer le test de Student.
+Exercice 2 (Modèle gaussien (⋆⋆)). Soit σ 2 > 0 un réel fixé (connu) et soit Z = (X1 , . . . , Xn ) un n-
+échantillon du modèle statistique
+                                                                
+                                    R, B(R), N (µ, σ 2 ) , µ ∈ R   .
+
+Soit µ0 ∈ R. On souhaite tester
+
+                                      H0 : µ = µ 0 ,   contre    H1 : µ ̸= µ0 .
+
+Pour c > 0, on considère le test pur ϕc (Z) := 1{T (Z)≥c} dont la statistique de test T (Z) est donnée par
+                                                                                 n
+                                          √ |X̄n − µ0 |                       1X
+                               T (Z) :=    n            ,       où   X̄n :=         Xi .
+                                                 σ                            n i=1
+
+     1. Déterminer la fonction puissance du test (pour une valeur critique c fixée) ; l’exprimer à l’aide de la
+        fonction de répartition Φ de N (0, 1). La figure 2 trace cette fonction puissance dans le cas µ0 = 0,
+        pour une valeur critique garantissant un test de niveau α = 5 %, et pour différentes valeurs de n.
+4. LES EXERCICES                                                                                              41
+
+
+
+
+          0.5                                                            1
+                                         p=2
+                                                                                 c=c
+         0.45                            p=3                           0.9
+                                         p=6                                     c = 1.3 c
+          0.4                            p=10                          0.8       c = 1.7 c
+                                                                                 c=2c
+         0.35                                                          0.7
+
+          0.3                                                          0.6
+
+         0.25                                                          0.5
+
+          0.2                                                          0.4
+
+         0.15                                                          0.3
+
+          0.1                                                          0.2
+
+         0.05                                                          0.1
+
+            0                                                            0
+                0   2   4   6   8   10          12                           0      2        4   6   8   10
+
+
+
+
+Figure 1 – [gauche] Exercice 1. Densité d’une loi du χ2 pour différents degrés de liberté p ; lorsque
+p ≥ 2, le mode de la densité est atteint en x = p − 2. [droite] Exercice 1. Fonction puissance de
+plusieurs tests répondant à la contrainte de niveau ; le test dont la valeur critique est cα a une
+taille égale à α.
+
+
+   2. Déterminer, en fonction de la valeur critique c, la taille du test. En déduire la valeur critique d’un
+      test de niveau α ∈ ]0, 1[.
+   3. Calculer la p-valeur associée à l’observation Z.
+On suppose dorénavant que la variance σ 2 est inconnue, c’est-à-dire que l’observation Z = (X1 , . . . , Xn )
+est un n-échantillon du modèle
+                                                                            
+                             R, B(R), N (µ, σ 2 ) , θ := (µ, σ 2 ) ∈ R × R∗+   .
+
+   4. Montrer que sous Pθ , les statistiques X̄n et Sn2 sont indépendantes. Indication : on pourra exprimer
+      X̄n et Sn2 à l’aide de la projection orthogonale Π sur le sous-espace vectoriel engendré par le vecteur
+      constant 1 = (1, . . . , 1)⊤ de Rn .
+   5. Montrer que sous Pθ , (n − 1)Sn2 /σ 2 suit une loi χ2 (n − 1).
+Pour répondre au même problème de test, on propose cette fois le test pur ϕ   ec (Z) := 1 e
+                                                                                          {T (Z)≥c} , dont la
+                                 √
+statistique de test est Te(Z) := n |X̄n − µ0 |/Sn .
+                                    √
+   6. Sous Pθ , déterminer la loi de n(X̄n − µ0 )/Sn . On pourra utiliser la définition de la loi de Student
+       non centrale (Section 3).
+   7. Déterminer, en fonction de la valeur critique c, la taille du test.
+   8. Déterminer la valeur critique d’un test de niveau α ∈ ]0, 1[.
+   9. Calculer la p-valeur de l’observation Z.
+Corrigé : page 49.                                                                                            ♢
+
+
+Objectif : intervalle de confiance de longueur minimale pour la loi uniforme
+42                                             CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+                                                                 0.8
+       1                                                                                              nu=0
+                                                                                                      nu=1
+     0.9                                                         0.7
+                                                                                                      nu=2
+
+     0.8                                                         0.6
+
+     0.7
+                                                                 0.5
+     0.6
+                                                                 0.4
+     0.5
+                                      n=5
+                                      n=10
+     0.4                                                         0.3
+                                      n=20
+                                      y=0.05
+     0.3
+                                                                 0.2
+     0.2
+                                                                 0.1
+     0.1
+
+       0                                                           0
+        -5               0                     5                       0   1      2       3       4          5
+
+
+
+
+Figure 2 – Exercice 2. [gauche] Fonction puissance µ 7→ βc (µ) pour n ∈ {5, 10, 20}, avec µ0 = 0,
+σ = 1 et c = z0,975 ; la droite horizontale est d’équation y = 0,05. [droite] Densité de |X| (à une
+constante multiplicative près) lorsque X ∼ N (ν, 1), pour différentes valeurs de ν.
+
+Cet exercice reprend le pivot Xn:n /θ de l’Exemple 1.2 et va au bout de la question laissée ouverte
+au Section 1.2 : parmi tous les ensembles Aα de probabilité 1 − α sous la loi du pivot, lequel
+donne l’intervalle le plus court ? C’est le seul exemple du cours où la réponse n’est pas l’intervalle
+symétrique.
+Exercice 3 (Intervalle de confiance pour la loi uniforme (⋆)). Soit (X1 , . . . , Xn ) un n-échantillon du mo-
+dèle {U([0, θ]) , θ ∈ Θ := R∗+ }. On pose Xn:n := max(X1 , . . . , Xn ).
+   1. Montrer que Xn:n /θ est une fonction pivotale pour θ. La figure 3 trace la densité de Xn:n /θ et celle
+      de son inverse θ/Xn:n .
+   2. Déterminer l’intervalle de confiance de probabilité de couverture 1 − α de longueur minimale.
+Corrigé : page 50.                                                                                               ♢
+
+
+4.3          Groupe 2 — Exercices bonus
+Guide de lecture. Les quatre exercices qui suivent ne sont pas traités en petite classe. L’exercice
+Modèle de Poisson (⋆) est le plus court : c’est le seul test d’une hypothèse simple contre
+une alternative simple de la feuille, et donc la seule préparation directe au lemme de Neyman-
+Pearson du chapitre 5 ; commencez par lui. L’exercice Modèle gaussien à deux échantillons
+(⋆ ⋆ ⋆) prolonge l’exercice sur le modèle gaussien du groupe précédent au cas de deux échantillons
+indépendants : il met en œuvre la dualité entre intervalle et test, puis introduit la loi de Fisher pour
+comparer deux variances ; il est le plus long de la feuille. L’exercice Campagne de vaccination
+(⋆⋆) applique le même formalisme à des données réelles, avec un changement de point de vue sur
+le choix de l’hypothèse nulle ; il se lit indépendamment des deux précédents. L’exercice Test de
+Wilcoxon (⋆ ⋆ ⋆), seul test non paramétrique du cours et seul test construit par une inégalité de
+déviation, est le plus technique : on y calcule la loi d’une statistique de rang par un argument de
+permutation, ce qui ne ressemble à aucun autre calcul de la feuille. Abordez-le en dernier.
+
+Objectif : test d’une hypothèse simple contre une alternative simple dans le modèle
+de Poisson
+Exercice 4 (Modèle de Poisson (⋆)). Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique (N, P(N), {Poi(θ) , θ > 0}).
+On souhaite tester H0 : θ = 1, contre H1 : θ = 2.
+                         P
+   1. Rappeler la loi de n  i=1 Xi sous Pθ , θ > 0.
+Dans la suite, on prend n = 10.
+   2. Proposer un test de niveau 5 %. Quelle est la taille de ce test ? Comme la statistique de test est
+      à valeurs entières, l’inégalité stricte et l’inégalité large ne donnent pas la même valeur critique
+      (Section 2.2) ; on retient ici l’inégalité stricte, sous laquelle les valeurs numériques ci-dessous sont
+      calculées.
+4. LES EXERCICES                                                                                                            43
+
+
+
+
+           15                                                                  15
+                    n=5                                                                                          n=5
+                    n=10                                                                                         n=10
+                    n=15                                                                                         n=15
+
+
+
+
+           10                                                                  10
+
+
+
+
+            5                                                                   5
+
+
+
+
+            0                                                                   0
+                0     0.2   0.4    0.6    0.8     1                                 1      1.5     2       2.5          3
+
+
+
+
+Figure 3 – Exercice 3. Pour n ∈ {5, 10, 15}, [gauche] densité x 7→ nxn−1 de Xn:n /θ sur [0, 1] et
+[droite] densité y 7→ ny −(n+1) de θ/Xn:n sur [1, +∞[.
+
+
+   3. Donner l’expression de la fonction puissance. La figure 4 la trace.
+   4. Pour chacun des échantillons suivants, calculer la p-valeur.
+
+                                  {2, 3, 3, 1, 4, 0, 1, 4, 0, 0}   et   {4, 2, 1, 1, 0, 1, 0, 2, 0, 2} .
+
+Corrigé : page 50.                                                                                                          ♢
+
+
+Objectif : dualité intervalle-test à deux échantillons gaussiens, et comparaison de deux
+variances
+Exercice 5 (Modèle gaussien à deux échantillons (⋆ ⋆ ⋆)). On dispose d’une variable qualitative binaire
+qui définit deux groupes, et d’une variable quantitative mesurée dans chacun d’eux. On veut savoir si
+les moyennes observées dans les deux groupes peuvent être considérées comme des estimateurs d’une
+même moyenne, aux fluctuations de l’échantillonnage près. On observe n mesures dans le groupe 0 et
+p mesures dans le groupe 1, considérées comme l’observation de mécanismes aléatoires indépendants et
+gaussiens, de paramètres dépendant uniquement du groupe. On introduit donc le modèle statistique
+                                                                                                   
+               Rn+p , B(Rn+p ), N (µ0 , σ 2 )⊗n ⊗ N (µ1 , σ 2 )⊗p , θ := (µ0 , µ1 , σ 2 ) ∈ R2 × R∗+   ,
+
+où X1 , . . . , Xn désignent les n premières variables canoniques et Y1 , . . . , Yp les p dernières.
+   1. Déterminer l’estimateur du maximum de vraisemblance du paramètre θ.
+   2. Construire un intervalle de confiance pour µ0 − µ1 de niveau de couverture 1 − α.
+   3. En déduire un test de niveau α de l’hypothèse H0 : µ0 = µ1 ,                      contre   H1 : µ0 ̸= µ1 .
+   4. Construire un test de niveau α de l’hypothèse H0 : µ0 ≤ µ1 ,                      contre   H1 : µ0 > µ 1 .
+On utilise ce test pour comparer la consistance de deux correcteurs de l’examen d’entrée à l’École poly-
+technique, à partir des notes qu’ils ont attribuées (sur 100) :
+44                                             CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+                                                       Correcteur #1      Correcteur #2
+                           Nombre d’observations            120                120
+                                Moyenne                      75               74,99
+                               Écart-type                   8,72               6,54
+
+     5. Quelle est la p-valeur du test ? Qu’en concluez-vous ?
+On suppose maintenant que les variances des deux groupes sont différentes, notées σ02 et σ12 ; le paramètre
+devient θ := (µ0 , µ1 , σ02 , σ12 ).
+     6. Construire une fonction pivotale pour σ12 /σ02 . On pourra utiliser la loi de Fisher (Section 3) ; la
+        figure 5 en trace la densité pour deux jeux de paramètres.
+     7. En déduire un test de niveau α de l’hypothèse H0 : σ02 ≤ σ12 ,        contre   H1 : σ02 > σ12 .
+     8. Calculer la p-valeur de ce test.
+Corrigé : page 51.                                                                                                ♢
+
+
+Objectif : choix de l’hypothèse nulle sur des données réelles
+Exercice 6 (Campagne de vaccination (⋆⋆)). Des plaignants 1 ont poursuivi en justice le ministère de la
+Santé à la suite d’une campagne de vaccination menée sur des enfants et ayant entraîné des dommages
+fonctionnels irréversibles pour certains d’entre eux. Ce vaccin était connu pour entraîner ce type de dom-
+mages en de très rares circonstances : des études antérieures menées dans d’autres pays avaient établi
+un risque moyen d’un cas sur 310 000 vaccinations. Les plaignants avaient été informés de ce risque et
+l’avaient accepté. Les doses ayant provoqué les dommages objet de la plainte provenaient d’un lot ayant
+servi à vacciner un groupe de 300 533 enfants, parmi lesquels quatre cas de dommages ont été détectés.
+     1. On modélise l’événement « le vaccin provoque des dommages fonctionnels irréversibles sur l’enfant
+        i » par une variable aléatoire de Bernoulli Xi de paramètre p. Calculer la valeur p0 du paramètre
+        correspondant aux résultats des études antérieures.
+On considère le test H0 : p ≤ p0 , contre H1 : p > p0 ; l’hypothèse nulle correspond au risque que les
+plaignants avaient accepté.
+                      P
+   2. On pose Sn := n    i=1 Xi avec n = 300 533. Pour α ∈ [0, 1], déterminer un test de niveau α fondé sur
+      la statistique Sn . Comme Sn est à valeurs entières, on retient ici l’inégalité stricte dans la région
+      de rejet (Section 2.2), qui est celle sous laquelle les valeurs numériques ci-dessous ont été calculées.
+     3. On donne Pp0 (Sn > 0) = 0,6207, Pp0 (Sn > 1) = 0,2530, Pp0 (Sn > 2) = 0,0748, Pp0 (Sn > 3) =
+        0,0172, Pp0 (Sn > 4) = 0,0032. Le test rejette-t-il H0 au niveau 5 % ? au niveau 1 % ?
+     4. Quelle est la p-valeur de l’observation ?
+On peut aussi modéliser la loi du nombre Sn de cas de dommages par une loi de Poisson de paramètre θ.
+     5. Calculer la valeur θ0 attendue si le vaccin est conforme aux études antérieures.
+     6. Les plaignants demandent que le test établisse effectivement que le nombre moyen d’accidents reste
+        inférieur à θ0 : pour eux, ce nombre moyen est supérieur à θ0 , sauf preuve du contraire. Proposer
+        un test fondé sur Sn traduisant ce point de vue.
+     7. Donner la p-valeur de ce test. Le test rejette-t-il H0 au seuil de 5 % ?
+Corrigé : page 53.                                                                                                ♢
+
+
+Objectif : test non paramétrique par la statistique de rang de Wilcoxon
+Exercice 7 (Test de Wilcoxon (⋆ ⋆ ⋆)). On rappelle que pour une suite de réels x1 , . . . , xq , la notation xℓ:q
+désigne la suite ordonnée : x1:q ≤ x2:q ≤ · · · ≤ xq:q .
+    Une firme pharmaceutique a mis au point une nouvelle molécule destinée à faire baisser le taux de
+sucre dans le sang, et la compare à un placebo. Elle réunit n + m patients ; à un premier groupe de m
+individus, elle administre un placebo (sans le leur dire), et au second sa nouvelle molécule. Après un délai
+approprié, on mesure les taux de glycémie {Xi }i=1,...,n et {Yj }j=1,...,m dans les deux groupes.
+    On suppose que les variables aléatoires (X1 , . . . , Xn , Y1 , . . . , Ym ) sont indépendantes ; que les Xi ont
+même loi, de fonction de répartition FX continue ; et que les Yj ont même loi, de fonction de répartition
+     1. M. Aitkin. Evidence and the Posterior Bayes Factor. Math. Scientist, vol. 17, pp. 15-25 (1992).
+4. LES EXERCICES                                                                                            45
+
+FY continue. On veut tester si les lois des X et des Y sont les mêmes, ou si les Yi sont stochastiquement
+plus petits que les Xi , c’est-à-dire FX < FY : on teste donc H0 : FX = FY contre H1 : FX < FY .
+    On pose Zi := Xi pour i = 1, . . . , n et Zn+i := Yi pour i = 1, . . . , m, et l’on note Ri le rang de Zi
+dans la suite P
+              (Z1 , . . . , Zn+m ), c’est-à-dire Ri = ℓ si Zi = Zℓ:n+m . La statistique de Wilcoxon est définie
+par Wn,m := n   i=1 Ri ; sous H1 , elle est plus grande que sous H0 .
+   1. Soit N := n + m. Montrer que la statistique de rang R := (R1 , . . . , RN ) suit, sous H0 , la loi
+      uniforme sur l’ensemble SN des permutations de {1, . . . , N }. En déduire que sous H0 , la statistique
+      de Wilcoxon est libre, c’est-à-dire que la loi de Wn,m ne dépend pas de FX . Quelle est la loi de Ri
+      sous H0 ?
+   2. Montrer que sous H0 , E0 [Wn,m ] = n(n + m + 1)/2.
+   3. Montrer que sous H0 ,
+                                                                             n+m
+                                                                              X       
+      Var0 (Wn,m ) = n Var0 (R1 )+n(n−1) Cov0 (R1 , R2 ) ,       0 = Var0           Ri = (n+m) Var0 (R1 )+(n+m)(n+m−1) Cov0 (R1 ,
+                                                                             i=1
+
+      et en déduire que Var0 (Wn,m ) = nm(n + m + 1)/12.
+   4. Proposer un test de niveau α.
+Corrigé : page 53.                                                                                           ♢
+46                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+4.4     Corrigés des exercices
+
+
+
+    Les corrigés ci-dessous reprennent, en les complétant et en corrigeant les points signalés en
+tête de fichier, ceux distribués avec la feuille de petite classe de 2025. Les résultats des chapitres
+précédents (loi Gamma et loi du χ2 , théorèmes de Cochran et de Gosset, inégalité de Bienaymé-
+Tchebychev) sont appelés par un renvoi et ne sont pas redémontrés, sauf lorsque leur redémons-
+tration fait l’objet même de la question.
+
+
+
+
+     Corrigé de l’exercice 1 – Modèle exponentiel
+  Posons Z = (X1 , . . . , Xn ).
+      1. (a) Une loi exponentielle d’intensité λ est une loi Gamma de paramètres (1, λ), et si
+             Y suit une loi Gamma de paramètres (a, b), alors cY suit, pour tout c > 0, une
+             loi Gamma de paramètres (a, b/c) (Section 2). Ici Xi ∼ E(1/θ) sous pθ · Leb, donc
+             2Xi /θ suit une loi Gamma de paramètres (1, 2), c’est-à-dire une loi χ2 (2). Par
+             indépendance des Xi et stabilité de la famille Gamma à taux fixé par somme des
+             paramètres de forme,
+                                           n
+                                           X
+                                    2θ−1         Xi ∼ χ2 (2n)         sous pθ · Leb .
+                                           i=1
+                              Pn
+             On dit que 2θ−1 i=1 Xi est une fonction pivotale : sa loi ne dépend pas de θ.
+                                                                   Pn       
+         (b) La vraisemblance s’écrit θ 7→ θ−n exp − θ−1 i=1 Xi sur (R∗+ )n ; sa log-
+             vraisemblance normalisée θ 7→ − log θ − X̄n /θ tend vers −∞ en 0+ et en +∞, et
+             sa dérivée s’annule en l’unique point X̄n , qui en est donc le maximum : θ̂nMV = X̄n .
+             Comme Eθ [X1 ] = θ, l’estimateur des moments associé à T (x) = x est le même :
+             θ̂nMV = X̄n .
+                                        Pn
+         (c) On pose T (Z) := (nθ0 )−1 i=1 Xi − 1, proche de 0 sous H0 et supérieure à 0 sous
+             H1 , d’où une région de rejet de la forme R = {T (z) ≥ c}. Le niveau impose
+
+                                                        n
+                                                          X                                  
+               sup Pθ (Z ∈ R) = Pθ0 T (Z) ≥ c = Pθ0 2θ0−1   Xi ≥ 2n(c+1) = P χ2 (2n) ≥ 2n(c+1) ,
+              θ∈Θ0                                                    i=1
+
+              en utilisant la fonction pivotale de la question 1(a). La fonction de répartition de
+              χ2 (2n) étant continue, on choisit c tel que 2n(c + 1) = χ21−α (2n), d’où la région de
+              rejet
+                                       n                   Xn                 o
+                                  R = z ∈ (R+ )n : 2θ0−1      zi ≥ χ21−α (2n) .
+                                                                i=1
+
+         (d) Pour tout θ ≥ θ0 ,
+                             Xn                          Xn
+                                                                     θ0 2                    θ0 2       
+              β(θ) = Pθ 2θ0−1     Xi ≥ χ21−α (2n) = Pθ 2θ−1     Xi ≥   χ1−α (2n) = P χ2 (2n) ≥   χ1−α (2n) .
+                              i=1                           i=1
+                                                                     θ                         θ
+
+              L’hypothèse H0 étant simple, la taille et le niveau coïncident : α(ϕ) = Pθ0 (Z ∈
+              R) = α. La figure ci-dessous trace β pour différentes valeurs de n : toutes valent
+              0,05 en θ = θ0 = 2, et pour θ > θ0 fixé, n 7→ β(θ) croît vers 1.
+4. LES EXERCICES                                                                                   47
+
+
+                                       1
+
+                                     0.9
+
+                                     0.8
+
+                                     0.7
+
+                                     0.6
+
+                                     0.5
+
+                                     0.4
+                                                              n=10
+                                                              n=20
+                                     0.3                      n=30
+                                                              y=0.05
+                                     0.2
+
+                                     0.1
+
+                                       0
+                                           0   2    4     6        8   10
+
+
+
+
+              Fonction puissance du test de l’exercice 1, pour différentes valeurs de n, lorsque
+                           α = 0,05 ; la droite horizontale est d’équation y = α.
+      (e) Pour α < α′ , χ21−α (2n) > χ21−α′ (2n), donc Rα ⊂ Rα′ : la p-valeur est le plus
+          petit niveau àPpartir duquel le test rejette compte tenu de l’observation, soit α̂(Z)
+                          n
+          solution de 2 i=1 Xi /θ0 = χ21−α̂(Z) (2n), c’est-à-dire
+
+                                                       2 X 
+                                                            n
+                                    α̂(Z) = P χ2 (2n) ≥        Xi .
+                                                        θ0 i=1
+                                     Pn                         P
+          Pour θ0 = 2, n = 10 et i=1 Xi = 28,1, on a 2 i Xi /θ0 = 28,1, d’où α̂(Z) =
+          P(χ2 (20) ≥ 28,1) ≃ 10,7 % : on ne rejette pas H0 au niveau 5 %, mais on la
+          rejetterait au niveau 11 %. La figure ci-dessous trace la densité de T (Z) sous H0
+          pour différentes valeurs de n, avec un trait vertical à la valeur observée ; on observe
+          que n 7→ Pθ0 (T (Z) > t⋆ ) est croissante.
+48                                           CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+
+
+                                      0.07
+                                                                                  n=10
+                                                                                  n=20
+                                      0.06                                        x=28.1
+
+
+                                      0.05
+
+
+                                      0.04
+
+
+                                      0.03
+
+
+                                      0.02
+
+
+                                      0.01
+
+
+                                         0
+                                             0   10   20         30   40   50    60        70
+
+
+
+
+                                         Pn
+                  Densité de T (Z) = 2       k=1 Xk /θ0 sous pθ0 · Leb, pour différentes valeurs de n.
+
+     2. (a) Pour l’hypothèse composite H0 = {θ ≤ θ0 } contre H1 = {θ > θ0 }, la région de
+            rejet est
+                                       n                 n
+                                                         X         o
+                                 R′ = z ∈ (R+ )n : 2θ0−1    zi ≥ d
+                                                                           i=1
+
+            pour une valeur critique d à déterminer.
+                                                               
+        (b) La fonction puissance est θ 7→ P χ2 (2n) ≥ d θ0 /θ , qui est croissante en θ ; la taille
+            du test vaut donc Pθ0 χ2 (2n) ≥ d , et un test de niveau α impose d = χ21−α (2n).
+            Le test est alors identique à celui de la question 1, et sa p-valeur également.
+                                      Pn
+     3. (a) Sous Pθ , G(Z, θ) := 2θ−1 i=1 Xi ∼ χ2 (2n), donc pour tout α ∈ ]0, 1[,
+                                                          n
+                                                           X                      
+                             Pθ χ2α/2 (2n) ≤ 2θ−1                Xi ≤ χ21−α/2 (2n) = 1 − α ,
+                                                           i=1
+
+             et l’inversion en θ donne, pour tout θ,
+                                    2 Pn X          2
+                                                       Pn
+                                                             Xi 
+                                              i
+                                 Pθ 2 i=1       ≤ θ ≤ 2 i=1       =1−α,
+                                    χ1−α/2 (2n)       χα/2 (2n)
+
+             d’où l’intervalle de confiance bilatéral exact de niveau 1 − α.
+4. LES EXERCICES                                                                             49
+
+
+       (b) Borne
+            P supérieure seule. On veut Pθ (θ ≤ U ) = 1 − α ; comme P {θ ≤ U } = {G(Z, θ) ≥
+           2 i Xi /U } et Pθ (G(Z, θ) ≥ χ2α (2n)) = 1 − α, on pose 2 i Xi /U = χ2α (2n), d’où
+                                        i         Pn
+                                                 2 i=1 Xi i
+                                 Pθ θ ∈ −∞,                    =1−α.
+                                                   χ2α (2n)
+
+            Borne inférieure seule. Par le même argument avec Pθ (G(Z, θ) ≤ χ21−α (2n)) =
+            1 − α,
+                                           h 2 Pn X            h
+                                                  i=1 i
+                                    Pθ θ ∈      2         , +∞ = 1 − α .
+                                              χ1−α (2n)
+                                       P                                 P
+        (c) Avec α = 5 %, n = 10, i Xi = 28,1 (donc 2n = 20 et 2 i Xi = 56,2) et les
+            valeurs données χ20,025 (20) ≈ 9,59, χ20,975 (20) ≈ 34,17,
+                                                h 56,2       56,2 i
+                                 IC95 % (θ) =            ,          ≈ [1,64, 5,86] .
+                                                 34,17       9,59
+
+
+
+  Corrigé de l’exercice 2 – Modèle gaussien
+                                                 √
+ Sous Pµ , X̄n ∼ N (µ, σ 2 /n), donc T (Z) ∼ |N ( n(µ − µ0 )/σ, 1)|.
+   1. Notons W ∼ N (0, 1). Pour tout c > 0,
+
+                                √n                     √n              √n          
+      βc (µ) = Pµ T (Z) ≥ c = P      (µ−µ0 )+W ≥ c = 1−Φ      (µ0 −µ)+c +Φ      (µ0 −µ)−c .
+                                  σ                        σ                 σ
+   2. Le risque de première espèce vaut
+                                                                        
+                           αc = βc (µ0 ) = 1 − Φ(c) + Φ(−c) = 2 1 − Φ(c) ,
+
+      en utilisant Φ(−c) = 1 − Φ(c). La valeur critique d’un test de niveau α vérifie 2(1 −
+      Φ(cα )) = α, soit cα = z1−α/2 .
+   3. Pour 0 ≤ α < α′ ≤ 1, z1−α/2 > z1−α′ /2 donc Rα ⊂ Rα′ : la p-valeur est le plus petit
+      niveau qui rejette compte tenu de l’observation, donc α̂(Z) vérifie T (Z) = z1−α̂(Z)/2 ,
+      d’où                                                
+                                    α̂(Z) = 2 1 − Φ(T (Z)) .
+   4. Soient 1 ∈ Rn le vecteur constant, In la matrice identité et Π la projection orthogonale
+      sur la droite engendrée par 1. On a X̄n = n−1 1⊤ ΠZ et Sn2 = (n−1)−1 ∥(In −Π)Z∥2 . Sous
+      Pθ , Z ∼ Nn (µ1, σ 2 In ), donc, par le théorème de Cochran appliqué à la décomposition
+      orthogonale Rn = R1 ⊕ (R1)⊥ , les vecteurs ΠZ et (In − Π)Z sont indépendants : X̄n ,
+      fonction du premier, et Sn2 , fonction du second, le sont donc aussi.
+   5. Toujours par le théorème de Cochran, ∥(In − Π)Z∥2 /σ 2 ∼ χ2 (n − 1), la dimension de
+      (R1)⊥ étant n − 1 ; d’où (n − 1)Sn2 /σ 2 ∼ χ2 (n − 1).
+                 √                     √                           p
+   6. Sous Pθ , n(X̄n − µ0 )/σ ∼ N n(µ − µ0 )/σ, 1 et Sn /σ = (n − 1)Sn2 /σ 2 /(n − 1),
+      ces deux variables étant indépendantes par les questions précédentes ; par définition de
+      la loi de Student non centrale (Section 3),
+                                            √
+                                               n(X̄n − µ0 )
+                                                  Sn
+      suit une loi de√Student non centrale à n − 1 degrés de liberté et de paramètre de non-
+      centralité γ = n(µ − µ0 )/σ.
+50                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+      7. Notons Ft(n−1) la fonction de répartition de t(n − 1). En répétant l’argument de la
+         question 2, la taille du test vaut αc = 2(1 − Ft(n−1) (c)).
+                                                                (n−1)
+      8. La valeur critique d’un test de niveau α est cα = t1−α/2 : c’est la plus petite valeur qui
+         garantit le niveau, donc celle qui maximise la puissance parmi les tests de cette forme
+         qui le garantissent.
+                                                                                 b(Z) = 2(1 −
+      9. En répétant l’argument de la question 3, la p-valeur du second test est α
+                  e
+         Ft(n−1) (T (Z))).
+
+
+     Corrigé de l’exercice 3 – Intervalle de confiance pour la loi uniforme
+ Sous Pθ , les Xi sont i.i.d. de loi U ([0, θ]).
+      1. Pour x < 0, Pθ (Xn:n /θ ≤ x) = 0 ; pour x > 1, cette probabilité vaut 1 ; et pour x ∈ [0, 1],
+                                                       \
+                                                        n              
+                               Pθ (Xn:n /θ ≤ x) = Pθ          {Xi ≤ θx} = xn .
+                                                        i=1
+
+         Cette loi ne dépendant pas de θ, Xn:n /θ est une fonction pivotale.
+                                   
+      2. Soit I := Xn:n , Xn:n /α1/n ; on a
+                                                            
+                        Pθ (θ ∈ I) = Pθ Xn:n /θ ∈ [α1/n , 1] = 1 − α1·n/n = 1 − α ,
+
+         donc I est un intervalle de confiance de niveau 1 − α. Vérifions que sa longueur est
+         minimale parmi les intervalles Ia,b := [Xn:n /a, Xn:n /b].
+         Étape A. Pour que Ia,b soit de niveau 1 − α, il faut Pθ (θ ∈ Ia,b ) = Pθ (Xn:n /θ ∈ [b, a]) =
+         (a ∧ 1)n − (b ∨ 0)n ≥ 1 − α ; on peut se restreindre à a ≤ 1 et b ≥ 0, donc chercher
+         0 ≤ b < a ≤ 1 tels que an ≥ 1 − α + bn .
+         Étape B. La longueur de Ia,b est ℓ = 1/b − 1/a, et la condition précédente donne
+
+                                          1          1              
+                                     ℓ≥                          − 1   ,
+                                          a (1 − a−n (1 − α))1/n
+
+         fonction décroissante de a sur R∗+ : la borne inférieure sur ℓ est minimale, donc la
+         longueur potentiellement la plus petite, pour a = 1.
+         Étape C. Les conditions sur b deviennent alors 0 ≤ b ≤ α1/n et ℓ ≥ α−1/n − 1. Comme
+         on cherche la longueur minimale, on prend ℓ = α−1/n − 1, soit 1/b = α−1/n , ce qui
+         redonne l’intervalle I proposé.
+
+
+     Corrigé de l’exercice 4 – Modèle de Poisson
+
+      1. Si X ∼ Poi(θ1 ) et Y ∼ Poi(θ2 ) sont indépendantes, alors X + Y ∼ Poi(θ1 + θ2 ) : les
+         fonctions génératrices se multiplient, GX (s)GY (s) = exp(−(θ1 + θ2 )(1 − s)), qui est celle
+         de Poi(θ1 + θ2 ), et P
+                              la fonction génératrice caractérise la loi. Comme les Xi sont i.i.d. de
+                                 n
+         loi Poi(θ) sous Pθ , i=1 Xi ∼ Poi(nθ).
+                            Pn
+      2. Posons T (Z) := i=1 Xi . Sous H0 (θ = 1), T (Z) ∼ Poi(n), d’espérance n ; sous H1
+         (θ = 2), T (Z) ∼ Poi(2n), d’espérance 2n : T (Z) prend des valeurs plus grandes sous
+         H1 , d’où une région de rejet R = {T (z) > c} (inégalité stricte, cf. l’énoncé). On calibre
+         c pour que P1 (T (Z) > c) ≤ α, c’est-à-dire P1 (T (Z) ≤ c) > 1 − α, soit
+                                            
+                                    cα = inf t ∈ R , FPoi(10) (t) > 1 − α .
+4. LES EXERCICES                                                                                                     51
+
+
+      Pour n = 10, FPoi(10) (14) ≃ 0,917 et FPoi(10) (15) ≃ 0,951, d’où c5 % = 15 et R0,05 = {z :
+      T (z) > 15}. La taille de ce test est P1 (T (Z) > 15) = P(Poi(10) > 15) ≃ 4,9 % < 5 % :
+      c’est un exemple de test dont le niveau et la taille diffèrent.
+   3. La fonction puissance est θ 7→ Pθ (T (Z) > 15) = P(Poi(10θ) > 15), tracée sur la figure 4.
+   4. Soient 0 < α < α′ < 1 ; la région de rejet étant de la forme {T (Z) > cα } avec cα′ < cα ,
+      on a Rα ⊂ Rα′ . Comme T (Z) est à valeurs entières, la plus petite région de rejet
+      contenant T (Z) correspond à cα̂(Z) = T (Z) − 1, d’où
+                                                                                
+                  α̂(Z) = P Poi(10) > T (Z) − 1 = 1 − P Poi(10) ≤ T (Z) − 1 .
+
+      Pour le premier échantillon, T (Z) = 18, donc α̂(Z) = 0,0143 : comme 18 ∈ R0,05 , on
+      rejette H0 au niveau 5 %. Pour le second, T (Z) = 13, donc α̂(Z) = 0,2084 : on ne rejette
+      pas H0 au niveau 5 %. Dans ce cas, ou bien H0 est vraie et la décision est correcte,
+      ou bien H1 est vraie et l’on se trompe en ne rejetant pas H0 , avec une probabilité
+      P2 (T (Z) ≤ 15) ≃ 15,7 %.
+
+
+                                     1
+
+                                   0.9
+
+                                   0.8
+
+                                   0.7
+
+                                   0.6
+                                                                       Puissance
+                                                                       y=0.049
+                                   0.5
+                                                                       y=0.8435
+
+                                   0.4
+
+                                   0.3
+
+                                   0.2
+
+                                   0.1
+
+                                     0
+                                         0   0.5   1   1.5   2   2.5   3      3.5     4
+
+
+
+
+           Figure 4 – Exercice 4. Fonction puissance θ 7→ Pθ (T (Z) > 15) du test.
+
+  Corrigé de l’exercice 5 – Modèle gaussien à deux échantillons
+
+   1. La log-vraisemblance s’écrit, pour θ = (µ0 , µ1 , σ 2 ),
+                                             n                   p
+                            n+p           1 X                 1 X
+                        −       log σ 2 − 2     (Xi − µ0 )2 − 2     (Yj − µ1 )2 ,
+                             2           2σ i=1              2σ j=1
+
+      maximisée en
+                                                                                     1 X                                 
+                  n                                p                                      n                  p
+               1X                              1X                  2
+                                                                                                            X
+      µ̂0,n :=       Xi ,        µ̂1,p :=            Yj ,        σ̂n,p :=                    (Xi −µ̂0,n )2 + (Yj −µ̂1,p )2 .
+               n i=1                           p j=1                               n + p i=1                j=1
+                                                            
+   2. Sous Pθ , µ̂0,n − µ̂1,p ∼ N µ0 − µ1 , σ 2 (n−1 + p−1 ) . Posons
+
+                            1    Xn                   Xp                    n+p
+               2
+              Sn,p :=                 (Xi − µ̂0,n )2 +     (Yj − µ̂1,p )2 =             2
+                                                                                      σ̂n,p .
+                        n + p − 2 i=1                  j=1
+                                                                            n + p − 2
+                                                                            2
+      En procédant comme à l’Exercice 2, on montre que, sous Pθ , Sn,p         est indépendant de
+                                   2     2    2
+      µ̂0,n − µ̂1,p et (n + p − 2)Sn,p /σ ∼ χ (n + p − 2) ; par définition de la loi de Student,
+                                 r
+                                     np (µ̂0,n − µ̂1,p ) − (µ0 − µ1 )
+                     G(Z, θ) :=                                       ∼ t(n + p − 2) ,
+                                   n+p              Sn,p
+52                                      CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+        et G est une fonction pivotale pour µ0 − µ1 . En prenant pour Aα l’intervalle délimité
+        par les quantiles d’ordre α/2 et 1 − α/2 de t(n + p − 2) (le plus court à niveau fixé,
+        la densité de Student étant paire et unimodale), on obtient l’intervalle de confiance de
+        niveau 1 − α                                            r
+                                      h                           n+p      i
+                                                      (n+p−2)
+                              I(Z) = µ̂0,n − µ̂1,p ± t1−α/2            Sn,p .
+                                                                   np
+     3. Soit le test de région de rejet
+                                 n r np |µ̂ (z) − µ̂ (z)|                     o
+                                                 0,n        1,p       (n+p−2)
+                          Rα := z :                                ≥ t1−α/2     ,
+                                        n+p          Sn,p (z)
+        qui est le test dual de l’intervalle I(Z) : Rα = {z : G(z; µ0 , µ0 , σ 2 ) ∈   / Aα }. Pour
+        θ = (µ0 , µ0 , σ 2 ) ∈ Θ0 , Pθ (Z ∈ Rα ) = α ; la taille du test vaut donc α.
+     4. Soit le test de région de rejet
+                                      n r np µ̂ (z) − µ̂ (z)                       o
+                                                     0,n         1,p       (n+p−2)
+                              Rα := z :                                 ≥ t1−α       .
+                                             n+p          Sn,p (z)
+        Pour θ tel que µ0 − µ1 ≤ 0, en notant Wn+p−2 ∼ t(n + p − 2),
+                                  r                            
+                                       np µ0 − µ1       (n+p−2)                 (n+p−2) 
+        Pθ (Z ∈ Rα ) = P Wn+p−2 +                    ≥ t1−α       ≤ P Wn+p−2 ≥ t1−α       =α,
+                                      n + p Sn,p (Z)
+        avec égalité pour µ0 = µ1 : la taille et le niveau valent α.
+                                                        p
+     5. D’après la question 3, la p-valeur α̂(Z) vérifie np/(n + p) |µ̂0,n (Z)−µ̂1,p (Z)|/Sn,p (Z) =
+         (n+p−2)
+        t1−α̂(Z)/2 . Avec n = p = 120, µ̂0,n = 75, µ̂1,p = 74,99 et Sn,p =
+        q
+              n       2     p        2               (238)
+           n+p−2 8,72 + n+p−2 6,54 , on trouve t1−α̂(Z)/2 = 0,01, soit α̂(Z) = 1 − 0,5040 =
+        0,4960 : tout test de niveau raisonnable ne rejette pas H0 , ce qui est cohérent avec la
+        consistance des deux correcteurs.
+                       Pn                                     Pp
+     6. Sous Pθ , σ0−2 i=1 (Xi − µ̂0,n )2 ∼ χ2 (n − 1) et σ1−2 j=1 (Yj − µ̂1,p )2 ∼ χ2 (p − 1), ces
+        deux variables étant indépendantes car fonctions respectivement des Xi et des Yj . Par
+        définition de la loi de Fisher,
+                                                Pn
+                                 σ12 (n − 1)−1 i=1 (Xi − µ̂0,n )2
+                     G(Z, θ) := 2 ·             P                 ∼ F(n − 1, p − 1) ,
+                                 σ0 (p − 1)−1 pj=1 (Yj − µ̂1,p )2
+        et G est une fonction pivotale pour σ12 /σ02 .
+     7. Notons f1−α (k1 , k2 ) le quantile d’ordre 1 − α de F(k1 , k2 ), et W ∼ F(n − 1, p − 1).
+        Considérons le test de région de rejet
+                             n (n − 1)−1 Pn (X − µ̂ )2                                o
+                                              i=1   i   0,n
+                    Rα := z :               P  p               ≥ f 1−α (n − 1, p − 1)   .
+                                  (p − 1)−1 j=1 (Yj − µ̂1,p )2
+        Pour θ tel que σ02 ≤ σ12 ,
+                             σ2                                                
+          Pθ (Z ∈ Rα ) = P 02 W ≥ f1−α (n − 1, p − 1) ≤ P W ≥ f1−α (n − 1, p − 1) = α ,
+                              σ1
+        avec égalité pour σ02 = σ12 : la taille et le niveau valent α. La densité de F(n − 1, p − 1)
+        est tracée sur la figure 5.
+     8. Soit T (Z) la statistique de la question précédente. La p-valeur est le plus petit α tel
+        que T (Z) ≥ f1−α (n − 1, p − 1) ; en notant Fn−1,p−1 la fonction de répartition de F(n −
+                                                                                     −1
+        1, p − 1), continue et strictement croissante, α 7→ f1−α (n − 1, p − 1) = Fn−1,p−1  (1 − α)
+                                                        ∗
+        est décroissante et bijective de ]0, 1[ dans R+ , d’où
+                                      α̂(Z) = 1 − Fn−1,p−1 (T (Z)) .
+4. LES EXERCICES                                                                                    53
+
+
+                               1.8
+
+                               1.6
+
+                               1.4
+
+                               1.2
+
+                                 1
+
+                               0.8
+
+                               0.6
+
+                               0.4
+
+                               0.2
+
+                                 0
+                                     0   1      2      3      4      5
+
+
+
+
+Figure 5 – Exercice 5. Densité d’une loi de Fisher de paramètres (10, 5) en rouge, et (100, 50) en
+bleu.
+
+
+   Corrigé de l’exercice 6 – Campagne de vaccination
+                                                                          
+  Le modèle statistique est {0, 1}n , P({0, 1}n ), {Ber(p)⊗n , p ∈ ]0, 1[} .
+     1. La proportion annoncée est p0 = 1/310 000 ≈ 3,23 · 10−6 .
+     2. Pour une région de rejet {Sn > c}, le risque de première espèce  Pn est supp≤p0 Pp (Sn >
+        c) = Pp0 (Sn > c) : en effet,
+                                    P   si p ≤  p 0 ,
+                                                    P S n a même loi que  k=1 1{Uk ≤p} pour des Uk
+        i.i.d. de loi U ([0, 1]), et k 1{Uk ≤p} ≤ k 1{Uk ≤p0 } entraîne Pp (Sn > c) ≤ Pp0 (Sn > c).
+        Sous Pp0 , Sn ∼ Bin(n, p0 ), et un test de niveau α impose
+
+        cα := inf {0 ≤ c ≤ n , Pp0 (Sn > c) ≤ α} = inf {0 ≤ c ≤ n , Pp0 (Sn ≤ c) ≥ 1 − α} = Fp−1
+                                                                                              0
+                                                                                                 (1−α) ,
+
+        où Fp−1
+              0
+                 est l’inverse généralisée de la fonction de répartition de Bin(n, p0 ) avec n =
+        300 533.
+     3. Au niveau α = 0,05, cα = 3 ; l’observation Sn = 4 étant dans R0,05 = {Sn > 3}, on
+        rejette H0 . Au niveau α = 0,01, cα = 4, et Sn = 4 ∈
+                                                           / R0,01 : on ne rejette pas H0 .
+     4. Pour α < α′ , cα > cα′ , donc Rα ⊂ Rα′ ; la p-valeur est inf {α , cα = 3} = 1 − Pp0 (Sn ≤
+        3) = 0,017172.
+     5. θ0 = np0 = 300 533/310 000 ≈ 0,9695.
+     6. Les hypothèses restent H0 : θ ≤ θ0 contre H1 : θ > θ0 . Pour une région de rejet
+        {Sn > c}, la fonction θ 7→ Pθ (Sn > c) étant croissante, on choisit le plus petit c tel que
+        Pθ0 (Sn > c) ≤ α, soit
+
+                        cα := min {c ≥ 0 , Pθ0 (Sn ≤ c) ≥ 1 − α} = Fθ−1
+                                                                     0
+                                                                        (1 − α) ,
+
+        Fθ−1
+          0
+             étant l’inverse généralisée de la fonction de répartition d’une loi Poi(θ0 ), et le test
+        associé est Rα = {n ∈ N : n > cα }.
+     7. Par monotonie des régions de rejet en α, la p-valeur est 1 − Fθ0 (3) = Pθ0 (Sn > 3) =
+        0,017173 : on rejette H0 au seuil de 5 %.
+
+
+   Corrigé de l’exercice 7 – Test de Wilcoxon
+  Comme FX et FY sont continues, P(Zi = Zj ) = 0 pour i ̸= j, et R est bien définie presque
+  sûrement.
+     1. Notons P0 la probabilité sous laquelle les Zk , 1 ≤ k ≤ N , sont i.i.d. de loi FX (c’est
+54                                         CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+
+       H0 ). Sous H0 , (Z1 , . . . , ZN ) a même loi que (Zτ (1) , . . . , Zτ (N ) ) pour toute permutation
+       déterministe τ ∈ SN , d’où
+                                                                                                              
+       P0 R = (1, . . . , N ) = E0 1{Z1 <···<ZN } = E0 1{Zτ (1) <···<Zτ (N ) } = P0 Rτ (1) = 1, . . . , Rτ (N ) = N ,
+
+       et cette relation, valable pour tout τ , montre que R suit la loi uniforme sur SN , soit
+       P0 (R = (i1 , . . . , iN )) = 1/N !.
+       Pour toute valeur q atteignable par Wn,m ,
+                                        X                                                     X             m!
+               P0 (Wn,m = q) =                       P0 (R1 = i1 , . . . , Rn = in ) =                         ,
+                                                                                                            N!
+                                  (i1 ,...,in )∈Iq                                       (i1 ,...,in )∈Iq
+
+
+       où Iq est l’ensemble des n-listes d’entiers distincts de {1, . . . , N } de somme q, et m!
+       compte les façons de compléter les m rangs manquants. Le cardinal de Iq ne dépendant
+       pas de FX , Wn,m est libre sous H0 .
+       Enfin, {Ri = q} correspond à choisir les N − 1 autres rangs parmi N − 1 éléments, soit
+       (N − 1)! possibilités, d’où P0 (Ri = q) = (N − 1)!/N ! = 1/N : sous H0 , Ri suit la loi
+       uniforme sur {1, . . . , N }.
+     2. Par la question précédente, E0 [Ri ] = (N + 1)/2 pour tout i, d’où E0 [Wn,m ] = n(N +
+        1)/2 = n(n + m + 1)/2.
+     3. Par indépendance et même loi des Ri sous H0 ,
+
+                          Var0 (Wn,m ) = n Var0 (R1 ) + n(n − 1) Cov0 (R1 , R2 ) ,
+
+       et, la somme de tous les rangs étant constante,
+
+                                X
+                                 N       
+                     0 = Var0          Ri = N Var0 (R1 ) + N (N − 1) Cov0 (R1 , R2 ) ,
+                                 i=1
+
+       d’où Cov0 (R1 , R2 ) = − Var0 (R1 )/(N − 1), puis
+                                                    n−1    nm
+                     Var0 (Wn,m ) = n Var0 (R1 ) 1 −      =      Var0 (R1 ) .
+                                                     N −1   N −1
+       Comme R1 suit la loi uniforme sur {1, . . . , N }, Var0 (R1 ) = (N + 1)(N − 1)/12, d’où
+       Var0 (Wn,m ) = nm(N + 1)/12 = nm(n + m + 1)/12.
+     4. La loi de Wn,m sous H0 ne dépendant pas de
+                                                 PF  X , on peut choisir Aα tel que P0 (Wn,m ∈
+                                                                                             /
+                                                   n
+        Aα ) ≤ α et poser la région de rejet {z : i=1 ri ∈ / Aα }. Un tel Aα se construit par
+        l’inégalité de Bienaymé-Tchebychev : comme
+                                                    nm(n + m + 1)
+                     P0 |Wn,m − n(n + m + 1)/2| ≥ ε ≤              ,
+                                                         12 ε2
+                    p
+       on pose εα := nm(n + m + 1)/(12α) et
+                                                     h n(n + m + 1)        i
+                                        Aα :=                          ± εα .
+                                                             2
+

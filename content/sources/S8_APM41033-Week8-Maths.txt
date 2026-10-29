@@ -1,0 +1,422 @@
+2. LES OUTILS MATHÉMATIQUES                                                                               25
+
+2      Les outils mathématiques
+    On construit ici l’espérance conditionnelle et on en établit les propriétés qu’emploient les deux
+théorèmes des fondamentaux. Pour une variable de carré intégrable, elle se définit comme une
+projection orthogonale dans un espace de Hilbert, et c’est sous cette forme géométrique que ses
+propriétés s’établissent le plus simplement ; la définition s’étend ensuite aux variables simplement
+intégrables. Lorsque le couple (X, Y ) admet une densité par rapport à une mesure produit, elle
+prend la forme d’une intégrale ordinaire contre la densité conditionnelle, et c’est celle qu’em-
+ploient tous les calculs du chapitre. Viennent ensuite les objets secondaires que les fondamentaux
+mobilisent : la mesure de comptage, la densité du vecteur gaussien et la fonction sigmoïde.
+    Les six premières sections reprennent intégralement, dans leur ordre, les douze planches de «
+Rappels sur l’espérance conditionnelle » données en annexe du cours (espace L2 et projection,
+cas d’une sous-tribu, cas L1 , conditionnement par une variable aléatoire, propriétés, variables à
+densité), et les complètent par les démonstrations, par les propriétés élémentaires et la propriété
+d’indépendance, et par le lemme de décomposition qu’emploie la démonstration du classifieur
+bayésien.
+
+2.1      L’espace L2 et la projection orthogonale
+   L’ensemble des variables aléatoires de carré intégrable se munit d’un produit scalaire, ce qui
+donne un sens géométrique à la notion de meilleure approximation.
+
+     Définition 2.1: Espace L2 (Ω, F, P)
+    On note L2 (Ω, F, P) l’espace des variables aléatoires de carré intégrable définies sur l’espace
+    de probabilité (Ω, F, P) :
+
+                                    Z ∈ L2 (Ω, F, P)        ⇐⇒      E[Z 2 ] < ∞ .
+
+    La forme ⟨Z1 , Z2 ⟩ := E[Z1 Z2 ] y définit un produit pré-hilbertien : elle est bilinéaire et positive,
+    mais ⟨Z, Z⟩ = 0 entraîne seulement Z = 0 P-presque sûrement, et non Z ≡ 0.
+
+     On note R la relation d’équivalence définie par
+
+                             X RY              si et seulement si   X = Y P − p.s. ,
+
+et l’on quotiente par cette relation pour obtenir un produit scalaire au sens strict.
+
+     Définition 2.2: Espace L2 (Ω, F, P)
+    On note L2 (Ω, F, P) le quotient de L2 (Ω, F, P) par la relation d’équivalence R. Ses éléments
+    sont des classes d’équivalence
+                              D     Ẋ, et Z ∈ Ẋ si et seulement si Z = X P-presque sûrement. Si
+                                    E
+    X                           e Ye = ⟨X, Y ⟩ ; on pose donc
+     e ∈ Ẋ et Ye ∈ Ẏ , alors X,
+
+                              D            E     D     E
+                                  Ẋ, Ẏ           e Ye ,
+                                               := X,            e ∈ Ẋ ,
+                                                                X           Ye ∈ Ẏ ,
+
+    définition qui ne dépend pas du choix des représentants des deux classes.
+
+
+
+     Théorème 2.1: L’espace L2 est hilbertien
+    L’espace L2 (Ω, F, P) muni du produit scalaire ⟨·, ·⟩ est un espace de Hilbert.
+26                     CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+                       D      E
+   On note ∥Ẋ∥2L2 := Ẋ, Ẋ la norme associée. Dans la suite, et conformément à l’usage, on
+confond une variable aléatoire et sa classe d’équivalence, toutes les identités étant entendues P-
+presque sûrement.
+
+
+     Théorème 2.2: Projection sur un sous-espace vectoriel fermé
+  Soit H un sous-espace vectoriel fermé de L2 (Ω, F, P) et Z ∈ L2 (Ω, F, P).
+      (i) Il existe un unique élément de H, appelé projection de Z sur H et noté PH Z, tel que
+
+                             ∥Z − PH Z∥2L2 ≤ ∥Z − T ∥2L2        pour tout T ∈ H .
+
+     (ii) Cette projection est caractérisée par la relation d’orthogonalité
+
+                                  ⟨Z − PH Z, T ⟩ = 0       pour tout T ∈ H .
+
+     (iii) L’application PH est un opérateur linéaire sur L2 (Ω, F, P).
+
+
+
+
+Figure 6 – La projection orthogonale de Z sur le sous-espace fermé H : le vecteur Z − PH Z est
+orthogonal à tout élément de H, et PH Z est le point de H le plus proche de Z.
+
+
+Intuition. Le point (ii) est la traduction du théorème de Pythagore dans un espace de dimension quel-
+conque (figure 6) : le vecteur qui joint Z à son approximation la plus proche dans H est perpendiculaire
+à H. C’est cette relation d’orthogonalité, et non l’inégalité du point (i), qui sert dans les calculs : elle
+transforme une propriété de minimalité en une famille d’égalités E[(Z − PH Z) T ] = 0, utilisable terme à
+terme.
+     Appliquons cela au sous-espace des variables mesurables par rapport à une sous-tribu.
+
+
+     Lemme 2.1: Fermeture de L2 (Ω, A, P)
+  Soit A ⊂ F une σ-algèbre et soit H := L2 (Ω, A, P) l’ensemble des variables aléatoires W
+  de carré intégrable qui sont A-mesurables, c’est-à-dire telles que W −1 (B) ∈ A pour tout
+  B ∈ B(R). Alors L2 (Ω, A, P) est un sous-espace hilbertien fermé de L2 (Ω, F, P).
+
+
+
+   Il en résulte que pour toute variable Z ∈ L2 (Ω, F, P), il existe une unique variable X ∈
+ 2
+L (Ω, A, P) telle que
+
+                      ∥Z − X∥L2 ≤ ∥Z − T ∥L2           pour tout T ∈ L2 (Ω, A, P) ,
+2. LES OUTILS MATHÉMATIQUES                                                                         27
+
+ou, de façon équivalente, telle que pour tout T ∈ L2 (Ω, A, P),
+
+                     ⟨Z, T ⟩ = ⟨X, T ⟩ ,    c’est-à-dire     E [Z T ] = E [X T ] .                 (14)
+
+   Définition 2.3: Espérance conditionnelle comme projection dans L2
+  On appelle espérance conditionnelle de Z sachant A, et l’on note E [ Z | A], la projection
+  orthogonale de Z sur L2 (Ω, A, P).
+
+
+2.2     L’espérance conditionnelle dans L1
+    La définition précédente demande un moment d’ordre deux. Elle s’étend aux variables simple-
+ment intégrables, au prix d’un énoncé d’existence et d’unicité qui remplace l’argument de projec-
+tion.
+
+
+   Théorème et définition 2.1: Espérance conditionnelle sachant une sous-tribu
+  Soit Z une variable aléatoire de L1 (Ω, F, P) et soit A ⊂ F une σ-algèbre. Il existe une variable
+  aléatoire X, unique à l’égalité P-presque sûre près, telle que
+      (i) X est A-mesurable ;
+   (ii) E[|X|] < ∞ ;
+   (iii) pour toute variable aléatoire T A-mesurable et bornée, E[ZT ] = E[XT ].
+  La variable X est appelée espérance conditionnelle de Z sachant A et notée E [ Z | A]. Lorsque
+  Z est de carré intégrable, elle coïncide avec la projection de la définition 2.3.
+
+
+
+
+2.3     Conditionnement par une variable aléatoire
+    Le conditionnement employé dans ce chapitre n’est pas celui par une tribu abstraite, mais celui
+par les attributs X : la tribu est alors celle qu’engendre cette variable.
+    Si X est une variable aléatoire réelle, il est naturel de considérer la σ-algèbre engendrée par les
+événements de la forme {X ≤ a} ; on la note σ(X), et elle contient aussi tous les événements de la
+forme {X ∈ B} pour B ∈ B(R). Si X = (X (1) , . . . , X (d) ) est un vecteur aléatoire à valeurs dans
+Rd , on note σ(X) la σ-algèbre engendrée par les événements de la forme {X ∈ B}, où B ∈ B(Rd ) ;
+de façon équivalente,
+                               
+                      σ(X) := A ⊂ Ω : A = X−1 (B) pour un B ∈ B(Rd ) .
+
+   Définition 2.4: Espérance conditionnelle sachant une variable aléatoire
+  Soit Z une variable aléatoire de L1 (Ω, F, P) et X une variable aléatoire à valeurs dans (X, X ).
+  L’espérance conditionnelle de Z sachant X est l’espérance conditionnelle de Z sachant σ(X) ;
+  on la note E [ Z | X].
+
+
+
+   Proposition 2.1: Caractérisation des variables σ(X)-mesurables
+  Soit X une variable aléatoire à valeurs dans (X, X ), définie sur (Ω, F, P). Une variable aléatoire
+  réelle W sur (Ω, F, P) est mesurable par rapport à σ(X) si et seulement s’il existe une fonction
+  mesurable Ψ : X → R telle que W = Ψ(X).
+28                       CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+    Deux conséquences servent constamment dans les fondamentaux. D’abord, si Y ∈ L2 (Ω, F, P),
+la définition de E [ Y | X] comme projection donne
+                                             
+              E (Y − E [ Y | X])2 ≤ E (Y − T )2     pour tout T ∈ L2 (Ω, σ(X), P) ,
+et la proposition 2.1 fournit une fonction mesurable g ⋆ telle que g ⋆ (X) = E [ Y | X]. Ensuite, la
+même proposition identifie L2 (Ω, σ(X), P) à l’ensemble des g(X) pour g mesurable avec E[g 2 (X)] <
+∞, de sorte que
+                                             
+          E (Y − g ⋆ (X))2 ≤ E (Y − g(X))2           et     E [Y g(X)] = E [g ⋆ (X) g(X)]
+pour toute fonction mesurable g telle que E[g 2 (X)] < ∞ : c’est l’énoncé du théorème 1.1.
+
+2.4      Propriétés de l’espérance conditionnelle
+
+
+     Proposition 2.2: Espérance de l’espérance conditionnelle
+  Pour toute variable aléatoire intégrable Y et toute sous-tribu A ⊂ F,
+
+                                              E [E [ Y | A]] = E[Y ] .
+
+
+
+     Démonstration
+  Pour toute variable W A-mesurable et bornée, E[W E [ Y | A]] = E[W Y ] par définition de
+  l’espérance conditionnelle. Il suffit d’appliquer cette relation avec W = 1.          □
+
+
+     Proposition 2.3: Produit
+  Soit Y une variable aléatoire intégrable et A ⊂ F une sous-tribu. Pour toute variable aléatoire
+  U A-mesurable et bornée,
+
+                                     E [ U Y | A] = U E [ Y | A] ,   P − p.s. .
+
+
+
+     Démonstration
+  Pour toute variable aléatoire W A-mesurable et bornée, la définition de l’espérance condi-
+  tionnelle appliquée à U Y , qui est intégrable puisque U est bornée, donne E[W E [ U Y | A]] =
+  E[W U Y ]. Or U W est elle-même A-mesurable et bornée, de sorte que la même définition,
+  appliquée cette fois à Y , donne E[W U Y ] = E[W U E [ Y | A]]. Les deux variables E [ U Y | A]
+  et U E [ Y | A] sont A-mesurables et intégrables, et elles ont la même intégrale contre toute
+  variable A-mesurable bornée : l’unicité de l’espérance conditionnelle (théorème 2.1) permet
+  de conclure.                                                                                 □
+
+   Les propriétés suivantes, énoncées pour des variables de carré intégrable, s’établissent toutes à
+partir de la définition comme projection.
+
+
+     Proposition 2.4: Propriétés élémentaires
+  Soient U, V ∈ L2 (Ω, A, P) à valeurs respectivement dans (R, B(R)) et (Rd , B(Rd )).
+      (i) E [E [ U | V ]] = E[U ].
+2. LES OUTILS MATHÉMATIQUES                                                                          29
+
+
+
+   (ii) Il existe une fonction mesurable Ψ : Rd → R telle que Ψ(V ) = E [ U | V ] P-presque
+        sûrement.
+   (iii) Si U ≥ 0, alors E [ U | V ] ≥ 0 P-presque sûrement.
+
+   (iv) Pour tous réels α, β et toutes variables U1 , U2 de L2 (Ω, A, P),
+
+                             E [ αU1 + βU2 | V ] = αE [ U1 | V ] + βE [ U2 | V ] .
+
+    (v) Pour toute fonction mesurable ϕ : Rd → R telle que ϕ(V ) ∈ L2 (Ω, A, P), E [ ϕ(V ) | V ] =
+        ϕ(V ) P-presque sûrement.
+
+
+
+
+   Démonstration
+  Le point (i) s’obtient en prenant g ≡ 1 dans (14). Le point (ii) est la proposition 2.1, jointe
+  au fait que E [ U | V ] est σ(V )-mesurable. Pour (iii), on applique (14) avec T = 1{E[ U |V ]<0} ,
+  qui est σ(V )-mesurable et bornée : si P(E [ U | V ] < 0) > 0, on obtient E[U 1{E[ U |V ]<0} ] < 0,
+  ce qui contredit U ≥ 0. Le point (iv) résulte de la linéarité du produit scalaire et de l’unicité
+  de la projection orthogonale. Le point (v) tient à ce que ϕ(V ) appartient déjà à l’espace sur
+  lequel on projette.                                                                              □
+
+    La propriété suivante dit que, lorsque U et V sont indépendantes, l’espérance conditionnelle
+E [ ϕ(U, V ) | V ] s’obtient en gelant la variable V et en intégrant par rapport à U sous sa propre loi.
+
+
+   Proposition 2.5: Conditionnement et indépendance
+  Soient U, V ∈ L2 (Ω, A, P) à valeurs dans (Rp , B(Rp )) et (Rd , B(Rd )) respectivement, et indé-
+  pendantes. Soit ϕ : Rp × Rd → Rq une fonction mesurable telle que ϕ(U, V ) ∈ L2 (Ω, A, P).
+  Alors                                                                  Z
+             E [ ϕ(U, V ) | V ] = Φ(V ) ,  où Φ(v) := E [ϕ(U, v)] = ϕ(u, v) χ(du)
+
+  et où χ désigne la loi de U .
+
+
+
+    C’est cette proposition qui légitime le calcul de la probabilité d’erreur conditionnelle d’une
+règle apprise : on y prend pour U le couple de test (X, Y ) et pour V l’ensemble d’apprentissage
+Dn , qui sont indépendants (Section 4.4).
+
+
+2.5    L’espérance conditionnelle pour des variables à densité
+   Les calculs du chapitre se font tous dans le cas où le couple admet une densité par rapport à
+une mesure produit. On en donne ici l’expression explicite, qui ramène l’espérance conditionnelle
+à une intégrale ordinaire.
+   Soient (Y, Y, µ) et (X, X , ν) deux espaces mesurés et soit (Y, X) un vecteur aléatoire admettant
+une densité pY,X (y, x) par rapport à la mesure produit µ ⊗ ν : pour toute fonction mesurable
+positive h,
+                                        Z
+                         E [h(Y, X)] =       h(y, x) pY,X (y, x) µ(dy) ν(dx) .
+                                         Y×X
+30                   CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+La loi marginale de X admet alors la densité
+                                          Z
+                                pX (x) :=    pY,X (y, x) µ(dy) ,
+                                               Y
+
+et, pour tout x tel que pX (x) > 0, on pose
+                                                       pY,X (y, x)
+                                    pY |X (y | x) :=               .
+                                                         pX (x)
+La fonction y 7→ pY |X (y | x) est positive et d’intégrale 1 contre µ : c’est une densité par rapport
+à µ, appelée densité conditionnelle de Y sachant X = x.
+
+
+     Proposition 2.6: Espérance conditionnelle dans le cas à densité
+  Sous les hypothèses précédentes, si Y est intégrable, la fonction
+                                              Z
+                             x 7−→ Φ(x) :=      y pY |X (y | x) µ(dy)
+                                                   Y
+
+  est définie pour pX · ν-presque tout x, et
+
+                                  Φ(X) = E [ Y | X] ,      P − p.s. .
+
+  Plus généralement,
+                   R   pour toute fonction    mesurable ψ telle que ψ(Y ) soit intégrable,
+  E [ ψ(Y ) | X] = Y ψ(y) pY |X (y | x) µ(dy) x=X .
+
+
+
+     Démonstration
+  La variable Φ(X) est σ(X)-mesurable par construction. Pour toute fonction mesurable bornée
+  h, le théorème de Fubini et la définition de pY |X donnent
+                                Z        Z                        
+               E [h(X) Φ(X)] =      h(x)      y pY |X (y | x) µ(dy) pX (x) ν(dx)
+                                  X         Y
+                                ZZ
+                                               pY,X (y, x)
+                             =          y h(x)              pX (x) µ(dy) ν(dx)
+                                    Y×X           pX (x)
+                                ZZ
+                             =          y h(x) pY,X (y, x) µ(dy) ν(dx) = E [Y h(X)] .
+                                   Y×X
+
+  La contribution de l’ensemble {(y, x) : pX (x) = 0} est nulle : la mesure de {x : pX (x) = 0}
+  sous la loi de X est nulle par définition de pX . Toute variable T σ(X)-mesurable et bor-
+  née s’écrivant h(X) pour une fonction mesurable bornée h (proposition 2.1), on a E[Y T ] =
+  E[Φ(X) T ] pour toute telle T , et Φ(X) est intégrable par le théorème de Fubini. Le théorème
+  et définition 2.1 conclut. Le cas général se traite de la même façon en remplaçant y par ψ(y).
+  □
+
+  Les mesures µ et ν peuvent être discrètes ou continues. Dans la Section 1.2, µ est la mesure de
+  comptage sur {−1, 1} et l’intégrale en y est une somme de deux termes ; dans la Section 1.2, µ
+  est la mesure de Lebesgue sur R.
+
+2.6     Un lemme de décomposition selon la fonction de régression
+    Le lemme suivant est l’outil de calcul de la démonstration du théorème 1.2 : il remplace
+l’espérance d’une fonction du couple (X, Y ) par une espérance qui ne porte plus que sur X, les
+deux valeurs possibles de Y étant pondérées par η(X) et 1 − η(X).
+2. LES OUTILS MATHÉMATIQUES                                                                       31
+
+
+
+   Lemme 2.2: Décomposition selon la fonction de régression
+  Soit Y une variable aléatoire à valeurs dans {−1, 1}, η la fonction de régression et ψ : Rd ×
+  {−1, 1} → R+ une fonction mesurable bornée. Alors
+
+                   E [ψ(X, Y )] = E [ψ(X, 1) η(X)] + E [ψ(X, −1) (1 − η(X))] .
+
+
+
+   Démonstration
+  La variable Y ne prenant que les valeurs −1 et 1, on a l’identité
+
+                         ψ(X, Y ) = ψ(X, 1) 1{Y =1} + ψ(X, −1) 1{Y =−1} .
+
+  Prenons l’espérance et conditionnons par X. Les variables ψ(X, 1) et ψ(X, −1) sont σ(X)-
+  mesurables et bornées, donc la propriété du produit (proposition 2.3) et la propriété de l’es-
+  pérance de l’espérance conditionnelle (proposition 2.2) donnent
+                                                         
+              E ψ(X, 1) 1{Y =1} = E ψ(X, 1) E 1{Y =1} X = E [ψ(X, 1) η(X)] ,
+
+  et de même pour
+                 le second
+                          terme, puisque
+                                         la linéarité de l’espérance conditionnelle donne
+  E 1{Y =−1} X = 1 − E 1{Y =1} X = 1 − η(X).                                            □
+
+
+
+2.7    Mesure de comptage et modèle dominé
+    Lorsque la réponse prend un nombre fini de valeurs, la loi de Y n’admet pas de densité par
+rapport à la mesure de Lebesgue, mais elle en admet une par rapport à la mesure de comptage.
+Sur Y = {−1, 1}, cette mesure est c := δ{−1} + δ{1} , et une fonction pY : {−1, 1} → R+ est une
+densité de probabilité par rapport à c si et seulement si pY (−1) + pY (1) = 1 : l’intégrale contre c
+est la somme des deux valeurs. Le couple (X, Y ) admet alors une densité par rapport à la mesure
+produit Leb ⊗ c sur Rd × {−1, 1}, et toutes les formules de la Section 2.5 s’appliquent. C’est la
+notion de modèle dominé du chapitre 1 (définition 1), appliquée ici à la mesure dominante produit.
+
+
+2.8    Le vecteur gaussien et sa densité
+    Le modèle de l’analyse discriminante repose sur la densité d’un vecteur gaussien de Rd . Un
+vecteur aléatoire X de Rd est dit gaussien lorsque toute combinaison linéaire de ses coordonnées
+est une variable gaussienne réelle (définition 10) ; sa loi est déterminée par son espérance µ ∈ Rd
+et sa matrice de covariance Σ, qui est symétrique positive. Lorsque Σ est de plus inversible, cette
+loi admet par rapport à la mesure de Lebesgue de Rd la densité
+                                                                           
+                                    1                 1
+                     q(x) =          √       exp − (x − µ)⊤ Σ−1 (x − µ) ,
+                             (2π)d/2 det Σ            2
+
+et seulement dans ce cas (proposition 2.7). C’est la raison pour laquelle le cadre 1.2 impose
+l’inversibilité des deux matrices de covariance.
+
+
+2.9    La fonction sigmoïde
+   La fonction sigmoïde, ou fonction logistique, est
+
+                                                         1
+                                       sigm : t 7−→           .
+                                                      1 + e−t
+32                      CHAPITRE 8. INTRODUCTION À L’APPRENTISSAGE STATISTIQUE
+
+Elle est de classe C ∞ , strictement croissante de R sur ]0, 1[, de limites 0 en −∞ et 1 en +∞, et
+vérifie les deux identités
+
+                    sigm(−t) = 1 − sigm(t) ,       sigm′ (t) = sigm(t) (1 − sigm(t)) .
+
+En particulier sigm(0) = 1/2, de sorte que sigm(t) ≥ 1/2 si et seulement si t ≥ 0 : c’est ce qui
+ramène le seuil ηθ (x) ≥ 1/2 à une condition affine en x dans le modèle logistique et dans l’analyse
+discriminante linéaire. Sa réciproque est la fonction logit, u 7→ log (u/(1 − u)), de sorte que ϕθ
+défini en (11) est le logit de ηθ .
+
+2.10       Les résultats antérieurs mobilisés
+      Les énoncés suivants sont employés tels quels.
+     — Du chapitre 1 : la notion de modèle dominé et de densité par rapport à une mesure domi-
+       nante (définition 1), celle de n-échantillon (définition 6), la définition du vecteur gaussien et
+       l’expression de sa densité (définition 10, proposition 2.7), et le théorème de Radon-Nikodym
+       (théorème 2.1).
+     — Du chapitre 2 : la vraisemblance d’un échantillon et l’estimateur du maximum de vraisem-
+       blance (définition 1.4, méthode 1.2), ainsi que le point de vue des M -estimateurs (défini-
+       tion 1.8) et l’exemple des moindres carrés (exemple 1.15), que le modèle logistique et le
+       modèle linéaire gaussien retrouvent.
+     — Du chapitre 6 : la convergence en probabilité (définition 2.1) et la consistance d’une suite
+       d’estimateurs (définition 1.2), employées dans l’hypothèse (iii) de la proposition 1.5.
+     — Du chapitre 7 : la consistance de l’estimateur du maximum de vraisemblance, qui est
+       l’hypothèse sous laquelle la règle par substitution de l’analyse discriminante est étudiée
+       à l’exercice 3.
+
+2.11       Les résultats admis
+      Quatre énoncés de cette partie sont utilisés sans être démontrés ici.
+     — La complétude de L2 (Ω, F, P), c’est-à-dire le théorème 2.1, qui relève de la théorie de la
+       mesure.
+     — Le théorème de projection sur un sous-espace vectoriel fermé d’un espace de Hilbert (théo-
+       rème 2.2) et la fermeture de L2 (Ω, A, P) (lemme 2.1).
+     — L’existence et l’unicité de l’espérance conditionnelle pour une variable simplement intégrable
+       (théorème et définition 2.1), dont la démonstration passe par un argument de classe monotone
+       ou par le théorème de Radon-Nikodym ; on en trouvera une rédaction au chapitre 34 de
+       Probability and Measure de P. Billingsley.
+     — La caractérisation des variables σ(X)-mesurables (proposition 2.1), dite lemme de Doob.
+

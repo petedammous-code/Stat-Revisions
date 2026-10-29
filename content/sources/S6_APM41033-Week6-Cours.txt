@@ -1,0 +1,1788 @@
+Chapitre 6
+
+Statistiques asymptotiques
+
+   Les cinq premiers chapitres ont travaillé à n fixé : un modèle statistique, un
+   estimateur ou un test construit sur n observations, et une mesure de qualité
+   que l’on sait calculer exactement – un biais, une erreur quadratique moyenne,
+   la taille et la fonction puissance d’un test, un niveau de confiance. Ces calculs
+   exacts sont l’exception. Dès que l’estimateur n’est pas une moyenne empirique
+   dans un modèle gaussien, la loi de la statistique considérée n’a pas d’expression
+   explicite, et l’on ne sait plus ni comparer deux estimateurs par leur erreur
+   quadratique, ni calculer le niveau d’une région de confiance, ni calibrer le seuil
+   d’un test.
+   Les statistiques asymptotiques apportent une réponse en étudiant le compor-
+   tement des statistiques lorsque le nombre n d’observations tend vers l’infini.
+   Le cadre en est la suite d’expériences statistiques, qui permet de faire varier n
+   tout en gardant un paramètre inconnu commun. Sur un estimateur, les deux
+   propriétés recherchées sont la consistance – l’erreur d’estimation tend vers zéro
+                                                                                 √
+   en probabilité – et la normalité asymptotique – l’erreur, remise à l’échelle n,
+   converge en loi vers une gaussienne dont la variance mesure la précision. La
+   loi faible des grands nombres et le théorème de la limite centrale fournissent
+   ces deux propriétés pour une moyenne empirique ; le théorème de continuité,
+   le lemme de Slutsky et la méthode-δ les transportent à toute fonction suf-
+   fisamment régulière d’une moyenne empirique. On en déduit des régions de
+   confiance et des tests dont le niveau n’est garanti qu’à la limite, et un critère
+   de comparaison des estimateurs fondé sur leur variance asymptotique.
+   Les outils de probabilité mobilisés – les modes de convergence et leurs liens,
+   les inégalités de Markov et de Bienaymé-Tchebychev, le procédé de Cramér-
+   Wold, la différentiabilité d’une fonction vectorielle – sont rassemblés dans la
+   partie Outils mathématiques, qui suit la partie principale, et la feuille d’exer-
+   cices vient ensuite. La partie Compléments, hors programme d’examen, donne
+   la forme vectorielle du lemme de Slutsky et sa démonstration, les lois des
+   grands nombres que le cours n’utilise pas, la vitesse de convergence dans le
+   théorème de la limite centrale, la comparaison des intervalles de Wald et de
+   Wilson, et l’estimateur de Hodges, qui montre les limites du critère de variance
+   asymptotique.
+
+
+Pourquoi faire tendre n vers l’infini
+    Reprenons deux questions laissées sans réponse par les chapitres précédents. La première porte
+sur l’estimation : comment comparer deux estimateurs quand leurs erreurs quadratiques moyennes
+ne sont pas calculables, et comment construire une région de confiance quand la loi de l’estimateur
+
+                                                  7
+8                                                CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+n’est pas explicite ? La seconde porte sur les tests : quel seuil de rejet choisir quand la loi de la
+statistique de test est inconnue ?
+    Dans les deux cas, le nombre d’observations est une quantité dont on dispose, et qui est souvent
+grande. L’idée est alors de remplacer la loi exacte de la statistique, inaccessible, par une loi limite,
+qui ne dépend plus du modèle que par quelques caractéristiques – une espérance, une variance –
+et qui est, dans la plupart des situations, gaussienne. En contrepartie, les garanties obtenues ne
+valent qu’à la limite : un test de niveau asymptotique α ne dit rien de sa taille pour la valeur de n
+dont on dispose réellement, et une région de confiance de niveau asymptotique 1 − α peut couvrir
+le paramètre avec une probabilité sensiblement différente. On verra sur l’exemple d’une proportion
+que cet écart n’est pas toujours négligeable.
+Intuition. La loi faible des grands nombres dit que la moyenne empirique de n variables indépendantes
+de même loi s’approche de leur espérance. Le théorème de la limite centrale précise cette distance : l’écart
+                                                                   √
+entre la moyenne empirique et l’espérance est de l’ordre de σ/ n, et, une fois divisé par cette quantité, il
+se comporte comme une gaussienne centrée réduite. C’est ce second énoncé qui produit les intervalles de
+confiance et les seuils de test de ce chapitre : toute l’information dont on a besoin sur la loi des observations
+s’y réduit à son espérance et à sa variance.
+1. LES FONDAMENTAUX                                                                                        9
+
+1      Les fondamentaux
+
+1.1      Une suite d’expériences statistiques
+
+   Faire tendre le nombre d’observations vers l’infini demande d’abord de dire ce que l’on fait
+varier. Les chapitres précédents se donnaient une expérience statistique et n observations ; ici, n
+change, donc l’espace des observations change aussi, et c’est une suite d’expériences statistiques
+que l’on se donne, indexée par le nombre d’observations, avec le même ensemble de paramètres Θ
+d’un bout à l’autre.
+
+
+     Définition 1.1: Suite d’expériences statistiques
+    Une suite d’expériences statistiques est une famille
+
+                        {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N} ,            où Θ ⊆ Rd ,
+
+    c’est-à-dire la donnée, pour chaque n              ∈    N, d’une expérience statistique
+    (Zn , Zn , {Pn,θ : θ ∈ Θ}) dont l’espace des paramètres Θ ne dépend pas de n. On note
+    Zn l’observation de la n-ième expérience, En,θ l’espérance et Varn,θ la variance sous Pn,θ .
+
+
+
+   Le paramètre inconnu est le même dans toutes les expériences de la suite : c’est ce qui donne un
+sens à la phrase « estimer θ d’autant mieux que n est grand ». Dans la quasi-totalité des situations
+de ce cours, la n-ième expérience est celle d’un n-échantillon.
+
+
+     Exemple 1.1: Suite de n-échantillons
+    Soit (X, X , {Qθ : θ ∈ Θ}) une expérience statistique, avec Θ ⊆ Rd . La suite d’expériences
+    statistiques produit associée est définie, pour tout n ∈ N, par
+
+                       Zn := Xn ,       Zn := X ⊗n ,          Pn,θ := Q⊗n
+                                                                       θ  ,     θ∈Θ.
+
+    On définit sur chaque espace Xn les statistiques canoniques
+
+                    Xi : X n → X ,      Xi : (x1 , . . . , xn ) 7→ xi ,   i ∈ {1, . . . , n} .
+
+    Pour (n, θ) fixés, sous Pn,θ , les statistiques X1 , . . . , Xn sont indépendantes, et pour tout i ∈
+    {1, . . . , n}, le modèle statistique induit par Xi est (X, X , {Qθ : θ ∈ Θ}).
+
+
+
+    Toutes les suites d’expériences statistiques ne sont pas de cette forme : les observations peuvent
+être dépendantes, ou de lois différentes. L’exercice 6 de la feuille de la semaine 1 et l’exercice 5 de
+la feuille de la semaine 2 en donnent deux exemples, et la définition 1.1 les couvre aussi bien.
+
+
+
+    Complément, hors programme : le produit infini d’expériences statistiques. Dans le
+    cas produit, il est commode de ne plus faire dépendre l’espace de l’indice n, de sorte qu’une seule
+    probabilité Pθ gouverne toutes les statistiques à la fois. C’est possible, au prix d’un argument
+    de théorie de la mesure que l’on admet.
+10                                                CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+       Proposition 1.1: Produit infini d’expériences statistiques
+      Soit (X, X , {Qθ : θ ∈ Θ}) une expérience statistique. Posons
+
+                                            Z := XN ,       Z := X ⊗N ,
+
+      l’ensemble des suites à valeurs dans X muni de la σ-algèbre produit, et, pour k ∈ N, Xk (z) :=
+      xk où z = {xn , n ∈ N}. Il existe sur (Z, Z) une famille de probabilités {Pθ : θ ∈ Θ} telle
+      que, pour tout θ ∈ Θ, tout n ∈ N et tout Cn ∈ X ⊗n ,
+
+                                    Pθ ((X1 , . . . , Xn ) ∈ Cn ) = Q⊗n
+                                                                     θ (Cn ) .
+
+      De façon équivalente, pourtout n ∈ N, le       modèle statistique induit par      la statistique
+      (X1 , . . . , Xn ) est Xn , X ⊗n , Q⊗n
+                                          θ  : θ ∈ Θ  . On dit alors que {X k , k ∈ N ∗
+                                                                                        } est un échan-
+      tillon du modèle {Qθ : θ ∈ Θ}.
+
+  La construction repose sur le théorème d’extension de Carathéodory et n’est pas démontrée ici.
+  On utilisera indifféremment les deux écritures : celle de la définition 1.1, avec une probabilité Pn,θ
+  par valeur de n, et celle de l’échantillon, avec une seule probabilité Pθ . Les énoncés ci-dessous
+  sont écrits dans la première, qui ne suppose ni l’indépendance ni l’identité des lois.
+
+
+1.2     Consistance et biais asymptotique
+   La première propriété que l’on demande à une suite d’estimateurs est que son erreur devienne
+petite quand n grandit. « Petite » s’entend ici en probabilité : la probabilité que l’erreur dépasse
+un seuil fixé tend vers zéro.
+
+     Définition 1.2: Suite d’estimateurs consistante
+  Soit une suite d’expériences statistiques paramétriques {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N},
+  où Θ ⊆ Rd , et soit g : Θ → Rℓ une fonction. Une suite d’estimateurs {Tn , n ∈ N∗ } de g(θ),
+
+                                         Tn : (Zn , Zn ) → (Rℓ , B(Rℓ )) ,
+
+  est dite consistante pour g si
+
+                    ∀θ ∈ Θ ,     ∀ε > 0 ,         lim Pn,θ (∥Tn (Zn ) − g(θ)∥ ≥ ε) = 0 .
+                                                 n→∞
+
+                            Pn,θ −prob
+  On écrit alors Tn (Zn )      −→        g(θ).
+
+   La norme est la norme euclidienne de Rℓ . La convergence est demandée pour chaque valeur du
+paramètre, sans aucune uniformité en θ.
+
+     Définition 1.3: Suite d’estimateurs asymptotiquement sans biais
+  Dans le cadre de la définition 1.2, la suite d’estimateurs {Tn , n ∈ N∗ } est dite asymptotique-
+  ment sans biais pour g si
+
+                                ∀θ ∈ Θ ,          lim En,θ [Tn (Zn )] = g(θ) .
+                                                 n→∞
+
+
+
+Intuition. Les deux propriétés ne se déduisent pas l’une de l’autre. Être asymptotiquement sans biais ne
+porte que sur l’espérance de l’estimateur et laisse sa dispersion libre : une suite dont l’espérance converge
+vers g(θ) mais dont la variance ne diminue pas n’est pas consistante. Inversement, la consistance ne
+dit rien de l’espérance, qui peut même ne pas exister. Aucune des deux ne renseigne sur la vitesse : la
+1. LES FONDAMENTAUX                                                                                          11
+
+                                                       √
+définition 1.2 est satisfaite par une erreur d’ordre 1/ n comme par une erreur d’ordre 1/ ln n. C’est ce
+que la normalité asymptotique (Section 1.8) viendra quantifier.
+    Les deux propriétés se lisent bien sur l’estimateur du support d’une loi uniforme, où tous les
+calculs sont explicites.
+
+   Exemple 1.2: Support d’une loi uniforme
+  Considérons la suite de modèles statistiques
+                     n                                         
+                      R+ , B(Rn+ ), U ⊗n ([0, θ]) : θ ∈ Θ := R∗+   : n ∈ N⋆            ,
+
+  et la suite des estimateurs du maximum de vraisemblance de θ,
+
+                                     θ̂n := max(X1 , . . . , Xn ) = Xn:n .
+
+  Alors {θ̂n , n ∈ N⋆ } est une suite consistante d’estimateurs de θ, et elle est asymptotiquement
+  sans biais.
+
+   Démonstration
+  Soit θ > 0. Par définition, Pn,θ (θ̂n ≤ θ) = 1, de sorte que, pour tout ε ∈ ]0, θ[,
+
+             Pn,θ (|θ̂n − θ| > ε) = Pn,θ (θ̂n < θ − ε) = Pn,θ (X1 < θ − ε, . . . , Xn < θ − ε)
+                                    Yn
+                                  =    Pn,θ (Xi < θ − ε) = (1 − ε/θ)n ,
+                                     i=1
+
+  la troisième égalité résultant de l’indépendance des statistiques canoniques sous Pn,θ . Ainsi
+  limn→∞ Pn,θ (|θ̂n − θ| > ε) = 0 pour tout ε ∈ ]0, θ[, donc pour tout ε > 0 puisque la probabilité
+  est nulle dès que ε ≥ θ. La suite est donc consistante. Le calcul du biais, fait à l’exercice 1 de
+                                                   n
+  la feuille de la semaine 3, donne En,θ [θ̂n ] = n+1 θ pour tout θ ∈ Θ, quantité qui converge vers
+  θ : la suite est asymptotiquement sans biais.                                                   □
+
+
+
+
+    Illustration / animation : la consistance se voit sur la loi de l’estimateur.
+    Pour le modèle uniforme sur [0, θ] et l’estimateur θ̂n = Xn:n , l’histogramme
+    de 2 000 réalisations se resserre contre θ quand n grandit, et la fréquence des
+    réalisations hors de la bande [θ − ε, θ + ε] tend vers zéro. On peut changer de
+    modèle (exponentiel, Poisson), d’estimateur (maximum de vraisemblance ou
+    moments) et faire croître n de 5 à 2 000.                                                      link
+
+
+
+
+Intuition. L’histogramme de l’animation ci-dessus se resserre contre θ, ce qui est la consistance. Il indique
+                                                 √
+aussi que la bonne échelle n’est pas celle de 1/ n : le calcul ci-dessus donne Pn,θ (θ − θ̂n > ε) = (1 − ε/θ)n ,
+qui est petit dès que ε est de l’ordre de 1/n. On reviendra sur cet exemple après avoir défini la convergence
+                                                  √
+en loi, pour établir que c’est n(θ − θ̂n ), et non n(θ − θ̂n ), qui possède une loi limite (exemple 1.5).
+
+
+1.3     Le théorème de continuité
+    Une fois qu’une suite d’estimateurs est consistante, toute fonction continue de cette suite estime
+la même fonction continue de la quantité estimée. C’est le résultat le plus économique du chapitre,
+et celui dont on se sert le plus souvent.
+12                                               CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+     Théorème 1.1: Théorème de continuité
+  Soit une suite d’expériences statistiques {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N}. Soit {Tn , n ∈ N}
+  une suite consistante d’estimateurs de g(θ), où g : Θ → Rℓ et Tn : (Zn , Zn ) → (Rℓ , B(Rℓ )), et
+  soit φ : Rℓ → Rq une fonction continue en tout point de g(Θ). Alors {φ(Tn )n , n ∈ N} est une
+  suite consistante d’estimateurs de φ ◦ g.
+
+
+     Démonstration
+  Soient θ ∈ Θ et ε > 0. La fonction φ est continue au point g(θ) : il existe donc δ > 0 tel que,
+  pour tout u ∈ Rℓ vérifiant ∥u − g(θ)∥ ≤ δ, on ait ∥φ(u) − φ(g(θ))∥ < ε. Par conséquent,
+
+                            {∥φ(Tn ) − φ ◦ g(θ)∥ ≥ ε} ⊆ {∥Tn − g(θ)∥ > δ} ,
+
+  car sur l’événement complémentaire {∥Tn − g(θ)∥ ≤ δ}, l’inégalité ∥φ(Tn ) − φ(g(θ))∥ < ε est
+  vérifiée. Il vient
+
+                       Pn,θ (∥φ(Tn ) − φ ◦ g(θ)∥ ≥ ε) ≤ Pn,θ (∥Tn − g(θ)∥ > δ) ,
+
+  et le membre de droite tend vers zéro puisque la suite {Tn , n ∈ N} est consistante.           □
+
+
+  Remarque. La version du théorème de continuité qui sert dans les preuves porte sur des suites
+                                                           Pn −prob
+  de vecteurs aléatoires et non sur des estimateurs : si Xn −→ X et si φ est continue en tout
+                                                              Pn −prob
+  point d’un ensemble C tel que P(X ∈ C) = 1, alors φ(Xn ) −→ φ(X). Elle est énoncée dans
+  les outils mathématiques (Section 2.1) et se démontre de la même façon.
+
+
+Application : les estimateurs construits sur une moyenne empirique
+     Beaucoup d’estimateurs s’écrivent comme une fonction d’une moyenne empirique,
+                                              n
+                                                    !
+                                           1X
+                                         φ       Xk ,
+                                           n
+                                                    k=1
+
+
+par construction pour les estimateurs des moments (chapitre 2), et après calcul pour nombre
+d’estimateurs du maximum de vraisemblance. Leur consistance résulte alors de deux ingrédients :
+le théorème de continuité 1.1, et la consistance de la moyenne empirique elle-même, qui est une
+loi faible des grands nombres.
+
+     Théorème 1.2: Loi faible des grands nombres pour des variables décorrélées
+  Soit {(Zn , Zn , Pn ) : n ∈ N⋆ } une suite d’espaces probabilisés. Supposons que
+      — sous Pn , les variables aléatoires réelles X1 , . . . , Xn sont décorrélées ;
+      — pour tout k ∈ {1, . . . , n}, En [Xk2 ] < ∞ ;
+      — et
+                                                        n
+                                               1 X
+                                           lim     Varn (Xk ) = 0 .
+                                           n→∞ n2
+                                                    k=1
+
+  Alors
+                                      !2 
+                      n
+                      X                                            n
+                    1                                           1X                Pn −prob
+           lim En      {Xk − En [Xk ]}  = 0 ,                    {Xk − En [Xk ]} −→ 0 .
+          n→∞       n                                           n
+                          k=1                                     k=1
+1. LES FONDAMENTAUX                                                                                    13
+
+   Démonstration
+  Les variables X1 , . . . , Xn étant décorrélées sous Pn et de carré intégrable, le lemme de Bie-
+  naymé (Section 2.2) donne
+                                           !2                   !
+                      X n                                   Xn              n
+                  1                                       1             1 X
+           En               {Xk − En [Xk ]}  = Varn          Xk = 2         Varn (Xk ) ,
+                 n                                       n              n
+                      k=1                                      k=1            k=1
+
+
+  qui tend vers zéro par hypothèse. La convergence en probabilité s’en déduit par l’inégalité de
+  Bienaymé-Tchebychev (Section 2.2) : pour tout ε > 0,
+                                           !                                  !2 
+                     n                                     n
+                  1X                            1        1 X
+            Pn         {Xk − En [Xk ]} ≥ ε ≤ 2 En             {Xk − En [Xk ]}  .
+                  n                             ε        n
+                     k=1                                             k=1
+
+
+                                                                                                     □
+
+
+
+    Illustration / animation : la loi des grands nombres, trajectoire par trajec-
+    toire. On suit la moyenne empirique X̄n d’une seule suite d’observations au fil
+    de n, puis d’une seconde suite : chacune se stabilise autour de µ, ce qui est la
+    convergence presque sûre. On tire ensuite cent valeurs de X̄n à un instant n
+    fixé, sans tracer les trajectoires : leur dispersion se resserre quand n augmente,
+    ce qui est la convergence en probabilité. Deux questions demandent le nombre              link
+    de réalisations tirées et le mode de convergence illustré.
+
+    Dans le cas d’une suite de n-échantillons d’une loi Q de carré intégrable, les hypothèses
+sont satisfaites : les variables sont indépendantes donc décorrélées, de même variance σ 2 , et
+     Pn                                                 Pn −prob R                         Pn
+n−2 k=1 σ 2 = σ 2 /n tend vers zéro. On obtient X̄n −→              x Q(dx), où X̄n := n−1 k=1 Xk .
+L’hypothèse de carré intégrable n’est pas nécessaire : la loi faible des grands nombres vaut pour des
+variables indépendantes de même loi seulement intégrables, résultat plus délicat que l’on admet
+ici et qui est rappelé dans les compléments (Section 4.2).
+
+   Exemple 1.3: Paramètre d’une loi exponentielle
+                                                                               
+  Soit une suite de n-échantillons du modèle R+ , B(R+ ), E(θ) : θ ∈ Θ := R∗+ . L’estimateur
+  du maximum de vraisemblance de θ est
+                                       n
+                                            !−1
+                                    1X
+                      Tn (Zn ) :=        Xk     ,    Zn := (X1 , . . . , Xn ) .
+                                    n
+                                            k=1
+
+  La suite {Tn , n ∈ N} est une suite consistante d’estimateurs de θ.
+
+   Démonstration
+  Soit θ ∈ Θ. L’espérance d’une loi E(θ) vaut 1/θ et sa variance 1/θ2 : la loi faible des grands
+                              Pn,θ −prob
+  nombres 1.2 donne X̄n         −→         En,θ [X1 ] = 1/θ. La fonction φ : u 7→ 1/u est continue sur
+                                                                                              Pn,θ −prob
+  R⋆+ , qui contient {1/θ :    θ ∈ Θ} ; le théorème de continuité 1.1 donne alors φ(X̄n )       −→
+  φ(1/θ) = θ.                                                                                        □
+
+
+Intuition. Le schéma est toujours le même, et il vaut la peine d’être retenu sous cette forme : la loi des
+grands nombres traite la moyenne empirique, le théorème de continuité traite la fonction que l’on applique
+14                                             CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+à cette moyenne. L’étape délicate est de vérifier que la fonction φ est continue au point où la moyenne
+empirique converge, et non partout : ici u 7→ 1/u n’est pas continue en 0, mais 0 n’est pas une valeur
+possible de 1/θ pour θ ∈ R∗+ , ce qui suffit.
+
+
+1.4     La convergence en loi
+    La consistance ne renseigne pas sur la vitesse. Pour l’obtenir, il faut un mode de convergence
+qui ne compare plus l’estimateur à une constante, mais la loi de l’erreur remise à l’échelle à une
+loi limite. Comme les variables en jeu sont définies sur des espaces qui changent avec n, cette
+convergence porte sur les lois et non sur les variables elles-mêmes.
+
+     Définition 1.4: Convergence en loi
+  Soit {(Yn , Yn , Pn ) : n ∈ N∗ } une suite d’espaces de probabilité, {Yn , n ∈ N∗ } une suite
+  de vecteurs aléatoires Yn : (Yn , Yn ) → (Rd , B(Rd )), et µ une mesure de probabilité sur
+  (Rd , B(Rd )). La suite {Yn , n ∈ N∗ } converge en loi vers µ si, pour toute fonction continue
+  bornée f : Rd → R,                                  Z
+                                    lim En [f (Yn )] = f (y) µ(dy) .
+                                     n→∞
+
+                 Pn
+  On note Yn =⇒ µ.
+
+                                                                                P
+    Lorsque µ est la loi d’un vecteur aléatoire Y , on écrit aussi Yn =⇒
+                                                                       n
+                                                                         Y ; seule la loi de Y
+intervient, et l’espace sur lequel Y est défini n’a pas d’importance.
+Intuition. Tester la convergence contre toutes les fonctions continues bornées est une définition commode
+pour les démonstrations, mais peu parlante. Les deux énoncés suivants la rendent utilisable : le théorème
+de Portmanteau, qui remplace les fonctions continues bornées par des probabilités d’événements – donc par
+des fonctions de répartition en dimension un –, et le théorème de Lévy, qui les remplace par les fonctions
+caractéristiques. On passera presque toujours par l’un de ces deux énoncés plutôt que par la définition.
+
+
+Deux caractérisations de la convergence en loi
+
+
+     Théorème 1.3: Portmanteau, version simple
+  Soit {(Yn , Yn , Pn ) : n ∈ N∗ } une suite d’espaces de probabilité, {Yn , n ∈ N∗ } une suite de
+  vecteurs aléatoires Yn : (Yn , Yn ) → (Rd , B(Rd )) et µ une loi sur Rd . Les assertions suivantes
+  sont équivalentes.
+             P
+      (i) Yn =⇒
+              n
+                µ.
+     (ii) Pour toute fonction f : Rd → R bornée et lipschitzienne, c’est-à-dire telle que |f (x) −
+          f (y)| ≤ Lf ∥x − y∥ pour une constante Lf ,
+                                                        Z
+                                      lim En [f (Yn )] = f (x) µ(dx) .
+                                       n→∞
+
+                                Qd
+     (iii) Pour tout pavé A =     i=1 ]ai , bi ] dont la frontière ∂A vérifie µ(∂A) = 0,
+
+                                            lim Pn (Yn ∈ A) = µ(A) .
+                                           n→∞
+
+
+   Ce théorème est admis ; sa démonstration figure au théorème IV-5.26 du polycopié d’origine.
+L’assertion (ii) est celle que l’on utilise dans les preuves, l’assertion (iii) celle qui permet d’identifier
+une loi limite par calcul de probabilités. En dimension un, elle dit que Pn (Yn ≤ t) → µ(]−∞, t])
+en tout point t où la fonction de répartition de µ est continue.
+1. LES FONDAMENTAUX                                                                                          15
+
+
+   Exemple 1.4: Suite de lois uniformes de support {1/n, . . . , 1}
+  Sur l’espace Yn := {1/n, . . . , (n−1)/n, 1} muni de Yn := P(Yn ), on définit la loi Pn ({k/n}) :=
+  1/n pour k ∈ {1, . . . , n}, et la variable aléatoire Yn : Yn → [0, 1] par Yn (x) = x. Alors
+      nP
+  Yn =⇒ U([0, 1]).
+
+   Démonstration
+  Pour t ∈ [0, 1], on a Pn (Yn ≤ t) = ⌊nt⌋/n, et donc limn→∞ Pn (Yn ≤ t) = t, puisque nt − 1 <
+  ⌊nt⌋ ≤ nt. Pour t < 0 la probabilité est nulle et pour t > 1 elle vaut 1. La fonction de
+  répartition de la loi U ([0, 1]) étant continue sur R, le théorème de Portmanteau 1.3 permet de
+  conclure.                                                                                    □
+
+   Appliquée à une fonction f continue sur [0, 1], donc continue bornée, la définition de la conver-
+gence en loi redonne la convergence des sommes de Riemann :
+                                                n                   Z 1
+                                              1X
+                             En [f (Yn )] =      f (k/n) −−−−→            f (x) dx .
+                                              n           n→∞        0
+                                               k=1
+
+
+   Exemple 1.5: Support d’une loi uniforme : la loi limite de l’erreur
+  Reprenons la suite de modèles statistiques
+                                                                                                 ⊗n
+       (R∗+ )n , (B(R∗+ ))⊗n , Pn,θ : θ ∈ Θ := R∗+   : n ∈ N⋆        ,       Pn,θ = θ−1 1[0,θ] · Leb     ,
+
+  et la suite des estimateurs du maximum de vraisemblance θ̂n = max(X1 , . . . , Xn ) = Xn:n .
+  Alors, pour tout θ ∈ Θ,                            Pn,θ
+                                          n θ − θ̂n =⇒ E(θ−1 ) .
+
+
+   Démonstration
+  Le calcul de l’exemple 1.2 donne, pour tout ε ∈ ]0, θ[,
+                                               
+                                Pn,θ θ − θ̂n > ε = (1 − ε/θ)n .
+
+  Soit x > 0. En prenant ε = x/n, licite dès que n > x/θ, il vient
+                                                           x n
+                     lim Pn,θ n(θ − θ̂n ) > x = lim 1 −            = e−x/θ .
+                    n→∞                           n→∞        nθ
+
+  La fonction x 7→ 1 − e−x/θ , prolongée par 0 sur R− , est la fonction de répartition de la
+  loi exponentielle d’intensité θ−1 ; elle est continue sur R. Comme Pn,θ (n(θ − θ̂n ) ≤ x) =
+  1 − Pn,θ (n(θ − θ̂n ) > x) et que Pn,θ (θ − θ̂n ≥ 0) = 1, la convergence de la fonction de
+  répartition a lieu en tout point de R, et le théorème de Portmanteau 1.3 donne la conclusion.
+  □
+
+
+Intuition. La vitesse de convergence se lit dans le facteur qu’il faut mettre devant l’erreur pour obtenir
+                                                          √
+une loi limite non dégénérée. Ici ce facteur est n, et non n : l’erreur θ − θ̂n est de l’ordre de 1/n, soit bien
+                          √
+plus petite que l’ordre 1/ n que donnera le théorème de la limite centrale pour une moyenne empirique.
+La loi limite n’est pas gaussienne non plus. Le modèle uniforme n’est pas régulier au sens du chapitre 3,
+et cet exemple montre que la normalité asymptotique n’est pas la règle générale, seulement le cas le plus
+fréquent.
+16                                            CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+
+
+        2.2                                                      14
+
+          2
+                                                                 12
+        1.8
+
+        1.6                                                      10
+
+        1.4
+                                                                  8
+
+
+
+
+                                                      n ( - n)
+        1.2
+                                                                  6
+          1
+
+        0.8                                                       4
+
+        0.6
+                                                                  2
+        0.4
+
+        0.2                                                       0
+              0    50       100      150      200                     0   50   100   150       200
+
+
+
+                                                n                        o
+Figure 1 – À gauche, 50 réalisations de la suite θ̂n : n = 1, . . . , 200 calculée à partir d’obser-
+vations Xi ∼ U([0, 2]) : on y nvoit la consistance, mais pasode loi limite. À droite, les 50 réalisations
+correspondantes de la suite n(2 − θ̂n ) : n = 1, . . . , 200 : la dispersion ne se réduit plus, ce qui
+est le signe d’une loi limite non dégénérée.
+
+
+
+
+Figure 2 – Histogramme de N = 5000 réplications indépendantes de n(θ − θ̂n ), pour n = 200 et
+θ = 2, les réalisations de θ̂n étant obtenues à partir de tirages uniformes sur [0, θ]. En trait rouge,
+la densité x 7→ θ−1 exp(−x/θ) de la loi E(θ−1 ).
+1. LES FONDAMENTAUX                                                                                     17
+
+Effet d’une transformation continue
+
+
+   Théorème 1.4: Transformation continue
+  Soit {(Yn , Yn , Pn ) : n ∈ N⋆ } une suite d’espaces de probabilité, {Yn , n ∈ N⋆ } une suite de
+  vecteurs aléatoires Yn : (Yn , Yn ) → (Rd , B(Rd )), µ une loi sur (Rd , B(Rd )) et φ : Rd → Rm
+                                                                                         P
+  une fonction continue en tout point d’un ensemble C tel que µ(C) = 1. Si Yn =⇒
+                                                                               n
+                                                                                 µ, alors
+                                                     P
+                                                     n
+                                             φ(Yn ) =⇒ µφ ,
+
+  où µφ est l’image de µ par φ, définie par µφ (A) := µ(φ−1 (A)) pour tout A ∈ B(Rm ).
+
+
+   Démonstration
+  Supposons d’abord φ continue sur Rd tout entier. Pour f : Rm → R continue bornée, f ◦ φ
+                                             Pn
+  est continue bornée, et la convergence Yn =⇒  µ donne
+                                         Z                Z
+                    En [f ◦ φ(Yn )] −−−−→ f ◦ φ(y) µ(dy) = f (u) µφ (du) ,
+                                      n→∞
+
+  la dernière égalité étant le théorème de transfert. C’est la convergence annoncée. Le cas général,
+  où φ n’est continue qu’en tout point d’un ensemble de µ-mesure 1, demande de travailler avec
+  les fermés et le théorème de Portmanteau ; il est admis ici et démontré au théorème IV-5.30
+  du polycopié d’origine.                                                                         □
+
+
+Fonction caractéristique et théorème de Lévy
+   La troisième caractérisation de la convergence en loi est celle qui servira à démontrer le théorème
+de la limite centrale. Les vecteurs sont ici des vecteurs colonnes, et A⊤ désigne la transposée de
+la matrice A.
+
+   Définition 1.5: Fonction caractéristique
+  Soit Y un vecteur aléatoire à valeurs dans Rd défini sur (Y, Y, P). La fonction caractéristique
+  de Y est la fonction                   h ⊤ i
+                                   t 7→ E eit Y ,      t ∈ Rd .
+
+                                              ⊤
+    Elle est définie pour tout t, puisque |eit Y | = 1, et elle caractérise la loi de Y . Si Y ∼ Nd (µ, Σ),
+alors                                h ⊤ i                           
+                                   E eit Y = exp it⊤ µ − 21 t⊤ Σt ,                                     (1)
+
+et en particulier t 7→ exp(−t2 /2) est la fonction caractéristique de la loi N (0, 1).
+
+   Théorème 1.5: Théorème de Lévy
+  Soit {(Yn , Yn , Pn ) : n ∈ N⋆ } une suite d’espaces de probabilité, {Yn , n ∈ N⋆ } une suite de
+                                                                                                   P
+  vecteurs aléatoires Yn : (Yn , Yn ) → (Rd , B(Rd )) et µ une loi sur (Rd , B(Rd )). Alors Yn =⇒
+                                                                                                n
+                                                                                                  µ
+  si et seulement si
+                                          Z
+                                                    
+                En exp it⊤ Yn −−−−→ exp it⊤ y µ(dy)                 pour tout t ∈ Rd .
+                                     n→∞
+
+
+
+    Le sens direct est immédiat, puisque y 7→ cos(t⊤ y) et y 7→ sin(t⊤ y) sont continues bornées. La
+réciproque est admise ; elle est démontrée au théorème IV-5.36 du polycopié d’origine.
+18                                               CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+1.5     Le théorème de la limite centrale
+√ Le théorème de la limite centrale donne la loi limite d’une moyenne empirique remise à l’échelle
+  n. Il servira à deux choses : calculer des intervalles de confiance pour l’estimation d’un paramètre,
+et remplacer la loi non explicite d’une statistique de test par une loi limite.
+
+     Théorème 1.6: Théorème de la limite centrale, cas ℓ ≥ 1
+  Soit Q une loi sur (X := Rℓ , X := B(Rℓ )) admettant un moment d’ordre 2, d’espérance µ et
+  de matrice de covariance Σ, de taille ℓ × ℓ. Soit une suite de n-échantillons de Q,
+                                n ⊗n                 
+                                 X , X , Pn := Q⊗n : n ∈ N⋆ .
+
+  Alors                                     !
+                                     n                    n
+                       √        1X                 1 X           Pn
+                           n       Xk − µ        =√    (Xk − µ) =⇒  N (0, Σ) .
+                                n                   n
+                                  k=1                   k=1
+
+
+
+
+     Illustration / animation : le théorème de la limite centrale sur les mêmes
+     trajectoires.
+     √             La trajectoire de X̄n de l’animation précédente, transformée en
+       n (X̄n − µ)/σ, ne se stabilise plus ; une seconde trajectoire oscille différem-
+     ment. On tire alors quatre cents suites sans tracer leurs trajectoires et l’on
+     regarde, à un instant n que l’on fait avancer, l’histogramme des valeurs trans-
+     formées : il épouse la densité de N (0, 1). Ce qui converge est la loi à n fixé,
+                                                                                                   link
+     et non les trajectoires. Deux questions demandent le nombre de réalisations
+     tirées et le mode de convergence illustré.
+
+
+    La démonstration est faite ci-dessous dans le cas ℓ = 1 et σ 2 := VarQ (X1 ) > 0 ; le cas ℓ ≥ 1
+            par le procédé de Cramér-Wold (Section 2.4), et le cas σ 2 = 0 est immédiat puisque
+s’en déduit √
+la variable n(X̄n − µ) est alors nulle Pn -presque sûrement. Le détail du cas général figure au
+théorème IV-5.39 du polycopié d’origine.
+
+     Démonstration
+  On traite le cas ℓ = 1 avec σ 2 > 0.
+  Réduction
+       Pn       à des variables centrées et réduites. Posons Yi := σ −1 (Xi − µ) et Ȳn :=
+        i=1 Yi , de sorte que
+    −1
+  n
+                       √       n
+                                        !         n
+                                                           !
+                         n 1X             √    1 X Xi − µ       √
+                                  Xi − µ = n                 = n Ȳn .
+                        σ   n i=1              n i=1   σ
+
+  Sous Pn , les variables Y1 , . . . , Yn sont indépendantes, de même loi, de moyenne nulle et de
+                                            √      Pn
+  variance unité. Il suffit d’établir que nȲn =⇒     N (0, 1), la conclusion s’obtenant en multipliant
+  par la constante σ, par le théorème de transformation continue 1.4.
+                                                                             √
+  Ce qu’il faut √ démontrer. Pour t ∈ R, notons ϕn (t) := En [exp(it nȲn )] la fonction carac-
+  téristique de nȲn . Au vu de (1) et du théorème de Lévy 1.5, il suffit de montrer que
+
+                               lim ϕn (t) = exp(−t2 /2)        pour tout t ∈ R .
+                               n→∞
+
+                                             √
+  De la fonction caractéristique de              nȲn à celle de Y1 . Sous Pn , les variables Y1 , . . . , Yn
+1. LES FONDAMENTAUX                                                                                      19
+
+
+  étant indépendantes et de même loi, on a, pour tout t ∈ R,
+                  "           n
+                                   !#            n
+                           t X                  t
+       ϕn (t) = En exp i √      Yk     = ψ √            ,    où ψ(u) := En [exp(iuY1 )] .
+                            n                    n
+                                   k=1
+
+
+  Comportement limite. La variable Y1 est de carré intégrable : le lemme 2.3 montre que ψ
+  est deux fois dérivable, de dérivée seconde continue, et que
+
+                                                u2
+                       ψ(u) = 1 + iu En [Y1 ] −    En [Y12 ] + o(u2 ) ,          u→0.
+                                                 2
+                                                                     √
+  Comme En [Y1 ] = 0 et En [Y12 ] = 1, il vient, en posant u = t/ n,
+                                           
+                                         t            t2
+                                   ψ √        =1−         + o(n−1 ) ,
+                                          n          2n
+
+  et le lemme 2.4 donne alors
+                                                                    n
+                                                      t2
+                        lim ϕn (t) = lim           1−    + o(n−1 )        = exp(−t2 /2) .
+                       n→∞               n→∞          2n
+
+                                                                                                       □
+
+Intuition. Les deux moments de la loi des observations sont les seules caractéristiques qui subsistent
+dans la limite, et le calcul ci-dessus dit pourquoi : dans le développement de la fonction caractéristique,
+seuls les termes d’ordre 0, 1 et 2 survivent à l’élévation à la puissance n, parce que l’argument est divisé
+    √
+par n. Tout le reste disparaît. C’est la raison pour laquelle le théorème de la limite centrale s’applique à
+des lois d’observations très diverses, et pourquoi la loi limite ne dépend plus du modèle que par µ et Σ.
+    En dimension un, le théorème fournit directement un intervalle de confiance pour l’espérance
+lorsque l’écart-type est connu. Par le théorème de la limite centrale,
+                                √         n
+                                                   !
+                                  n 1X                 Pn
+                                             Xk − µ =⇒    N (0, 1) ,
+                                 σ     n
+                                               k=1
+
+et, le pavé ]a, b] ayant une frontière de mesure nulle pour la loi N (0, 1), le théorème de Portman-
+teau 1.3 donne, pour tout a < b,
+                                            n
+                                                              !
+                                   σ     1X               σ
+                       lim Pn a √ ≤           Xk − µ ≤ b √       = Φ(b) − Φ(a) ,
+                      n→∞           n    n                  n
+                                               k=1
+
+où Φ est la fonction de répartition de la loi N (0, 1).
+
+   Corollaire 1.1: Intervalle de confiance asymptotique pour l’espérance, écart-type connu
+  Dans le cadre du théorème 1.6 avec ℓ = 1 et σ 2 > 0 connu, l’intervalle
+                      " n                            n
+                                                                          #
+                        1X                σ       1X                  σ
+                             Xk − z1−α/2 √ ,            Xk + z1−α/2 √
+                        n                   n     n                     n
+                             k=1                             k=1
+
+  est un intervalle de confiance de niveau asymptotique 1 − α pour µ, où zu désigne le quantile
+  d’ordre u de la loi N (0, 1).
+
+   Lorsque σ est inconnu, on peut le remplacer par un estimateur consistant : c’est ce que le
+lemme de Slutsky permet de justifier.
+20                                                 CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+1.6      Le lemme de Slutsky
+
+    Les théorèmes précédents transforment une convergence en loi par une fonction continue. Il
+reste à savoir ce que devient une somme, un produit ou un quotient lorsque l’un des deux facteurs
+converge en loi et l’autre vers une constante. C’est l’objet du lemme suivant, utilisé dans presque
+toutes les démonstrations de la fin du chapitre.
+
+
+     Lemme 1.1: Lemme de Slutsky
+  Soit {(Zn , Zn , Pn ) : n ∈ N} une suite d’espaces de probabilité, {Xn , n ∈ N} et {Yn , n ∈ N}
+  des variables aléatoires réelles définies sur (Zn , Zn ), et µ une probabilité sur (R, B(R)). Si
+        P                P
+      n
+  Xn =⇒ µ et Yn =⇒
+                 n
+                   δc , où c est une constante, alors
+                     P
+      (i) Xn + Yn =⇒
+                   n
+                     X + c;
+                 P
+     (ii) Yn Xn =⇒
+                 n
+                   cX ;
+                                                                   P
+     (iii) si c ̸= 0 et si Pn (Yn ̸= 0) = 1 pour tout n, Yn−1 Xn =⇒
+                                                                  n
+                                                                    c−1 X ;
+  où X ∼ µ.
+
+
+
+  Remarques.
+      1. La convergence en loi vers une masse de Dirac entraîne la convergence en probabilité,
+                            Pn                        Pn −prob
+         et l’hypothèse Yn =⇒   δc équivaut donc à Yn −→ c. En effet, par le théorème de
+         Portmanteau 1.3,
+
+              Pn (|Yn − c| > ε) = 1 − Pn (c − ε < Yn ≤ c + ε) −−−−→ 1 − δc (]c − ε, c + ε]) = 0 .
+                                                                       n→∞
+
+                                                                                                           P
+      2. La démonstration établit au passage un énoncé que l’on utilisera seul : si Un =⇒
+                                                                                        n
+                                                                                          ν et
+            Pn −prob                Pn
+         Vn −→ 0, alors Un + Vn =⇒ ν.
+      3. Dans l’expression d’un intervalle de confiance asymptotique, lorsque l’écart-type σ n’est
+         pas connu, on peut le remplacer par un estimateur consistant : c’est l’assertion (iii).
+
+     Démonstration
+  Étape 1. On écrit                                        
+                                              Xn       0       Xn
+                                                  =          +    .
+                                              Yn     Yn − c     c
+                                                    | {z } | {z }
+                                                      Un      Vn
+
+                                                                   Pn −prob                Pn −prob
+  Par hypothèse et par la première remarque ci-dessus, Yn              −→     c, donc Un    −→        0.
+                                     Pn
+  Étape 2. Montrons que Vn =⇒ ν := µ ⊗ δc , en passant par les fonctions caractéristiques.
+  Pour t1 , t2 ∈ R,
+                                                                                  Z
+    En [exp (it1 Xn ) exp (it2 c)] = exp(it2 c) En [exp(it1 Xn )] −−−−→ exp(it2 c) exp(it1 x) µ(dx) ,
+                                                               n→∞
+
+                                 P
+  la limite résultant de Xn =⇒ n
+                                  µ et du théorème de Lévy 1.5. Le membre de droite est la
+  fonction caractéristique de µ ⊗ δc au point (t1 , t2 ) ; le théorème de Lévy 1.5, appliqué cette
+                                      P
+  fois en dimension 2, donne Vn =⇒
+                                 n
+                                   µ ⊗ δc .
+1. LES FONDAMENTAUX                                                                                          21
+
+
+                                          P                    Pn −prob        P
+  Étape 3. Montrons que Un + Vn =⇒  n
+                                       ν dès que Un −→ 0 et Vn =⇒       n
+                                                                          ν. Soit f lipschitzienne
+  bornée, de constante de Lipschitz Lf . Pour tout δ > 0,
+                      Z                                                                  Z
+   En [f (Un + Vn )] − f (w) ν(dw) ≤ |En [f (Un + Vn )] − En [f (Vn )]| + En [f (Vn )] − f (w) ν(dw)
+                                                                                       Z
+                                    ≤ Lf δ + 2 ∥f ∥∞ Pn (∥Un ∥ ≥ δ) + En [f (Vn )] − f (w) ν(dw) ,
+
+  où la seconde inégalité s’obtient en séparant les événements {∥Un ∥ < δ} et {∥Un ∥ ≥ δ}. Les
+  deux derniers termes tendent vers zéro quand n → R ∞, à δ fixé, et le premier est arbitrairement
+  petit par le choix de δ. Donc En [f (Un + Vn )] → f dν pour toute f lipschitzienne bornée, et
+  le théorème de Portmanteau 1.3 permet de conclure.
+                                      P
+  Étape 4. On a donc (Xn , Yn ) =⇒   n
+                                         µ ⊗ δc . Les trois assertions s’obtiennent en appliquant le
+  théorème de transformation continue 1.4 aux fonctions (x, y) 7→ x + y, (x, y) 7→ xy et (x, y) 7→
+  x/y. Les deux premières sont continues sur R2 . La troisième est continue sur C := R × R∗ , et
+  (µ ⊗ δc )(C) = δc (R∗ ) = 1 dès que c ̸= 0. Les lois images de µ ⊗ δc par ces trois fonctions sont
+  respectivement celles de X + c, cX et c−1 X pour X ∼ µ.                                         □
+
+  Remarque. Le lemme de Slutsky s’étend au cas vectoriel et matriciel ; l’énoncé et sa dé-
+  monstration, qui reposent sur le procédé de Cramér-Wold, sont donnés dans les compléments
+  (Section 4.1). C’est cette forme que l’on utilise sans la nommer lorsque Tn est à valeurs dans
+  Rℓ .
+
+Application : un théorème de la limite centrale pour la variance empirique
+   La variance empirique n’est pas une moyenne empirique, mais elle en diffère par un terme
+négligeable, et le lemme de Slutsky permet de conclure. On note dans ce paragraphe
+                          n                                         n
+                       1X                                      1 X                     n
+              bn2 :=
+              σ              (Xi − X̄n )2 ,         Sn2 :=             (Xi − X̄n )2 =    b2 ,
+                                                                                         σ
+                       n i=1                                 n − 1 i=1                n−1 n
+
+la seconde écriture étant la variance empirique corrigée des chapitres 1, 3 et 4.
+
+   Exemple 1.6: Théorème de la limite centrale pour la variance empirique
+  Soit une suite de n-échantillons d’une loi Q sur (R, B(R)),
+                                                        
+                               Rn , (B(R))⊗n , Pn := Q⊗n ,
+           R                          R
+  telle que x4 Q(dx) < ∞. Notons µ := x Q(dx) et σ 2 := VarQ (X1 ). Alors
+                                                      Z
+              √     2   2
+                           Pn
+                  bn − σ =⇒ N (0, γ) ,
+                n σ                         avec γ := (x − µ)4 Q(dx) − σ 4 ,
+
+  et la même convergence vaut pour la variance empirique corrigée Sn2 .
+
+   Démonstration
+                                       √                                                 Pn
+  a) Une autre expression de                    σn2 − σ 2 ). En développant, σ
+                                              n(b                            bn2 = n−1    i=1 (Xi − µ)
+                                                                                                         2
+                                                                                                             −
+  (X̄n − µ)2 , d’où
+                                          n
+                   √                 1 X                    √         2
+                         bn2 − σ 2 = √
+                       n σ                   (Xi − µ)2 − σ 2 − n X̄n − µ .                               (2)
+                                       n i=1
+22                                                       CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+  b) Le premier terme : un théorème de la limite centrale. Posons Zi := (Xi − µ)2 − σ 2 .
+  Sous
+  R     Pn , les variables Z1 , . . . , Zn sont indépendantes et de même loi, En [Z1 ] = 0, et Varn (Z1 ) =
+    (x − µ)4 Q(dx) − σ 4 = γ est finie puisque Q admet un moment d’ordre 4. Le théorème de la
+  limite centrale 1.6 donne
+                                                   n
+                                              1 X         Pn
+                                             √        Zi =⇒  N (0, γ) .
+                                                n i=1
+
+  c) Le second terme tend vers zéro en probabilité. Le théorème de la limite centrale
+              √           Pn
+  donne aussi n(X̄n − µ) =⇒  N (0, σ 2 ), puis, par le théorème de transformation continue 1.4
+                   2
+  appliqué à x 7→ x ,
+                                              2 Pn 2 2
+                                n X̄n − µ =⇒         σ χ (1) ,
+  où σ 2 χ2 (1) désigne la loi de σ 2 W pour W ∼ χ2 (1). Le lemme de Slutsky 1.1, assertion (ii),
+  appliqué avec la suite déterministe Yn = n−1/2 , qui converge vers 0, donne
+               √               2      1          2 Pn                            √                2 Pn −prob
+                   n X̄n − µ        = √ n X̄n − µ =⇒    0,                  soit       n X̄n − µ         −→ 0 ,
+                                        n
+
+  la convergence en loi vers une constante entraînant la convergence en probabilité.
+  d) Conclusion. En reportant b) et c) dans (2) et en appliquant la deuxième remarque qui
+  suit le lemme de Slutsky 1.1, il vient
+                                               √               Pn
+                                                     bn2 − σ 2 =⇒
+                                                   n σ             N (0, γ) .
+           √                        √                                        Pn −prob
+  Enfin,       n(Sn2 − σ
+                       bn2 ) =           bn2 /(n − 1), et comme σ
+                                        nσ                      bn2
+                                                              σ 2 par la loi faible des grands
+                                                                                 −→
+                                                                 √              Pn −prob
+  nombres et le théorème de
+                         √ continuité, le lemme de Slutsky donne n(Sn2 − σ bn2 ) −→ 0, d’où
+                              2     2
+  la même loi limite pour n(Sn − σ ).                                                       □
+
+   La conséquence suivante, qui servira pour le test de Student, ne demande pas de moment
+d’ordre 4.
+
+     Proposition 1.2: Consistance de la variance empirique
+  Soit une suite de n-échantillons d’une loi Q sur (R, B(R)) de carré intégrable, de variance
+  σ 2 > 0. Alors
+                            Pn −prob                  Pn −prob                                   Pn −prob
+                      bn2
+                      σ      −→        σ2 ,     Sn2     −→       σ2 ,        et       σ −2 Sn2    −→        1.
+
+     Démonstration
+  Sous Pn , les variables X1 , . . . , Xn sont indépendantes et de même loi Q, de carré intégrable ;
+  la loi faible des grands nombres 1.2 appliquée aux suites {Xi } et {Xi2 } donne
+                                             n
+                                                  !
+                                          1 X 2 Pn −prob             
+                                    X̄n ,      X     −→ µ, σ 2 + µ2 ,
+                                          n i=1 i
+
+  la convergence
+           Pn du couple résultant de celle de chaque composante (Section 2.1). Comme
+  bn2 = n−1 i=1 Xi2 − X̄n2 , le théorème de continuité en probabilité (Section 2.1) appliqué à la
+  σ
+                                                                 Pn −prob                                      n
+  fonction continue (u, w) 7→ w − u2 donne σ
+                                           bn2                    −→        σ 2 + µ2 − µ2 = σ 2 . Comme Sn2 = n−1 bn2
+                                                                                                                  σ
+                                               Pn −prob
+  et que n/(n − 1) → 1, il vient Sn2               −→     σ 2 , puis, en divisant par σ 2 > 0,
+                                                                 Pn −prob
+                                                      σ −2 Sn2     −→       1.                                    (3)
+1. LES FONDAMENTAUX                                                                                     23
+
+
+                                                                                                        □
+
+
+1.7      La méthode-δ
+    Le théorème de continuité transporte une convergence en probabilité par une fonction continue.
+Si la suite {Tn , n ∈ N} vérifie de plus un théorème de la limite centrale, qu’en est-il de la suite
+{g(Tn ) : n ∈ N} pour g régulière ? La réponse est que la loi limite est transportée par la dérivée
+de g au point considéré.
+
+   Théorème 1.7: Méthode-δ, cas scalaire
+  Soit
+      — g : Dg → R une fonction définie sur un intervalle ouvert Dg de R et dérivable au point
+        θ ∈ Dg , de dérivée notée ġ(θ) ;
+      — {Tn , n ∈ N} une suite de variables aléatoires, Tn définie sur (Xn , Xn , Pn ), telle que
+        Pn (Tn ∈ Dg ) = 1 pour tout n ∈ N.
+  Supposons que
+                                                         P
+                                                         n
+                                            rn (Tn − θ) =⇒ G
+  pour une suite croissante {rn , n ∈ N} de réels strictement positifs telle que limn→∞ rn = +∞.
+  Alors
+                             Pn                                                         Pn −prob
+          rn (g(Tn ) − g(θ)) =⇒ ġ(θ) G ,       rn (g(Tn ) − g(θ)) − rn ġ(θ)(Tn − θ)     −→       0.
+
+   Démonstration
+  Convergence en probabilité de Tn − θ. La suite (rn {Tn − θ})n converge en loi et rn−1 → 0 ;
+  le lemme de Slutsky 1.1, assertion (ii), donne
+                                                               Pn −prob
+                                 Tn − θ = rn−1 (rn {Tn − θ})    −→        0.
+
+  Développement de g. La fonction g est dérivable au point θ : en posant, pour h ̸= 0 tel que
+  θ + h ∈ Dg ,
+                                   g(θ + h) − g(θ)
+                           ε(h) :=                 − ġ(θ) , ε(0) := 0 ,
+                                          h
+  et en prolongeant ε par 0 hors de {h ∈ R : θ + h ∈ Dg }, on obtient une fonction continue au
+  point 0, nulle en 0, telle que
+
+               g(θ + h) = g(θ) + ġ(θ)h + h ε(h)        pour tout h tel que θ + h ∈ Dg .
+
+  Comme Pn (Tn ∈ Dg ) = 1, on peut écrire, Pn -presque sûrement,
+
+                    rn (g(Tn ) − g(θ)) = ġ(θ) rn (Tn − θ) + rn (Tn − θ) ε(Tn − θ) .
+
+  Passage à la limite. Le théorème de continuité en probabilité (Section 2.1), appliqué à ε
+                                    Pn −prob                        Pn −prob
+  continue au point 0 et à Tn − θ −→           0, donne ε(Tn − θ)    −→        0. Le lemme de Slutsky 1.1
+  appliqué au produit donne alors
+                                                               Pn −prob
+                                 Rn := rn (Tn − θ) ε(Tn − θ)     −→       0,
+                                                                                           P
+  ce qui est la seconde assertion du théorème. Par ailleurs ġ(θ){rn (Tn − θ)} =⇒
+                                                                                n
+                                                                                  ġ(θ)G par
+  le théorème de transformation continue 1.4, et la deuxième remarque qui suit le lemme de
+  Slutsky 1.1 permet d’ajouter Rn sans changer la loi limite.                             □
+24                                              CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+Intuition. La méthode-δ est la traduction asymptotique d’une approximation au premier ordre : au
+voisinage de θ, la fonction g se confond avec sa tangente, et l’erreur g(Tn )−g(θ) se confond avec ġ(θ)(Tn −
+θ). L’énoncé rend cette approximation exacte en la plaçant dans la limite : le reste, une fois multiplié par
+rn , tend vers zéro en probabilité. Ce que l’on gagne est que la loi limite de g(Tn ) se calcule sans aucun
+nouveau développement : la variance asymptotique est multipliée par ġ(θ)2 . Ce que l’on perd apparaît quand
+ġ(θ) = 0 : la loi limite est alors dégénérée, et la bonne échelle n’est plus rn .
+
+
+     Exemple 1.7: Estimateur du maximum de vraisemblance du paramètre d’une loi exponentielle
+  Une variable aléatoire de loi E(θ) a pour densité x 7→ θ exp(−θx) sur R+ , pour espérance 1/θ
+  et pour variance 1/θ2 . Soit une suite de n-échantillons d’une loi E(θ), θ ∈ R∗+ , et l’estimateur
+  du maximum de vraisemblance
+                                                                   n
+                                              −1              1X
+                                 θ̂n := X̄n         ,   X̄n :=    Xk .
+                                                               n
+                                                                  k=1
+
+
+  Alors la suite {θ̂n , n ∈ N} est consistante et
+                                      √        P         
+                                       n θ̂n − θ =⇒ N 0, θ2 .
+                                                   n,θ
+
+
+
+
+     Démonstration
+  Posons φ(u) := 1/u pour u > 0. La consistance a été établie à l’exemple 1.3. Pour la loi limite,
+  le théorème de la limite centrale 1.6 donne
+                        √               Pn,θ                            
+                            n X̄n − θ−1 =⇒ N (0, Varn,θ (X1 )) = N 0, θ−2 ,
+
+  et la fonction φ est dérivable au point θ−1 ∈ Dφ := R∗+ , avec φ̇(θ−1 ) = −θ2 . Comme Pn,θ (X̄n ∈
+  R∗+ ) = 1, la méthode-δ 1.7 donne
+     √         √                    Pn,θ                                       
+      n θ̂n − θ = n φ(X̄n ) − φ(θ−1 ) =⇒ φ̇(θ−1 ) N 0, θ−2 = N 0, θ4 · θ−2 = N 0, θ2 .
+
+                                                                                                        □
+
+
+
+
+     Illustration / animation : le théorème de la limite centrale pour l’esti-
+     mateur du maximum de vraisemblance se regarde dans l’animation de la
+     semaine 3 « Pourquoi l’EMV trouve-t-il le bon paramètre ? », étape « M-
+     estimation » : pour un modèle de Bernoulli ou de Poisson, on suit 400 estima-
+     teurs quand n grandit, on les rassemble en√boîtes à moustaches pour n = 64,
+     512 et 4 096, puis on change d’échelle
+                                      √     en n ; les boîtes cessent de se resser-
+     rer et l’histogramme des erreurs n(θ̂n − θ) prend la forme de la gaussienne                link
+     limite.
+
+
+
+
+     Exemple 1.8: Lois limites de Xn2 et de 1/Xn
+  Soit {Xn , n ∈ N} une suite de variables aléatoires telle que
+                                               P
+                                             n
+                                rn (Xn − µ) =⇒ N (0, σ 2 ) ,       σ2 > 0 ,
+1. LES FONDAMENTAUX                                                                                     25
+
+
+  où {rn , n ∈ N} est croissante, à termes positifs, et tend vers l’infini. Que dire des lois limites
+  de Xn2 et de 1/Xn ?
+
+   Le cas de Xn2 . Posons g(x) = x2 , dérivable sur R avec g ′ (x) = 2x.
+   Si µ ̸= 0, alors g ′ (µ) = 2µ ̸= 0, et la méthode-δ 1.7 donne
+                                               Pn             
+                                   rn Xn2 − µ2 =⇒  N 0, 4µ2 σ 2 .
+
+Si µ = 0, alors g ′ (µ) = 0 et la méthode-δ ne donne que
+                                                     Pn −prob
+                                            rn Xn2    −→        0.
+
+La vitesse rn est alors trop lente pour faire apparaître une loi limite non dégénérée. Avec la vitesse
+rn2 , le théorème de transformation continue 1.4 appliqué à x 7→ x2 donne
+                                                              2 Pn 2
+                                 σ −2 rn2 Xn2 = σ −1 rn Xn      =⇒ χ (1) ,
+
+                    P
+puisque σ −1 rn Xn =⇒
+                    n
+                      N (0, 1) et que le carré d’une variable N (0, 1) suit la loi χ2 (1).
+   Le cas de 1/Xn . Supposons ici que Pn (Xn = 0) = 0 pour tout n ∈ N, sans quoi 1/Xn n’est
+pas définie.
+   Si µ ̸= 0, la méthode-δ 1.7 appliquée à g(x) = 1/x, dérivable au point µ, donne
+                                                           
+                                       1    1    Pn        σ2
+                                 rn      −      =⇒ N 0, 4 .
+                                      Xn    µ              µ
+
+Si µ = 0, le théorème de transformation continue 1.4 s’applique à x 7→ 1/x, continue sur C := R∗ ,
+                                                                     P
+qui est de mesure 1 pour la loi N (0, 1) ; comme σ −1 rn Xn =⇒
+                                                             n
+                                                               N (0, 1), il vient
+                                     σ     Pn 1
+                                          =⇒    ,         X ∼ N (0, 1) .
+                                   rn X n     X
+
+Intuition. Les deux cas µ = 0 montrent ce que la méthode-δ ne dit pas. Quand la dérivée s’annule,
+l’approximation au premier ordre ne contient plus d’information, et la loi limite n’apparaît qu’à une autre
+échelle – ici rn2 au lieu de rn – et avec une autre forme – une loi du χ2 , et non une gaussienne. On
+retrouvera la même situation à l’exercice 6, où un estimateur dont la dérivée de la transformation s’annule
+au point 0 a un comportement très irrégulier au voisinage de ce point.
+
+
+Le cas vectoriel
+    Dans le cas vectoriel, la dérivée est remplacée par la matrice jacobienne, et la dérivabilité par
+la différentiabilité ; ces deux notions sont rappelées dans les outils mathématiques (Section 2.5).
+
+   Théorème 1.8: Méthode-δ, cas vectoriel
+  Soit
+    — Dg un sous-ensemble ouvert de Rp ;
+    — g : Dg → Rm une fonction différentiable au point θ ∈ Dg , de matrice jacobienne Jg (θ) ;
+    — {Tn , n ∈ N} une suite de vecteurs aléatoires, Tn définie sur (Xn , Xn , Pn ), telle que
+      Pn (Tn ∈ Dg ) = 1 pour tout n ∈ N.
+  Supposons que
+                                                        n  P
+                                           rn (Tn − θ) =⇒ T
+26                                              CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+  pour une suite croissante {rn , n ∈ N} de réels strictement positifs telle que limn→∞ rn = +∞.
+  Alors
+                           nP                                                             Pn −prob
+       rn (g(Tn ) − g(θ)) =⇒ Jg (θ) T ,         rn (g(Tn ) − g(θ)) − rn Jg (θ) (Tn − θ)    −→        0.
+
+    La démonstration est celle du cas scalaire, en remplaçant le reste hε(h) par un reste R(h) tel
+        √ = o(∥h∥), et le lemme de Slutsky par sa forme vectorielle (Section 4.1). En particulier,
+que ∥R(h)∥
+si rn = n et T ∼ N (0, Σ), alors
+                            √                      Pn                      
+                                n (g(Tn ) − g(θ)) =⇒  N 0, Jg (θ) Σ Jg (θ)⊤ .
+
+1.8     Normalité asymptotique
+    La consistance d’une suite d’estimateurs ne quantifie pas la vitesse à laquelle l’erreur décroît.
+En pratique, on veut savoir de combien on se trompe en remplaçant g(θ) par Tn (Zn ), donc disposer
+de la loi de Tn (Zn ) − g(θ) sous Pn,θ .√Cet objectif est hors d’atteinte en général ; en revanche, dans
+de nombreuses situations, la suite n{Tn (Zn ) − g(θ)} converge en loi vers une gaussienne non
+dégénérée.
+
+     Définition 1.6: Normalité asymptotique
+  Soit {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N⋆ } une suite de modèles statistiques et g : Θ → Rℓ une
+  fonction. La suite d’estimateurs {Tn , n ∈ N}, Tn : Zn → Rℓ , de g est dite asymptotiquement
+  normale si, pour tout θ ∈ Θ,
+                                  √                     Pn,θ
+                                      n (Tn (Zn ) − g(θ)) =⇒ N (0, Σ(θ)) ,
+
+  où Σ(θ) est, pour tout θ ∈ Θ, une matrice symétrique positive de taille ℓ × ℓ, appelée matrice
+  de covariance asymptotique de la suite d’estimateurs, ou variance asymptotique dans le cas
+  scalaire ℓ = 1, où on la note alors v(θ).
+
+
+  √Une suite d’estimateurs asymptotiquement normale est nécessairement consistante : puisque
+1/ n → 0, le lemme de Slutsky 1.1 donne
+                                           1 √                    Pn,θ −prob
+                        Tn (Zn ) − g(θ) = √    n (Tn (Zn ) − g(θ)) −→ 0 ,
+                                            n
+pour tout θ ∈ Θ.
+
+     Exemple 1.9: Estimateur du maximum de vraisemblance dans un modèle exponentiel
+  L’exemple 1.7 a établi que, pour tout θ ∈ R∗+ ,
+                                        √        P         
+                                         n θ̂n − θ =⇒ N 0, θ2 .
+                                                     n,θ
+
+
+
+
+  La suite des estimateurs du maximum de vraisemblance est donc asymptotiquement normale,
+  de variance asymptotique v(θ) = θ2 .
+
+
+Intuition. La variance asymptotique est la grandeur que l’on cherchera à rendre petite. Elle joue,
+                                                                                                 p dans le
+monde asymptotique, le rôle que l’erreur quadratique moyenne joue à n fixé : l’écriture θ̂n ≈ θ + v(θ)/n ξ
+avec ξ approximativement N (0, 1) est une approximation – elle n’est exacte qu’à la limite – mais c’est elle
+qui guide la lecture. On comparera deux estimateurs par leurs variances asymptotiques (Section 1.11), et on
+retrouvera dans v(θ), pour les estimateurs du maximum de vraisemblance des modèles réguliers, l’inverse
+de l’information de Fisher du chapitre 3.
+1. LES FONDAMENTAUX                                                                                   27
+
+1.9    Fonctions asymptotiquement pivotales
+   Pour construire une région de confiance, on cherche une fonction des observations et du para-
+mètre dont la loi ne dépende pas du paramètre. À n fixé, c’était la notion de fonction pivotale du
+chapitre 4. Ici, on demande seulement que la loi limite ne dépende pas du paramètre.
+
+   Définition 1.7: Fonction asymptotiquement pivotale
+  Soit {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N} une suite de modèles statistiques. Une suite de fonc-
+  tions mesurables {Gn , n ∈ N}, Gn : Zn × Θ → Rp , est asymptotiquement pivotale de loi L s’il
+  existe une probabilité L sur (Rp , B(Rp )) telle que, pour tous θ, ϑ ∈ Θ et tout A ∈ B(Rp ),
+
+                 lim Pn,θ (Gn (Zn , θ) ∈ A) = lim Pn,ϑ (Gn (Zn , ϑ) ∈ A) = L(A) .
+                n→∞                              n→∞
+
+
+
+   Exemple 1.10: Pivot asymptotique issu de la normalité asymptotique
+  Soit {Tn , n ∈ N}, Tn : Zn → R, une suite d’estimateurs de g asymptotiquement normale :
+                              √                        Pn,θ
+                ∀θ ∈ Θ ,           n (Tn (Zn ) − g(θ)) =⇒ N (0, v(θ)) ,     v(θ) > 0 .
+
+  Alors                                          √
+                                                   n
+                                 Gn (Zn ; θ) := p      (Tn (Zn ) − g(θ))
+                                                  v(θ)
+  définit une suite de fonctions asymptotiquement pivotales, de loi L = N (0, 1).
+
+
+   Démonstration
+                             √                  Pn,θ
+  À θ fixé, la convergence       n(Tn − g(θ)) =⇒ N (0, v(θ)) et le théorème de transformation
+                                                                                               Pn,θ
+  continue 1.4, appliqué à la multiplication par la constante v(θ)−1/2 , donnent Gn (Zn ; θ) =⇒
+  N (0, 1). La loi limite ne dépendant pas de θ, la définition est satisfaite pour tout borélien
+  A dont la frontière est de mesure nulle sous N (0, 1), donc pour tout borélien puisque la loi
+  N (0, 1) ne charge aucun point et que la convergence des fonctions de répartition en tout point
+  entraîne celle des probabilités de tous les boréliens de la forme ]a, b], dont la classe engendre
+  B(R).                                                                                          □
+
+
+
+1.10      Régions et intervalles de confiance asymptotiques
+    Les pivots asymptotiques fournissent des régions de confiance dont le niveau n’est garanti qu’à
+la limite.
+
+   Définition 1.8: Région de confiance de niveau asymptotique 1 − α
+  Soit {(Zn , Zn , {Pn,θ : θ ∈ Θ}) : n ∈ N} une suite de modèles statistiques, g : Θ → Rp une
+  fonction et α ∈ ]0, 1[. Une suite d’ensembles aléatoires {Cn (Zn ) : n ∈ N} ⊂ B(Rp ) définit une
+  suite de régions de confiance au niveau asymptotique 1 − α pour la fonction g si
+
+                             inf lim inf Pn,θ (g(θ) ∈ Cn (Zn )) ≥ 1 − α .
+                             θ∈Θ    n→∞
+
+
+
+   L’ordre dans lequel on prend la limite et l’infimum est celui de l’énoncé : on passe d’abord à la
+limite en n, à θ fixé, puis on prend l’infimum sur Θ. Cette définition ne dit rien de la probabilité
+de couverture pour une valeur donnée de n, et c’est sa limite principale.
+28                                                  CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+     Méthode 1.1: Intervalle de confiance asymptotique, cas où θ 7→ v(θ) est continue
+  Soit une suite d’estimateurs de θ asymptotiquement normale,
+                          √          P
+                                         n,θ
+                            n θ̂n − θ =⇒ N (0, v(θ)) ,    v(θ) > 0 ,
+
+  avec θ 7→ v(θ) continue sur Θ. Alors
+                                    √          p
+    — la fonction Gn : (Zn ; θ) 7→ n (θ̂n − θ)/ v(θ) est asymptotiquement pivotale de loi
+        N (0, 1) (exemple 1.10) ;
+     — la normalité asymptotique entraîne la consistance, et v étant continue, le théorème de
+                                         Pn,θ −prob
+         continuité 1.1 donne v(θ̂n ) −→ v(θ) > 0 ; le lemme de Slutsky 1.1 fournit alors une
+         seconde fonction asymptotiquement pivotale,
+
+                                             √    θ̂n − θ Pn,θ
+                                                 nq         =⇒ N (0, 1) ;
+                                                    v(θ̂n )
+
+     — on en déduit l’intervalle de confiance de niveau asymptotique 1 − α
+                                                             s           
+                                                                v( θ̂ n )
+                                  Cn,α (θ̂n ) = θ̂n ± z1−α/2              ,
+                                                                  n
+
+         où zu est le quantile d’ordre u de la loi N (0, 1).
+
+
+    L’intérêt de la seconde fonction pivotale est que ses bornes sont calculables : la première fait
+intervenir v(θ), donc le paramètre inconnu, et ne se résout en θ que lorsque l’inégalité |Gn | ≤ z1−α/2
+peut être inversée explicitement. L’exercice 1 construit, sur le modèle exponentiel, trois intervalles
+de confiance asymptotiques, dont un qui n’utilise pas la continuité de v.
+
+Intuition. Remplacer v(θ) par v(θ̂n ) est l’opération que le lemme de Slutsky autorise, et elle ne change pas
+la loi limite. Elle change en revanche la probabilité de couverture à n fixé, puisqu’on a introduit une seconde
+source d’erreur. Les deux intervalles obtenus pour une proportion, ci-dessous, se distinguent exactement
+sur ce point, et les figures montrent que l’écart n’est pas négligeable lorsque la proportion est proche de 0.
+
+
+
+
+Trois intervalles de confiance pour une proportion
+
+   Soit
+    Pn une suite de n-échantillons du modèle de Bernoulli {Ber(θ) : θ ∈ Θ := ]0, 1[} et X̄n :=
+n−1 k=1 Xk . Le théorème de la limite centrale 1.6 donne, pour tout θ ∈ Θ,
+
+                                    √             Pn,θ
+                                        n X̄n − θ =⇒ N (0, θ(1 − θ)) ,                                     (4)
+
+d’où la fonction asymptotiquement pivotale
+
+                                                    √     X̄n − θ           Pn,θ
+                    Gn : (X1 , . . . , Xn ; θ) 7→       np          ,   Gn =⇒ N (0, 1) .                   (5)
+                                                           θ(1 − θ)
+
+Trois façons de s’en servir conduisent à trois intervalles différents.
+1. LES FONDAMENTAUX                                                                              29
+
+  Exemple 1.11: Intervalle de Wilson
+ La région de confiance de niveau asymptotique 1 − α associée au pivot (5) admet les trois
+ écritures équivalentes
+            (                                                )
+                                  √ X̄n − θ
+              θ ∈ Θ : −z1−α/2 ≤ n p                ≤ z1−α/2
+                                       θ(1 − θ)
+               n                  2                      o
+                                         2
+            = θ ∈ Θ : n X̄n − θ ≤ z1−α/2         θ(1 − θ)
+                                      s                                      !−1
+                        2                                    2
+                                                            z1−α/2       2
+                       z1−α/2            X̄ n (1 − X̄ n )               z1−α/2
+            = X̄n +          ± z1−α/2                    +         1+            ,
+                         2n                      n           4n2           n
+
+ la dernière intersectée avec Θ. C’est l’intervalle de Wilson.
+
+  Démonstration
+ La première écriture est celle de la région associée au pivot. La deuxième s’obtient en élevant
+ au carré, l’inégalité |u| ≤ z étant équivalente à u2 ≤ z 2 pour z ≥ 0. En notant z := z1−α/2 , la
+ condition s’écrit                                      
+                              (n + z 2 )θ2 − 2nX̄n + z 2 θ + nX̄n2 ≤ 0 ,
+ trinôme en θ de coefficient dominant strictement positif, dont le discriminant vaut
+                                2
+                  2nX̄n + z 2        − 4(n + z 2 )nX̄n2 = 4nz 2 X̄n (1 − X̄n ) + z 4 ≥ 0 .
+
+ L’ensemble des θ qui vérifient l’inégalité est donc le segment compris entre les deux racines,
+ c’est-à-dire                               r
+                                     z2        X̄n (1 − X̄n )   z2
+                             X̄n +      ±z                    + 2
+                                     2n              n         4n ,
+                                                  z2
+                                             1+
+                                                   n
+ après division du numérateur et du dénominateur par 2n.                                     □
+
+
+  Exemple 1.12: Intervalle de Wald
+ Le lemme de Slutsky 1.1 appliqué à (5) fournit une seconde fonction asymptotiquement pivo-
+ tale,                                        √            
+                                                n X̄n − θ            Pn,θ
+               G̃n : (X1 , . . . , Xn ; θ) 7→ p                , G̃n =⇒ N (0, 1) ,
+                                                X̄n (1 − X̄n )
+ et les régions de confiance de niveau asymptotique 1 − α qui en découlent sont les intervalles
+                                               p
+                                                X̄n (1 − X̄n )
+                                  X̄n ± z1−α/2      √          .
+                                                      n
+
+ C’est l’intervalle de Wald.
+
+  Démonstration
+                    p                                                             Pn,θ −prob
+ La fonction θ 7→ θ(1 − θ) est continue et strictement positive sur ]0, 1[, et X̄n −→ θ
+ par la loi faible des grands nombres 1.2 : le théorème de continuité 1.1 donne
+                                q
+                                                Pn,θ −prob p
+                          Wn := X̄n (1 − X̄n ) −→            θ(1 − θ) > 0 ,
+30                                          CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+  et en particulier Pn,θ (Wn = 0) → 0. Comme Wn peut s’annuler, on convient que G̃n := 0
+  lorsque X̄n ∈ {0, 1}, et l’on pose Yn := Wn sur {Wn > 0} et Yn := 1 ailleurs, de sorte que
+                                 Pn,θ −prob p
+  Pn,θ (Yn ̸= 0) = 1 et que Yn      −→        θ(1 − θ). Le lemme de Slutsky 1.1, assertion (iii),
+  donne alors                        √           
+                                       n X̄n − θ Pn,θ
+                                                   =⇒ N (0, 1) ,
+                                           Yn
+  et G̃n coïncide avec cette variable hors d’un événement de probabilité tendant vers zéro :
+  leur différence tend vers zéro en probabilité, et la deuxième remarque qui suit le lemme de
+  Slutsky 1.1 donne la même loi limite pour G̃n . Enfin l’inégalité |G̃n | ≤ z1−α/2 se résout
+  immédiatement en θ.                                                                      □
+
+
+     Exemple 1.13: Stabilisation de la variance
+  Soit g une fonction dérivable sur Θ telle que g ′ (θ) ̸= 0 pour tout θ. La méthode-δ 1.7 appliquée
+  à (4) donne
+                         √                   Pn,θ                        
+                                                                 2
+                           n g(X̄n ) − g(θ) =⇒ N 0, [g ′ (θ)] θ(1 − θ) .
+                                       2
+  Si l’on choisit g de sorte que [g ′ (θ)] θ(1 − θ) = k 2 pour une constante k > 0 et tout θ ∈ Θ, la
+  variance asymptotique ne dépend plus de θ, et
+                                                                          
+                                                 k                      k
+                              g(X̄n ) − z1−α/2  √   , g(X̄n ) + z1−α/2 √
+                                                  n                      n
+
+  est un intervalle de confiance de niveau asymptotique 1 − α pour g(θ). Avec k = 1/2, la
+                                                         √
+  condition s’écrit g ′ (θ) = √ 1/2 , soit g(θ) = arcsin( θ), et l’on obtient, pour tout θ ∈ Θ,
+                              θ(1−θ)
+
+                       √        p            √  P
+                                                        n,θ
+                        n arcsin   X̄n − arcsin   θ   =⇒ N (0, 1/4) .
+
+  La fonction g étant croissante et de réciproque u 7→ sin2 u sur [0, π/2], il vient l’intervalle de
+  confiance de niveau asymptotique 1 − α pour θ
+                        p  z                             p  z              
+                                      1−α/2                                  1−α/2
+              sin2 arcsin    X̄n − √           , sin2 arcsin       X̄n + √               ,
+                                      2 n                                    2 n
+
+  les arguments du sinus étant au préalable ramenés à l’intervalle [0, π/2].
+
+
+    Cette troisième construction évite d’estimer la variance asymptotique, mais elle demande de
+résoudre une équation différentielle, ce qui n’est possible qu’en dimension un. L’exercice 1 en donne
+un second exemple, sur le modèle exponentiel.
+    Les deux figures sont commentées dans les compléments (Section 4.4) : pour θ = 0.25, les deux
+intervalles sont pratiquement confondus, alors que pour θ = 0.025 l’intervalle de Wald est dégénéré
+dès que X̄n = 0, ce qui se produit avec une probabilité non négligeable.
+
+
+
+1.11     Comparaison asymptotique de deux estimateurs
+
+    La variance asymptotique fournit un critère de comparaison là où l’erreur quadratique moyenne
+n’est pas calculable.
+1. LES FONDAMENTAUX                                                                                                                                                31
+
+
+
+
+                                                 Wald                                                                        Wilson
+
+                      50
+
+
+
+
+                                                                                                   50
+                      40
+
+
+
+
+                                                                                                   40
+                      30
+
+
+
+
+                                                                                                   30
+         Intervalle
+
+
+
+
+                                                                                      Intervalle
+                      20
+
+
+
+
+                                                                                                   20
+                      10
+
+
+
+
+                                                                                                   10
+                      0
+
+
+
+
+                                                                                                   0
+
+
+
+                           0.00   0.02   0.04    0.06        0.08    0.10    0.12                       0.00   0.02   0.04    0.06        0.08    0.10    0.12
+
+                                                proportion                                                                   proportion
+
+
+
+
+Figure 3 – Cinquante intervalles de confiance de Wald et de Wilson de niveau de couverture
+1 − α = 0.95 pour une proportion θ = 0.025 et n = 100.
+
+
+
+
+                                                 Wald                                                                        Wilson
+                      50
+
+
+
+
+                                                                                                   50
+                      40
+
+
+
+
+                                                                                                   40
+                      30
+
+
+
+
+                                                                                                   30
+         Intervalle
+
+
+
+
+                                                                                      Intervalle
+                      20
+
+
+
+
+                                                                                                   20
+                      10
+
+
+
+
+                                                                                                   10
+                      0
+
+
+
+
+                                                                                                   0
+
+
+
+
+                           0.10   0.15   0.20     0.25        0.30    0.35     0.40                     0.10   0.15   0.20     0.25        0.30    0.35     0.40
+
+                                                proportion                                                                   proportion
+
+
+
+
+Figure 4 – Cinquante intervalles de confiance de Wald et de Wilson de niveau de couverture
+1 − α = 0.95 pour une proportion θ = 0.25 et n = 100.
+32                                                   CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+     Proposition 1.3: Comparaison par la variance asymptotique
+  Soient θ̂n,1 et θ̂n,2 deux suites d’estimateurs de θ, asymptotiquement normales de variances
+  asymptotiques respectives v1 et v2 , continues et strictement positives sur Θ, et telles que
+
+                                        v1 (θ) < v2 (θ) ,              ∀θ ∈ Θ .
+
+  Pour i = 1, 2, les intervalles
+                                                                           s               
+                                                                                vi (θ̂n,i ) 
+                                 Cn,α (θ̂n,i ) := θ̂n,i ± z1−α/2
+                                                                                    n
+
+  sont des intervalles de confiance de niveau asymptotique 1 − α pour θ, et, pour tout θ ∈ Θ,
+                                                                   s
+                                     Cn,α (θ̂n,1 )   Pn,θ −prob            v1 (θ)
+                                                          −→                      <1.
+                                     Cn,α (θ̂n,2 )                         v2 (θ)
+
+
+  On dit alors que la précision de θ̂n,1 est asymptotiquement meilleure que celle de θ̂n,2 .
+
+
+     Démonstration
+  Le premier
+        q point est la méthode 1.1. Pour le second, la longueur de Cn,α (θ̂n,i ) vaut
+  2z1−α/2     vi (θ̂n,i )/n, de sorte que le rapport des longueurs est
+                                                     s
+                                                         v1 (θ̂n,1 )
+                                                                       .
+                                                         v2 (θ̂n,2 )
+
+  Chaque suite d’estimateurs étant consistante et chaque vi continue et strictement positive, le
+                                                         Pn,θ −prob
+  théorème de continuité 1.1 donne vi (θ̂n,i ) −→  p    vi (θ) > 0, puis le théorème de continuité
+  appliqué au couple et à la fonction (u1 , u2 ) 7→ u1 /u2 , continue au point (v1 (θ), v2 (θ)), donne
+  la convergence annoncée.                                                                          □
+
+
+Intuition. Le critère se lit sur les intervalles de confiance : à niveau asymptotique fixé, l’estimateur de plus
+petite variance asymptotique produit, pour n grand, un intervalle plus court dans un rapport v1 (θ)/v2 (θ).
+                                                                                                  p
+
+De façon équivalente, et en raisonnant sur l’approximation signalée plus haut, atteindre une précision
+donnée demande v1 (θ)/v2 (θ) fois moins d’observations avec le premier estimateur qu’avec le second. Ce
+critère a ses limites : l’exercice 6 construit un estimateur dont la variance asymptotique est partout au
+moins aussi bonne que celle de l’estimateur du maximum de vraisemblance, et strictement meilleure en un
+point, mais dont le comportement à n fixé est mauvais (Section 4.5).
+
+
+
+1.12      Tests asymptotiques : taille, niveau et consistance
+     Rappelons du chapitre 4 que la fonction puissance d’un test de fonction critique ϕ ∈ {0, 1} est
+
+                                          θ 7→ βϕ (θ) := Pθ (ϕ = 1) .
+
+Lorsque la loi de la statistique de test n’est pas explicite, on ne sait pas calculer βϕn à n fixé, et
+les notions de taille et de niveau sont remplacées par leurs versions asymptotiques.
+1. LES FONDAMENTAUX                                                                                          33
+
+   Définition 1.9: Taille asymptotique
+  Considérons le test H0 : θ ∈ Θ0 ,        contre     H1 : θ ∈ Θ1 . La taille asymptotique d’une suite
+  de tests {ϕn , n ∈ N} est
+                                            sup lim sup βϕn (θ) .
+                                           θ∈Θ0     n→∞
+
+
+
+   Définition 1.10: Niveau asymptotique
+  La suite de tests {ϕn , n ∈ N∗ } est de niveau asymptotique α si
+
+                                    ∀θ ∈ Θ0 ,        lim sup βϕn (θ) ≤ α ,
+                                                         n→∞
+
+  c’est-à-dire si sa taille asymptotique est inférieure ou égale à α.
+
+   Définition 1.11: Suite de tests consistante
+  Considérons le test H0 : θ ∈ Θ0 , contre H1 : θ ∈ Θ1 . La suite {ϕn , n ∈ N} est consistante
+  si
+                           pour tout θ ∈ Θ1 ,   lim inf βϕn (θ) = 1 .
+                                                              n→∞
+
+
+
+Intuition. Les deux notions se partagent les deux hypothèses, comme le niveau et la puissance du cha-
+pitre 4 : le niveau asymptotique borne, sur l’hypothèse nulle, la probabilité de rejeter à tort ; la consistance
+demande que, sur l’hypothèse alternative, la probabilité de rejeter tende vers 1. Une suite consistante de
+niveau asymptotique α finit donc par distinguer toute valeur du paramètre qui ne satisfait pas l’hypothèse
+nulle. Ce qu’elle ne dit pas est à quelle valeur de n cela se produit : deux suites de tests peuvent être toutes
+deux consistantes et de même niveau asymptotique, et se comporter très différemment pour la valeur de
+n dont on dispose. L’exercice 3 construit deux telles suites pour le même jeu d’hypothèses, et le chapitre
+suivant donnera un moyen de les comparer.
+
+
+Application : le test de Student
+    Le test de Student du chapitre 1 reposait sur l’hypothèse que les observations sont gaussiennes,
+et la loi exacte de la statistique de test était une loi de Student. Sans cette hypothèse, la loi exacte
+est inconnue, mais la loi limite est la même pour toutes les lois de carré intégrable.
+    Soit une suite de n-échantillons d’un modèle
+                                                                       
+                                R, B(R), Qθ : θ = (µ, σ 2 ) ∈ R × R∗+      ,
+                                                                                         R
+où l’on suppose que,R   pour tout θ, la loi Qθ est de carré intégrable, d’espérance µ := x Qθ (dx) et
+de variance σ 2 := x2 Qθ (dx) − µ2 > 0.
+
+   Exemple 1.14: Test de Student asymptotique
+  Soit µ0 ∈ R. Pour tester les hypothèses
+                                  H0 : µ = µ 0 ,     contre    H1 : µ ̸= µ0 ,
+  on considère la statistique de test
+                                                     n                              n
+                    √ X̄n − µ0                    1X                           1 X             2
+            Tn :=    n         ,        X̄n :=          Xi ,        Sn2 :=             Xi − X̄n ,
+                         Sn                       n i=1                      n − 1 i=1
+  et la suite de tests de région de rejet
+                                   
+                           Rn,α := (x1 , . . . , xn ) ∈ Rn : |Tn | > z1−α/2        .
+  Cette suite de tests est de taille asymptotique α et elle est consistante.
+34                                             CHAPITRE 6. STATISTIQUES ASYMPTOTIQUES
+
+
+     Démonstration
+  Loi limite de Tn sous l’hypothèse nulle. Soit θ = (µ0 , σ 2 ) avec σ 2 > 0. Le théorème de
+  la limite centrale 1.6 donne √
+                                 n          Pn,θ
+                                   X̄n − µ0 =⇒ N (0, 1) ,
+                               σ
+                                     2    Pn,θ −prob                      Pn,θ −prob
+  et la proposition 1.2 donne σ −2 S
+                                   √n    −→ 1, donc σ −1 Sn        −→ 1 par le théorème de
+  continuité 1.1 appliqué à u 7→ u. Le lemme de Slutsky 1.1, assertion (iii), appliqué au
+  quotient, donne                    √
+                                       n(X̄n − µ0 )/σ Pn,θ
+                              Tn =                    =⇒ N (0, 1) .
+                                          Sn /σ
+
+  Taille asymptotique. La loi N (0, 1) ne charge pas les points ±z1−α/2 ; le théorème de
+  Portmanteau 1.3 donne donc, pour tout θ ∈ Θ0 ,
+                                                           
+         βϕn (θ) = Pn,θ |Tn | > z1−α/2 −−−−→ P |U | > z1−α/2 = α ,  U ∼ N (0, 1) ,
+                                             n→∞
+
+  la dernière égalité résultant de la définition du quantile et de la symétrie de la loi N (0, 1). La
+  taille asymptotique est donc égale à α, et la suite de tests est de niveau asymptotique α.
+  Consistance. Soit θ = (µ, σ 2 ) avec µ ̸= µ0 . On écrit
+                                     √             √
+                                       n X̄n − µ         n (µ − µ0 )
+                             Tn =                   +                ,
+                                           Sn               Sn
+  de sorte que la région d’acceptation s’écrit
+                           √              √                        √            
+                              n(µ − µ0 )      n(X̄n − µ)              n(µ − µ0 )
+                −z1−α/2 −                ≤               ≤ z1−α/2 −                .
+                                Sn               Sn                     Sn
+                                           Pn,θ −prob              √
+  Supposons µ − µ0 > 0. Comme Sn             −→         σ > 0 et       n(µ − µ0 ) → +∞, on a, pour tout
+  M > 0,                                     √                    
+                                                  n(µ − µ0 )
+                                  lim Pn,θ                   ≥M         =1.
+                                 n→∞                Sn
+  Par conséquent, pour tout M > 0,
+                                                  √                                   
+                                                       n(X̄n − µ)                                              
+  lim sup Pn,θ |Tn | ≤ z1−α/2 ≤ lim sup Pn,θ                       ≤ z1−α/2 − M            = P U ≤ z1−α/2 − M       ,
+     n→∞                             n→∞                   Sn
+                                                 √             Pn,θ
+  où l’on a utilisé, comme au premier point, que n(X̄n −µ)/Sn =⇒ N (0, 1), et où U ∼ N (0, 1).
+  Cette majoration valant pour tout M > 0, on fait tendre M vers +∞ et il vient
+                                            
+                     lim Pn,θ |Tn | ≤ z1−α/2 = 0 ,   soit    lim βϕn (θ) = 1 .
+                   n→∞                                                   n→∞
+                                                             √
+  Le cas µ − µ0 < 0 se traite de la même façon, en minorant − n(µ − µ0 )/Sn . La suite de tests
+  est donc consistante.                                                                      □
+
+Intuition. La consistance ne s’obtient pas en remplaçant Tn par sa loi limite. Sous l’hypothèse alternative,
+                                                                                         √
+la loi de Tn n’est pas fixe : elle se déplace vers l’infini, puisque Tn contient le terme n(µ − µ0 )/Sn qui
+diverge. C’est pourquoi la démonstration introduit un seuil auxiliaire M et passe à la limite deux fois,
+d’abord en n puis en M : les bornes de la région d’acceptation bougent avec n en même temps que la loi,
+et un raisonnement qui oublierait l’un des deux mouvements serait faux. L’exercice 3 demande le même
+type de soin.
+1. LES FONDAMENTAUX                                                                            35
+
+1.13   Le programme des exercices
+  La feuille de la semaine comporte sept exercices, et chacun met en œuvre un point du chapitre.
+ — L’exercice 1 construit, pour le modèle exponentiel, les estimateurs des moments associés
+   à T1 (x) = x et T2 (x) = x2 , établit leur consistance et leur normalité asymptotique, les
+   compare par leurs variances asymptotiques (Section 1.11), et donne trois intervalles de
+   confiance asymptotiques : l’un par le lemme de Slutsky, l’un par stabilisation de la va-
+   riance (exemple 1.13), le dernier en résolvant directement l’inégalité du pivot, sans utiliser
+   la continuité de v.
+ — L’exercice 2 traite le modèle de Pareto translaté, qui n’est pas régulier : l’estimateur du
+   maximum de vraisemblance du paramètre de translation a une erreur d’ordre 1/n et une loi
+   limite exponentielle, comme l’estimateur du support d’une loi uniforme (exemple 1.5).
+ — L’exercice 3 construit, pour un même jeu d’hypothèses, deux suites de tests consistantes
+   et de même niveau asymptotique, l’une fondée sur une fréquence de signes, l’autre sur la
+   statistique de Student (exemple 1.14).
+ — L’exercice 4 reprend, sur le modèle de Poisson, la chaîne complète : loi faible des grands
+   nombres, théorème de la limite centrale, méthode-δ appliquée à θ 7→ e−θ , puis intervalle de
+   confiance asymptotique.
+ — L’exercice 5 est une application de la loi faible des grands nombres 1.2 au calcul de la limite
+   d’une série.
+ — L’exercice 6 étudie l’estimateur de Hodges, dont la variance asymptotique est partout au
+   moins aussi petite que celle de l’estimateur du maximum de vraisemblance, sans que son
+   comportement à n fixé soit acceptable (Section 4.5).
+ — L’exercice 7 établit l’existence d’une suite consistante d’estimateurs définie comme racine
+   des équations de vraisemblance, sur un modèle de mélange où la vraisemblance n’a pas de
+   maximum explicite.
+

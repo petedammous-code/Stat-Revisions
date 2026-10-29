@@ -1,0 +1,230 @@
+2. LES OUTILS MATHÉMATIQUES                                                                        29
+
+2      Les outils mathématiques
+    Vous retrouverez ci-dessous les éléments mathématiques ou probabilistes nécessaires pour com-
+prendre cette partie du cours : deux inégalités, la loi faible des grands nombres et quelques faits
+sur les fonctions convexes, qui interviennent dans la propriété de convergence des moments em-
+piriques, dans l’étude de la limite de la log-vraisemblance et dans la positivité de la divergence
+de Kullback-Leibler. La fin de cette partie rappelle où trouver, au chapitre 1, les résultats qui
+sont utilisés sans être redémontrés, et donne la définition d’un intervalle de confiance utilisée dans
+l’Exercice 1 (PC2).
+
+
+
+Inégalités de Markov et de Bienaymé-Tchebychev
+
+    Ces deux inégalités bornent la probabilité qu’une variable aléatoire s’écarte de son espérance,
+à l’aide de ses moments.
+
+     Proposition 2.1: Inégalités de Markov et de Bienaymé-Tchebychev
+      (i) (Markov) Soit Y une variable aléatoire réelle positive. Pour tout δ > 0, P(Y ≥ δ) ≤
+          E[Y ]/δ.
+     (ii) (Bienaymé-Tchebychev) Soit Z une variable aléatoire réelle telle que E[Z 2 ] < ∞, et
+          notons µ = E[Z]. Pour tout δ > 0,
+
+                                                             Var(Z)
+                                         P(|Z − µ| ≥ δ) ≤           .
+                                                               δ2
+
+
+     Démonstration
+    (i) On a δ 1{Y ≥δ} ≤ Y en tout point ; en prenant l’espérance, δ P(Y ≥ δ) ≤ E[Y ]. (ii) On
+    applique
+            (i) à la variable positive Y = (Z − µ)2 et au seuil δ 2 : P(|Z − µ| ≥ δ) = P (Z − µ)2 ≥
+    δ ≤ E[(Z − µ)2 ]/δ 2 .
+     2
+                                                                                                   □
+
+                                                     Pn
+    Appliquée à une moyenne empirique Ȳn = n−1 i=1 Yi de variables i.i.d. de variance σ 2 , dont
+la variance vaut σ /n, l’inégalité de Bienaymé-Tchebychev donne P(|Ȳn − E[Y1 ]| ≥ δ) ≤ σ 2 /(nδ 2 ) :
+                    2
+
+c’est la forme utilisée dans la Proposition 1.1. La borne n’est pas précise, elle peut même dépasser
+1, mais elle a l’avantage d’être explicite et de ne demander aucune hypothèse sur la loi, hormis
+l’existence d’un moment d’ordre 2.
+
+
+
+Convergence en probabilité et loi faible des grands nombres
+
+   La convergence en probabilité est le mode de convergence dans lequel s’expriment les résultats
+de ce chapitre ; elle sera reprise et comparée aux autres modes de convergence dans la suite du
+cours.
+
+     Définition 2.1: Convergence en probabilité
+    Soient (Yn )n∈N une suite de vecteurs aléatoires à valeurs dans Rk et y ∈ Rk . On dit que Yn
+                                                    P−prob
+    converge en probabilité vers y, et l’on note Yn −→ y, si, pour tout ε > 0, limn→∞ P(∥Yn −
+                                                               Pθ −prob
+    y∥ ≥ ε) = 0. Lorsque la probabilité est Pθ , on écrit Yn    −→ y.
+30                                                  CHAPITRE 2. ESTIMATION PONCTUELLE
+
+     Théorème 2.1: Loi faible des grands nombres
+  Soit (Yn )n∈N∗ une suite de variables aléatoires réelles indépendantes, de même loi et inté-
+  grables. Alors
+                                         n
+                                      1 X P−prob
+                                           Yi −→ E[Y1 ] .
+                                     n i=1
+
+
+     Démonstration
+  Lorsque E[Y12 ] < ∞, c’est une conséquence directe de l’inégalité de Bienaymé-Tchebychev : la
+  moyenne empirique Pna pour espérance E[Y1 ] et, par indépendance, pour variance Var(Y1 )/n, de
+  sorte que P |n−1 i=1 Yi −E[Y1 ]| ≥ ε ≤ Var(Y1 )/(nε2 ), qui tend vers 0. Le cas d’une variable
+  seulement intégrable demande un argument de troncature, ou le théorème de continuité de
+  Lévy ; il est démontré dans l’annexe du polycopié, au chapitre sur les convergences (théorème
+  « loi faible des grands nombres pour des variables i.i.d. intégrables »).                    □
+
+   Le lemme suivant permet de transporter une convergence en probabilité par une fonction
+continue ; il sert à passer de la convergence de e(θ̂n ) à celle de θ̂n .
+
+     Lemme 2.1: Convergence en probabilité et fonction continue
+  Soient D ⊆ Rk , h : D → Rm une fonction, y ∈ D un point où h est continue, et (Yn )
+                                                                                     P−prob
+  une suite de vecteurs aléatoires presque sûrement à valeurs dans D. Si Yn           −→ y, alors
+        P−prob
+  h(Yn ) −→ h(y).
+
+
+     Démonstration
+  Soit ε > 0. Par continuité de h en y, il existe η > 0 tel que, pour tout z ∈ D vérifiant
+  ∥z−y∥ < η, on ait ∥h(z)−h(y)∥ < ε. Ainsi, à un événement négligeable près, {∥h(Yn )−h(y)∥ ≥
+  ε} ⊆ {∥Yn − y∥ ≥ η}, et P(∥h(Yn ) − h(y)∥ ≥ ε) ≤ P(∥Yn − y∥ ≥ η), qui tend vers 0.        □
+
+
+Fonctions convexes et inégalité de Jensen
+    L’inégalité de Jensen compare l’image de l’espérance et l’espérance de l’image par une fonction
+convexe ; c’est l’ingrédient de la positivité de la divergence de Kullback-Leibler. Elle repose sur
+l’existence, en tout point du graphe d’une fonction convexe, d’une droite d’appui.
+
+     Lemme 2.2: Droite d’appui d’une fonction convexe
+  Soient I un intervalle ouvert de R et ϕ : I → R une fonction convexe. Pour tout t ∈ I, il existe
+  une constante ct ∈ R telle que
+
+                           ϕ(t) + ct (y − t) ≤ ϕ(y) ,     pour tout y ∈ I .
+
+  Si ϕ est strictement convexe, l’inégalité est stricte pour tout y ̸= t. Si ϕ est dérivable en t, on
+  peut prendre ct = ϕ′ (t).
+
+
+     Démonstration
+  Pour s < t < u dans I, écrivons t = λs + (1 − λ)u avec λ = (u − t)/(u − s) ∈ ]0, 1[. La convexité
+  donne ϕ(t) ≤ λϕ(s) + (1 − λ)ϕ(u), ce qui se réécrit, après réarrangement,
+
+                                     ϕ(t) − ϕ(s)   ϕ(u) − ϕ(t)
+                                                 ≤             .
+                                        t−s           u−t
+2. LES OUTILS MATHÉMATIQUES                                                                           31
+
+
+  Toute pente de corde issue de t vers la gauche est donc inférieure à toute pente de corde issue
+  de t vers la droite ; le même argument montre que la pente à droite u 7→ (ϕ(u)−ϕ(t))/(u−t) est
+  croissante sur I ∩ ]t, +∞[ et que la pente à gauche s 7→ (ϕ(t) − ϕ(s))/(t − s) est croissante sur
+  I ∩ ]−∞, t[. Posons ct := inf {(ϕ(u) − ϕ(t))/(u − t) : u ∈ I, u > t}, qui est un réel, puisque
+  cet ensemble est non vide, I étant ouvert, et minoré par n’importe quelle pente à gauche.
+  Pour u > t, la définition de ct donne ϕ(u) ≥ ϕ(t) + ct (u − t) ; pour s < t, la pente (ϕ(t) −
+  ϕ(s))/(t − s) minore toutes les pentes à droite, donc leur borne inférieure ct , ce qui donne
+  ϕ(s) ≥ ϕ(t) + ct (s − t). Si ϕ est dérivable en t, la borne inférieure ct de la fonction croissante
+  u 7→ (ϕ(u) − ϕ(t))/(u − t) est sa limite en t, c’est-à-dire ϕ′ (t). Enfin, si ϕ est strictement
+  convexe, les inégalités entre pentes sont strictes : pour u > t, la pente en u est strictement
+  supérieure à la pente en tout point de ]t, u[, elle-même supérieure ou égale à ct ; pour s < t,
+  la pente en s est strictement inférieure à la pente en tout point de ]s, t[, elle-même inférieure
+  ou égale à ct . Les inégalités sont donc strictes pour y ̸= t.                                   □
+
+
+   Théorème 2.2: Inégalité de Jensen
+  Soient I un intervalle ouvert de R, ϕ : I → R une fonction convexe et Y une variable aléatoire
+  réelle telle que P(Y ∈ I) = 1 et E[|Y |] < ∞. Alors E[Y ] ∈ I, l’espérance E[ϕ(Y )] est bien
+  définie dans ]−∞, +∞], et
+                                        ϕ(E[Y ]) ≤ E[ϕ(Y )] .
+  Si la fonction ϕ est strictement convexe, l’inégalité est stricte dès que la variable aléatoire Y
+  n’est pas presque sûrement constante, c’est-à-dire dès que P(Y ̸= E[Y ]) > 0.
+
+
+   Démonstration
+  Notons t := E[Y ]. Si a est l’extrémité gauche de I, avec a > −∞, la variable Y − a est
+  strictement positive presque sûrement, donc E[Y − a] > 0 (une variable aléatoire positive
+  d’espérance nulle est nulle presque sûrement) : t > a. De même pour l’extrémité droite, et
+  t ∈ I. Le Lemme 2.2 fournit une constante c telle que ϕ(t) + c(y − t) ≤ ϕ(y) pour tout y ∈ I,
+  donc
+                         ϕ(t) + c (Y − t) ≤ ϕ(Y )    presque sûrement.
+  Le membre de gauche est une variable aléatoire intégrable : la partie négative de ϕ(Y ) est
+  donc intégrable, ce qui donne un sens à E[ϕ(Y )] ∈ ]−∞, +∞], et, l’espérance étant croissante,
+  ϕ(t) = E[ϕ(t) + c(Y − t)] ≤ E[ϕ(Y )]. Si ϕ est strictement convexe, l’inégalité du lemme est
+  stricte sur l’événement {Y ̸= t} : la variable aléatoire positive ϕ(Y ) − ϕ(t) − c(Y − t) est
+  strictement positive sur cet événement, qui est de probabilité strictement positive, donc son
+  espérance E[ϕ(Y )] − ϕ(t) est strictement positive.                                         □
+
+    Le lemme suivant justifie, dans les exemples du chapitre, le passage d’un point critique de la
+log-vraisemblance à son maximum global.
+
+   Lemme 2.3: Maximum d’une fonction strictement concave
+  Soient I un intervalle ouvert de R et ψ : I → R une fonction strictement concave, c’est-à-dire
+  telle que −ψ soit strictement convexe. Alors ψ admet au plus un point de maximum sur I. Si
+  ψ est dérivable en un point t avec ψ ′ (t) = 0, alors t est l’unique point de maximum global de
+  ψ. Enfin, si ψ est deux fois dérivable avec ψ ′′ < 0 sur I, elle est strictement concave.
+
+
+   Démonstration
+  Si t1 ̸= t2 étaient deux points de maximum, la stricte concavité donnerait ψ t1 +t
+                                                                                        1
+                                                                                  2
+                                                                                     2
+                                                                                        > 2 ψ(t1 )+
+  1                                                                      ′
+  2 ψ(t2 ) = max ψ, ce qui est absurde. Si ψ est dérivable en t avec ψ (t) = 0, le Lemme 2.2
+32                                                  CHAPITRE 2. ESTIMATION PONCTUELLE
+
+
+  appliqué à −ψ, avec ct = −ψ ′ (t) = 0, donne −ψ(y) > −ψ(t) pour tout y ̸= t, c’est-à-dire
+  ψ(y) < ψ(t). Enfin, si ψ ′′ < 0 sur I, alors ψ ′ est strictement décroissante ; pour s < u dans I,
+  λ ∈ ]0, 1[ et t = λs+(1−λ)u, l’inégalité des accroissements finis donne ψ(t)−ψ(s) > ψ ′ (t)(t−s)
+  et ψ(u)−ψ(t) < ψ ′ (t)(u−t) ; comme λ(t−s) = (1−λ)(u−t), en multipliant la première inégalité
+  par λ et la seconde par 1 − λ puis en soustrayant, on obtient ψ(t) > λψ(s) + (1 − λ)ψ(u). □
+
+
+Résultats du chapitre 1 utilisés dans ce chapitre
+    Les résultats suivants sont utilisés sans être redémontrés ; ils sont énoncés et démontrés dans
+les outils mathématiques ou les compléments du chapitre 1.
+     — Densité d’un n-échantillon. Si le modèle d’une observation est dominéQnpar µ avec les densités
+       qθ , le n-échantillon est dominé par µ⊗n , avec la densité produit i=1 qθ (xi ) (Section 1.7,
+       équation (1)) : c’est la fonction dont la vraisemblance est l’évaluation aux observations.
+     — Modèle dominé, densités et théorème de Radon-Nikodym (Section 2 et Section 2) : la mesure
+       dominante n’est pas unique, et deux densités relatives à deux mesures dominantes diffèrent
+       d’un facteur qui ne dépend pas du paramètre (Section 4), ce qui rend l’estimateur du maxi-
+       mum de vraisemblance indépendant de ce choix.
+     — Statistiques d’ordre et médiane empirique (Section 1.5), utilisées pour les modèles uniforme
+       et de Laplace et pour le Z-estimateur de la médiane.
+     — Théorème de transfert, fonction muette et changement de variables (Section 2), pour le calcul
+       des moments exacts et l’écriture de la divergence de Kullback-Leibler comme une espérance.
+     — Lois exponentielle et Gamma : moments Eθ [X1k ] = k!/θk de la loi exponentielle (Section 4),
+       lois Gamma, leurs moments et leur additivité (Section 2), biais et erreur quadratique moyenne
+       de l’estimateur des moments θ̂n,1 (Section 4).
+     — Vecteurs gaussiens, loi du χ2 , théorèmes de Cochran et de Gosset (Section 2 et Section 1.9),
+       pour la loi des estimateurs du modèle linéaire gaussien de l’Exercice 1 (PC2), et régression
+       linéaire gaussienne à deux coefficients (Section 4).
+
+Intervalle de confiance : définition minimale
+    Un estimateur ponctuel propose une valeur ; un intervalle de confiance propose un ensemble de
+valeurs, construit à partir des observations, qui contient la quantité inconnue avec une probabilité
+garantie. La notion est l’objet du chapitre suivant ; la définition ci-dessous suffit à la question 7
+de l’Exercice 1 (PC2).
+
+      Définition 2.2: Intervalle de confiance
+  Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique paramétrique, g : Θ → R une fonction et
+  α ∈ ]0, 1[. Un intervalle de confiance de niveau 1 − α pour g(θ) est un intervalle aléatoire
+  [A(Z), B(Z)], dont les bornes A et B sont des statistiques à valeurs dans R ∪ {−∞, +∞}, tel
+  que                                        
+                      Pθ A(Z) ≤ g(θ) ≤ B(Z) ≥ 1 − α        pour tout θ ∈ Θ .
+
+    La probabilité porte sur l’intervalle, qui est aléatoire, et non sur g(θ), qui est un nombre inconnu
+mais fixé : l’énoncé garantit que, quelle que soit la valeur du paramètre, la procédure qui produit
+l’intervalle capture g(θ) avec une probabilité au moins égale à 1 − α. Le procédé le plus courant
+consiste à trouver une variable aléatoire, fonction des observations et de g(θ), dont la loi sous Pθ
+ne dépend pas de θ ; les quantiles d’ordre α/2 et 1 − α/2 de cette loi l’encadrent avec probabilité
+1−α, et l’on obtient l’intervalle en résolvant cet encadrement par rapport à g(θ). Dans l’Exercice 1
+(PC2), la variable nσ̂ 2 /σ 2 , de loi χ2 (n − 2) sous Pθ quelle que soit la valeur du paramètre, joue ce
+rôle pour g(θ) = σ 2 .
+

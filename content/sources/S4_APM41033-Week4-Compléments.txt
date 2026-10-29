@@ -1,0 +1,247 @@
+5. LES COMPLÉMENTS                                                                                     55
+
+5      Les compléments
+    Les contenus de cette partie ne sont pas exigibles. Ils établissent le lien général entre régions
+de confiance et tests, dont le chapitre n’a rencontré que des cas particuliers, puis donnent la
+construction générale d’un test par inégalité de déviation et les inégalités de Chernoff sur lesquelles
+elle repose. Une dernière sous-section annonce ce que le chapitre 5 reprendra.
+
+
+Dualité entre régions de confiance et tests
+
+    Le chapitre a construit des tests à partir de pivots (Section 2.6), et l’Exemple 2.15 a rejeté une
+hypothèse en constatant qu’une valeur n’appartenait pas à un intervalle de confiance. Ces deux
+procédés ne sont pas des coïncidences : à toute famille de tests correspond une région de confiance,
+et réciproquement.
+
+     Exemple 5.1: Test bilatéral pour la moyenne d’une gaussienne
+    Soit (X1 , . . . , Xn ), n ≥ 2, un n-échantillon du modèle N (µ, σ 2 ) , (µ, σ 2 ) ∈ Θ := R × R∗+ et
+                                                              
+
+    soit µ0 ∈ R. L’Exemple 1.5 donne l’intervalle de confiance de niveau de couverture 1 − α
+                                                            (n−1)
+                                                 h      t1−α/2 i
+                                        I(Z) := X̄n ± Sn √       .
+                                                           n
+
+    De l’intervalle au test. Posons ϕµ0 (Z) := 1{µ0 ∈I(Z)}
+                                                    /      . Comme, sous P(µ0 ,σ2 ) , on a Pµ0 ,σ2 (µ0 ∈
+    I(Z)) = 1 − α pour tout σ 2 > 0, la taille de ce test vaut
+                                                      
+                              sup Pµ0 ,σ2 ϕµ0 (Z) = 1 = 1 − (1 − α) = α .
+                              σ 2 >0
+
+    On a donc associé à un intervalle de confiance de niveau de couverture 1 − α un test de taille
+    α pour H0 : µ = µ0 , contre H1 : µ ̸= µ0 ; c’est le test de Student
+                                                                         de l’Exemple 2.11.
+    Du test à l’intervalle. Réciproquement, partons de la famille ϕ̃ν ν∈R de tests de taille α pour
+    H0 : µ = ν, contre H1 : µ ̸= ν, et posons
+                                            n                   o
+                                    ˜
+                                    I(Z) := ν ∈ R , ϕ̃ν (Z) = 0 ,
+
+    c’est-à-dire l’ensemble des valeurs de la moyenne que l’observation ne conduit pas à rejeter.
+    Pour tout (µ, σ 2 ) ∈ Θ,
+                                       ˜
+                                                                
+                             Pµ,σ2 µ ∈ I(Z)   = Pµ,σ2 ϕ̃µ (Z) = 0 = 1 − α ,
+
+          ˜
+    donc I(Z) est une région de confiance de niveau 1 − α pour µ. Si l’on part du test de Student,
+                ˜
+    on retrouve I(Z) = I(Z).
+
+    Le cas général se traite de la même façon. Soient (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique et
+g : Θ → Rq .
+
+D’une famille de tests à une région de confiance. Pour α ∈ ]0, 1[ et ν ∈ Rq , soit ϕν un test
+de niveau α pour H0 : g(θ) = ν, contre H1 : g(θ) ̸= ν. Notons
+
+                                        Θν0 := {θ ∈ Θ , g(θ) = ν} ,
+
+de sorte que la contrainte de niveau s’écrit Pθ (ϕν (Z) = 1) ≤ α pour tout θ ∈ Θν0 . On définit la
+région de confiance duale
+                                       S(z) := {ν ∈ Rq , ϕν (z) = 0} .
+56                                            CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+Sa probabilité de couverture vérifie
+                                                               
+                    inf Pθ g(θ) ∈ S(Z) = infq infν Pθ ϕν (Z) = 0
+                   θ∈Θ                            ν∈R    θ∈Θ0
+                                                                        
+                                             = 1 − sup sup Pθ ϕν (Z) = 1 ≥ 1 − α ,
+                                                        ν∈Rq θ∈Θν
+                                                                0
+
+                                                                            g(θ)
+la première égalité venant de ce que tout θ ∈ Θ appartient à Θ0 et à lui seul. La région S est
+donc une région de confiance de niveau de couverture 1 − α pour g(θ).
+D’une région de confiance à une famille de tests. Réciproquement, soit S ′ une région de
+confiance de niveau de couverture 1 − α pour g(θ), c’est-à-dire telle que Pθ (g(θ) ∈ S ′ (Z)) ≥ 1 − α
+pour tout θ ∈ Θ. Pour ν ∈ Rq , posons ϕ′ν (z) := 1{ν ∈S                               ν
+                                                     / ′ (z)} . Alors, pour tout θ ∈ Θ0 ,
+
+                  Pθ ϕ′ν (Z) = 1 = Pθ ν ∈ / S ′ (Z) = 1 − Pθ g(θ) ∈ S ′ (Z) ≤ α ,
+                                                                            
+
+la deuxième égalité utilisant g(θ) = ν. Le test ϕ′ν est donc de niveau α pour H0 :                    g(θ) =
+ν, contre H1 : g(θ) ̸= ν.
+Intuition. La dualité dit que les deux constructions du chapitre sont deux lectures d’un même objet. Une
+région de confiance, c’est l’ensemble des valeurs que l’observation ne permet pas de rejeter ; un test, c’est
+la question de savoir si une valeur donnée appartient à cette région. Le passage d’une lecture à l’autre
+est exact pour les tests bilatéraux, ceux dont l’hypothèse nulle est g(θ) = ν ; il ne l’est plus pour les tests
+unilatéraux, auxquels correspondent des bornes de confiance et non des intervalles bilatéraux.
+
+
+Construire un test par une inégalité de déviation
+    Dans les exemples construits à partir d’un pivot, les quantiles de la loi du pivot étaient expli-
+cites. C’est rarement le cas. Deux stratégies permettent alors de contourner la difficulté : recourir
+à une inégalité de déviation pour majorer les quantiles inconnus, ce que cette sous-section décrit,
+ou recourir à une approche asymptotique, qui est l’objet du cours 6.
+    Soit (Z, Z, {Pθ , θ ∈ Θ}) un modèle statistique et g : Θ → R. On considère le test
+                                H0 : g(θ) ≤ g0 ,        contre   H1 : g(θ) > g0 ,
+avec g0 ∈ R, qui correspond à la partition Θ0 = {θ ∈ Θ , g(θ) ≤ g0 } et Θ1 = {θ ∈ Θ , g(θ) > g0 }.
+On dispose d’un estimateur T de g(θ), dont on fait la statistique de test, et l’on cherche une région
+de rejet de la forme R = {z ∈ Z , T (z) ≥ c} ; il s’agit de déterminer c pour garantir le niveau α.
+   Une inégalité de déviation est une majoration de la forme
+                                           
+                       Pθ T (Z) − g(θ) > ε ≤ γθ (ε)         pour tout ε > 0 .                     (3)
+Une telle fonction étant donnée, et puisque g0 − g(θ) ≥ 0 pour θ ∈ Θ0 ,
+                                                                       
+                       sup Pθ T (Z) ≥ c ≤ sup Pθ T (Z) − g(θ) > c − g0
+                         θ∈Θ0                       θ∈Θ0
+
+                                                  ≤ γ(c − g0 ) := sup γθ (c − g0 ) .
+                                                                     θ∈Θ0
+
+Si γ(ε) tend vers 0 lorsque ε tend vers +∞, on peut prendre cα = g0 + yα avec
+                                       yα := inf {ε > 0 , γ(ε) ≤ α} ,
+et le test de région de rejet Rα = {z ∈ Z , T (z) ≥ g0 + yα } est de niveau α. Pn
+    Dans le cas d’un n-échantillon et d’un estimateur de la forme T (Z) = n−1 i=1 t(Xi ) de
+g(θ) = Eθ [t(X1 )], l’inégalité de Bienaymé-Tchebychev donne
+                                    v 2 (Θ0 )
+                                                        v 2 (Θ0 ) := sup Varθ t(X1 ) ,
+                                                                                    
+                          γ(ε) :=             ,
+                                       nε2                          θ∈Θ0
+                                                            √
+de sorte que, si v 2 (Θ0 ) < ∞, on peut prendre yα = v(Θ0 )/ nα.
+5. LES COMPLÉMENTS                                                                                  57
+
+   Exemple 5.2: Test sur une proportion par l’inégalité de Bienaymé-Tchebychev
+  Soit Z = (X1 , . . . , Xn ) un n-échantillon de Bernoulli {Ber(θ) , θ ∈ Θ = [0, 1]}, et considérons
+  H0 : θ ≤ 1/2, contre H1 : θ > 1/2. En prenant T (Z) = X̄n , il vient
+                                                                         1
+                          v 2 (Θ0 ) = sup Varθ (X1 ) = sup θ(1 − θ) =      ,
+                                    θ≤1/2                 θ≤1/2          4
+                √
+  donc yα = 1/(2 nα) et le test de région de rejet
+                       n                                 Pn                   o
+                  Rα = (x1 , . . . , xn ) ∈ {0, 1}n , n−1 i=1 xi ≥ 12 + 2√1nα
+
+  est de niveau α.
+
+    Lorsque les variables sont bornées, l’inégalité de Hoeffding (Théorème 3.1) remplace avanta-
+geusement Bienaymé-Tchebychev. Si t : X → R vérifie a = inf x t(x) > −∞ et b = supx t(x) < ∞,
+elle donne
+                                 n
+                              X                                 2nε2 
+                       Pθ n−1       t(Xi ) − g(θ) > ε ≤ exp −             ,
+                                i=1
+                                                                 (b − a)2
+majoration qui ne dépend pas de θ, d’où
+                                                     r
+                                                          1    1
+                                      yα = (b − a)          log .
+                                                         2n    α
+   Exemple 5.3: Comparaison des deux tests de proportion
+  Reprenons l’exemple précédent. Les observations étant à valeurs dans [0, 1], le test de région
+  de rejet            n                                              q          o
+                                                       Pn
+                Rα = (x1 , . . . , xn ) ∈ {0, 1}n , n−1 i=1 xi ≥ 21 + 2n
+                                                                       1
+                                                                         log α1
+
+  est de niveau α. Des deux tests, le plus puissant est celui dont la valeur critique est la plus
+  petite : il s’agit donc de comparer 1/(2α) et log(1/α). Or la dérivée de u 7→ log u − u/2 vaut
+  1/u − 1/2, cette fonction atteint son maximum en u = 2, et ce maximum vaut log 2 − 1 < 0 ;
+  on a donc log u < u/2 pour tout u > 0, en particulier log(1/α) < 1/(2α). Sur ce modèle,
+  le test fondé sur l’inégalité de Hoeffding est donc toujours plus puissant que celui fondé sur
+  l’inégalité de Bienaymé-Tchebychev. Ce n’est pas une règle générale.
+
+
+Inégalités de Chernoff
+    Les majorations exponentielles employées ci-dessus reposent toutes sur la même idée : appliquer
+l’inégalité de Markov, non pas à la variable elle-même, mais à son exponentielle, puis optimiser le
+paramètre introduit.
+
+   Théorème 5.1: Inégalité de Chernoff
+  Soit Y une variable aléatoire réelle telle que φY (λ) := E eλY < ∞ pour tout λ ∈ R, et
+                                                                 
+
+  posons ψY := log φY . Pour a ∈ R, on appelle transformée de Cramér de Y la quantité
+                                   (
+                                     supλ≥0 {aλ − ψY (λ)}    si a ≥ 0 ,
+                         hY (a) :=
+                                     supλ≤0 {−aλ − ψY (λ)} si a ≤ 0 .
+
+  Alors, pour tout a ≥ 0,
+
+                      P(Y ≥ a) ≤ e−hY (a)       et       P(Y ≤ −a) ≤ e−hY (−a) .
+58                                       CHAPITRE 4. RÉGIONS DE CONFIANCE ET TESTS
+
+     Démonstration
+  Soient a ≥ 0 et λ ≥ 0. Sur l’événement {Y ≥ a}, on a λ(Y − a) ≥ 0, donc eλ(Y −a) ≥ 1, d’où
+  1{Y ≥a} ≤ eλ(Y −a) ponctuellement. En prenant l’espérance,
+                                   h       i
+                     P(Y ≥ a) ≤ E eλ(Y −a) = e−aλ φY (λ) = e−(aλ−ψY (λ)) .
+
+  Cette majoration valant pour tout λ ≥ 0, on prend l’infimum du membre de droite, c’est-à-
+  dire le supremum de l’exposant, ce qui donne P(Y ≥ a) ≤ e−hY (a) . Pour la seconde inégalité,
+  on procède de même avec λ ≤ 0 : sur {Y ≤ −a}, on a λ(Y + a) ≥ 0, donc 1{Y ≤−a} ≤ eλ(Y +a)
+  et P(Y ≤ −a) ≤ eaλ φY (λ) = e−(−aλ−ψY (λ)) .                                               □
+
+     Proposition 5.1: Inégalité de Chernoff pour des sommes
+  Soient Y, Y1 , . . . , Yn des variables aléatoires réelles
+                                                          Pnindépendantes et de même loi, telles que
+  φY (λ) < ∞ pour tout λ ∈ R, et soit Ȳn := n−1 i=1 Yi . Alors φȲn (λ) < ∞ pour tout λ, et
+  la transformée de Cramér de Ȳn vérifie hȲn (a) = n hY (a) pour tout a ∈ R. En conséquence,
+  pour tout a ≥ 0,
+
+                        P Ȳn ≥ a ≤ e−nhY (a)              P Ȳn ≤ −a ≤ e−nhY (−a) .
+                                                                    
+                                                    et
+
+
+     Démonstration
+  Par indépendance et équidistribution,
+                                h −1 Pn      i Yn  h       i 
+                                                                      n
+                    φȲn (λ) = E eλn  i=1 Yi  =   E eλYi /n = φY (λ/n) ,
+                                                   i=1
+
+  donc ψȲn (λ) = n ψY (λ/n). Pour a ≥ 0,
+                                                 
+             hȲn (a) = sup aλ − nψY (λ/n) = n sup aλ/n − ψY (λ/n) = n hY (a) ,
+                        λ≥0                         λ≥0
+
+  le changement de variable λ 7→ λ/n laissant [0, +∞[ invariant. Le cas a ≤ 0 est identique. Les
+  deux majorations résultent alors du Théorème 5.1 appliqué à Ȳn .                           □
+
+
+Ce que le chapitre 5 reprendra
+    Deux questions restent ouvertes à la fin de ce chapitre.
+    La première est celle de l’étape (1) de la méthode de construction d’un test : comment choisir
+la statistique de test ? Une réponse générale existe, fondée sur le rapport des vraisemblances sous
+les deux hypothèses ; c’est le lemme de Neyman-Pearson, qui donne, pour un test d’une hypothèse
+simple contre une alternative simple, le test le plus puissant parmi ceux de niveau α. L’énigme
+des pixels du Section 2.10 en est la formulation imagée : le budget est le niveau α, le coût est la
+probabilité sous H0 , le gain est la probabilité sous H1 , et la solution consiste à acheter les pixels
+par ordre décroissant du rapport gain sur coût.
+    La seconde est que la construction de l’Exemple 2.5 ne permet pas, dans le cas discret, d’at-
+teindre exactement le niveau : la taille du test y est strictement inférieure à α, et l’on perd de la
+puissance. On y remédie en autorisant la décision à être elle-même aléatoire lorsque la statistique
+tombe sur la valeur critique : ce sont les tests randomisés, dont la fonction critique prend ses va-
+leurs dans [0, 1] au lieu de {0, 1}. Ils sont définis et employés au chapitre 5, où ils sont nécessaires
+à l’énoncé du lemme de Neyman-Pearson.
+

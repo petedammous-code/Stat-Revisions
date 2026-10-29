@@ -1,0 +1,456 @@
+34                                                         CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+4       Les compléments
+    Les contenus de cette partie ne sont pas exigibles. Ils donnent la démonstration du théorème no
+free lunch, les bornes PAC du polycopié d’origine dans le cas réalisable et dans le cas agnostique,
+leur application à la classification par histogramme, la démonstration de l’inégalité de Pisier, l’in-
+égalité de McDiarmid, qui étend celle de Hoeffding à des fonctions plus générales que la moyenne,
+la démonstration de l’extension aux classifieurs affines, et des références pour aller plus loin.
+
+4.1       Démonstration du théorème no free lunch
+   On démontre le théorème 1.1 ; c’est l’argument de l’exercice 6 (PC9), réécrit pour des labels
+dans {−1, 1}.
+
+     Démonstration
+    Fixons n, la règle gbn et ε ∈ ]0, 1/2[ (pour ε ≥ 1/2 il n’y a rien à démontrer). Soit K un entier tel
+    que (1−1/K)n ≥ 1−2ε, qui existe puisque (1−1/K)n → 1 quand K → ∞, et soient a1 , . . . , aK
+    des points distincts de X, qui existent puisque X est infini. Pour b = (b1 , . . . , bK ) ∈ {−1, 1}K ,
+    on note Pb la loi du couple (X, Y ) où X est uniforme sur {a1 , . . . , aK } et Y = bj lorsque
+    X = aj .
+    Sous Pb , la règle qui vaut bj en aj et 1 ailleurs, mesurable puisque les singletons le sont, a un
+    risque nul ; donc R⋆ = 0 et E(b   gn ) = R(bgn ). Notons Eb l’espérance lorsque Dn est formé de n
+    couples indépendants de loi Pb et (X, Y ) est un couple indépendant de même loi. D’après la
+    proposition 2.5, Eb [R(b gn )] = Pb (bgn (X; Dn ) ̸= Y ).
+    On moyenne sur b. Soit B = (B1 , . . . , BK ) uniforme sur {−1, 1}K , c’est-à-dire formé de
+    variables indépendantes uniformes sur {−1, 1}, et J, J1 , . . . , Jn des variables indépendantes
+    de B, indépendantes entre elles et uniformes sur {1, . . . , K}. On pose X = aJ , Y = BJ ,
+    Xi = aJi et Yi = BJi . Conditionnellement à B = b, les couples (X, Y ), (X1 , Y1 ), . . . , (Xn , Yn )
+    sont indépendants de loi Pb , de sorte que
+         1      X
+                         Eb [R(b
+                               gn )] = P (b
+                                          gn (X; Dn ) ̸= Y ) ≥ P (b
+                                                                  gn (X; Dn ) ̸= Y, J ∈
+                                                                                      / {J1 , . . . , Jn }) .
+        2K
+             b∈{−1,1}K
+
+
+    Décomposons selon les valeurs j, j1 , . . . , jn de J, J1 , . . . , Jn , avec j ∈   / {j1 , . . . , jn }. Sur l’évé-
+    nement correspondant, gbn (X; Dn ) = gbn (aj ; (aj1 , Bj1 ), . . . , (ajn , Bjn )) est une fonction de
+    (Bj1 , . . . , Bjn ), tandis que Y = Bj est indépendante de ce vecteur, puisque j n’est aucun
+    des ji , et uniforme sur {−1, 1}. La probabilité que deux variables indépendantes, dont l’une
+    est uniforme sur {−1, 1}, diffèrent vaut 1/2 ; par indépendance de B et de (J, J1 , . . . , Jn ),
+                                                                                                     n
+                                                         1                             1          1           1
+       P (b
+          gn (X; Dn ) ̸= Y, J ∈   / {J1 , . . . , Jn }) = P (J ∈
+                                                               / {J1 , . . . , Jn }) =     1−              ≥ −ε.
+                                                         2                             2          K           2
+
+    Une moyenne étant majorée par le maximum, il existe b tel que Eb [R(b
+                                                                        gn )] ≥ 1/2 − ε : la loi
+    Pb convient.                                                                              □
+
+   Le polycopié d’origine mentionne une forme plus faible du théorème, où la loi est fixée une fois
+pour toutes au lieu de dépendre de n : pour toute suite de règles et toute suite (an ) tendant vers
+zéro, il existe une loi telle que R⋆ = 0 et E[R(b
+                                                gn )] ≥ an pour tout n. La convergence du risque
+moyen peut donc être arbitrairement lente. On en trouvera la démonstration au chapitre 7 de A
+Probabilistic Theory of Pattern Recognition de L. Devroye, L. Györfi et G. Lugosi.
+
+4.2       Bornes PAC
+   Le polycopié d’origine présente les résultats de la Section 1.3 dans le cadre introduit par L.
+Valiant en 1984, celui des règles probablement approximativement correctes.
+4. LES COMPLÉMENTS                                                                                       35
+
+
+   Définition 4.1: Règle PAC
+  Soit ε > 0, δ ∈ ]0, 1[ et C une famille de règles de classification, munie du risque R(g) =
+  P(g(X) ̸= Y ). Une règle gbn ∈ C construite sur Dn est dite probablement approximativement
+  correcte avec une précision ε et une confiance 1 − δ, ou (ε, δ)-PAC, si
+                                                         
+                                 P R(b gn ) − inf R(g) ≥ ε ≤ δ .
+                                                 g∈C
+
+
+
+   On demande que la précision soit atteinte, non pas pour tout ensemble d’apprentissage, mais
+avec une probabilité au moins 1 − δ : exiger δ = 0 serait excessif, car un ensemble d’apprentissage
+peu représentatif, de probabilité faible mais non nulle, peut toujours se produire. La garantie doit
+en revanche être satisfaite pour toutes les lois du couple (X, Y ).
+
+Le cas réalisable
+    On suppose d’abord que la classe contient une règle de risque nul, ce qui entraîne que le
+classifieur bayésien est dans la classe et que R⋆ = 0.
+
+
+   Théorème 4.1: Borne PAC élémentaire
+                                                      ∗
+  On suppose que |C| < ∞ et que ming∈C R(g) = 0. Si ĝn,C est un minimiseur du risque empirique
+                               ∗
+  sur C, alors, pour tout n ∈ N et tout ε > 0,
+                                         ∗
+                                                 
+                                  P R(ĝn,C ) ≥ ε ≤ |C| e−nε .
+
+
+
+
+   Démonstration
+  Soit g0 ∈ C telle que R(g0 ) = 0. Comme R b n (g0 ) ≥ 0 et E[R
+                                                               b n (g0 )] = R(g0 ) = 0, on a R
+                                                                                             b n (g0 ) = 0
+                               b    ∗
+  presque sûrement, et donc Rn (ĝn,C ) = 0 presque sûrement. Ainsi, presque sûrement, R(ĝn,C     ∗
+                                                                                                       )≥
+                                                                 b
+  ε ne se produit que s’il existe g ∈ C telle que R(g) ≥ ε et Rn (g) = 0. Par la borne de l’union,
+                                                   X                      
+                                  ∗
+                           P R(ĝn,C  )≥ε ≤                 P R b n (g) = 0 .
+                                                 g∈C, R(g)≥ε
+
+                  b n (g) suit la loi binomiale de paramètres n et R(g), donc P(R
+  Pour g fixée, n R                                                                 b n (g) = 0) =
+            n            n     −nε
+  (1 − R(g)) ≤ (1 − ε) ≤ e          lorsque R(g) ≥ ε, et il y a au plus |C| termes.              □
+
+    En résolvant |C| e−nε ≤ δ, on voit que, sous les hypothèses du théorème, le minimiseur du risque
+empirique est (ε, δ)-PAC dès que n ≥ (log |C| + log(1/δ))/ε. La borne fournit aussi une borne du
+risque moyen, grâce au lemme élémentaire suivant.
+
+
+   Lemme 4.1: Intégration d’une queue exponentielle
+  Soit Z une variable aléatoire positive et C ≥ 1, α > 0 des constantes telles que P(Z ≥ ε) ≤
+                                                                                     −αε2
+  Ce−αε pour tout ε > 0. Alors
+                          p E[Z] ≤ (1 + log C)/α. Si au contraire P(Z ≥ ε) ≤ Ce           pour
+  tout ε > 0, alors E[Z] ≤ (1 + log C)/α.
+36                                               CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     Démonstration
+                           R∞
+  Comme Z ≥ 0, E[Z] = 0 P(Z > t) dt. Pour tout u ≥ 0, en majorant P(Z > t) par 1 sur
+  [0, u] et par Ce−αt au-delà,
+                                         Z ∞
+                                                           Ce−αu
+                            E[Z] ≤ u + C     e−αt dt = u +       ,
+                                          u                  α
+
+  et le choix u = (log C)/α, positif puisque C ≥ 1, donne la première majoration. Pour la
+  seconde, P(Z 2 ≥ ε) ≤ Ce−αε ,p
+                               d’où E[Z 2 ] ≤ (1 + log C)/α par la première, et l’on conclut par
+  l’inégalité de Jensen, E[Z] ≤ E[Z 2 ].                                                      □
+
+                           ∗
+   Appliqué à Z = R(ĝn,C    ) avec C = |C| et α = n, le lemme donne, sous les hypothèses du
+                    ∗
+                                                                                 √
+théorème 4.1, E[R(ĝn,C )] ≤ (1 + log |C|)/n. La vitesse est en 1/n, et non en 1/ n comme dans le
+cas général.
+
+Le cas agnostique
+    Lorsqu’on ne suppose rien sur la loi du couple, et en particulier pas que le classifieur bayésien
+est dans la classe, on parle de bornes PAC agnostiques. Le point de vue diffère de celui de la
+modélisation statistique, qui part d’une famille de lois supposée contenir la loi des observations.
+    Les bornes du théorème 1.5 en donnent plusieurs. D’abord, en appliquant la première inégalité
+                     b n (g), qui relève de la même déviation unilatérale de l’inégalité de Hoeffding,
+aux variables R(g) − R
+on obtient, pour tout δ ∈ ]0, 1[,
+                                                    r                    !
+                                          b n (g) +   log |C| + log(1/δ)
+                   P ∀g ∈ C, R(g) ≤ R                                      ≥1−δ .
+                                                              2n
+                                                              ∗
+Le risque de chaque classifieur, et en particulier celui de ĝn,C , est contrôlé uniformément sur la
+classe par son risque empirique, à un terme additif près qui ne dépend que de la complexité de la
+classe, mesurée par le logarithme de son cardinal. Ensuite, d’après le théorème 1.2,
+                                                                      
+                   ∗
+           P R(ĝn,C ) − inf R(g) ≥ ε ≤ P sup | R  b n (g) − R(g)| ≥ ε ≤ 2 |C| e−nε2 /2 ,
+                         g∈C                  g∈C                      2
+
+la dernière majoration s’obtenant comme dans la démonstration du théorème 1.5, avec des inéga-
+lités larges. Le minimiseur du risque empirique est donc (ε, δ)-PAC dès que
+
+                                         2{log(1/δ) + log(2 |C|)}
+                                   n≥                             .
+                                                   ε2
+Enfin, le lemme 4.1, appliqué avec C = 2 |C| et α = 2n, donne E[supg∈C | R      b n (g) − R(g)|] ≤
+p                                                         p
+  (1 + log(2 |C|))/(2n), un peu moins bon que la borne log(2 |C|)/(2n) que l’inégalité de Pisier
+fournit à la Section 1.3.
+   Le nombre log2 |C| est aussi le nombre de bits nécessaires pour désigner une règle particulière
+de C ; ce lien avec la théorie de l’information et du codage n’est pas fortuit.
+
+4.3    Une application : la classification par histogramme
+    Soit m ∈ N∗ et {Q1 , . . . , Qm } une partition de l’ensemble des attributs X en ensembles mesu-
+                                     d
+rables. Par exemple, si X = [0, 1] , on peut diviser chaque axe en q intervalles de même longueur
+                         d
+et considérer les m = q hypercubes ainsi obtenus. Les histogrammes sur la partition sont les
+classifieurs                                                                  
+                                      m
+                                       X                                       
+                        C= g=            dj 1Qj : (d1 , . . . , dm ) ∈ {−1, 1}m ,
+                                                                              
+                                   j=1
+4. LES COMPLÉMENTS                                                                                            37
+
+                                                                            m
+qui prennent la même
+                 P décision en tous les points d’une cellule ; la classe a 2 éléments. Le risque
+empirique de g = j dj 1Qj s’écrit
+
+                                                        m
+                                                        X  n
+                                                          1X
+                                    b n (g) =
+                                    R                                 1{Xi ∈Qj } 1{Yi ̸=dj } ,
+                                                        j=1
+                                                              n i=1
+
+somme de termes dont chacun ne dépend que de dj . On le minimise donc cellule par cellule : tout
+classifieur qui, dans chaque cellule, prend la décision majoritaire parmi les labels des observations
+qui y tombent minimise le risque empirique. Avec |C| = 2m , les théorèmes 1.6 et 1.8 donnent, pour
+tout δ ∈ ]0, 1[,
+                                                              r                                  !
+                         ∗                                        (m + 1) log 2 + log(1/δ)
+                 P   R(ĝn,C ) − inf R(g) ≤ 2                                                        ≥1−δ ,
+                                 g∈C                                         2n
+
+                                                                               r
+                                           ∗
+                                                                                  (m + 1) log 2
+                                E       R(ĝn,C )       − inf R(g) ≤                             .
+                                                          g∈C                          2n
+
+L’erreur d’estimation est contrôlée par m/n : pour qu’elle soit faible, il faut que le nombre de
+cellules soit petit devant le nombre d’observations, de sorte que chaque cellule contienne assez
+d’exemples pour que le vote majoritaire ait un sens.
+
+
+4.4    Démonstration de l’inégalité de Pisier
+   On démontre le théorème 1.7 ; c’est l’exercice 4 (PC9).
+
+   Démonstration
+                                                                       2   2
+  Supposons d’abord seulement
+                         √        que E[eλZi ] ≤ eλ σ /2 pour tout λ > 0 et tout i, et montrons
+  que E[maxi Zi ] ≤ σ 2 log m. Les Zi sont intégrables, puisque e|t| ≤ et + e−t et que leur
+  transformée de Laplace est finie en ±1 dans le cadre du théorème ; il en va de même de
+  maxi Zi . Pour λ > 0, l’inégalité de Jensen,
+                                       Pm λZ    appliquée à la fonction convexe t 7→ eλt , puis la
+               λ maxi Zi          λZi
+  majoration e           = maxi e     ≤ i=1 e i donnent
+                                                           m
+                          λE[maxi Zi ]
+                                             λ maxi Zi  X             2 2
+                      e                   ≤E e           ≤   E eλZi ≤ m eλ σ /2 ,
+                                                                           i=1
+                                                                        √                   √
+  soit E[maxi Zi ] ≤ log(m)/λ + λσ 2 /2. Si m ≥ 2, le choix λ = 2 log m/σ donne σ 2 log m ; si
+  m = 1, on fait tendre λ vers 0 et l’on obtient E[Z1 ] ≤ 0.
+  Sous l’hypothèse du théorème, les 2m variables Z1 , . . . , Zm , −Z1 , . . . , −Zm vérifient toutes
+                                                                         λ2 σ 2 /2
+  cette condition, puisque E[eλ(−Zi ) ] = E[e(−λ)Zi ] ≤ ep                         . Comme maxi |Zi | =
+  max(Z1 , . . . , Zm , −Z1 , . . . , −Zm ), on obtient E[maxi |Zi |] ≤ σ 2 log(2m).                  □
+
+
+
+4.5    L’inégalité de McDiarmid
+    L’inégalité de Hoeffding porte sur une moyenne. Pour aborder les classes infinies, on a besoin
+d’une inégalité de concentration pour la variable supg∈C | R b n (g) − R(g)| elle-même, qui n’est pas
+une moyenne, mais qui dépend peu de chacune des observations. L’inégalité de McDiarmid traite
+ce cas ; elle ouvre le chapitre suivant du polycopié d’origine.
+38                                                                CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     Définition 4.2: Différences bornées
+  Soit A un espace mesurable. Une fonction mesurable f : An → R est à différences bornées s’il
+  existe des constantes c1 , . . . , cn telles que, pour tout i ∈ {1, . . . , n},
+
+                       sup            |f (x1 , . . . , xn ) − f (x1 , . . . , xi−1 , x′i , xi+1 , . . . , xn )| ≤ ci .
+                 x1 ,...,xn ,x′i ∈A
+
+
+
+
+     Théorème 4.2: Inégalité de McDiarmid
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes à valeurs dans A et f : An → R une
+  fonction à différences bornées, de constantes c1 , . . . , cn . Posons G = f (X1 , . . . , Xn ). Pour tout
+  t > 0,
+                                                                                                     
+                                      2t2                                                        2t2
+    P (G − E[G] ≥ t) ≤ exp − Pn 2                   et     P (G − E[G] ≤ −t) ≤ exp − Pn 2 .
+                                      i=1 ci                                                     i=1 ci
+
+
+
+
+                                         Pn
+   Pour f (x1 , . . . , xn ) = n−1           i=1 xi et A = [0, 1], on a ci = 1/n et l’on retrouve l’inégalité de
+Hoeffding.
+
+     Démonstration
+  Une fonction à différences
+                     P                bornées est bornée : en changeant les coordonnées une à une,
+  |f (x) − f (x′ )| ≤ i ci pour tous x, x′ . Notons µi la loi de Xi et, pour 0 ≤ i ≤ n,
+                                      Z
+              Hi (x1 , . . . , xi ) := f (x1 , . . . , xi , ui+1 , . . . , un ) µi+1 (dui+1 ) · · · µn (dun ) ,
+
+  de sorte que Hn = f et H0 = RE[G] ; par le théorème de Fubini, ces fonctions sont mesu-
+  rables et Hi−1 (x1 , . . . , xi−1 ) = Hi (x1 , . . . , xP
+                                                          i−1 , u) µi (du). Posons Vi = Hi (X1 , . . . , Xi ) −
+                                                            n
+  Hi−1 (X1 , . . . , Xi−1 ), de sorte que G − E[G] = i=1 Vi .
+  Fixons i et x1:i−1 = (x1 , . . . , xi−1 ). La fonction u 7→ Hi (x1:i−1 , u)−Hi−1 (x1:i−1 ) est d’intégrale
+  nulle sous µi , et ses valeurs sont comprises entre son infimum et son supremum, qui diffèrent
+  d’au plus ci , puisque |Hi (x1:i−1 , u) − Hi (x1:i−1 , u′ )| ≤ ci par intégration de la propriété de
+  différences bornées. Le lemme de Hoeffding (lemme 1.1), appliqué à la variable Hi (x1:i−1 , Xi )−
+  Hi−1 (x1:i−1 ), donne, pour tout s > 0,
+                                       Z
+                                                                                     2 2
+                       Ψi (x1:i−1 ) := es{Hi (x1:i−1 ,u)−Hi−1 (x1:i−1 )} µi (du) ≤ es ci /8 .
+
+  Comme Xi est indépendante de (X1 , . . . , Xi−1 ), la proposition 2.5 donne
+                                                            2 2
+  E esVi X1 , . . . , Xi−1 = Ψi (X1 , . . . , Xi−1 ) ≤ es ci /8 . Les variables V1 , . . . , Vi−1 étant
+  fonctions de (X1 , . . . , Xi−1 ) et toutes ces variables étant bornées,
+           h Pi          i      h Pi−1                            i     2 2
+                                                                              h Pi−1 i
+         E es k=1 Vk = E es k=1 Vk E esVi X1 , . . . , Xi−1 ≤ es ci /8 E es k=1 Vk ,
+
+                                                      2P      2
+  et, par récurrence,  E[es(G−E[G]) ] ≤ es i ci /8 . La borne de Chernoff donne P(G − E[G] ≥ t) ≤
+         2P   2                         P
+  e−st+s i ci /8 , et le choix s = 4t/ i c2i donne la première inégalité. La seconde s’obtient en
+  appliquant la première à −f .                                                                 □
+4. LES COMPLÉMENTS                                                                                      39
+
+   Corollaire 4.1: Concentration de la déviation uniforme
+  Soit C une classe finie ou dénombrable de règles de classification, munie de la perte 0–1. Pour
+  tout ε > 0,
+                                                                    
+                P sup | R                           b n (g) − R(g)| ≥ ε ≤ e−2nε2 ,
+                          b n (g) − R(g)| − E sup | R
+                     g∈C                         g∈C
+
+  et la même majoration vaut pour la déviation inférieure. En particulier, pour tout δ ∈ ]0, 1[,
+  avec une probabilité au moins 1 − δ,
+                                                                r
+                                                 b n (g) − R(g)| + log(1/δ) .
+                       b n (g) − R(g)| ≤ E sup | R
+                 sup | R
+                 g∈C                        g∈C                        2n
+
+
+   Démonstration
+  Lorsque la classe est dénombrable, Ple supremum est mesurable. La fonction
+  f ((x1 , y1 ), . . . , (xn , yn )) = supg∈C |n−1 i=1 1{g(xi )̸=yi } − R(g)| est à différences bor-
+                                                   n
+
+  nées de constantes ci = 1/n : changer un couple modifie chacune des moyennes         P empiriques
+  d’au plus 1/n, doncpleur supremum aussi. On applique le théorème 4.2, avec i c2i = 1/n,
+  puis on choisit ε = log(1/δ)/(2n).                                                              □
+
+                         b n (g)−R(g)| est donc concentrée autour de sa moyenne, indépendamment
+    La variable supg∈C | R
+de la loi des données et du cardinal de la classe. Pour obtenir une borne de risque, il reste à majorer
+cette espérance ; pour une classe infinie, c’est l’objet de la théorie de Vapnik-Chervonenkis, qui ne
+fait pas partie de ce chapitre.
+
+4.6    Extension aux classifieurs affines
+    On démontre la proposition 1.2, en suivant l’exercice 7 (PC9). On se place dans le cadre de
+cette proposition : X = Rd , Y = {−1, 1}, la loi de X a une densité et n > d.
+
+La classe finie Cn . Comme la loi de X a une densité, presque sûrement, toute famille de d
+attributs distincts de l’échantillon est affinement indépendante, et il passe par ces d points un
+unique hyperplan affine. Pour I = {i1 < · · · < id } ⊂ {1, . . . , n},    on choisit, de façon mesurable
+en (Xi1 , . . . , Xid ), un couple (aI , bI ) tel que cet hyperplan soit x : a⊤I x + bI = 0 , et l’on pose,
+pour z ∈ {−1, 1},
+                                       hI,z (x) := 2 1{z(a⊤I x+bI )≥0}
+                                                                       −1.
+Chaque hI,z appartient à C, avec les paramètres (zaI , zbI ). On note Cn l’ensemble de ces classi-
+fieurs ; il a au plus 2 nd éléments. On note gbn un minimiseur du risque empirique sur Cn .
+
+
+   Lemme 4.2: Lemme combinatoire, admis
+  Presque sûrement, pour toute règle g ∈ C,
+
+                                         b n (b
+                                         R           b n (g) + d .
+                                              gn ) ≤ R
+                                                               n
+
+
+
+    Ce lemme est admis dans l’exercice 7 ; on en trouvera la démonstration au chapitre 4 de A
+Probabilistic Theory of Pattern Recognition de L. Devroye, L. Györfi et G. Lugosi. Il dit qu’en
+faisant pivoter et en translatant un hyperplan quelconque jusqu’à ce qu’il passe par d points de
+l’échantillon, on ne change la classification que de ces d points au plus.
+40                                                    CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     Démonstration
+  Soit g ∈ C une règle fixée. On écrit
+                           n                   o n                    o n               o
+          R(b
+            gn ) − R(g) = R(b         b n (b
+                               gn ) − R    gn ) + Rb n (b      b n (g) + R
+                                                        gn ) − R          b n (g) − R(g) .
+
+  Le terme du milieu est au plus d/n par le lemme. Pour le premier, comme gbn ∈ Cn , il est
+                                b n (hI,z )}, où R(hI,z ) = P ( hI,z (X) ̸= Y | Dn ). Pour I fixé,
+  majoré par maxI,z {R(hI,z ) − R
+           I                  P
+         b n (h) = (n − d)
+  notons R                 −1
+                                 1{h(X )̸=Y } le risque empirique calculé sur les n − d couples
+                                   k∈I
+                                    /        k    k
+                                                                 I          I
+                                b n (h) ≥ ((n − d)/n) R
+  qui ne sont pas dans I. Comme R                     b n (h) et R
+                                                                 b n (h) ≤ 1,
+
+                                                                b In (hI,z ) + d .
+                                       b n (hI,z ) ≤ R(hI,z ) − R
+                            R(hI,z ) − R
+                                                                               n
+  On obtient
+                                   n                     o n               o
+               R(b                            b I (hI,z ) + R
+                 gn ) − R(g) ≤ max R(hI,z ) − R              b n (g) − R(g) + 2d .
+                                                n
+                               I,z                                            n
+  Soit t > 0. La règle hI,z ne dépend que des couples d’indices dans I, et les n − d autres
+  couples sont indépendants de ceux-là et de loi P ; d’après la proposition 2.5, la probabilité
+  P(R(hI,z ) − Rb In (hI,z ) ≥ t) est l’espérance de la même probabilité calculée pour une règle fixée,
+  que la déviation unilatérale de l’inégalité de Hoeffding, appliquée à n − d variables à valeurs
+                                            2
+  dans {0, 1}, majore par e−2(n−d)t . De même, P(R            b n (g) − R(g) ≥ t) ≤ e−2nt2 ≤ e−2(n−d)t2 . Si
+  la somme des deux premiers termes du membre de droite dépasse 2t, l’un d’eux dépasse t ; la
+  borne de l’union donne donc
+                                                                      
+                                                   2d                n                 2
+                        P R(b   gn ) − R(g) ≥         + 2t ≤ 2          + 1 e−2(n−d)t .
+                                                   n                 d
+                                                                           q          
+  On choisit t de sorte que le membre de droite vaille δ, soit t = log((2 nd + 1)/δ)/(2(n − d)),
+  et l’on note ∆ = 2d/n + 2t.
+  Il reste à remplacer R(g) par l’infimum. Pour k ≥ 1, soit gk ∈ C telle que R(gk ) ≤ inf g∈C R(g)+
+  1/k. Les événements {R(b        gn ) − inf g∈C R(g) > ∆ + 1/k} croissent vers {R(b    gn ) − inf g∈C R(g) >
+  ∆}, et chacun est inclus dans {R(b          gn ) − R(gk ) > ∆}, de probabilité au plus δ. Par continuité
+  monotone de P, P(R(b       gn ) − inf g∈C R(g) > ∆) ≤ δ.                                                  □
+
+   L’exercice 7 en déduit aussi une borne de l’excès de risque moyen, par intégration de la queue
+comme au lemme 4.1.
+
+4.7    Pour aller plus loin
+   Le deck renvoie à deux ouvrages sur les inégalités de concentration : The Concentration of
+Measure Phenomenon de M. Ledoux (American Mathematical Society, 2001), et Concentration
+Inequalities : A Nonasymptotic Theory of Independence de S. Boucheron, G. Lugosi et P. Massart
+(Oxford University Press, 2013). Le second traite l’argument de Herbst, les inégalités de Bennett
+et de Bernstein, qui tiennent compte de la variance, et l’inégalité de McDiarmid ; ses premiers
+chapitres sont accessibles avec les outils de ce chapitre.
+

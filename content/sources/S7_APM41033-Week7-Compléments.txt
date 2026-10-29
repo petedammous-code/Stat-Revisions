@@ -1,0 +1,499 @@
+34                CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+4      Les compléments
+    Les contenus de cette partie ne sont pas exigibles. Ils donnent la définition générale des M - et
+Z-estimateurs, qui couvre les solutions approchées du problème d’optimisation, la consistance sans
+hypothèse de compacité, les énoncés de consistance de l’estimateur du maximum de vraisemblance,
+les lois limites dans le cas vectoriel, les régions de confiance que la normalité asymptotique de cet
+estimateur permet de construire, l’énoncé de l’efficacité asymptotique et la conjecture de Fisher,
+la méthode du score de Fisher, et les calculs détaillés du modèle de Cauchy.
+
+
+4.1      Solutions approchées du problème d’optimisation
+    En pratique, le maximum de M  cn est atteint par une méthode numérique, qui ne fournit qu’une
+solution approchée dont on sait borner l’erreur. La définition suivante, celle du polycopié d’origine,
+couvre cette situation, et le théorème 1.1 vaut sous la même forme.
+
+
+      Théorème 4.1: Consistance des M -estimateurs, version approchée
+    Reprenons les notations du théorème 1.1 et remplaçons l’hypothèse (H-3) par la suivante :
+    il existe une suite de variables aléatoires positives {ρn , n ∈ N} et une suite de variables
+    aléatoires {θ̂n , n ∈ N} à valeurs dans Θ telles que, pour tout θ⋆ ∈ Θ,
+                                                                                              
+      lim Pn,θ⋆ (ρn ≥ ε) = 0 pour tout ε > 0 ,         lim inf Pn,θ⋆ Mcn (θ̂n ) ≥ M
+                                                                                  cn (θ⋆ ) − ρn = 1 .
+     n→∞                                                n→∞
+
+
+    Sous les hypothèses (H-1), (H-2) et cette hypothèse, la suite {θ̂n , n ∈ N} est consistante.
+
+
+
+
+      Démonstration
+    La seule modification de la démonstration du théorème 1.1 porte sur la majoration du terme
+          cn (θ⋆ ) − M
+    (b) = M          cn (θ̂n ), qui n’est plus négatif :
+                                           n                          o
+             cn (θ⋆ ) − M
+             M          cn (θ̂n ) ≤ ρn + M              cn (θ̂n ) − ρn 1 c ⋆
+                                             cn (θ⋆ ) − M                            cn (θ̂n )} .
+                                                                        {Mn (θ )−ρn >M
+
+    Le premier terme tend vers zéro en probabilité par hypothèse, et le second est nul sur un
+    événement de probabilité tendant vers 1. Le reste de la démonstration est inchangé.     □
+
+                                                                                     b n (θ̂n ) = 0
+      De même, la définition d’un Z-estimateur se relâche en remplaçant la condition Ψ
+par
+                                                      
+                         lim Pn,θ⋆       b n (θ̂n ) ≥ ε = 0
+                                         Ψ                    pour tout ε > 0 ,
+                        n→∞
+
+et le théorème 1.3 vaut sous cette forme.
+
+
+4.2      Consistance sans hypothèse de compacité
+    L’hypothèse de compacité du corollaire 1.1 est souvent contraignante. On peut s’en passer
+lorsque la fonction objectif décroît vers −∞ assez vite à l’infini, ce qui confine l’estimateur dans
+un compact avec une probabilité tendant vers 1.
+4. LES COMPLÉMENTS                                                                                 35
+
+
+
+  Théorème 4.2: Consistance d’un M -estimateur, cas non compact
+ Soit une suite d’expériences statistiques produit d’espace des paramètres Θ = Rd . Supposons :
+   (i) pour tout x ∈ X, la fonction θ 7→ m(θ, x) est continue sur Rd ;
+
+                                                               Z
+  (ii) pour tout compact K ⊆ Rd et tout θ⋆ ∈ Rd ,                  sup |m(θ, x)| Qθ⋆ (dx) < ∞ ;
+                                                                   θ∈K
+
+  (iii) pour tous θ ̸= θ⋆ dans Rd , Mθ⋆ (θ) < Mθ⋆ (θ⋆ ) ;
+
+                                                           Z
+  (iv) pour tout θ⋆ ∈ Rd , il existe a > 0 tel que             sup |m(θ, x)| Qθ⋆ (dx) < ∞ ;
+                                                               ∥θ∥≥a
+
+  (v) pour tout x ∈ X, lim sup m(θ, x) = −∞.
+                          b→∞ ∥θ∥>b
+
+
+
+ Alors toute suite {θ̂n , n ∈ N} de M -estimateurs associés à m, au sens du théorème 4.1, est
+ consistante.
+
+
+
+  Démonstration
+ Soit θ⋆ ∈ Rd . La fonction b 7→ sup∥θ∥>b m(θ, x) est décroissante et tend vers −∞ par (v) ; le
+ théorème de convergence monotone, licite grâce à (iv), donne
+                                 Z (              )
+                             lim          sup m(θ, x) Qθ⋆ (dx) = −∞ .
+                             b→∞         ∥θ∥>b
+
+                                    R
+ Choisissons b > ∥θ⋆ ∥ tel que          {sup∥θ∥>b m(θ, x)}Qθ⋆ (dx) < Mθ⋆ (θ⋆ ). La loi des grands
+ nombres donne
+                                          n
+                                              (                                  )
+                                     X
+          sup M         cn (θ⋆ ) ≤ 1
+               cn (θ) − M                         sup m(θ, Xi ) − m(θ⋆ , Xi )
+         ∥θ∥>b                     n i=1          ∥θ∥>b
+                                                 Z (                     )
+                                   Pn,θ⋆ −prob
+                                        −→                sup m(θ, x) Qθ⋆ (dx) − Mθ⋆ (θ⋆ ) < 0 ,
+                                                       ∥θ∥>b
+
+                                                   
+                          cn (θ)−M
+ d’où limn Pn,θ⋆ sup∥θ∥>b M         cn (θ⋆ )+ρn ≥ 0 = 0. Posons K := B(0, b), qui est compact.
+ De                                                  (                             )
+           n       o n                           o
+             θ̂n ∈
+                 /K ⊆ M  cn (θ̂n ) < M
+                                     cn (θ ) − ρn ∪ sup M
+                                            ⋆               cn (θ) ≥ M
+                                                                     cn (θ ) − ρn
+                                                                          ⋆
+                                                                   ∥θ∥>b
+
+ on tire lim supn Pn,θ⋆ (θ̂n ∈
+                             / K) = 0. Il reste à appliquer le corollaire 1.1, dans sa version
+ approchée, à l’estimateur θ̂n 1K (θ̂n ), qui coïncide avec θ̂n avec une probabilité tendant vers 1.
+ □
+
+
+  Exemple 4.1: La médiane empirique comme M -estimateur
+                                                     R
+ Soit F une fonction de répartition sur R telle que |x|F (dx) < ∞, F (x) = 1 − F (−x) pour
+ tout x, et F (η) > 1/2 pour tout η > 0. Pour θ ∈ Θ = R, soit Qθ la loi de fonction de
+ répartition x 7→ F (x − θ), et considérons le M -estimateur associé à m(θ, x) = −|x − θ|, qui
+36                CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+
+  est la médiane empirique. La continuité (i) est claire, et |m(θ, x)| ≤ |θ| + |x| donne (ii) et (iv) ;
+  l’inégalité sup∥θ∥>b m(θ, x) ≤ |x| − b donne (v). Quant à (iii), un calcul élémentaire montre
+  que, pour tous θ, θ⋆ ,
+                                                  Z |θ−θ⋆ |
+                                   ⋆
+                         M (θ ) − M (θ) = 2
+                              θ⋆         θ⋆                   (|θ − θ⋆ | − x) F (dx) ,
+                                                   0
+
+  quantité strictement positive dès que θ ̸= θ⋆ , puisque F (η) > 1/2 pour tout η > 0. Le
+  théorème 4.2 s’applique : la médiane empirique est consistante, sans hypothèse de moment
+  d’ordre deux.
+
+
+
+
+4.3      Consistance de l’estimateur du maximum de vraisemblance
+
+    Les deux énoncés suivants sont la traduction du corollaire 1.1 et du théorème 4.2 à m(θ, x) =
+log pθ (x).
+
+
+
+     Théorème 4.3: Consistance du maximum de vraisemblance, cas compact
+  Soit une suite d’expériences statistiques produit du modèle dominé Qθ = pθ · µ, où Θ est un
+  compact de Rd . Supposons :
+      (i) pour tout x ∈ X, la fonction θ 7→ log pθ (x) est continue ;
+                            Z
+     (ii) pour tout θ⋆ ∈ Θ,     sup |log pθ (x)| Qθ⋆ (dx) < ∞ ;
+                                   θ∈Θ
+                          ⋆
+     (iii) pour tous θ ̸= θ dans Θ, Qθ ̸= Qθ⋆ .
+                                                       R
+  Alors, pour tout θ⋆ ∈ Θ, la fonction θ 7→ log pθ (x)Qθ⋆ (dx) a un maximum unique au
+  point θ = θ⋆P  , et toute suite {θ̂nMV , n ∈ N} telle que limn Pn,θ⋆ (ℓn (θ̂nMV ) ≥ ℓn (θ⋆ )) = 1, où
+              −1    n
+  ℓn (θ) := n       i=1 log pθ (Xi ), est consistante.
+
+
+
+
+   La version non compacte ajoute, comme au théorème 4.2, l’intégrabilité de sup∥θ∥≥a log pθ pour
+un a > 0 et la divergence limb→∞ sup∥θ∥≥b log pθ (x) = −∞ pour µ-presque tout x. Ce sont les
+théorèmes II-3.1 et II-3.2 du polycopié d’origine.
+
+
+
+
+4.4      Lois limites dans le cas vectoriel
+
+   Les démonstrations de la partie principale (Section 1.5) s’étendent au cas Θ ⊆ Rd sans difficulté
+de principe : le quotient devient un produit par l’inverse d’une matrice jacobienne, et la variance
+asymptotique une matrice de covariance.
+4. LES COMPLÉMENTS                                                                                                37
+
+
+
+   Théorème 4.4: Loi limite des Z-estimateurs, cas vectoriel
+  Soit une suite d’expériences statistiques produit d’espace des paramètres Θ ⊆ Rd et ψ :
+  Θ × X → Rd . Supposons que, pour tout θ⋆ ∈ Θo :
+    (i) pour tout x ∈ X, la fonction θ 7→ ψ(θ, x) est continûment différentiable sur un voisinage
+        V(θ⋆ ), et l’on pose
+                                          Z                          
+                                             ∂ψr ⋆
+                              Jψ (θ⋆ ) :=          (θ , x) Q θ ⋆ (dx)           ;
+                                             ∂θ(s)                      1≤r,s≤d
+
+   (ii) il existe une fonction mesurable g telle que, pour tout x         ∈    X,
+                   Pd                            R
+        supθ∈V(θ⋆ ) i=1 ∂ψ/∂θ(i) (θ, x) ≤ g(x) et g dQθ⋆ < ∞ ; de plus la matrice
+
+
+        Jψ (θ⋆ ) est inversible ;
+        R             2             R
+   (iii) ∥ψ(θ⋆ , x)∥ Qθ⋆ (dx) < ∞ et ψ(θ⋆ , x) Qθ⋆ (dx) = 0.
+                                                                  √ b             Pn,θ⋆ −prob
+  Soit {θ̂n , n ∈ N} une suite consistante d’estimateurs telle que n Ψ  n (θ̂n )     −→       0 pour
+  tout θ⋆ ∈ Θo . Alors, pour tout θ⋆ ∈ Θo ,
+                     √          P ⋆      
+                                                      −1                −⊤
+                                                                            
+                      n θ̂n − θ⋆ =⇒ N 0, [Jψ (θ⋆ )] Gψ (θ⋆ ) [Jψ (θ⋆ )]
+                                    n,θ
+                                                                                ,
+
+  où                                        Z
+                              Gψ (θ⋆ ) :=       ψ(θ⋆ , x) ψ(θ⋆ , x)⊤ Qθ⋆ (dx) .
+
+
+
+
+   Le cas des M -estimateurs s’en déduit en posant ψ = ∇m : sous les hypothèses correspondantes
+de différentiabilité seconde et de domination, et si {θ̂n , n ∈ N} est une suite consistante telle que
+√                   ⋆ −prob
+      cn (θ̂n ) Pn,θ−→
+  n ∇M                      0, alors
+                          √          P ⋆                                  
+                            n θ̂n − θ⋆ =⇒ N 0, Um (θ⋆ ) Gm (θ⋆ ) Um (θ⋆ )⊤ ,
+                                        n,θ
+
+
+
+
+avec
+               Z                                                            Z                          −1
+        ⋆               ⋆           ⋆       ⊤                        ⋆                 ⋆
+  Gm (θ ) :=       ∇m(θ , x) (∇m(θ , x)) Qθ⋆ (dx) ,            Um (θ ) :=         Hm (θ , x) Qθ⋆ (dx)         .
+
+Ce sont les théorèmes II-2.18 et II-2.20 du polycopié d’origine.
+    Appliqué à m = ℓ dans un modèle régulier, le second donne la normalité asymptotique de
+l’estimateur du maximum de vraisemblance sous sa forme générale : la relation
+                         Z                                    Z
+                                               ⊤
+                  I(θ) = ∇ℓ(θ, x) (∇ℓ(θ, x)) Qθ (dx) = − Hℓ (θ, x) Qθ (dx)
+
+fait que Gℓ (θ) = I(θ) et Uℓ (θ) = −I−1 (θ), d’où
+                                √  MV         P ⋆           
+                                  n θ̂n − θ⋆ =⇒ N 0, I−1 (θ⋆ ) .
+                                                  n,θ
+
+
+
+
+4.5    Trois pivots asymptotiques et les régions de confiance associées
+   La normalité asymptotique de l’estimateur du maximum de vraisemblance fournit des régions
+de confiance asymptotiques pour θ, au sens de la définition 1.8. Plaçons-nous dans un modèle
+régulier de dimension d et notons χ21−α (d) le quantile d’ordre 1 − α de la loi χ2 (d).
+38                        CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+                                              √            Pn,θ
+L’information de Fisher au point courant. De n(θ̂nMV − θ) =⇒ N (0, I−1 (θ)) on tire
+                                 ⊤            P
+                       n θ̂nMV − θ I(θ) θ̂nMV − θ =⇒ χ2 (d) ,
+                                                    n,θ
+
+
+
+
+donc limn Pn,θ (θ ∈ Sn,α ) = 1 − α pour
+                            n                                               o
+                   Sn,α := θ ∈ Θ : n(θ̂nMV − θ)⊤ I(θ)(θ̂nMV − θ) ≤ χ21−α (d) .
+
+Cette région est rarement employée : la dépendance de I en θ la rend difficile à décrire.
+
+L’information de Fisher à l’estimateur. Si θ 7→ I(θ) est continue, la consistance de {θ̂nMV , n ∈
+                                  √                           Pn,θ
+N} et le lemme de Slutsky donnent n I1/2 (θ̂nMV )(θ̂nMV − θ) =⇒ N (0, Id ), d’où la région
+                        n                                                      o
+                S̃n,α := θ ∈ Θ : n(θ̂nMV − θ)⊤ I(θ̂nMV )(θ̂nMV − θ) ≤ χ21−α (d) ,
+
+qui est un ellipsoïde centré en θ̂nMV .
+
+L’information de Fisher observée. Lorsque I n’a pas d’expression explicite, on la remplace
+par
+                                            n
+                                         1X
+                             In (θ) := −       Hℓ (θ, Xi ) ,
+                                         n i=1
+
+et l’on appelle information de Fisher observée la matrice In (θ̂nMV ). Dans un modèle régulier,
+            Pn,θ⋆ −prob
+In (θ̂n )      −→         I(θ⋆ ) pour toute suite consistante d’estimateurs {θ̂n , n ∈ N}, de sorte que
+                                      √ 1/2 MV  MV             P ⋆
+                                        n In (θ̂n ) θ̂n − θ⋆ =⇒ N (0, Id ) ,
+                                                                   n,θ
+
+
+
+
+et la région Šn,α obtenue en remplaçant I(θ̂nMV ) par In (θ̂nMV ) dans S̃n,α est de niveau de couverture
+asymptotique 1 − α. Elle ne dépend que de la log-vraisemblance et de sa hessienne au point θ̂nMV .
+
+Le rapport de vraisemblance. En développant la log-vraisemblance normalisée ℓn autour de
+son maximum θ̂hnMV , oni obtient ℓn (θ) = ℓn (θ̂nMV ) − 21 (θ̂nMV − θ)⊤ In (θn∗ )(θ̂nMV − θ) pour un point
+θn∗ du segment θ, θ̂nMV , et l’on en déduit
+
+                                                                 Pn,θ⋆
+                                  2n ℓn (θ̂nMV ) − 2n ℓn (θ⋆ ) =⇒ χ2 (d) ,
+                                         n                                              o
+donc une troisième région, S̆n,α := θ ∈ Θ : 2n ℓn (θ̂nMV ) − 2n ℓn (θ) ≤ χ21−α (d) , définie par les
+seules valeurs de la vraisemblance.
+    Enfin, si g : Rd → R est différentiable en θ⋆ , la méthode-δ (théorème 1.8) donne un intervalle
+de confiance asymptotique pour g(θ⋆ ) :
+"                                                               #
+      MV     z1−α/2 σg (θ̂nMV )       MV     z1−α/2 σg (θ̂nMV )                          ⊤
+  g(θ̂n ) −         √           , g(θ̂n ) +         √             ,    σg2 (θ) := (∇g(θ)) I−1 (θ) ∇g(θ) ,
+                      n                               n
+
+où I peut à nouveau être remplacée par l’information de Fisher observée.
+
+4.6         Efficacité asymptotique et conjecture de Fisher
+   La comparaison des estimateurs par leur variance asymptotique, introduite au chapitre 6 (pro-
+position 1.3), se formule dans les termes suivants. On se restreint à la classe des suites d’estimateurs
+                                                                             √           Pn,θ
+asymptotiquement normales, c’est-à-dire telles qu’il existe v(θ) > 0 avec n(θ̂n −θ) =⇒ N (0, v(θ))
+pour tout θ ∈ Θ, et l’on suppose θ 7→ v(θ) continue.
+4. LES COMPLÉMENTS                                                                                    39
+
+   Définition 4.1: Estimateur asymptotiquement efficace
+
+  Soient {θbn,1 , n ∈ N} et {θbn,2 , n ∈ N} deux suites d’estimateurs asymptotiquement normales,
+  de variances asymptotiques continues v1 et v2 . On dit que θbn,1 est plus efficace que θbn,2 si
+  v1 (θ) ≤ v2 (θ) pour tout θ ∈ Θ et s’il existe θe ∈ Θ tel que v1 (θ)
+                                                                    e < v2 (θ).
+                                                                            e Une suite {θ̂n , n ∈ N}
+  est asymptotiquement efficace dans une classe d’estimateurs s’il n’existe dans cette classe
+  aucune suite plus efficace qu’elle.
+
+     L’hypothèse de normalité asymptotique en tout point de Θ exclut les estimateurs constants
+θ̂n = θ,e dont le risque est nul en θe et catastrophique ailleurs. Le théorème 1.7 se relit alors
+ainsi : dans un modèle régulier, l’estimateur du maximum de vraisemblance est asymptotiquement
+efficace dans la classe des Z-estimateurs réguliers.
+     En 1922, Fisher conjectura davantage : que, pour un modèle régulier, l’estimateur du maximum
+de vraisemblance a pour variance asymptotique 1/I(θ), et que toute suite d’estimateurs asympto-
+tiquement normale a une variance asymptotique v(θ) ≥ 1/I(θ). Le premier point est vrai, c’est le
+théorème 1.7 ; le second n’est vrai que dans la classe restreinte des Z-estimateurs réguliers. Il est
+faux en général : l’estimateur de Hodges, étudié au chapitre 6 (Section 4.5), est asymptotiquement
+normal, de variance asymptotique partout au plus égale à celle de la moyenne empirique dans le
+modèle N (θ, 1), et strictement plus petite en θ = 0. Son risque quadratique au voisinage de zéro est
+pourtant arbitrairement mauvais. La comparaison des estimateurs par leur variance asymptotique
+en un point n’est donc pas une notion d’optimalité satisfaisante ; une théorie complète demande
+de comparer les risques sur des voisinages, ce qui dépasse le cadre de ce cours.
+
+4.7    La méthode du score de Fisher
+     Dans un modèle régulier, l’estimateur du maximum de vraisemblance est asymptotiquement
+efficace, mais il est parfois coûteux à calculer, alors qu’un autre M - ou Z-estimateur est explicite :
+c’est le cas du modèle de Cauchy, où la médiane empirique se lit sur les observations triées tandis
+que l’estimateur du maximum de vraisemblance demande une optimisation numérique. Un pas
+de Newton sur l’équation de vraisemblance, parti d’un estimateur quelconque asymptotiquement
+normal, suffit à récupérer la variance asymptotique optimale.
+
+   Lemme 4.1: Linéarisation de l’équation de vraisemblance
+  Supposons le modèle {pθ · µ : θ ∈ Θ} régulier et soit {θ̂n , n ∈ N} une suite d’estimateurs
+  asymptotiquement normale. Alors, pour tout θ⋆ ∈ Θ et tout ε > 0,
+                        √                n                               o   
+              lim Pn,θ⋆    n ∇ ℓn (θ̂n ) − ∇ ℓn (θ⋆ ) − I(θ⋆ )(θ̂n − θ⋆ )   ≥ε =0,
+               n→∞
+                       Pn
+  où ∇ ℓn (θ) := n−1    i=1 ∇ℓ(θ, Xi ).
+
+
+   Démonstration
+  La formule de Taylor avec reste intégral appliquée à θ 7→ ∇ℓ(θ, Xi ) entre θ⋆ et θ̂n donne
+                                                                         
+                  ∇ ℓn (θ̂n ) = ∇ ℓn (θ⋆ ) − In (θ⋆ ) θ̂n − θ⋆ + ∆n θ̂n − θ⋆ ,
+
+  où                                Z 1n                                o
+                        ∆n := −            In θ⋆ + w(θ̂n − θ⋆ ) − In (θ⋆ ) dw .
+                                      0
+                            Pn,θ⋆ −prob                                                 Pn,θ⋆ −prob
+  La convergence In (θ̂n ) −→   I(θ⋆ ) rappelée plus haut (Section 4.5) donne ∆n    −→       0,
+           √           ⋆
+                                                                  √            ⋆
+                                                                                 Pn,θ⋆ −prob
+  et comme n(θ̂n −θ ) converge en loi, le lemme de Slutsky donne n ∆n (θ̂n −θ )     −→       0.
+40                     CHAPITRE 7. THÉORIE ASYMPTOTIQUE DES M - ET Z-ESTIMATEURS
+
+
+                                                              Pn,θ⋆ −prob                   √
+  La loi des grands nombres donne de même In (θ⋆ )               −→          I(θ⋆ ), donc       n{In (θ⋆ )−I(θ⋆ )}(θ̂n −
+         Pn,θ⋆ −prob
+  θ⋆ )      −→         0.                                                                                                □
+
+
+
+     Théorème 4.5: Méthode du score de Fisher
+  Supposons le modèle {pθ · µ : θ ∈ Θ} régulier et soit {θ̂n , n ∈ N} une suite d’estimateurs
+  asymptotiquement normale. L’estimateur
+
+                                          θen := θ̂n + In (θ̂n )−1 ∇ ℓn (θ̂n )
+
+  vérifie, pour tout θ⋆ ∈ Θ,
+                                       √         P ⋆              
+                                        n θen − θ⋆ =⇒ N 0, I−1 (θ⋆ ) .
+                                                    n,θ
+
+
+
+
+    Le choix initial peut donc être n’importe quel M - ou Z-estimateur consistant et asymptoti-
+quement normal, sans qu’on ait à se soucier de sa variance asymptotique : un pas de la méthode
+l’amène au niveau de l’estimateur du maximum de vraisemblance. C’est le théorème II-3.8 du
+polycopié d’origine.
+
+4.8       Le modèle de Cauchy en détail
+     Reprenons l’exemple 1.9, de densité qθ (x) = π −1 (1 + (x − θ)2 )−1 .
+
+L’information de Fisher. Le score vaut
+                                                                                 2(x − θ)
+                            ℓ̇(θ, x) = ∂θ − log π − log 1 + (x − θ)2 =                        ,
+                                                                                 1 + (x − θ)2
+
+d’où, par le changement de variable u = x − θ puis u = tan t,
+                Z                                     Z π/2                            Z π/2
+                     4u2          1           4                   2           1                                    1
+         I(θ) =              ·
+                         2 )2 π(1 + u2 )
+                                         du =                            2
+                                                             sin t cos t dt =                     sin2 (2t) dt =     .
+                R (1 + u                      π         −π/2                  π         −π/2                       2
+
+L’information de Fisher ne dépend pas de θ, ce qui est attendu pour un modèle de translation, et
+la variance asymptotique de l’estimateur du maximum de vraisemblance vaut 2.
+
+La loi limite de la médiane empirique. Soit F une fonction de répartition sur R, p ∈ ]0, 1[
+et Q(p) le quantile d’ordre p. Si F est dérivable au point Q(p) avec F ′ (Q(p))
+                                                                             √ > 0, la théorie des
+statistiques d’ordre donne, pour toute suite {kn , n ∈ N} d’entiers telle que n(kn /n − p) → 0,
+                                                                        !
+                          √                                p(1 − p)
+                            n (Xkn :n − Q(p)) =⇒ N 0,                 2   .
+                                                         [F ′ (Q(p))]
+
+Pour p = 1/2 et une loi symétrique autour de θ⋆ , Q(1/2) = θ⋆ et F ′ = qθ⋆ , d’où
+                                                                       !
+                          √  med       
+                                       ⋆ Pn,θ⋆               1
+                               b
+                           n θn − θ        =⇒ N 0,                       .
+                                                                     2
+                                                       4 (qθ⋆ (θ⋆ ))
+
+Dans le modèle de Cauchy, qθ⋆ (θ⋆ ) = 1/π et la variance asymptotique de la médiane vaut π 2 /4.
+4. LES COMPLÉMENTS                                                                                    41
+
+L’efficacité relative.    Le rapport des deux variances asymptotiques vaut
+
+                                   1/I(θ⋆ )          2   8
+                                                   = 2 = 2 ≃ 0,81 .
+                               1/ {4(qθ⋆ (θ⋆ ))2 }  π /4 π
+
+Pour atteindre la précision asymptotique que l’estimateur du maximum de vraisemblance obtient
+avec n observations, la médiane en demande environ n/0,81 ≃ 1,23 n. L’écart est visible sur la
+figure 4, où l’histogramme rouge est plus resserré que le bleu, mais il reste modeste : la médiane, qui
+se calcule sans optimisation, reste un estimateur raisonnable de ce modèle, et la méthode du score
+de Fisher (Section 4.7) permet d’en faire le point de départ d’un estimateur asymptotiquement
+efficace.
+
+4.9    Au-delà des modèles réguliers
+  Trois situations, rencontrées dans les chapitres précédents et dans la feuille de ce chapitre,
+montrent de combien de façons la conclusion du théorème 1.7 peut tomber.
+
+Le paramètre gouverne le support. Pour le modèle uniforme sur [0, θ], l’estimateur du maxi-
+                                                                    Pn,θ
+mum de vraisemblance est θ̂n = max(X1 , . . . , Xn ), et n(θ − θ̂n ) =⇒ E(θ−1 ) (exemple 1.5) ; pour le
+                                Pn,θ
+modèle de Pareto, nη(α̂n − α) =⇒ α E(1) (exemple 1.10). Dans les deux cas, θ 7→ pθ (x) est discon-
+tinue au point x, la condition (R-2) n’est pas vérifiée, la vitesse est n et la loi limite exponentielle.
+L’erreur est donc d’un ordre de grandeur plus petit que dans le cas régulier.
+
+La vraie valeur est sur la frontière. Le théorème 1.4 ne dit rien des points de la frontière
+de Θ. Pour le modèle N (θ, 1) avec Θ = R+ , étudié à l’exercice 4, l’estimateur du maximum de
+vraisemblance est θ̂nMV = max(X̄n , 0) : la normalité asymptotique vaut pour θ > 0, mais la loi
+limite en θ = 0 est celle de max(W, 0) pour W ∼ N (0, 1), qui n’est pas gaussienne et charge le
+point 0 d’une masse 1/2.
+
+La fonction d’influence n’est pas régulière. La médiane empirique est le Z-estimateur
+associé à ψ(θ, x) = signe(x − θ), qui n’est différentiable en θ pour aucun x. L’estimateur reste
+consistant (exemple 4.1) et asymptotiquement normal (Section 4.8), mais ni la consistance ni la
+loi limite ne s’obtiennent par les théorèmes de ce chapitre : il faut passer par les statistiques
+d’ordre, ou par un argument de monotonie comme celui de l’exercice 5. L’absence de régularité de
+ψ n’est donc pas une absence de régularité du modèle, et elle se contourne.
+

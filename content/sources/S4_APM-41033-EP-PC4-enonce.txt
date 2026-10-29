@@ -1,0 +1,423 @@
+Ecole Polytechnique, promotion 2025                                         PC-4 Cours APM 41033 EP
+
+
+     Rappels.
+    A. Une loi Gamma de paramètres (α, β) positifs, est une loi sur R+ dont la densité est
+       donnée par
+                                                          Z +∞
+                         β α α−1
+                   x 7→      x   exp(−βx) ;      Γ(a) :=        ta−1 exp(−t) dt.
+                        Γ(α)                               0
+
+       Son espérance est α/β et sa variance est α/β 2 . Si les v.a. X, Y sont indépendantes
+       et de loi Gamma (a, b) et (a′ , b) respectivement, alors X + Y suit une loi Gamma de
+       paramètres (a + a′ , b).
+              du χ2 à p degrés de liberté est une loi Gamma de paramètres (p/2, 1/2). C’est la
+    B. La loi P
+       loi de pi=1 Xi2 lorsque les v.a. (Xi )pi=1 sont i.i.d. de loi N (0, 1).
+    C. Soit W une variable gaussienne standard et V une variable du χ2 centrée à p degrés de
+       liberté, indépendante de W . Alors la variable
+                                                        W +γ
+                                                    T = p
+                                                         V /p
+
+       est distribuée suivant une loi de Student décentrée, à p degrés de liberté et de paramètre
+       de non-centralité γ.
+    D. Si U et V sont deux v.a. indépendantes de loi resp. χ2 (n) et χ2 (p) alors
+
+                                                         U/n
+                                                         V /p
+
+       suit une loi de Fisher de paramètres (n, p).
+
+
+1     Exercices
+    Par convention, les vecteurs sont des vecteurs colonne ; pour un vecteur a, aT désigne sa
+transposée.
+
+Exercice 1 (⋆⋆). Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique (R+ , B(R+ ), {pθ ·
+dLeb, θ > 0}) où Leb désigne la mesure de Lebesgue sur R+ et pθ est la densité d’une loi
+exponentielle de paramètre 1/θ :
+
+                                         pθ (x) := θ−1 exp(−x/θ).
+
+    Soit α ∈ (0, 1) et θ0 > 0. On effectuera les applications numériques avec θ0 = 2, α = 5%
+et l’échantillon de taille n = 10 donné par
+
+           {2.9, 4.2, 5.9, 1.7, 6.8, 1.3, 1.5, 0.2, 0.4, 3.2};    sommes des éléments : 28.1
+
+    1. On souhaite tester H0 : θ = θ0 ,         contre     H1 : θ > θ 0 .
+                                                2 Pn
+        (a) Montrer que, sous pθ · dLeb, θ i=1 Xi suit une loi du χ2 à 2n degrés de liberté.
+            On utilisera les rappels A et B ci-dessus. La figure 1 trace la densité de la loi du
+            χ2 pour différents degrés de liberté p.
+
+
+                                                                                                 Page 1
+Ecole Polytechnique, promotion 2025                                                           PC-4 Cours APM 41033 EP
+
+
+
+                 0.5                                                1
+                                                     p=2
+                                                                              c=c
+                0.45                                 p=3          0.9
+                                                     p=6                      c = 1.3 c
+                 0.4                                 p=10         0.8         c = 1.7 c
+                                                                              c=2c
+                0.35                                              0.7
+
+                 0.3                                              0.6
+
+                0.25                                              0.5
+
+                 0.2                                              0.4
+
+                0.15                                              0.3
+
+                 0.1                                              0.2
+
+                0.05                                              0.1
+
+                   0                                                0
+                       0   2   4      6    8    10          12          0        2        4    6   8   10
+
+
+
+
+Figure 1 – [gauche] Exercice 1. Densité d’une loi du χ2 pour différents degrés de liberté p.
+Lorsque p ≥ 2, le mode de la densité est atteint en x = p − 2. [droite] Exercice 1. Fonction
+puissance de plusieurs tests répondant à la contrainte de niveau ; on remarquera que le test
+dont le seuil critique est cα a une taille égale à α.
+
+
+       (b) Proposer un estimateur de θ.
+           On pourra comparer l’estimateur du maximum de vraisemblance et l’estimateur des
+           moments associé à la statistique T (x) = x. Voir PC2 exercices 2 et 3.
+       (c) En déduire un test de niveau α.
+       (d) Donner l’expression de la fonction puissance et calculer l’erreur de première espèce.
+           La figure 1 donne l’allure de la fonction puissance pour différentes valeurs du seuil
+           critique c ≥ cα où cα est le seuil dont le test associé a une taille égale au niveau.
+       (e) Calculer la p-valeur.
+   2. On souhaite tester H0 : θ ≤ θ0 ,                 contre    H1 : θ > θ 0 .
+       (a) Donner la forme d’une région de rejet de niveau α.
+       (b) Étudier la fonction puissance du test.
+       (c) Calculer la p-valeur.
+   3. Intervalles de confiance pour θ
+                                                                          P
+       (a) En utilisant la fonction pivotale T (θ, (Xi )i=1,...,n ) := 2θ ni=1 Xi sous pθ · dLeb,
+           construire un intervalle de confiance bilatéral exact de niveau 1 − α pour θ.
+       (b) En déduire des bornes unilatérales exactes de niveau 1−α pour θ (borne supérieure
+           seule, puis borne inférieure seule)..
+                                                                   Pn
+       (c) Application numérique avec α = 5%, n = 10 et              i=1 Xi = 28.1 : donner l’IC
+           bilatéral pour θ. On donne
+                                                χ2 (20)                      χ2 (20)
+                                               q0.025 ≈ 9.59,               q0.975 ≈ 34.17,
+
+
+
+Exercice 2 (⋆⋆). Soit σ 2 > 0 un réel fixé (connu) et soit Z = (X1 , . . . , Xn ), un n-échantillon
+du modèle statistique
+
+                                   (R, B(R), {pµ · dLeb = N(µ, σ 2 ), µ ∈ R}) .
+
+
+                                                                                                               Page 2
+Ecole Polytechnique, promotion 2025                                           PC-4 Cours APM 41033 EP
+
+
+Soit µ0 ∈ R. On souhaite tester
+
+                                H0 : µ = µ 0 ,         contre    H1 : µ ̸= µ0 .
+
+Pour c > 0, on considère le test pur δc (X1 , . . . , Xn ) := 1T (X1 ,··· ,Xn )≥c dont la statistique de
+test T (X1 , · · · , Xn ) est donnée par :
+                                                                                     n
+                                            √       X n − µ0                       1X
+                  T (X1 , . . . , Xn ) :=       n            ,      où   X n :=      Xi .
+                                                        σ                          n
+                                                                                    i=1
+
+   1. Déterminer la fonction puissance du test (pour un seuil c fixé) ; l’exprimer à l’aide de la
+      fonction de répartition d’une loi gaussienne N(0, 1).
+      La figure 2 trace cette fonction puissance dans le cas où µ0 = 0 et c est choisi pour que
+      le test soit de niveau α = 5% ; et ce, pour différentes valeurs de n.
+   2. Déterminer en fonction du seuil critique c, la taille du test (ou risque de première espèce).
+      En déduire la valeur du seuil critique pour un test de niveau α ∈ ]0, 1[.
+   3. Calculer la p-valeur associée à l’observation Z.
+On suppose dorénavant que la variance σ 2 est inconnue, i.e., que l’observation Z = (X1 , . . . , Xn )
+est un n-échantillon du modèle statistique
+                                                                              
+                    R, B(R), {pθ dLeb = N(µ, σ 2 ), θ := (µ, σ 2 ) ∈ R × R∗+ } .
+
+On pose
+                                                          n
+                                                     1 X
+                                      Sn2 :=             (Xk − X n )2 .
+                                                    n−1
+                                                         k=1
+
+   4. Montrer que sous pθ · dLeb, les statistiques X n et Sn2 sont indépendantes.
+      Indication : on pourra exprimer X n et Sn2 à l’aide de la projection Π sur le sous-espace
+      vectoriel engendré par le vecteur constant (1, · · · , 1) de Rn . Voir PC1 exercice 4 et PC2
+      exercice 1.
+   5. Montrer que sous pθ · dLeb, (n − 1) Sn2 /σ 2 est distribuée suivant une loi du χ2 à (n − 1)
+      degrés de liberté.
+Pour répondre au même problème de test d’hypothèse, on propose cette fois le test pur
+                                                                                         √
+δec (X1 , · · · , Xn ) := 1{Te(Z)≥c} dont la statistique de test est donnée par Te(Z) := n|X n −
+µ0 |/Sn .
+   6. Sous pθ · dLeb, déterminer la distribution de
+                                            √
+                                              n(X n − µ0 )
+                                                           .
+                                                 Sn
+      On pourra utiliser le rappel C.
+   7. Déterminer en fonction du seuil critique c la taille du test (ou risque de première espèce).
+   8. Déterminer le seuil critique de façon à obtenir un test de niveau α ∈ ]0, 1[.
+   9. Calculer la p-valeur de l’observation Z.
+
+
+
+
+                                                                                                 Page 3
+Ecole Polytechnique, promotion 2025                                            PC-4 Cours APM 41033 EP
+
+
+                                                       0.8
+         1                                                                                           nu=0
+                                                                                                     nu=1
+       0.9                                             0.7
+                                                                                                     nu=2
+
+       0.8                                             0.6
+
+       0.7
+                                                       0.5
+       0.6
+                                                       0.4
+       0.5
+                                         n=5
+                                         n=10
+       0.4                                             0.3
+                                         n=20
+                                         y=0.05
+       0.3
+                                                       0.2
+       0.2
+                                                       0.1
+       0.1
+
+         0                                                 0
+          -5               0                      5            0       1        2       3        4          5
+
+
+
+
+Figure 2 – Exercice 2. [gauche] Fonction puissance µ 7→ βc (µ) pour différentes valeurs de
+n ∈ {5, 10, 20}. On a pris µ0 = 0, σ = 1 et c = Φ−1 (0.975). On trace aussi la droite d’équation
+y = 0.05. [droite] Densité de |X| (à une constante multiplicative près) lorsque X ∼ N (ν, 1).
+
+
+Exercice 3 (Intervalle de confiance pour la loi uniforme (⋆)). Soit (X1 , . . . , Xn ), un
+n-échantillon d’un modèle de loi uniforme sur l’intervalle [0, θ] où θ ∈ Θ := R∗+ . On pose
+Xn:n := max(X1 , . . . , Xn ).
+  1. Montrer que Xn:n /θ est une fonction pivotale pour θ.
+  2. Déterminer l’intervalle de confiance de probabilité de couverture (1 − α) de longueur
+     minimale.
+
+
+Exercice 4 (⋆). Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique (N, P(N), {pθ ·
+dµ, θ > 0}) où µ désigne la mesure de comptage sur N et pθ est la densité d’une loi de Poisson
+de paramètre θ. On souhaite tester H0 : θ = 1, contre H1 : θ = 2 .
+                          P
+   1. Rappeler la loi de ni=1 Xi sous pθ · dµ, θ > 0.
+Dans la suite, on prendra n = 10.
+  2. Proposer un test de niveau 5%. Quelle est la taille de ce test ?
+  3. Donner l’expression de la fonction puissance.
+     La figure 3 trace la fonction puissance.
+  4. Pour chacun des échantillons suivants, calculer la p-valeur.
+
+                     {2, 3, 3, 1, 4, 0, 1, 4, 0, 0}   et           {4, 2, 1, 1, 0, 1, 0, 2, 0, 2}.
+
+
+
+Exercice 5 (Modèle gaussien à deux échantillons (⋆ ⋆ ⋆)). On dispose d’une variable
+qualitative binaire qui permet de définir deux groupes.
+  — On mesure une variable quantitative qui permet de calculer dans chaque groupe les
+    différents paramètres de la distribution : moyenne, estimateur de l’écart type...
+  — On désire savoir si les moyennes observées dans chacun des groupes peuvent être considérées
+    comme des estimateurs de la même moyenne aux fluctuations du hasard près 1 .
+  1. vous pourrez consulter https://www.youtube.com/watch?v=oJjkjkY6mmA
+
+
+                                                                                                                Page 4
+Ecole Polytechnique, promotion 2025                                                       PC-4 Cours APM 41033 EP
+
+
+      1                                                             1.8
+
+    0.9                                                             1.6
+
+    0.8
+                                                                    1.4
+    0.7
+                                                                    1.2
+    0.6
+                                            Puissance                 1
+                                            y=0.049
+    0.5
+                                            y=0.8435
+                                                                    0.8
+    0.4
+                                                                    0.6
+    0.3
+
+    0.2
+                                                                    0.4
+
+    0.1                                                             0.2
+
+      0                                                               0
+          0   0.5   1    1.5   2   2.5      3      3.5   4                0        1        2       3    4    5
+
+
+
+
+Figure 3 – [gauche] Exercice 2. Fonction puissance θ 7→ Pθ (T (Z) > cα ) du test. On trace
+aussi les droites d’équation y = 0.049 et y = 0.8435 = 1 − 0.1565. [droite] Exercice 4. Densité
+d’une loi de Fisher de paramètres (10, 5) en rouge ; et (100, 50) en bleu.
+
+
+Nous formalisons ce test d’hypothèses ci-dessous. Nous effectuons n mesures dans le groupe
+1 (resp. p mesures dans le groupe 2) ; ces mesures sont considérées comme l’observation de
+mécanismes aléatoires indépendants, et gaussiens ; les paramètres de la gaussienne dépendent
+uniquement des groupes. Nous introduisons donc le modèle statistique suivant
+                                                 ⊗n                ⊗p                                     
+  Rn+p , B(Rn+p ), {pθ dLeb⊗(n+p) := N(µ0 , σ 2 )     ⊗ N(µ1 , σ 2 )     , θ := (µ0 , µ1 , σ 2 ) ∈ R2 × R∗+ } .
+
+Nous noterons X1 , . . . , Xn les n premières variables canoniques, et Y1 , · · · , Yp les p dernières.
+   1. Déterminer l’estimateur du maximum de vraisemblance du paramètre θ.
+   2. Construire un intervalle de confiance de µ0 − µ1 de niveau de confiance 1 − α.
+   3. En déduire un test de niveau α de l’hypothèse
+
+                                         H0 : µ 0 = µ 1 ,       contre        H1 : µ0 ̸= µ1 .
+
+   4. Construire un test de niveau α de l’hypothèse
+
+                                         H0 : µ 0 ≤ µ 1 ,       contre        H1 : µ 0 > µ 1 .
+
+On utilise maintenant ce test pour comparer la consistance de deux correcteurs de l’examen
+d’entrée à l’Ecole Polytechnique. Nous avons visualisé les notes pour les deux correcteurs (sur
+100) dans le tableau suivant
+
+                                                             Échantillon #1           Échantillon #2
+                        Nombre d’observations                      120                       120
+                             Moyenne                                75                      74.99
+                            Ecart-type                             8.72                      6.54
+
+   5. Quelle est la p-valeur du test ? Qu’en concluez-vous ?
+
+                                                                                                             Page 5
+Ecole Polytechnique, promotion 2025                                          PC-4 Cours APM 41033 EP
+
+
+On suppose maintenant que les variances des gaussiennes des deux groupes sont différentes,
+et notées respectivement σ02 et σ12 . Le modèle statistique est donc modifié en conséquence ; en
+particulier, θ := (µ0 , µ1 , σ02 , σ12 ) ∈ R × R × R∗+ × R∗+ .
+   6. Construire une fonction pivotale du paramètre σ12 /σ02 .
+   7. En déduire un test de niveau α de l’hypothèse
+
+                                 H0 : σ02 ≤ σ12 ,     contre     H1 : σ02 > σ12 .
+
+   8. Calculer la p-valeur de ce test.
+
+
+Exercice 6 (⋆⋆). Des plaignants 2 ont poursuivi en justice le Ministère de la Santé suite à
+une campagne de vaccination menée sur des enfants et ayant entraı̂né des dommages fonction-
+nels irréversibles pour certains d’entre eux. Ce vaccin était connu pour entraı̂ner ce type de
+dommages en de très rares circonstances. Des études antérieures menées dans d’autres pays
+ont montré que ce risque était en moyenne d’un cas sur 310 000 vaccinations. Les plaignants
+avaient été informés de ce risque et l’avaient accepté. Les doses de vaccin ayant provoqué
+les dommages objet de la plainte provenaient d’un lot ayant servi à vacciner un groupe de
+300 533 enfants. Dans ce groupe, quatre cas de dommages ont été détectés.
+   1. On modélise l’événement “le vaccin provoque des dommages fonctionnels irréversibles
+      sur l’enfant i” par une variable aléatoire de Bernoulli, Xi , de paramètre p. Calculer la
+      valeur du paramètre correspondant aux résultats des études antérieures ; on la notera
+      p0 dans la suite.
+On considère le test
+                                H 0 : p ≤ p0 ,      contre     H1 : p > p0
+    L’hypothèse nulle correspond au risque que les clients avaient accepté.
+                      P
+   2. On pose Sn = ni=1 Xi avec n = 300533. Pour α ∈ [0, 1], déterminer un test de niveau
+      α basé sur la statistique de test Sn .
+   3. On a Pp0 (Sn > 0) = 0.6207, Pp0 (Sn > 1) = 0.2530, Pp0 (Sn > 2) = 0.0748, Pp0 (Sn >
+      3) = 0.0172, Pp0 (Sn > 4) = 0.0032. L’hypothèse est elle acceptée au niveau 0.05 ? au
+      niveau 0.01 ?
+   4. Quelle est la p-valeur de l’observation ?
+On peut modéliser la loi du nombre Sn de cas de dommages par une loi de Poisson de
+paramètre θ. 3
+   5. Calculer la valeur θ0 attendue si le vaccin est conforme aux études antérieures.
+   6. Les plaignants militent pour que le test prouve effectivement que le nombre moyen
+      d’accidents reste inférieur à θ0 . Pour eux, le nombre moyen est supérieur à θ0 sauf
+      preuve du contraire. Proposer un test à partir de la variable Sn .
+   7. Donner la p-valeur de ce test. Accepte-t-on H0 au seuil de 0.05 ?
+
+
+
+  2. M. Aitkin. Evidence and the Posterior Bayes Factor. Math. Scientist, vol. 17, pp. 15-25 (1992).
+  3. regarder https://www.youtube.com/watch?v=Lygy1OxUG88
+
+
+                                                                                                       Page 6
+Ecole Polytechnique, promotion 2025                                       PC-4 Cours APM 41033 EP
+
+
+Exercice 7 (⋆ ⋆ ⋆). On rappelle que pour une suite de réels x1 , · · · , xq , la notation xℓ:q
+désigne la suite ordonnée : on a x1:q ≤ x2:q ≤ · · · ≤ xq:q .
+     Une firme pharmaceutique a mis au point une nouvelle molécule pour faire chuter le taux
+de sucre dans le sang. Pour tester l’efficacité de cette molécule, elle la compare à un placebo.
+Elle réunit n + m patients. A un premier groupe de m individus, elle administre un placebo
+(sans leur dire !). Au second groupe elle donne sa nouvelle molécule. Après un délai approprié,
+on mesure les taux de glycémie {Xi : i = 1, . . . , n} et {Yj : j = 1, . . . , m} chez les deux
+groupes. 4
+     On suppose que les variables aléatoires (X1 , . . . , Xn , Y1 , . . . , Ym ) sont indépendantes ; que
+les v.a. (Xi )i ont même loi de fonction de répartition FX ; et que les v.a. (Yi )i ont même loi
+de fonction de répartition FY . On supposera que les fonctions FX et FY sont continues.
+     On veut tester si les lois des X et des Y sont les mêmes ou si les Yi sont stochastiquement
+plus petits que les Xi , c’est à dire FX < FY . On va donc tester H0 : FX = FY contre
+H1 : FX < FY .
+     On pose Zi = Xi pour i = 1, . . . , n et Zn+i = Yi pour i = 1, . . . , m. On note Ri le rang de
+Zi dans la suite (Z1 , . . . , Zn+m ) , à savoir, Ri = ℓ si Zi = Zℓ:n+m . La statistique de Wilcoxon
+est définie par
+                                                      Xn
+                                             Wn,m :=       Ri .
+                                                       i=1
+
+L’idée est que sous H1 la statistique Wn,m sera plus grande que sous H0 .
+   1. Soit N = n + m. Montrez que la statistique de rang R := (R1 , . . . , RN ) suit sous H0
+      la loi uniforme sur l’ensemble SN de toutes les permutations de {1, . . . , N }. En déduire
+      que sous H0 la statistique de Wilcoxon est libre, i.e., la loi de Wn,m ne dépend pas de
+      FX . Quelle est la loi de Ri sous H0 ?
+   2. Montrez que sous H0 on a E(Wn,m ) = n(n + m + 1)/2.
+   3. Montrez que sous H0 on a
+
+             Var(Wn,m ) = n Var(R1 ) + n(n − 1) Cov(R1 , R2 )
+                     n+m
+                             !
+                      X
+             0 = Var      Ri = (n + m)Var(R1 ) + (n + m)(n + m − 1)Cov(R1 , R2 ) .
+                          i=1
+
+      En déduire que, sous H0 , Var(Wn,m ) = nm(n + m + 1)/12.
+   4. Proposer un test de niveau α.
+
+
+
+
+   4. voir https://www.youtube.com/watch?v=QDUQscWyXqw
+
+
+                                                                                                    Page 7
+

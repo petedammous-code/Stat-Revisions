@@ -1,0 +1,323 @@
+2. LES OUTILS MATHÉMATIQUES                                                                               27
+
+2      Les outils mathématiques
+    On rassemble ici les inégalités de concentration employées dans les fondamentaux. On part des
+inégalités de Markov et de Bienaymé-Tchebychev, on en tire les bornes de Chernoff, qui ramènent
+une probabilité de déviation à la fonction génératrice des moments, et l’on démontre le lemme puis
+l’inégalité de Hoeffding, dont le chapitre 4 avait admis l’énoncé. Viennent ensuite les outils plus
+élémentaires que les fondamentaux utilisent : la borne de l’union, la convexité et le calcul d’un
+risque à règle apprise fixée.
+
+
+2.1     Inégalités de Markov et de Bienaymé-Tchebychev
+   Ces deux inégalités ont été établies au chapitre 2 (proposition 2.1) et rappelées au chapitre 6
+(lemme 2.1) : si Z est une variable aléatoire positive, alors P(Z ≥ t) ≤ E[Z]/t pour tout t > 0, et
+si W est de carré intégrable, P(|W − E[W ]| ≥ ε) ≤ Var(W )/ε2 pour tout ε > 0. La première se
+déduit de l’inégalité t 1{Z≥t} ≤ Z, et la seconde de la première, appliquée à (W − E[W ])2 . Comme
+{Z > t} ⊂ {Z ≥ t}, la majoration vaut aussi pour P(Z > t), forme employée dans le deck.
+
+
+2.2     Bornes de Chernoff
+   L’inégalité de Bienaymé-Tchebychev donne, pour une moyenne de n variables indépendantes
+de même loi, une majoration en 1/n. On attend mieux.
+Intuition. Le théorème de la limite centrale (chapitre 6, théorème 1.6) montre que, pour des variables
+indépendantes de même loi et de variance v = Var(X1 ) finie et non nulle,
+                              n
+                                                         !
+                              X                    √                   √      2
+                      lim P         Xi − nE[X1 ] > ε n       = 1 − Φ ε/ v ≤ e−ε /(2v) ,
+                     n→∞
+                              i=1
+
+
+où Φ est la fonction de répartition de la loi N (0, 1) et où la dernière inégalité, valable pour ε ≥ 0, est
+une majoration classique de la queue gaussienne. On s’attend donc à une décroissance exponentielle en
+ε2 /v. Ce n’est qu’une indication : la limite ne dit rien pour n fixé, et c’est ce que les bornes qui suivent
+apportent.
+
+   L’idée est d’utiliser l’inégalité de Markov de façon plus astucieuse, en l’appliquant à une expo-
+nentielle.
+
+
+     Proposition 2.1: Borne de Chernoff
+    Soit Z une variable aléatoire réelle intégrable. Pour tout ε > 0 et tout λ > 0 tel que E[eλZ ] <
+    ∞,                                                             
+                                                       E eλ(Z−E[Z])
+                                 P (Z − E[Z] ≥ ε) ≤                   .
+                                                            eλε
+    En notant ψ(λ) = log E[eλ(Z−E[Z]) ], on a donc P(Z − E[Z] ≥ ε) ≤ exp (− supλ>0 {λε − ψ(λ)}).
+
+
+
+     Démonstration
+    La fonction t 7→ eλt est strictement croissante, donc {Z − E[Z] ≥ ε} = {eλ(Z−E[Z]) ≥ eλε }, et
+    l’inégalité de Markov, appliquée à la variable positive eλ(Z−E[Z]) , donne la première majora-
+    tion. La seconde s’obtient en passant à l’infimum sur λ.                                    □
+
+    L’étape suivante est d’obtenir une borne pour la transformée de Laplace,
+                                                                     Pn      ou fonction généra-
+trice des moments, E[eλ(Z−E[Z]) ], puis d’optimiser en λ. Lorsque Z = i=1 Xi est une somme de
+28                                                 CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+variables aléatoires indépendantes telles que E[eλXi ] < ∞, les variables eλ(Xi −E[Xi ]) sont indépen-
+dantes et
+                                h           i Y  n    h            i
+                              E eλ(Z−E[Z]) =       E eλ(Xi −E[Xi ]) ,
+                                                   i=1
+
+de sorte qu’il suffit de borner chacun des facteurs ; si les variables sont de même loi, le membre
+de droite vaut (E[eλ(X1 −E[X1 ]) ])n . Le chapitre 4 a présenté ces bornes sous le nom d’inégalités de
+Chernoff (Section 5).
+
+
+2.3     Variables sous-gaussiennes
+   Les variables dont la transformée de Laplace est dominée par celle d’une loi gaussienne se
+concentrent comme une loi gaussienne. C’est le cadre de l’exercice 2 (PC9).
+
+     Définition 2.1: Variable sous-gaussienne
+  Une variable aléatoire réelle centrée X est dite sous-gaussienne de facteur de variance v > 0
+  si
+                                            λ2 v
+                       ψX (λ) := log E eλX ≤             pour tout λ ∈ R .
+                                                  2
+  On note G(v) l’ensemble de ces variables. La fonction λ 7→ E[eλX ] est la transformée de
+  Laplace de X, et ψX sa fonction génératrice des cumulants.
+
+    Cette définition n’exige pas que la variance de X soit égale à v, mais seulement qu’elle soit
+majorée par v. Une variable gaussienne centrée de variance v appartient à G(v), et une variable
+de Rademacher, uniforme sur {−1, 1}, appartient à G(1) ; ce sont les deux premières questions de
+l’exercice 2.
+
+
+     Proposition 2.2: Somme et déviations de variables sous-gaussiennes
+                                                                                 Pn          Pn
+      (i) Si X1 , . . . , Xn sont indépendantes et Xi ∈ G(vi ) pour tout i, alors i=1 Xi ∈ G( i=1 vi ).
+                                                                 2                          2
+     (ii) Si X ∈ G(v), alors, pour tout t > 0, P(X ≥ t) ≤ e−t /(2v) et P(−X ≥ t) ≤ e−t /(2v) .
+
+
+
+     Démonstration
+  (i) Une somme de variables centrées est centrée, et, par indépendance, ψPi Xi (λ) =
+  Pn                 2
+                       Pn
+     i=1 ψXi (λ) ≤ λ    i=1 vi /2.
+  (ii) La borne de Chernoff donne, pour tout λ > 0, P(X ≥ t) ≤ exp(−λt + λ2 v/2). Le minimum
+                                                             2
+  en λ du membre de droite est atteint en λ = t/v et vaut e−t /(2v) . Comme ψ−X (λ) = ψX (−λ),
+  la variable −X appartient aussi à G(v), d’où la seconde majoration.                       □
+
+
+
+2.4     Le lemme et l’inégalité de Hoeffding
+    Le lemme de Hoeffding (lemme 1.1) dit qu’une variable aléatoire bornée et centrée est sous-
+gaussienne. On le démontre par l’argument de Herbst : on étudie le logarithme de la transformée
+de Laplace, on majore sa dérivée seconde, et l’on intègre deux fois. Il en existe des démonstra-
+tions alternatives, fondées sur la convexité de x 7→ eλx et sur la fonction cosinus hyperbolique ;
+l’argument de Herbst a l’intérêt de s’étendre à des inégalités plus fines, dites de log-Sobolev, en
+établissant une inégalité différentielle que l’on intègre à la façon du lemme de Gronwall.
+2. LES OUTILS MATHÉMATIQUES                                                                          29
+
+   Démonstration
+  Soit X à valeurs dans [a, b] presque sûrement, centrée. Pour tout λ ∈ R, eλX est bornée,
+  donc ψ(λ) := log E[eλX ] est bien définie. Pour k ∈ {0, 1, 2} et λ dans un intervalle borné
+  [−L, L], la dérivée k-ième en λ de eλX est X k eλX , dominée par la constante M k eLM , où
+  M = max(|a|, |b|) ; le théorème de dérivation sous le signe intégral (chapitre 3, proposition 2.2)
+  montre que λ 7→ E[eλX ] est deux fois dérivable, de dérivées E[XeλX ] et E[X 2 eλX ]. Il vient
+
+                                                     E[XeλX ]
+                                         ψ ′ (λ) =            ,
+                                                      E[eλX ]
+  et
+                                    E[X 2 eλX ] E[eλX ] − E[XeλX ]2
+                           ψ ′′ (λ) =
+                                                E[eλX ]2
+                                                                  2
+                                            eλX                eλX
+                                  = E X2            −    E  X             .
+                                           E[eλX ]            E[eλX ]
+  Notons Peλ la probabilité de densité eλX /E[eλX ] par rapport à P. La formule précédente montre
+       ′′
+  que ψ (λ) est la variance de X sous P eλ . Comme P eλ est absolument continue par rapport à P,
+                   e
+  on a X ∈ [a, b], Pλ -presque sûrement. La variance étant le minimum en c de E   e λ [(X − c)2 ],
+                                                "             2 #
+                         ′′     g λ (X) ≤ E  eλ          a + b        (b − a)2
+                       ψ (λ) = Var                 X−               ≤          ,
+                                                           2              4
+
+  puisque |X − (a + b)/2| ≤ (b − a)/2 presque sûrement. Enfin ψ(0) = 0 et ψ ′ (0) = E[X] = 0,
+  et la formule de Taylor-Lagrange à l’ordre deux donne, pour un ξ compris entre 0 et λ,
+
+                                                      λ2 ′′     λ2 (b − a)2
+                          ψ(λ) = ψ(0) + λψ ′ (0) +      ψ (ξ) ≤             ,
+                                                      2               8
+  ce qui est l’inégalité annoncée.                                                                  □
+
+   Le lemme s’énonce aussi sans hypothèse de centrage : si X ∈ [a, b] presque sûrement, la variable
+X − E[X] est centrée et à valeurs dans l’intervalle [a − E[X], b − E[X]], de même longueur b − a,
+de sorte que ψX (λ) ≤ λE[X] + λ2 (b − a)2 /8 ; c’est la forme de l’exercice 3 (PC9).
+
+
+   Théorème 2.1: Inégalité de Hoeffding, variables bornées
+  Soient X1 , . . . , Xn des variables aléatoires
+                                             Pn réelles indépendantes telles
+                                                                          Pque Xi ∈ [ai , bi ] presque
+                                                                             n
+  sûrement, avec ai < bi . Posons Sn := i=1 {Xi − E[Xi ]} et Dn := i=1 (bi − ai )2 . Pour tout
+  t > 0,
+                                          2                                  2
+                        P(Sn ≥ t) ≤ e−2t /Dn      et      P(Sn ≤ −t) ≤ e−2t /Dn .
+
+
+
+
+   Démonstration
+  Les variables Xi − E[Xi ] sont indépendantes, centrées et à valeurs dans des intervalles de
+  longueurs bi −ai ; par le lemme de Hoeffding, Xi −E[Xi ] ∈ G((bi −ai )2 /4). La proposition 2.2 (i)
+                                                       2                   2
+  donne Sn ∈ G(Dn /4), et (ii) donne P(Sn ≥ t) ≤ e−t /(2Dn /4) = e−2t /Dn , ainsi que la même
+  majoration pour P(−Sn ≥ t).                                                                      □
+
+   La démonstration du deck procède sans passer par la notion de variable sous-gaussienne :
+pour des variables à valeurs dans [0, 1], la borne de Chernoff et le lemme de Hoeffding donnent
+30                                                CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+                      2
+P(Sn ≥ t) ≤ e−λt+nλ /8 pour tout λ > 0 ; le minimum en λ de l’exposant est atteint en λ = 4t/n
+et vaut −2t2 /n.
+
+
+     Corollaire 2.1: Moyenne de variables à valeurs dans [0, 1]
+  Soient X1 , . . . , Xn des variables aléatoires indépendantes à valeurs dans [0, 1]. Pour tout ε > 0,
+                                         n
+                                                             !
+                                      1X                               2
+                                  P         {Xi − E[Xi ]} ≥ ε ≤ e−2nε ,
+                                      n i=1
+
+                                       n
+                                                              !
+                                    1X                                   2
+                                P         {Xi − E[Xi ]} ≥ ε       ≤ 2e−2nε .
+                                    n i=1
+
+
+
+
+     Démonstration
+  On applique le théorème 2.1 avec ai = 0, bi = 1, donc Dn = n, et t = nε : chacune des deux
+                                                        2 2          2
+  déviations unilatérales a une probabilité au plus e−2n ε /n = e−2nε , et la sous-additivité de
+  P donne la seconde majoration. C’est l’application de la borne de Chernoff et du lemme de
+  Hoeffding aux variables Xi et 1 − Xi que décrit le deck.                                    □
+
+   Le théorème 2.1 est le théorème 3.1 du chapitre 4, qui y était admis, et le corollaire est le
+théorème 1.3 des fondamentaux.
+
+
+2.5     L’inégalité de Hoeffding pour une loi de Bernoulli
+    Pour des variables Z1 , . . . , Zn indépendantes
+                                                  Pn de loi de Bernoulli de paramètre p, on peut compa-
+                 −2nε2                         −1
+rer la borne
+         Pn   2e       à la probabilité   P(|n     i=1 Zi − p| > ε), que l’on calcule sans approximation
+puisque i=1 Zi suit une loi binomiale de paramètres n et p. La figure 8 montre la comparaison
+pour deux valeurs de ε et deux valeurs de p.
+    La borne est d’autant plus pessimiste que p est loin de 1/2 : la variance p(1−p) est alors petite,
+et l’inégalité de Hoeffding, qui ne la voit pas, la remplace par son maximum 1/4. C’est ce que les
+inégalités de Bennett et de Bernstein corrigent.
+
+
+2.6     La borne de l’union
+     Pour toute suite finie ou dénombrable d’événements (Aj ),
+                                             
+                                          [       X
+                                       P  Aj  ≤   P(Aj ) .
+                                            j          j
+
+
+C’est la sous-additivité d’une mesure : on écrit la réunion comme la réunion disjointe des Bj =
+     S                                                                      b n (g) − R(g)| > ε},
+Aj \ k<j Ak , et l’on utilise Bj ⊂ Aj . Appliquée aux événements Ag = {| R
+g ∈ C, elle donne
+                                                             
+                                                      [         X
+                    P sup | Rb n (g) − R(g)| > ε = P      Ag  ≤    P(Ag ) .
+                          g∈C
+                                                           g∈C           g∈C
+
+
+La borne ne suppose aucune indépendance entre les événements, ce qui importe ici : les risques
+empiriques des différentes règles sont calculés sur le même échantillon, et ils sont dépendants.
+2. LES OUTILS MATHÉMATIQUES                                                                             31
+
+
+
+
+                                            2                                   Pn
+Figure 8 – La borne de Hoeffding 2e−2nε (en bleu) et la probabilité P(|n−1 i=1 Zi − p| > ε)
+calculée par la loi binomiale (points noirs), en fonction de n, pour des variables de Bernoulli de
+paramètre p. En haut p = 0,5, en bas p = 0,1 ; à gauche ε = 0,25, à droite ε = 0,05. Le symbole ε
+manque dans les titres des quatre panneaux.
+
+
+2.7    Convexité
+    Une fonction φ : R → R est convexe si φ(tz +(1−t)z ′ ) ≤ tφ(z)+(1−t)φ(z ′ ) pour tous z, z ′ ∈ R
+et t ∈ [0, 1]. Le chapitre 2 en a rappelé la propriété de droite d’appui (lemme 2.2) et l’inégalité de
+Jensen (théorème 2.2). On utilise ici deux propriétés de stabilité, qui se vérifient directement sur
+la définition.
+  — Si φ : R → R est convexe et A : Rp → R est affine, alors φ ◦ A est convexe sur Rp : comme
+    A(tθ + (1 − t)θ′ ) = tA(θ) + (1 − t)A(θ′ ), l’inégalité de convexité de φ s’applique.
+   — Une combinaison linéaire à coefficients positifs de fonctions convexes est convexe.
+                                                                              Pn
+Le φ-risque empirique d’un classifieur doux linéaire généralisé, θ 7→ n−1 i=1 φ(−Yi θ⊤ Φ(Xi )),
+est donc une fonction convexe de θ dès que φ est convexe. Les pertes charnière, exponentielle,
+logistique et quadratique du tableau de la Section 1.4 sont convexes : la première est le maximum
+de deux fonctions affines, les trois autres ont une dérivée seconde positive (ez , ez /((1 + ez )2 log 2)
+et 2).
+
+
+2.8    Le risque d’une règle apprise
+    Le risque d’une règle apprise, R(b   gn ) = E [ ℓ(Y, gbn (X)) | Dn ], est une espérance conditionnelle,
+et tous les calculs du chapitre l’évaluent en « gelant » l’ensemble d’apprentissage. C’est la propo-
+sition 2.5 du chapitre 8 : si U et V sont indépendantes et f est mesurable positive ou bornée, alors
+E [ f (U, V ) | V ] = F (V ) avec F (v) = E[f (U, v)]. Appliquée à U = (X, Y ) et V = Dn , elle donne
+R(bgn ) = r(Dn ), où r(d) est le risque de la règle fixée gb(· ; d). On l’emploie dans la proposition 1.1,
+dans l’exercice 1 (PC9) et dans les démonstrations des compléments.
+
+
+2.9    Les résultats antérieurs mobilisés
+   Les énoncés suivants sont employés tels quels.
+32                                                  CHAPITRE 9. APPROCHE DISCRIMINATIVE
+
+     — Du chapitre 2 : les inégalités de Markov et de Bienaymé-Tchebychev (proposition 2.1), la
+       droite d’appui d’une fonction convexe et l’inégalité de Jensen (lemme 2.2, théorème 2.2),
+       cette dernière étant employée dans la démonstration de l’inégalité de Pisier.
+     — Du chapitre 3 : la dérivation sous le signe intégral (proposition 2.2), dans la démonstration
+       du lemme de Hoeffding.
+     — Du chapitre 4 : l’énoncé de l’inégalité de Hoeffding (théorème 3.1), démontré ici, et les
+       inégalités de Chernoff (Section 5).
+     — Du chapitre 6 : le théorème de la limite centrale (théorème 1.6), qui n’intervient que dans
+       des remarques et des blocs d’intuition.
+     — Du chapitre 7 : la loi faible des grands nombres pour des variables indépendantes de même
+       loi intégrables (théorème 2.1). La loi des grands nombres uniforme du même chapitre (théo-
+       rème 1.2) porte sur le même type d’objet que le supremum supg∈C | R     b n (g) − R(g)|, une
+       déviation uniforme sur une famille indexée par un paramètre.
+     — Du chapitre 8 : le cadre de l’apprentissage supervisé (cadre 1.1), la perte, le risque et le risque
+       bayésien (définitions 1.2, 1.3 et 1.4), le prédicteur et le classifieur bayésiens (théorèmes 1.1
+       et 1.2), le modèle logistique et son estimateur du maximum de vraisemblance (Section 1.3),
+       la probabilité d’erreur conditionnelle et le risque moyen (Section 4.4), et la propriété de
+       conditionnement par une variable indépendante (proposition 2.5).
+
+2.10       Les résultats admis
+      Trois énoncés sont utilisés sans être démontrés ici.
+     — L’existence d’un minimiseur du risque empirique et la possibilité de le choisir de façon me-
+       surable en les données, supposées au début de la Section 1.2 ; elles sont immédiates pour une
+       classe finie.
+     — Le lemme combinatoire sur les classifieurs affines employé à la Section 4.6 (lemme 4.2), admis
+       dans l’exercice 7 (PC9).
+                                                                   2
+     — La majoration de la queue gaussienne 1 − Φ(x) ≤ e−x /2 pour x ≥ 0, qui n’intervient que
+       dans un bloc d’intuition.
+

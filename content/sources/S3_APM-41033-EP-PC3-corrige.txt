@@ -1,0 +1,700 @@
+Ecole Polytechnique, promotion 2025                                               PC-3 Cours MAP433
+
+
+2     Solutions
+2.1    Exercice 1
+    1. La vraisemblance est donnée par
+                                              n
+                                           1 Y                1
+                                   θ 7→        1[0,θ] (Xi ) = n 1Xn:n ≤θ
+                                          θn                 θ
+                                              i=1
+
+       où Xn:n désigne le maximum des points X1 , · · · , Xn . C’est une fonction qui est non nulle
+       sur [Xn:n , +∞[ et décroissante sur [Xn:n , +∞[. Le maximum est donc atteint en Xn:n .
+       Ainsi
+                                             θ̂nMV := Xn:n .
+    2. On cherche T tel que Eθ [T (X)] = g(θ) pour tout θ ∈ R∗+ soit encore
+                                     Z θ
+                                 θ−1     T (x)dx = g(θ),    ∀θ > 0.
+                                          0
+
+       Cela implique que T a une primitive, s’annulant en 0 par prolongement par continuité,
+       qui est θ 7→ θg(θ). D’où l’on tire
+
+                                   T (x) = (xg(x))′ = g(x) + xg ′ (x) ,                          (2)
+                                                                                  (1)
+       et on vérifie aisément qu’avec cette définition de T , on a bien Eθ [θbn ] = g(θ) pour tout
+       θ ∈ R∗+ .
+    3. Pour tout x ∈ [0, θ], Pθ (Xn:n ≤ x) = P (∩ni=1 {Xi ≤ x}) = (x/θ)n où a utilisé que sous
+       Pθ , les v.a. (Xi )i sont indépendantes et ont même loi uniforme. D’où l’on tire que sous
+       Pθ , Xn:n est une v.a. ayant une densité par rapport à la mesure de Lebesgue donnée par
+                                                 ∂  x n             nxn−1
+                               x 7→ 1[0,θ] (x)            = 1[0,θ] (x) n .
+                                                 ∂x θ                  θ
+       On veut Eθ [Te(Xn:n )] = g(θ) soit encore
+                                    Z θ
+                               nθ−n      Te(x)xn−1 dx = g(θ),           ∀θ > 0,
+                                      0
+
+       ce qui revient à dire qu’une primitive de x 7→ Te(x)xn−1 , s’annulant en 0 par prolonge-
+       ment par continuité, est donnée par θ 7→ θn g(θ)/n. D’où l’on tire
+                                             n       
+                               e        1     x g(x) ′             x
+                               T (x) = n−1               = g(x) + g ′ (x) .                  (3)
+                                      x          n                 n
+                                                                                 (2)
+       Une nouvelle fois, avec cette definition de Te, on obtient bien que Eθ [θbn ] = g(θ) pour
+                 ∗
+       tout θ ∈ R+ .
+    4. Le risque quadratique d’un estimateur T (Z) est défini par R(θ, T ) = Eθ [(T (Z) − θ)2 ].
+       En injectant g(x) = x dans (2), on a T (x) = 2x ce qui conduit à la stratégie d’estimation
+                                                           n
+                                                           X
+                                                       2
+                                              θbn(1) =           Xk ;
+                                                       n
+                                                           k=1
+
+
+                                                                                             Page 5
+Ecole Polytechnique, promotion 2025                                                                     PC-3 Cours MAP433
+
+         0.018
+                      Risque 1
+         0.016        Risque 2
+
+         0.014
+
+         0.012
+
+          0.01
+
+         0.008
+
+         0.006
+
+         0.004
+
+         0.002
+
+             0
+                 0      0.2      0.4      0.6     0.8          1
+
+                                                      h          i
+                                                        (i)
+Figure 3 – Exercice 1 [gauche] Evolution de θ 7→ Eθ (θbn − θ)2 dans le cas n = 20. [droite]
+       h          i
+           (i)                                              (3)
+θ 7→ Eθ (θbn − θ)2 pour i = 2, 3 dans le cas n = 5 ; pour θbn , on a envisagé a = 1 et a = a⋆ .
+
+
+     (on rappelle que sous Pθ , les Xi sont i.i.d. d’espérance θ/2). Le risque quadratique de
+     cet estimateur est
+                                                          Z θ            
+                   b(1)    −1
+              R(θ, θn ) = n Varθ (T (X1 )) = n   −1
+                                                      θ −1
+                                                               4x dx − θ = θ2 /(3n) .
+                                                                 2      2
+                                                                                       0
+
+     De même, en injectant g(x) = x dans (3), on obtient T̃ (x) = (1 + 1/n)x et donc la
+     stratégie d’estimation
+                                              n+1
+                                     θbn(2) =     Xn:n .
+                                               n
+     Son risque quadratique est
+                                                          Z θ                         2
+                                                                                   1
+        R(θ, θbn(2) ) = Varθ (T̃ (Xn:n )) = nθ−n                    x   2
+                                                                                1+          xn−1 dx − θ2
+                                                               0                   n
+                                                                                               (n + 1)2 2           θ2
+                                                                                           =            θ − θ2 =          .
+                                                                                               n(n + 2)          n(n + 2)
+     Comme n > 1, il vient que
+
+                                                            θ2      θ2
+                                       R(θ, θbn(2) ) =            <    = R(θ, θbn(1) ) ,
+                                                         n(n + 2)   3n
+                                           (1)
+     ce qui montre l’inadmissibilité de θbn . On montre l’évolution du risque de chacun des
+     deux estimateurs en fonction de θ ∈ [0, 1] sur la figure 4.
+  5. On a
+                                                         Z θ
+                                  Eθ [Xn:n ] = nθ   −n
+                                                                   x(xn−1 )dx = nθ/(n + 1)
+                                                           0
+                                                         Z θ
+                                       2
+                                  Eθ [Xn:n ] = nθ−n                x2 (xn−1 )dx = nθ2 /(n + 2) .
+                                                           0
+
+     D’où l’on tire
+                                                                                                            
+                                                                                              n        n
+                 R(θ, θbn,a
+                        (3)
+                            ) = a2 Eθ [Xn:n
+                                        2
+                                            ] − 2aθEθ [Xn:n ] + θ2 =                       a   2
+                                                                                                 − 2a     + 1 θ2
+                                                                                             n+2      n+1
+
+                                                                                                                      Page 6
+Ecole Polytechnique, promotion 2025                                        PC-3 Cours MAP433
+
+
+     Choisissons a de façon à minimiser ce risque ; on trouve a⋆ = (n + 2)/(n + 1). On obtient
+     alors
+                                                           θ2
+                                       R(θ, θbn,a
+                                              (3)
+                                                    ) =          ,
+                                                  ⋆
+                                                        (n + 1)2
+     et puisque (n + 1)2 > n(n + 2) pour tout n ≥ 1, il vient que pour tout n ≥ 1
+
+                               R(θ, θbn,a
+                                      (3)
+                                          ⋆
+                                            ) < R(θ, θbn(2) ),   ∀θ > 0,
+
+                              (2)                                            (1)
+     ce qui montre bien que θbn est inadmissible (et par conséquent aussi θbn ).
+
+
+
+
+                                                                                        Page 7
+Ecole Polytechnique, promotion 2025                                                           PC-3 Cours MAP433
+
+
+2.2   Exercice 2
+  1. On pose θ = (β1 , β2 )T , Y = (Y1 , . . . , Yn )T , 1 = (1, . . . , 1)T , x = (x1 , . . . , xn )T et X =
+     [1 x]. La log-vraisemblance s’écrit :
+
+                                                        n              1
+                            ℓn (θ; Y1 , . . . , Yn ) = − log(2πσ 2 ) − 2 ∥Y − Xθ∥2
+                                                        2             2σ
+      D’où l’on tire
+                                                                     1 T
+                                     ∇θ ℓn (θ; Y1 , . . . , Yn ) =      X (Y − Xθ)
+                                                                     σ2
+      Ce qui donne
+
+                        I(β1 , β2 ) = Eθ [∇θ ℓn (θ; Y1 , . . . , Yn ) ∇θ ℓTn (θ; Y1 , . . . , Yn )]
+                                    = σ −4 XT Eθ [(Y − Xθ)(Y − Xθ)T ]X
+                                                                         P        
+                                        −2 T          −2      P1       n−1 ni=1 xi
+                                    = σ X X = nσ
+                                                           n−1 ni=1 xi  n−1 ∥x∥2
+
+      L’autre façon de calculer la matrice d’information de Fisher serait d’utiliser la formule
+      avec la Hessienne mais comme on va le faire dans la 3ème question, on utilise cette
+      formule de l’information de Fisher ici.
+  2. On pose g(θ) = β1 . Donc ∇θ g(θ) = (1, 0)T . Le modèle étant régulier, tout estimateur
+     sans biais régulier de g : θ 7→ g(θ) = β1 a une variance bornée inférieurement par la
+     borne de Cramer-Rao, borne qui s’écrit alors
+
+                                                         ∥x∥2            σ2         ∥x∥2
+        ∇θ g(θ)T I−1 (β1 , β2 )∇θ g(θ) = σ 2                P n        =                P          .
+                                                   n∥x∥2 − ( i=1 xi )2   n ∥x∥2 − n(n−1 ni=1 xi )2
+
+      Observons que cette borne est minorée par σ 2 /n (voir question suivante).
+  3. On se place maintenant dans le cas où θ = β1 , la valeur de β2 étant supposée connue.
+     Alors, la log-vraisemblance s’écrit :
+                                                                               n
+                                                   n              1 X
+                    ℓ̃n (β1 ; Y1 , . . . , Yn ) = − log(2πσ 2 ) − 2   (Yi − β1 − β2 xi )2 .
+                                                   2             2σ
+                                                                             i=1
+
+      On dérive ensuite deux fois par rapport à β1 . On en déduit
+                                         "                                  #
+                                            ∂ 2 ℓ̃n (β1 ; Y1 , . . . , Yn )     n
+                             Ĩ(β1 ) = Eθ −                 2                 = 2
+                                                        ∂β1                    σ
+
+      On en tire que la borne inférieure d’un estimateur sans biais régulier de β1 est Ĩ(β1 )−1 =
+      σ 2 /n. On constate que la borne trouvée ici est inférieure à celle trouvée à la question 2.
+      En effet, dans cette question la classe des estimateurs sans biais de β1 est plus grande
+      (car on peut utiliser la valeur de β2 , supposée connue, pour construire notre estimateur
+      sans biais de β1 ). Il est donc normal d’être capable d’avoir une meilleure précision sur
+      β1 que si on se restreint à des estimateurs n’utilisant pas la valeur de β2 .
+
+
+
+
+                                                                                                         Page 8
+Ecole Polytechnique, promotion 2025                                    PC-3 Cours MAP433
+
+
+  4. Pour cette dernière question, on pose cette fois g(θ) = β1 β2 de sorte que ∇θ g(θ) =
+     (β2 , β1 )T . En inversant la matrice d’information de Fisher en question 1, il vient
+                                                                      P        
+                       −1                    σ2             ∥x∥2
+                                                            P         − ni=1 xi
+                      I (β1 , β2 ) =          P               n
+                                     n∥x∥2 − ( ni=1 xi )2 − i=1 xi        n
+
+     ce qui donne une borne inférieure pour la variance de tout estimateur sans biais de g
+     qui est :
+                                                                                n
+                                                                                            !
+                                                σ 2                             X
+        ∇θ g(θ)T I−1 (β1 , β2 )∇θ g(θ) =          P           β22 ∥x∥2 − 2β1 β2   xi + nβ12
+                                         n∥x∥2 − ( ni=1 xi )2
+                                                                            i=1
+
+
+
+
+                                                                                      Page 9
+Ecole Polytechnique, promotion 2025                                                            PC-3 Cours MAP433
+
+
+2.3   Exercice 3
+  1. Par Cauchy-Schwarz,
+
+        {Covθ (T (Z), Ψ(Z))}2 = E2θ [(T (Z) − Eθ [T (Z)])(Ψ(Z) − Eθ [Ψ(Z)])]
+              ≤ Eθ [(T (Z) − Eθ [T (Z)])2 ]Eθ [(Ψ(Z) − Eθ [Ψ(Z)])2 ] = Varθ (T (Z)) Varθ (Ψ(Z)) .
+
+      On conclut en observant que 0 < Varθ (Ψ(Z)) < ∞ par hypothèses.
+  2. Pour tout α ∈ Θ, posons Aα := {z ∈ Z ; pα (z) > 0}. D’après l’énoncé, on a Aθ−δ ⊂ Aθ .
+                      Z                                     Z
+                            pθ−δ (z)
+        Eθ [Ψ(Z)] =                  − 1 1Aθ (z)pθ (z)µ(dz) = [pθ−δ (z) − pθ (z)]1Aθ (z)µ(dz)
+                             pθ (z)
+                                  Z                         Z
+                               = pθ−δ (z)1Aθ−δ (z)µ(dz) − pθ (z)1Aθ (z)µ(dz) = 1 − 1 = 0 .
+
+      Dans l’avant-dernière égalité, on a utilisé le fait que par définition de Aθ ,
+
+                                               pθ−δ 1Aθ = pθ−δ 1Aθ−δ .
+
+      Par suite,
+                                                          Z                            
+                                                                            pθ−δ (z)
+        Covθ (T (Z), Ψ(Z)) = Eθ [T (Z)Ψ(Z)] = T (z)                                  − 1 1Aθ (z)pθ (z)µ(dz)
+                                                                             pθ (z)
+                          Z
+                        = T (z)[pθ−δ (z)1Aθ−δ (z) − pθ (z)1Aθ (z)]µ(dz) = g(θ − δ) − g(θ) .
+
+  3. En combinant les deux dernières questions, il vient
+
+                                        (g(θ − δ) − g(θ))2                (g(θ) − g(θ − δ))2
+            Varθ (T (Z)) ≥ R                        2              =R              
+                                        pθ−δ (z)                              pθ−δ (z) 2
+                               Aθ        pθ (z)  − 1    p θ (z)µ(dz)   Aθ 1 −  pθ (z)    pθ (z)µ(dz)
+
+  4. On a                                                                      2
+                                                               g(θ)−g(θ−δ)
+                                                                    δ
+                             Varθ (T (Z)) ≥ R                                                .
+                                                          p (z)−p
+                                                          θ          (z) 2
+                                                                      θ−δ         1
+                                                   Aθ             δ             pθ (z) µ(dz)
+
+      Pour pouvoir retrouver la borne de Cramer-Rao, il faudrait pouvoir passer à la limite
+      dans le membre de droite en faisant tendre δ vers 0, (ce qui necessite déjà que θ − δ ∈ Θ
+      pour tout δ suffisamment petit). Il faut ensuite que g soit dérivable en θ ; et enfin que
+      l’on puisse permuter limite et intégrale dans le dénominateur du membre de droite. Si
+      toutes ces conditions sont remplies, on obtient alors :
+                                                                               2 
+                                     ′     2                        ∂ log pθ (Z)
+                    Varθ (T (Z)) ≥ (g (θ)) /I(θ) avec I(θ) = Eθ          ∂θ
+
+
+      qui est bien la borne de Cramer-Rao (en dimension 1).
+
+
+
+
+                                                                                                         Page 10
+Ecole Polytechnique, promotion 2025                                                       PC-3 Cours MAP433
+
+
+  5. Posons z = (x1 , · · · , xn ). Nous nous plaçons maintenant dans le cas particulier g(θ) = θ,
+                                                           n
+                                                           Y
+                                       pθ (z) = θ     −n
+                                                                 1[0,θ] (xi );
+                                                           i=1
+
+     et µ est la mesure de Lebesgue sur Rn . On vérifie que si δ ∈ ]0, θ[, alors pθ (z) = 0
+     implique pθ−δ (z) = 0. Ceci permet d’appliquer la borne obtenue en question 3 :
+                                                      δ2
+                   Varθ (T (Z)) ≥ R                      2           ;             Aθ = [0, θ]n .
+                                               pθ−δ (z)
+                                      Aθ        pθ (z) − 1   pθ (z) dz
+
+     Travaillons le dénominateur :
+     Z                 2           Z                                  Z
+           pθ−δ (z)                        pθ−δ (z) 2                         pθ−δ (z)
+                    − 1 pθ (z)dz =                    pθ (z)µ(dz) + 1 − 2              pθ (z)dz
+      Aθ     pθ (z)                   Aθ    pθ (z)                          Aθ pθ (z)
+                                        Z
+                                      1
+                                   = n         (θn pθ−δ (z))2 dz − 1
+                                     θ [0,θ]n
+                                        Z                  2
+                                      1               θn
+                                   = n                          dz − 1
+                                     θ [0,θ−δ]n (θ − δ)n
+                                        θn
+                                   =          − 1.
+                                     (θ − δ)n
+  6. On pose maintenant δ = cθ/n avec 0 < c < n. Alors le dénominateur vaut
+                                           c −n
+                                        1−        − 1;
+                                           n
+     et donc Varθ (T (Z)) ≥ τn (c)θ2 /n2 avec
+                                                                                                 −1
+                                c2                c2                                 exp(c) − 1
+                τn (c) =                 →n→∞            =c                                             .
+                         (1 − c/n)−n − 1      exp(c) − 1                                 c
+     La figure 6 montre l’évolution de c 7→ τn (c) pour différentes valeurs de n, ainsi que
+     l’évolution de c 7→ limn τn (c). On vient de montrer que dans le classe des estimateurs
+     sans biais de θ (dans un modèle statistique non régulier, pour l’estimation du support
+     de lois uniformes), le risque quadratique moyen est minoré par
+                                    θ2
+                                        τn (c), ∀0 < c < n.
+                                    n2
+     On en déduit que l’EQM est minoré par
+                                                 θ2
+                                                     sup τn (c).
+                                                 n2 c∈]0,n[
+     Asymptotiquement, une borne inférieure sur l’EQM des estimateurs sans biais se com-
+     porte comme θ2 /n2 . On notera la vitesse en O(1/n2 ).
+                                                                  (2)
+     On a établi dans l’exercice 1 que l’estimateur sans biais θbn = (n + 1)Xn:n /n avait un
+     risque quadratique moyen valant
+                                              θ2 n
+                                              n2 n + 2
+     et qu’il était inadmissible. Asymptotiquement, son EQM est équivalent à θ2 /n2 .
+
+
+                                                                                                            Page 11
+Ecole Polytechnique, promotion 2025                                       PC-3 Cours MAP433
+
+
+
+
+Figure 4 – Exercice 3 (gauche) Tracé de c 7→ τn (c) pour différentes valeurs de n, et tracé de
+                                                                                 (2)
+c 7→ limn τn (c). (droite) Tracé de c 7→ n/((n + 2)τn (c)), ratio de l’EQM de θbn et du minorant
+de l’EQM des estimateurs sans biais.
+
+
+
+
+                                                                                        Page 12
+Ecole Polytechnique, promotion 2025                                                                     PC-3 Cours MAP433
+
+
+2.4     Exercice 4
+    Dans la suite, on omet la dépendance en n de a.
+    Observons 1 que sous pθ Leb, Xk a même loi que θ + σYk où Yk ∼ q. On en déduit que
+
+                                       Eθ [Xk ] = θ,          Varθ (Xk ) = σ 2 .
+
+Calculons l’espérance et la variance de l’estimateur :
+                                          !                                                                  !
+                     h      i      Xn                                                        n
+                                                                                             X
+                  Eθ θ̂n (a) = θ       ak ,      Varθ (θ̂n (a)) = σ 2                                  a2k       .
+                                            k=1                                              k=1
+
+   1. Par suite, le risque quadratique est donné par
+                                                         n
+                                                                         !2                n
+                                                                                                       !
+                                                         X                                 X
+                                 R(θ̂n (a), θ) = θ2            ak − 1         + σ2               a2k       .
+                                                         k=1                               k=1
+
+       Comme il est sans biais, on veut minimiser
+                                  n
+                                        !                       n
+                                 X                              X
+                              2       2
+                       a 7→ σ        ak      sous la contrainte   ak = 1.
+                                          k=1                                              k=1
+
+       Solution 1. Par Cauchy-Schwarz, et en utilisant la contrainte, on a
+                                                   n                n     2
+                                              1X 2   1X                             1
+                                                ak ≥    ak                    =        .
+                                              n      n                              n2
+                                                  k=1              k=1
+
+       Le minorant est indépendant de a et la borne inférieure est atteinte avec ak = 1/n pour
+       tout k. Ainsi, l’estimateur sans biais de risque quadratique minimal est
+                                                                               n
+                                                                         1X
+                                             θ̂n (1/n, · · · , 1/n) =       Xk .
+                                                                         n
+                                                                              k=1
+
+       Solution 2. On résoud le problème de minimisation sous contraintes par la méthode
+       des multiplicateurs de Lagrange. 2
+       Soit λ ∈ R : on veut minimiser sur Rn
+                            n           n
+                                                !
+                           X          X
+                      a 7→    a2k + λ     ak − 1 = objectif +λ× contrainte.
+                                 k=1              k=1
+
+   1. voir PC1
+   2. La technique consiste à remplacer le problème d’optimisation sous contraintes, par un problème d’opti-
+misation d’une autre fonction objectif qui inclut la contrainte : pour λ1 , · · · , λℓ , on définit une nouvelle fonction
+objectif à optimiser :
+                                                         X ℓ
+                                    (objectif initial) +     λi contraintei .
+                                                             i=1
+
+On utilise les outils classiques de résolution de l’optimisation sans contraintes (zeros du gradient, ...) ; la solution
+si elle existe va être une fonction des multiplicateurs λ1 , · · · , λℓ . Pour trouver quelles valeurs il faut prendre
+pour ces multiplicateurs, il faut se souvenir que la solution doit satisfaire ℓ contraintes. On obtient un système
+à ℓ équations et ℓ inconnues. La résolution donne les valeurs des multiplicateurs λ1 , · · · , λℓ ; dont on va déduire
+la solution du problème initial.
+
+
+                                                                                                                     Page 13
+Ecole Polytechnique, promotion 2025                                                          PC-3 Cours MAP433
+
+
+     Le gradient est nul ssi
+
+                                  ∀i ∈ {1, · · · , n} :           2ai + λ = 0.
+
+     Cela donnePai = −λ/2 pour tout i. On utilise la contrainte pour déterminer λ : la
+     contrainte nk=1 ak = 1 entraine −nλ/2 = 1 soit λ = −2/n. Donc la solution est le
+     vecteur constant a = (1/n, · · · , 1/n).
+  2. On veut minimiser                                    !2                         !
+                                           n
+                                           X                             n
+                                                                         X
+                               a 7→ θ2           ak − 1        + σ2            a2k       .
+                                           k=1                           k=1
+
+     Pour tout i, la dérivée par rapport à ai est
+                                               n
+                                                              !
+                                               X
+                                       2θ2           ak − 1       + 2σ 2 ai                                (4)
+                                               k=1
+
+     La racine du gradient est un minimum. En effet, la dérivée seconde ∂ai aj est
+
+                                               2θ2 + 2σ 2 1i=j .
+
+     On en déduit que la matrice hessienne est H = 2σ 2 I + 2θ2 11T , ses valeurs propres sont
+     strictement positives puisque
+                                                   n
+                                                          !2
+                                                   X
+                                     2    2     2
+                           T
+                          λ Hλ = 2σ ∥λ∥ + 2θ          λk      ≥ 2σ 2 ∥λ∥2 .
+                                                             k=1
+
+     Donc la fonction possède un unique minimum donné par la racine du gradient.
+     Cherchons la racine du gradient. En sommant en i la relation (4), la racine est solution
+     de
+                                     n
+                                     X               n
+                                                     X
+                                   2          2    2
+                                nθ     ak − nθ + σ      ak = 0
+                                         k=1                       k=1
+
+     ce qui donne
+                                             n
+                                             X                nθ2
+                                                   ak =             .
+                                                          σ 2 + nθ2
+                                             k=1
+
+     En utilisant à nouveau (4), on obtient
+                                                    
+                                    θ2         nθ2           θ2
+                              ai = 2 1 − 2             =           .
+                                    σ        σ + nθ2     σ 2 + nθ2
+
+     Le minimum du risque est atteint en
+                                                                      
+                           θ2             θ2         θ2       1        1
+                a=               ,··· , 2        = 2            ,··· ,     ;                               (5)
+                       σ 2 + nθ2       σ + nθ2    θ + σ 2 /n n         n
+
+     de sorte que le risque est minoré par
+
+                                                               σ2 θ2
+                                         R(θ̂n (a), θ) ≥              .
+                                                            σ 2 + nθ2
+
+                                                                                                       Page 14
+Ecole Polytechnique, promotion 2025                                            PC-3 Cours MAP433
+
+
+     ▶ Notons que                                                
+                                  σ2 θ2     σ2          θ2                σ2
+                                 2      2
+                                          =                           <
+                                σ + nθ      n        θ + σ 2 /n
+                                                      2                   n
+     montrant que le risque quadratique optimal (puisqu’atteignable avec les poids donnés
+     par (5)) dans la classe des estimateurs linéaires, est plus faible que le risque quadratique
+     optimal dans la classe (plus restreinte) des estimateurs linéaires sans biais. En toute
+     logique !
+
+
+
+
+                                                                                         Page 15
+Ecole Polytechnique, promotion 2025                                                         PC-3 Cours MAP433
+
+
+2.5   Exercice 5
+   Noter qu’avec cette convention sur la paramétrisation de la loi exponentielle, on a
+
+                      Eθ [U ] = θ,           Varθ (U ) = θ2 ,            où U ∼ fθ (·) · Leb.                      (6)
+
+  1. Soit τ = (τ1 , · · · , τn ) une permutation de {1, · · · , n}. Puisque sous pθ ·Leb⊗n , (X1 , · · · , Xn )
+     sont i.i.d., elles ont même loi que (Xτ1 , · · · , Xτn ) et cette loi est donnée par
+                                                         n
+                                                                   !
+                                                         Y
+                                   (y1 , · · · , yn ) 7→   fθ (yk ) dy1 · · · dyn .
+                                                              k=1
+
+      Puisque les v.a. (Xk )k ont des lois à densité par rapport à la mesure de Lebesgue, on a
+      Pθ (Xi = Xj ) = 0 pour tout i ̸= j. Par suite, il existe une unique permutation aléatoire
+      σ de {1, · · · , n} telle que
+
+                                Xk:n = Xσk ,             Xσ1 < Xσ2 < · · · < Xσn p.s.
+
+      Notons Sn l’ensemble des permutations de {1, · · · , n}, de cardinal n!.
+      On a pour toute fonction h mesurable bornée
+
+                 Eθ [h (X1:n , · · · , Xn:n )] = Eθ [h (Xσ1 , · · · , Xσn )]
+                                                 X
+                                               =      Eθ [h (Xτ1 , · · · , Xτn ) 1σ=τ ]
+                                                     τ ∈Sn
+                                                     X                                                   
+                                                =            Eθ h (Xτ1 , · · · , Xτn ) 1Xτ1 <Xτ2 <···<Xτn
+                                                     τ ∈Sn
+
+      On conclut en observant que l’espérance dans le terme de droite est indépendante de τ
+      et vaut
+                                                     Z                        n
+                                                                                        !
+                                                                            Y
+      Eθ h (Xτ1 , · · · , Xτn ) 1Xτ1 <Xτ2 <···<Xτn =      h(y1 , · · · , yn )   fθ (yk ) dy1 · · · dyn ,
+                                                                 y1 <···<yn                  k=1
+                                           P
+      puis en utilisant le fait que            τ ∈Sn 1 = n!.
+  2. Soit h mesurable positive.
+
+      Eθ [h (Z1 , · · · , Zn )] = Eθ [h (nX1:n , (n − 1)(X2:n − X1:n ), · · · , (Xn:n − Xn−1:n ))]
+                       Z                                !
+                 n!                               X n                                                     
+                                              −1
+             = n                      exp −θ          yk h ny1 , (n − 1)(y2 − y1 ), · · · , (yn − yn−1 ) dy1 · · · dyn
+                 θ       0≤y1 <···<yn             k=1
+                                                                                 
+                       Z                               X n Xk
+                  1
+             = n                          exp −θ−1           (n − j + 1)−1 zj  h(z1 , · · · , zn ) dz1 · · · dzn ,
+                 θ z1 >0,z2 >0,··· ,zn >0
+                                                               k=1 j=1
+
+      en faisant
+           Pi le changement−1de variable zi = (n − i + 1)(yi − yi−1 ), ce qui est équivalent à
+      yi = j=1 zj (n − j + 1) . On a
+
+       X k
+       n X                                 X n
+                                           n X                    X           n         X                      n
+                                                            zj        zj
+                 (n − j + 1)   −1
+                                    zj =             1j≤k       =         (n − j + 1) =   zj ,
+                                                          n−j+1     n−j+1
+       k=1 j=1                             k=1 j=1                            j=1                             j=1
+
+
+                                                                                                              Page 16
+Ecole Polytechnique, promotion 2025                                                                   PC-3 Cours MAP433
+
+
+     dont on déduit que
+                                                                                         
+                                           Z                                     n
+                                                                                 X
+                                       1
+        Eθ [h (Z1 , · · · , Zn )] =                               exp −θ−1             zj  h(z1 , · · · , zn )dz1 · · · dzn
+                                      θn       z1 >0,··· ,zn >0                   j=1
+
+
+     La relation étant vraie pour tout h, on identifie la loi de (Z1 , · · · , Zn ) comme ayant la
+     densité                                                                   
+                                                                            n
+                                                                            X
+                                                                1
+                        (z1 , · · · , zn ) 7→ 1z1 >0,··· ,zn >0 n exp −θ−1   zj  .
+                                                               θ
+                                                                                                j=1
+
+     Il vient que les v.a. (Zk )k sont i.i.d. de loi exponentielle de paramètre θ.
+  3. On a
+                    n
+                    X                     n
+                                          X            X       XX n             n    n
+                                                   Zj                    Zj
+                          mjn Zj =                       ain =    1j≤i       ain
+                                                 n−j+1                 n−j+1
+                    j=1                   j=1                     i=j          j=1 i=1
+                                          n
+                                          X           i
+                                                      X             X           n
+                                                              Zj
+                                      =         ain               =   ain Xi:n .
+                                                            n−j+1
+                                          i=1         j=1                      i=1
+
+
+  4. En utilisant (6) et le résultat de la question 2, le risque quadratique de l’estimateur est
+     donné par
+                                                 2
+                                      Xn                       n
+                                                               X
+                                                      2      2
+                                                 
+                                          mjn − 1 θ + θ           m2jn
+                                               j=1                               j=1
+
+  5. Si on cherche sans biais, on veut minimiser en m l’application
+                                      n
+                                      X                                                  n
+                                                                                         X
+                          m 7→ θ2              m2jn         sous la contrainte                  mjn = 1.
+                                      j=1                                                 j=1
+
+     En procédant comme dans l’exercice 4, on obtient successivement (noter la bijection
+     entre m et a)
+                       m = (1/n, · · · , 1/n),   a = (1/n, · · · , 1/n).
+
+  6. Sans imposer que l’estimateur soit sans biais, on obtient - en procédant encore comme
+     dans l’exercice 4 -
+
+                 m = (1/(n + 1), · · · , 1/(n + 1)),                        a = (1/(n + 1) · · · , 1/(n + 1)).
+
+
+
+
+                                                                                                                      Page 17
+

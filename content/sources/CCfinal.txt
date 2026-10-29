@@ -1,0 +1,724 @@
+Ecole Polytechnique, promotion 2022                             Contrôle de connaissances Cours MAP433
+
+
+   Dans tout l’énoncé,
+  — Les vecteurs sont des vecteurs colonnes.
+  — Leb est la mesure de Lebesque sur R et Leb⊗n est la mesure de Lebesgue sur Rn .
+  — Pour p > 0 et λ > 0, on appelle loi Gamma(p, λ), la loi de densité donnée par [atten-
+    tion : convention différente du polycopié] :
+                                                λ−p
+                              fp,λ (x) :=            exp(−x/λ) xp−1 ,            x>0.
+                                                Γ(p)
+     On note Gcdf p et Gqf p la fonction de répartition et la fonction quantile de la Gamma(p, 1).
+Nous rappelons
+ — Si la variable aléatoire Y est distribuée suivant une loi Gamma(p, λ) avec p > 0, λ > 0,
+     alors Y /λ est distribuée suivant une loi Gamma(p, 1).
+ — Si la variable aléatoire Y est distribuée suivant une loi Gamma(p, λ) avec p > 0, λ > 0
+     alors E[Y ] = pλ et Var(Y ) = pλ2 .
+ — La loi du χ2 centré à n degrés de liberté est une loi Gamma(n/2, 2).
+ — Soit (X1 , . . . , Xn ) n variables aléatoires indépendantes, et pourPtout i ∈ {1, . . . , n}, la
+                                                                             n
+     loi de Xi est la loi Gamma(pPn i  , λ)  pour  p i > 0, λ >  0. Alors,   i=1 Xi est distribuée
+     suivant une loi Gamma( i=1 pi , λ).
+Exercice 1. Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle (R+ , B(R+ ), {pθ .dLeb, θ ∈ Θ := R∗+ })
+où pθ est la densité de Weibull définie par
+                          c
+           x 7→ pθ (x) = xc−1 e−x /θ 1R+ (x) ,
+                                    c
+                                                   c est une constante positive connue
+                          θ
+Soit θ0 > 0. On considère le test
+                              H0 : θ ≤ θ0 ,            contre       H1 : θ > θ0 .
+                                                 c
+   1. Montrer que, pour tout θ ∈ Θ, (Xi ) est, sous Pθ , distribuée suivant une loi exponentielle
+      de paramètre θ, de densité qθ (y) := θ−1 e−y/θ 1R+ (y) [qui est aussi Gamma(1, θ)].
+   2. Montrer que la famille {pθ (·), θ ∈ Θ} est à rapport de vraisemblance monotone.
+   3. Soit α ∈ ]0, 1[. Déterminer un test U. P. P.(α) pour ces hypothèses. On explicitera le
+      calcul des constantes dans la définition de la fonction critique du test en fonction de la
+      fonction quantile Gqf n (·).
+   4. Montrer que la fonction puissance du test est donnée par
+                                      θ 7→ 1 − Gcdf n (θ0 Gqf n (1 − α)/θ)
+
+Exercice 2. Soit (X1 , . . . , Xn ) un n-échantillon du modèle (R, B(R), {pθ .dLeb, θ ∈ Θ}), où
+θ := (µ, σ 2 ) ∈ Θ := R × R∗+ , et pθ est la densité de probabilité d’une loi Gaussienne de
+moyenne µ et variance σ 2 . Nous considérons les estimateurs de µ2 donnés par
+                                                                n
+                                 2                        1X
+                   T1,n := X̄n            où   X̄n :=        Xi
+                                                           n
+                                                             i=1
+                                                                            n
+                                 2       1 2                         1 X
+                   T2,n := X̄n        −    S         où   Sn2 :=         (Xi − X̄n )2 .
+                                          n n                        n−1
+                                                                           i=1
+
+On rappelle que Y est une variable aléatoire gaussienne centrée réduite, alors E[Y 4 ] = 3.
+
+                                                                                                Page 1
+Ecole Polytechnique, promotion 2022                               Contrôle de connaissances Cours MAP433
+
+
+  1. Montrer que, pour tout θ ∈ Θ, sous Pn,θ
+       (a) la variable aléatoire X̄n suit une loi gaussienne dont on déterminera la moyenne et
+           la variance.
+      (b) la variable Sn2 est indépendante de X̄n et (n − 1)Sn2 /σ 2 est distribuée suivant une
+          loi Gamma dont on précisera les paramètres.
+       (c) Montrer que Eθ [Sn2 ] = σ 2 and Eθ [Sn4 ] = σ 4 (1 + 2/(n − 1)).
+  2. Calculer le biais de l’estimateur et le risque quadratique de l’estimateur T1,n de µ2 .
+  3. Calculer le biais et le risque quadratique de l’estimateur T2,n de µ2 .
+  4. L’estimateur T1,n de µ2 est-il admissible pour le risque quadratique ?
+  5. Montrer que les suites d’estimateurs {T1,n , n ≥ 2} et {T2,n , n ≥ 2} sont consistantes.
+                                                                       √
+  6. Montrer que pour tout θ = (µ, σ 2 ) ∈ R∗ × R∗+ (i.e. µ ̸= 0), n(T1,n − µ2 ) converge
+     sous Pn,θ vers une loi gaussienne dont on déterminera la variance. Même question pour
+     √
+       n(T2,n − µ2 ).
+  7. Montrer que pour tout θ tel que µ = 0, nT1,n converge en loi sous Pn,θ vers une loi que
+     l’on caractérisera. Même question pour nT2,n . Commenter.
+
+Exercice 3. Soit Z := (X1 , . . . , Xn ) un n-échantillon du modèle statistique du modèle
+exponentiel translaté E(a, λ) de densité par rapport à la mesure de Lebesgue
+
+   R; B(R); {fθ · Leb, θ := (a, λ) ∈ Θ := R × R∗+ } , où fθ (x) := λ−1 e−(x−a)/λ 1[a,∞[ (x)
+                                                    
+
+
+Nous notons, pour θ ∈ Θ,
+                                                                  n
+                                                                  Y
+                                       pθ (x1 , · · · , xn ) :=         fθ (xk ),
+                                                                  k=1
+
+et Pθ := pθ · Leb⊗n . Soit X1:n ≤ X2:n ≤ · · · ≤ Xn:n les statistiques d’ordre de l’échantillon ;
+puisque les variables aléatoires (Xk )nk=1 ont des lois à densité par rapport à la mesure de
+Puisque les variables aléatoires (Xk )nk=1 ont des lois à densité par rapport à la mesure de
+Lebesgue, on a Pθ (Xi = Xj ) = 0 pour tout i ̸= j et θ ∈ Θ. Par suite, il existe, Pθ -p.s. une
+unique permutation, que nous notons σ(Z) = [σ1 (Z), . . . , σn (Z)] de {1, · · · , n} telle que
+
+              Xk:n = Xσk (Z) ,           Xσ1 (Z) < Xσ2 (Z) < · · · < Xσn (Z),            Pθ − p.s.
+
+Nous notons Sn l’ensemble des permutations de l’ensemble {1, . . . , n}.
+  1. Montrer que pour toute fonction h mesurable bornée
+                                                h                                             i
+                                              Eθ h (Xτ1 , · · · , Xτn ) 1{Xτ1 <Xτ2 <···<Xτn }
+                                            X
+            Eθ [h (X1:n , · · · , Xn:n )] =                                                                        (1)
+                                                τ ∈Sn
+
+  2. En déduire que sous Pθ , la loi jointe des statistiques d’ordre X1:n , X2:n , . . . , Xn:n admet
+     une densité par rapport à Leb⊗n , densité donnée par
+
+            (y1 , · · · , yn ) 7→ φ(θ; y1 , y2 , . . . , yn ) := n! pθ (y1 , · · · , yn ) 1{a≤y1 <y2 <···<yn } .
+
+
+
+
+                                                                                                               Page 2
+Ecole Polytechnique, promotion 2022                          Contrôle de connaissances Cours MAP433
+
+
+On considère la transformation
+
+         U1 := nX1:n ,       Uk := (n − k + 1)(Xk:n − X(k−1):n ) ,          pour k ∈ {2, . . . , n} ;      (2)
+
+Remarquons que pour tout (u1 , . . . , un ) ∈ Rn ,
+                              n
+                              X                  n
+                                                 X
+                                    ui = nu1 +         (n − i + 1)(ui − ui−1 ) .                           (3)
+                              i=1                i=2
+
+   3. Montrer que, sous Pθ , les variables aléatoires (U1 , . . . , Un ) sont indépendantes. Déterminer
+      également la loi de chacune de ces variables.
+   4. Démontrer que sous Pθ , la statistique T1 := ni=1 (Xi:n −X1:n ) est indépendante de X1:n
+                                                      P
+      et suit une loi Gamma(n − 1, λ).
+   5. Construire, en utilisant T1 , un intervalle de confiance pour λ avec une probabilité de
+      couverture de 1 − α, où α ∈ ]0, 1[.
+   6. Établir que sous Pθ , la statistique T2 := X1:n suit une loi E(a, λ/n).
+   7. Justifier sans calcul que la fonction a 7→ Fn (a) := (T2 − a)/{(n − 1)−1 T1 } est pivotale
+      pour le paramètre θ.
+   8. Question bonus ! Prouver que, pour tout θ ∈ Θ, la loi de Fn (a) par rapport à la
+      mesure de Lebesgue est donnée par l’équation suivante :
+                                                  −n
+                                               nt
+                                t 7→ n 1 +              1[0,∞[ (t) .                (4)
+                                              n−1
+
+   9. En se servant de la fonction pivotale Fn (a), construire un intervalle de confiance pour
+      a avec une probabilité de couverture de 1 − α.
+
+Exercice 4. On cherche à expliquer une variable quantitative Yi (réponse) par une régression
+linéaire à un facteur [1, xi ]⊤ , i ∈ {1, . . . , n}, xi ∈ R. On pose θ := (β, σ 2 ) ∈ Θ := R × R∗ × R∗+ ,
+avec β := [β0 , β1 ]⊤ . Nous posons Y := [Y1 , . . . , Yn ]⊤ , y := [y1 , . . . , yn ]⊤ . Nous supposons que,
+pour tout θ ∈ Θ, Y est un vecteur Gaussien, de moyenne [β0 + β1 x1 , . . . , β0 + β1 xn ]⊤ et de
+covariance σ 2 In , i.e. la densité de Y par rapport à la mesure de Lebesgue sur Rn est
+                                                              n
+                                                                                      !
+                                          1                 1X
+                          pθ (y) := √           n exp −          (Yi − β0 − β1 xi )2
+                                        2πσ 2               2
+                                                            i=1
+
+Posons x := [x1 , . . . , xn ]⊤ , 1 := [1, . . . , 1]⊤ ∈ Rn , et X := [1, x]. Avec ces notations, nous
+pouvons écrire de façon équivalente
+                                                                          
+                                               1              1          2
+                                pθ (y) = √           n exp − ∥Y − Xβ∥
+                                            2πσ 2             2
+
+Nous supposons que la matrice X, de taille n × 2, est de rang 2 et nous posons H :=
+X(X⊤ X)−1 X⊤ le projecteur orthogonal sur Vect(X).
+   Nous notons
+                           n                          n
+                        1X         1⊤ Y             1X        1⊤ x
+                  Ȳ :=       Yi =        et  x̄ :=     x i =      .
+                        n          ∥1∥2             n         ∥1∥2
+                                    i=1                             i=1
+
+
+                                                                                                        Page 3
+Ecole Polytechnique, promotion 2022                           Contrôle de connaissances Cours MAP433
+
+
+  1. Montrer que les estimateurs du maximum de vraisemblance β̂ := [β̂0 , β̂1 ]⊤ et σ̂ 2 de
+     (β0 , β1 ) et σ 2 sont donnés par
+                                                        "                  #
+                                                           Ȳ − β̂1 x̄
+                                      
+                                   β̂0        ⊤  −1 ⊤
+                            β̂ =         := (X X) X Y =   Pn
+                                                               Yi (xi −x̄)              (5)
+                                   β̂1                    Pi=1
+                                                            n
+                                                               (xi −x̄)2      i=1
+                                   n
+                                  1X                                   1
+                        σ̂ 2 :=             (Yi − β̂0 − β̂1 xi )2 =      ∥(In − H)Y∥2                  (6)
+                                  n                                    n
+                                      i=1
+
+
+Nous remarquons que Pθ -p.s., β̂1 ̸= 0.
+  2. Démontrer que, sous Pβ,σ2 , β̂ est un vecteur gaussien dont on précisera la moyenne et
+     la covariance.
+  3. Montrer que les statistiques σ̂ 2 et β̂ sont indépendantes. Déterminer la distribution de
+     la statistique σ̂ 2 .
+Nous posons, S 2 := (n/(n − 2))σ̂ 2 et pour β := [β0 , β1 ]⊤ ∈ R × R∗ : ϕ := −β0 /β1 , et
+δ := −ϕ + x̄.
+  4. Montrer que, pour tout θ ∈ Θ,
+                                                   h          i
+                                                 Eθ Ȳ − δ β̂1 = 0 .
+
+  5. Montrer que, pour tout θ ∈ Θ,
+
+                                                  Covθ (Ȳ , β̂1 ) = 0 .
+
+  6. Montrer que, pour tout θ ∈ Θ,
+                                                                         1         δ2
+                  Varθ Ȳ − δ β̂1 = σ 2 w(δ)              où w(δ) :=        + Pn             2 .
+                                                                           n    i=1 (xi − x̄)
+
+
+  7. Montrer que pour tout θ ∈ Θ, sous Pθ , Ȳ − δ β̂1 est distribué suivant une loi normale
+     centrée de variance σ 2 w(δ) et est indépendante de S 2 .
+Nous posons
+                                                          Ȳ − δ β̂1
+                                               T (δ) :=     p
+                                                          S w(δ)
+  8. Montrer que pour tout θ ∈ Θ, sous Pθ , T 2 (δ) est distribuée suivant une loi de Fisher à
+     (1, n − 2) degrés de liberté.
+  9. En déduire une région de confiance pour δ de probabilité de couverture 1 − α, α ∈ ]0, 1[,
+     de la forme A(α)δ 2 + B(α)δ + C(α) ≤ 0 [on déterminera A(α), B(α), et C(α)]. Sous
+     quelle condition cette région de confiance est-elle un intervalle ?
+
+Exercice 5. Dans cet exercice, nous considérons des observations i.i.d. (Xi , Yi )1≤i≤n où Yi
+prend des valeurs dans {−1, 1} et Xi prend des valeurs dans Rd . Pour un x donné dans Rd ,
+nous considérerons le classificateur suivant : ĥn (x) = Yϕn (x) où
+
+                                      ϕn (x) = arg min ∥x − Xi ∥
+                                                       i∈[1:n]
+
+
+                                                                                                    Page 4
+Ecole Polytechnique, promotion 2022                  Contrôle de connaissances Cours MAP433
+
+
+En d’autres termes, ϕn (x) est l’indice du voisin le plus proche de x parmi l’ensemble de données
+{Xi ; i ∈ [1 : n]}. Dans tout l’exercice, nous considérons une paire de variables aléatoires
+(X, Y ) ayant la même loi que (Xi , Yi ) pour tout i ≥ 1. Et pour éviter toute ambiguı̈té dans
+la définition de l’indice ϕn (X), nous supposons qu’avec probabilité 1, tous les ∥X − Xi ∥ pour
+tout i ∈ N sont strictement différents.
+    Rappelons que le classificateur optimal de Bayes est défini par
+                                   (
+                                     1    si P(Y = 1|X) > P(Y = −1|X)
+                          h⋆ (X) =
+                                     −1 sinon
+
+et rappelons qu’en définissant η(X) = P(Y = 1|X) et r⋆ (X) = min(η(X), 1 − η(X)), nous
+avons
+                      R⋆ = P(Y ̸= h⋆ (X)) = E[r⋆ (X)] ≤ P(Y ̸= h(X))
+pour tout autre classificateur h : Rd → {−1, 1}. Le but de cet exercice est de montrer la borne
+
+                           R⋆ ≤ lim P(Y ̸= ĥn (X)) ≤ 2R⋆ (1 − R⋆ )
+                                  n→∞
+
+Définissons X(n) = Xϕn (X) le voisin le plus proche de X parmi l’ensemble {(Xi ); i ∈ [1 : n]}.
+Nous admettons que,
+  — la suite {X(n) , (n) ∈ N} converge en probabilité vers X :
+
+                                                 P−prob
+                                            X(n) −→ X ,
+
+  — la fonction η est continue,
+  1. Montrez que, pour tout x ∈ Rd , r⋆ (x)(1 − r⋆ (x)) = η(x)(1 − η(x)).
+  2. Montrez que pour tout i ∈ [1 : n], nous avons presque sûrement,
+
+               P(Y = −1, Yi = 1, ϕn (X) = i|X, X1:n ) = (1 − η(X))η(Xi )1{i} (ϕn (X))
+
+                                             1
+                                  Pn
+  3. En notant que, η(X(n) ) =      i=1 η(Xi ) {i} (ϕn (X)), déduisez que, presque sûrement,
+
+                        P(Y = −1, ĥn (X) = 1|X, X1:n ) = (1 − η(X))η(X(n) ),
+
+  4. De la même manière, montrez que
+
+                        P(Y = 1, ĥn (X) = −1|X, X1:n ) = η(X)(1 − η(X(n) )),
+
+  5. Montrez que limn→∞ E[η(X(n) )] = E[η(X)].
+  6. Montrez que :
+                             lim P(Y ̸= ĥn (X)) = 2E[r⋆ (X)(1 − r⋆ (X))]
+                            n→∞
+
+  7. Déduisez que
+                                  lim P(Y ̸= ĥn (X)) ≤ 2R⋆ (1 − R⋆ )
+                                  n→∞
+
+      et conclure.
+
+
+
+                                                                                          Page 5
+Ecole Polytechnique, promotion 2022                          Contrôle de connaissances Cours MAP433
+
+
+Solution . [Exercice 1]
+   1. Soit h une fonction borélienne bornée. Pour tout θ ∈ Θ, nous avons, en utilisant le
+      changement de variable y = xc
+                                       Z +∞
+                                 c
+                         Eθ [h(X1 )] =       h(xc )θ−1 cxc−1 exp(−xc /θ)dx
+                                        0
+                                       Z +∞
+                                     =       h(y)θ−1 exp(−y/θ)dy .
+                                               0
+
+   2. Pour tout (x1 , . . . , xn ) ∈ R+ , nous avons
+                                                                  n              Pn    c
+                                                                  Y
+                                 pθ (x1 , . . . , xn ) = θ−n cn         xci e−    i=1 xi /θ   .
+                                                                  i=1
+                                                                                  Pn           c           n
+                                                                                                               Qn    c
+      qui est de la forme pθ (z) = h(z)ψ(T (z); θ) avec T (z) =                           i=1 xi , h(z) = c     i=1 xi et
+      ψ(t, θ) = exp(−t/θ − n ln(θ)).
+   3. Pour θ > θ′ , le rapport
+
+                                                     θ − θ′
+                                                                       
+                                   ψ(t; θ)                            ′
+                                             = exp t        − n ln(θ/θ )
+                                   ψ(t; θ′ )           θθ′
+
+      est une fonction monotone croissante de t. La fonction critique du test U. P. P.(α) est
+      donné par ϕ(z) = 1{T (z)>c} où c est donné par
+
+                                              Pθ0 (T (Z) > c) = α .
+
+      Sous Pθ0 , T (Z) est distribué suivant (voir (1)) suivant une loi Gamma(n, θ0 ) ; par
+      conséquent, T (Z)/θ0 est distribué suivant une loi Gamma(n, 1). Le seuil critique du
+      test est donc donné par c = θ0 Gqf n (1 − α).
+   4. La fonction puissance du test est donnée par
+
+                                    βϕ (θ) = Pθ (T (Z) > θ0 Gqf n (1 − α))
+
+      Comme sous Pθ , pour tout θ ∈ Θ, T (Z)/θ est distribuée suivant une loi Gamma(n, 1),
+      nous avons
+
+              βϕ (θ) = Pθ (T (Z)/θ > θ0 Gqf n (1 − α)/θ) = 1 − Gcdf n (θ0 Gqf n (1 − α)/θ)
+
+Solution . [Exercice 2]
+   1. Il s’agit d’une application directe du théorème IV.3.24
+       (a) X̄n est distribuée suivant une loi gaussienne de moyenne µ et de variance σ 2 /n.
+       (b) (n − 1)Sn2 /2 est distribuée suivant une loi du χ2 centré à (n − 1) degrés de liberté,
+           donc une loi Gamma((n − 1)/2, 2) en utilisant le rappel.
+       (c) Nous avons
+                                                     "                 2 #
+                                             σ4
+                                                                                                       
+                                                          n−1 2                                    2
+                            Eθ [Sn4 ] =                       S                =σ 1+  4
+                                          (n − 1)2         σ2 n                                   n−1
+
+                                                                                                                    Page 6
+Ecole Polytechnique, promotion 2022                       Contrôle de connaissances Cours MAP433
+
+
+  2. En utilisant la décomposition biais-variance de l’erreur quadratique et les résultats de
+     la question précédente, il vient
+
+                                         En,θ [X̄n2 ] = µ2 + σ 2 /n ,
+
+     dont on déduit que le biais de l’estimateur est σ 2 /n.
+     Sous Pθ , X̄n − µ est une variable aléatoire gaussienne de moyenne nulle et de variance
+     σ 2 /n. centrée ; remarquons que son moment d’ordre 3 sont nuls ; son moment d’ordre
+     2 est égal à sa variance. Le risque quadratique vaut, par définition : En,θ [(X̄n2 − µ2 )2 ].
+     Nous avons
+
+
+         Eθ [(X̄n2 − µ2 )2 ] = Eθ [({X̄n − µ + µ)2 − µ2 )2 ]
+                           = Eθ [({X̄n − µ}2 + 2µ{X̄n − µ})2 ] = Eθ [(X̄n − µ)4 ] + 4µ2 σ 2 /n
+
+     en utilisant la question précédente dans la dernière égalité. En utilisant le rappel sur le
+     moment d’ordre 4 d’une loi gaussienne centrée réduite, nous en déduisons
+
+                                                              σ4      2σ
+                                                                         2
+                                    Eθ [(X̄n2 − µ2 )2 ] = 3      + 4µ      .
+                                                              n2       n
+  3. Nous avons
+                                                  1                 σ2  1
+                                                    En,θ Sn2 = µ2 +    − En,θ Sn2 .
+                                                                            
+                  En,θ [T2,n ] = En,θ [T1,n ] −
+                                                  n                 n   n
+     En utilisant (1), Sn2 est une
+                                  estimateur   sans biais de la variance des variables aléatoires
+     {Xi }ni=1 ; par suite : En,θ Sn2 = σ 2 . On en déduit que
+                                     
+
+
+                                                En,θ [T2,n ] = µ2
+
+     et l’estimateur est sans biais.
+  4. Soit ε > 0. D’après l’inégalité de Markov
+                                                       1
+                           Pn,θ |T1,n − µ2 | ≥ ε ≤ 2 En,θ |T1,n − µ2 |2 .
+                                                                        
+                                                      ε
+     En utilisant la question 2, limn→∞ En,θ |T1,n − µ2 |2 = 0 dont on déduit la convergence
+                                                              
+
+     en probabilité de T1,n vers µ2 . Ainsi, la suite {T1,n , n ≥ 2} est consistante.
+     Nous avons
+                                                         1
+                                          T2,n = T1,n − Sn2 .
+                                                         n
+                                        Pn,θ −prob
+     Nous venons d’établir que T1,n      −→         µ2 . Par ailleurs, la loi faible des grands nombres
+                                  Pn,θ −prob
+     entraine que (n − 1)Sn2 /n     −→         σ 2 . Nous en déduisons, par le lemme de Slutsky, que
+           Pn,θ                   Pn,θ −prob                        Pn,θ −prob
+     Sn2 /n =⇒ 0 et donc Sn2 /n     −→         0. Par suite T2,n      −→         µ2 .
+                                          √
+  5. Etudions la loi asymptotique de n(T1,n − µ2 ). Nous écrivons T1,n = g(X̄n ) où g est la
+     fonction de classe C 1 sur R définie par g(x) := x2 . Le TLC pour des v.a. i.i.d. entraine
+
+
+
+                                                                                                Page 7
+Ecole Polytechnique, promotion 2022                                   Contrôle de connaissances Cours MAP433
+
+
+          √             Pn,θ
+      que n(X̄n − µ) =⇒ N(0, σ 2 ). En appliquant la méthode delta avec la fonction g, nous
+      avons
+                         √                  Pn,θ
+                             n(T1,n − g(µ)) =⇒ g ′ (µ) N(0, σ 2 ) ≡ N(0, 4µ2 σ 2 ).
+                                         √
+      Etudions la loi asymptotique de n(T2,n − µ2 ). Nous écrivons
+                                     √               √                 1
+                                      n(T2,n − µ2 ) = n(T1,n − µ2 ) − √ Sn2 .
+                                                                        n
+                      Pn,θ −prob                                √ Pn,θ −prob
+      Nous avons Sn2 −→ σ 2 , dont nous déduisons que Sn2 / n −→ 0. De plus, nous
+      venons de prouver la normalité asymptotique du premier terme. Par le lemme de Slutsky,
+                               √               √
+      nous en déduisons que n(T2,n − µ2 ) et n(T1,n − µ2 ) ont même limite en loi :
+                                            √                       Pn,θ
+                                                n(T2,n − µ2 ) =⇒ N(0, 4µ2 σ 2 ).
+
+   6. Soit θ tel que µ = 0. Nous avons
+                                                      n
+                                                                 !2                  n
+                                                                                           !2
+                                             1        X                          1 X
+                                     nT1,n =                Xi         =        √    Xi         .
+                                             n                                    n
+                                                      i=1                           i=1
+                                                                                                            Pn
+      Or, sous Pn,θ , Xi ∼ N(0, σ 2 ) et les v.a. Xi sont i.i.d. Par suite, sous Pn,θ ,                        i=1 Xi ∼
+      N(0, nσ 2 ) dont on déduit que
+                                                            n
+                                                    1 X
+                                                   √    Xi ∼ N(0, 1).
+                                                     nσ
+                                                         i=1
+
+      Nous avons donc établi que sous Pn,θ
+
+                                                                n
+                                                                           !2
+                                                        1 X
+                                         nT1,n =       √    Xi                  ∼ σ 2 χ2 (1).
+                                                         n
+                                                                i=1
+
+      Nous avons
+                                                    nT2,n = nT1,n − Sn2 .
+                      Pn,θ −prob
+      Puisque Sn2        −→        σ 2 , nous déduisons du lemme de Slutsky que
+                                                       Pn,θ
+                                                 nT2,n =⇒ σ 2 χ2 (1) − 1 .
+                                                                        
+
+
+Solution .       1. Par construction nous avons
+
+         Eθ [h(X1:n , . . . , Xn:n )] = Eθ [h(Xσ1 (Z) ), . . . , h(Xσn (Z) )]
+                  Eθ [h(Xτ1 , . . . , Xtaun )1{τ =σ(Z)} ] ==            Eθ [h(Xτ1 , . . . , Xtaun )1{Xτ1 <...Xτn } ]
+              X                                                    X
+          =
+              τ ∈Sn                                                        τ ∈Sn
+
+   2. Comme sous Pθ , (Xτ1 , . . . , Xτn ) a la même loi que X1 , . . . , Xn , nous en déduisons
+                                        ZZ
+      Eθ [h(X1:n , . . . , Xn:n )] = n!    h(y1 , . . . , yn )pθ (y1 , . . . , yn )1{y1 <···<yn } dLeb⊗n (y1 , . . . , yn )
+
+
+                                                                                                                  Page 8
+Ecole Polytechnique, promotion 2022                           Contrôle de connaissances Cours MAP433
+
+
+  3. Soit h une fonction mesurable bornée. Notons que
+
+     Eθ [h(U1 , . . . , Un )] = Eθ [h(nX1:n , (n − 1)(X2:n − X1:n ), . . . , Xn:n )]
+                                                                           n
+           ZZ                                                                         !
+                                                                              (yi − a) 1{a<y1 <···<yn } dLeb⊗ (y1 , . . . , yn )
+                                                                         X
+                                                         −n         −1
+     = n!        h(ny1 , (n − 2)(y2 − y1 ), . . . , yn )λ exp −λ
+                                                                             i=1
+            ZZ
+                                                         −n            −1
+                                                                                     
+     = n!        h(ny1 , (n − 2)(y2 − y1 ), . . . , yn )λ     exp −λ        n(y1 − a)
+                         n
+                               exp λ−1 (n − i + 2)(yi − yi−1 ) 1{a<y1 <···<yn } dLeb⊗ (y1 , . . . , yn )
+                         Y                                    
+                     ×
+                         i=2
+
+     où nous avons utilisé (3). Nous en déduisons
+
+      Eθ [h(U1 , . . . , Un )]
+       ZZ                                         n
+                                                    exp(−λ−1 ui )1R+ (ui )1{a<u1 } dLeb⊗n (u1 , . . . , un )
+                                                  Y
+                                −n     −1
+     =      h(u1 , . . . , un )λ exp(−λ (u1 −na))
+                                                            i=2
+
+     ce qui démontre que les variables U1 , U2 , . . . , Un sont indépendantes sous Pθ . La variable
+     U1 est distribuée suivant une loi E(na, λ). Les variables U2 , . . . , Un sont distribuées
+     suivant une loi E(0, λ).
+  4. En utilisant (3), nous avons
+                      n
+                      X                  n
+                                         X                               n
+                                                                         X
+                        (Xi:n − X1:n ) =   (n − i + 1)(Xi:n − Xi−1:n ) =   Ui .
+                      i=1                       i=2                                      i=2
+
+     Comme sous Pθ , les variables aléatoires U2 , . . . , Un sont indépendantes de loi Gamma(1, λ),
+     P n
+       i=2 Ui est distribuée suivant une loi Gamma(n − 1, λ).
+  5. Pour tout θ ∈ Θ, la fonction T1 /λ est distribuée suivant la loi Gamma(n − 1, 1). Elle
+     est donc pivotale. En notant aα = Gqf(α/2) et bα = Gqf(1 − α/2) on a donc pour tout
+     θ ∈ Θ,
+                                  Pθ (T1 /λ ∈ [aα , bα ]) = 1 − α .
+     Par conséquent, [T1 /bα , T1 /aα ] est un intervalle de confiance de couverture 1 − α.
+  6. Comme nX1:n est distribué suivant une loi E(na, λ), nous avons pour toute fonction h
+     mesurable bornée
+                                     Z
+      Eθ [h(X1:n )] = Eθ [h(U1 /n)] = h(u1 /n)λ−1 exp(λ−1 (u1 − na))1{u1 ≥na} dLeb(u1 )
+                                        Z
+                                          (n/λ)h(v1 ) exp((n/λ)(v1 − a))1{v1 ≥a} dLeb(v1 )
+
+     et donc X1:n est E(a, λ/n).
+  7. Sous Pθ , (T2 − a)/λ est E(0, 1) et est indépendant de T1 /λ qui est distribuée suivant une
+     loi Gamma(n − 1, 1). La fonction Fn (a) est donc pivotale.
+
+
+
+
+                                                                                                      Page 9
+Ecole Polytechnique, promotion 2022                       Contrôle de connaissances Cours MAP433
+
+
+   8. [Question bonus] : Soit h une fonction mesurable bornée. Nous avons
+
+                                                                              tn−2
+                      Z +∞ Z +∞                                                               
+                                      (n − 1)(t2 − a) n      n         
+                                                                               1              t1
+      Eθ [h(Fn (a))] =            h                      exp − (t2 − a)                exp  −      dt1 dt2
+                       a     0               t1        λ      λ           (n − 2)!λn−1        λ
+                      Z ∞
+                                      nt1n−1
+                               Z                                     
+                                                      t1      nt
+                    =     h(t)                  exp −     1+         dt1 dt
+                       0            (n − 1)!λn         λ     n−1
+
+      Nous concluons en remarquant que pour tout s > 0,
+                             Z +∞ n−1
+                                   v
+                                        exp(−v/s)dLeb(v) = sn .
+                              0    Γ(n)
+
+   9. Choissons deux constantes 0 < c1 < c2 telles que
+                               Z c2             −n
+                                             nt
+                                   n 1+               dt = 1− | α.
+                                c1         n−1
+
+      Alors un intervalle de confiance pour a de niveau de couverture 1 − α est
+
+                                          (T2 − c2 T1 , T2 − c1 T1 ) .
+
+Solution .    1.
+   2. Remarquons que Eθ [β̂1 ] = β1 et Eθ [Ȳ ] = β0 + β1 x̄. Par conséquent :
+
+                                   Eθ [Ȳ − δ β̂1 ] = β0 + β1 x̄ − δβ1 = 0
+
+   3. En posant u = x − x̄1, nous avons
+
+                                                1                         ⊤
+                                                     ⊤                 2 1 u
+                         Covθ (Ȳ , β̂1 ) =         1  Cov θ (Y )u = σ        =0
+                                              n∥u∥2                     n∥u∥2
+
+   4. Nous avons
+
+                                Varθ (Ȳ − δ β̂1 ) = Varθ (Ȳ ) + δ 2 Varθ (β̂1 )
+                                                       σ2       σ2
+                                                   =      + δ2      .
+                                                       n       ∥u∥2
+
+   5. Remarquons que
+                                                                          ⊤
+                                              ⊤                 1     δ
+                            Y − δ β̂1 = v Y        oùv =         1−      u   Y,
+                                                                n    ∥u∥2
+
+      Par conséquent Y − δ β̂1 est un vecteur Gaussien ; la moyenne et la covariance ont été
+      déterminées dans les deux questions précédentes.
+   6. Notons que (In − H)v = 0. Par conséquent, en utilisant le corollaire IV.3.9, les vecteurs
+      aléatoires Y − δ β̂1 et (In − H)Y sont indépendants.
+
+
+
+
+                                                                                         Page 10
+Ecole Polytechnique, promotion 2022                      Contrôle de connaissances Cours MAP433
+
+
+  7. Considérons la décomposition
+
+                                              Ȳ − δ β̂1   1
+                                       T (δ) = p         p
+                                              σ w(δ) S 2 /σ 2
+
+      Le numérateur est une variable Gaussienne centrée réduite. (n − 2)S 2 /σ 2 suit une loi du
+      χ2 centré à n − 2 degrés de liberté. Donc T 2 (δ) est distribué suivant une loi de Fisher
+      à (1, n − 2) degrés de liberté.
+  8. Nous remarquons que la fonction T 2 (δ) est une fonction pivotale. En notant Fα1,n−2 le
+     quantile 1 − α de la loi de Fisher à (1, n − 2) d.l, nous avons pour tout θ ∈ Θ,
+
+                                     Pθ (T 2 (δ) ≤ Fα1,n−2 ) = 1 − α .
+
+      Ceci définit la région de confiance
+                         (                    )
+                                  S 2F α                                  
+                       2     2        1,n−2                     2 1 2 α
+                      δ β̂1 − P                 − 2δ Ȳ β̂1 + Ȳ − S F1,n−2 ≤ 0
+                                   (xi − x̄)2                     n
+
+Solution . — Si η(X) ≤ 1/2, alors r⋆ (X) = η(X) et r⋆ (X)(1 − r⋆ (X)) = η(X)(1 − η(X)).
+      Si η(X) > 1/2, alors r⋆ (X) = 1 − η(X) et r⋆ (X)(1 − r⋆ (X)) = η(X)(1 − η(X)).
+  — Nous avons
+
+          P(Y = −1, Yi = 1, ϕn (X) = i|X, X1:n ) = E 1{Y =−1} 1{Yi =1} 1{ϕn (X)=i} |X, X1:n
+                                                                                           
+
+                                                    = E(1{Y =−1} |X)E(1{Yi =1} |Xi )1{ϕn (X)=i}
+                                                    = (1 − η(X))η(Xi )1{ϕn (X)=i}
+
+  —
+                                                  n
+                                                  X
+            P(Y = −1, ĥn (X) = 1|X, X1:n ) =           P(Y = −1, Yi = 1, ϕn (X) = i|X, X1:n )
+                                                  i=1
+                                                  n
+                                                        (1 − η(X))η(Xi )1{ϕn (X)=i}
+                                                  X
+                                              =
+                                                  i=1
+                                              = (1 − η(X))η(X(n) )
+
+  — Nous avons
+
+      P(Y ̸= ĥn (X)) = E[P(Y = −1, ĥn (X) = 1|X, X1:n )] + E[P(Y = 1, ĥn (X) = −1|X, X1:n )]
+                      = E[η(X(n) )(1 − η(X))] + E[η(X)(1 − η(X(n) ))] → 2E[η(X)(1 − η(X))]
+
+      où nous avons utilisé que 0 ≤ η(X(n) )(1 − η(X)) ≤ 1 et limn→∞ η(X(n) )(1 − η(X)) =
+      η(X)(1 − η(X)) presque sûrement. Et le même raisonnement vaut pour la deuxième
+      espérance E[η(X)(1 − η(X(n) ))].
+  — C’est une simple adaptation des deux questions précédentes.
+  — Le résultat se tient immédiatement de la question précédente et de la première question.
+
+
+
+                                                                                            Page 11
+Ecole Polytechnique, promotion 2022                 Contrôle de connaissances Cours MAP433
+
+
+  — D’après la question précédente,
+
+                  lim P(Y ̸= ĥn (X)) = 2E[r⋆ (X)(1 − r⋆ (X))]
+                  n→∞
+                                      = 2 E[r⋆ (X)] − E[r⋆ (X)2 ]
+                                                                
+
+                                      ≤ 2 E[r⋆ (X)] − E2 [r⋆ (X)] = 2R⋆ (1 − R⋆ )
+                                                                
+
+
+  — Puisque ĥn est un classificateur, nous avons aussi
+
+                                         R⋆ ≤ P(Y ̸= ĥn (X))
+
+     En combinant avec la question précédente, nous obtenons finalement
+
+                             R⋆ ≤ lim P(Y ̸= ĥn (X)) ≤ 2R⋆ (1 − R⋆ )
+                                   n→∞
+
+
+
+
+                                                                                    Page 12
+

@@ -1,0 +1,593 @@
+Ecole Polytechnique, promotion 2025                                          PC-1 Cours APM 41033 EP
+
+
+1     Exercices
+Ci-après, Leb désigne la mesure de Lebesgue sur R ; et Leb⊗n celle sur Rn .
+On écrit i.i.d. pour “indépendantes et identiquement distribuées”.
+Par convention, les vecteurs sont des vecteurs colonne. Si a ∈ Rn , a′ est la transposée de a.
+On rappelle la densité d’une loi exponentielle E(λ) de paramètre λ, et de moyenne λ−1 :
+
+                                      ∀u > 0       pλ (u) = λe−λu .
+
+La loi exponentielle E(λ) est un cas particulier de loi Γ(n, λ), dont la densité est :
+
+                                                            λn un−1 e−λu
+                                 ∀u > 0        qn,λ (u) =                ,
+                                                                Γ(n)
+Ces lois Gamma vérifient la propriété d’additivité : si U et V sont indépendantes et U ∼
+Γ(n, λ) et V ∼ Γ(n′ , λ), alors U + V ∼ Γ(n + n′ , λ).
+Objectif : Identifier un modèle statistique
+Exercice 1 (Un café pour commencer (⋆)). Une cafétéria souhaite remplacer son service
+par un ou plusieurs distributeurs automatiques de boisson. Afin de calibrer au plus juste le
+nombre de distributeurs nécessaires, elle mène donc une enquête pour connaı̂tre au mieux les
+besoins de ses utilisateurs.
+    1. Dans un premier temps, elle observe les temps successifs d’arrivée de clients dans son
+       local, enregistrant ainsi un vecteur T = (T1 , . . . , Tn ). En considérant les intervalles de
+       temps ainsi formés, et en admettant que les clients arrivent les uns après les autres selon
+       un flux identique toute la journée, proposer un modèle statistique. On notera pour cela
+
+                                        ∀i ≥ 1 :       ∆i = Ti − Ti−1 ,
+
+       avec la convention T0 = 0. Discuter des éventuelles limitations de ce modèle.
+                                                                                   b n ainsi
+    2. Proposer un estimateur du temps moyen d’arrivée d’un nouveau client, noté ∆
+       qu’une approximation du nombre de clients arrivant sur un intervalle de temps donné
+       de longueur h > 0 fixé.
+    3. Dans un second temps, pour une durée h > 0 fixée, elle compte sur une fenêtre de
+       temps entre 0 et Kh le nombre de clients arrivant tous les intervalles de temps de taille
+       h. Proposer alors un second modèle statistique pour le vecteur N = (N1 , N2 , . . . , NK )
+       ainsi obtenu.
+    4. Proposer un estimateur du nombre de clients arrivant sur un intervalle de temps h, noté
+       bK,h ainsi qu’une approximation du temps moyen d’arrivée d’un nouveau client.
+       N
+    5. Rappeler le lien existant entre le premier modèle (temps d’arrivées exponentiels) et le
+       second modèle (arrivées Poissoniennes dans une file d’attente).
+
+Objectif : Manipuler un changement de variable standard
+Exercice 2 (Rappel : transformation de v.a. (⋆)). Soit un n-échantillon (X1 , · · · , Xn )
+du modèle statistique
+                           (R, B(R), {pθ · Leb : θ ∈ Θ}) .
+On se place dans le cas θ = ((a1 , b1 ), · · · , (an , bn )) et Θ = (R × R⋆ )n .
+
+                                                                                              Page 1
+Ecole Polytechnique, promotion 2025                                                     PC-1 Cours APM 41033 EP
+
+
+      1. Quel est le modèle statistique induit par (a1 + b1 X1 , · · · , an + bn Xn ) ?
+Il est d’usage d’appeler les coefficients ai les paramètres de translation et bi les paramètres
+d’échelle.
+                                                                              R
+Rappel. Soit un ouvert O de Rk et p · Leb⊗k une densité sur Rk telle que O p dLeb⊗k = 1.
+Soit ϕ : O → Rk une application continûment différentiable, injective sur O et dont le jacobien
+ne s’annule pas sur O. 1 On rappelle le résultat suivant. Si X ∼ p · Leb⊗k alors la loi de ϕ(X)
+est q · Leb⊗k où la densité u 7→ q(u) est donnée par :
+                                                               
+                               1ϕ(O) (u) p ϕ−1 (u) Det Jϕ−1 (u) ,
+où pour toute application ψ différentiable Jψ désigne la matrice jacobienne de l’applica-
+tion ψ (matrice des dérivées partielles). Lorsque ϕ est un C 1 -difféomorphisme, la relation
+Jϕ (ϕ−1 (u)) Jϕ−1 (u) = I entraine :
+                                                                         1
+                                     Det Jϕ−1 (u) =                                 .
+                                                                 Det (Jϕ (ϕ−1 (u)))
+
+
+Objectif : Modèle translation/échelle. Cas Gaussien (questions 3/4) (⋆⋆)
+
+Exercice 3 (Modèle de translation et d’échelle). Soit g une densité par rapport à la
+mesure Leb. On considère le modèle statistique
+                                                                 
+                      Rn , B(Rn ), pn,θ · Leb⊗n : θ ∈ Θ := R × R+
+                                                                ∗
+
+où                                                                    
+                                                           n
+                                                           Y
+                                                      −n         xi − µ
+                       pn,θ (x1 , · · · , xn ) := σ          g            ,             θ := (µ, σ).
+                                                                    σ
+                                                           i=1
+
+On note (X1 , . . . , Xn ) les variables canoniques : pour tout i ∈ {1, . . . , n} et (x1 , · · · , xn ) ∈ Rn ,
+on a Xi (x1 , . . . , xn ) = xi .
+      1. Montrer que sous pn,θ · Leb⊗n , les statistiques (X1 , . . . , Xn ) sont i.i.d. et identifier leur
+         loi.
+      2. Soit θ = (µ, σ) ∈ Θ. Montrer que sous pn,θ · Leb⊗n , les variables aléatoires réelles
+
+                                                Xi − µ
+                                                       ,           i ∈ {1, . . . , n}
+                                                  σ
+         sont i.i.d. de loi de densité g par rapport à Leb.
+Supposons que g est une densité gaussienne centrée réduite. On définit les statistiques
+                                       n
+                                       X                            n
+                                                                    X
+                               Sn :=         Xi ,          Kn :=          (Xi − n−1 Sn )2 .
+                                       i=1                          i=1
+
+
+
+
+    1. de façon équivalente, ϕ est un C 1 -difféomorphisme de O sur ϕ(O) i.e. c’est une bijection de O sur ϕ(O)
+telle que ϕ et ϕ−1 sont de classe C 1 .
+
+
+                                                                                                         Page 2
+Ecole Polytechnique, promotion 2025                                                PC-1 Cours APM 41033 EP
+
+
+      3. Proposer un estimateur de µ puis de σ 2 , utilisant ces deux statistiques. Commentaires :
+         il n’y a pas unicité d’un estimateur de θ. Dans le cas de l’estimateur de la moyenne, la
+         figure 1 permet de comparer deux stratégies d’estimation : l’une repose sur l’estimateur
+         de la moyenne empirique, et l’autre sur l’estimateur de la médiane empirique. Cette
+         figure affiche le boxplot de 5000 réalisations indépendantes de chacun des estimateurs
+         dans le cas n = 50 (gauche) et le cas n = 500 (droite). Qu’en concluez-vous ? dans
+         le corrigé rédigé, on trouvera les mêmes analyses graphiques pour le cas où g est une
+         densité de Laplace ; pensez-vous que la conclusion sera la-même ?
+
+
+                           2.6                              2.6
+
+
+
+                           2.4                              2.4
+
+
+
+                           2.2                              2.2
+
+
+
+                             2                                  2
+
+
+
+                           1.8                              1.8
+
+
+
+                           1.6                              1.6
+
+
+
+                           1.4                              1.4
+
+                                  moy          med                    moy       med
+
+
+
+
+Figure 1 – Comparaison de l’estimateur de la moyenne empirique et de celui de la médiane
+empirique. On a produit 5000 vecteurs d’observations de taille n, en tirant 5000 n réalisations
+de gaussiennes indépendantes de moyenne 2 et de variance 1. Boxplot de 5000 réalisations
+indépendantes de l’estimateur, dans le cas où n = 50 (groupe de gauche) et n = 500 (groupe
+de droite).
+
+      4. Déterminer le modèle statistique induit par les statistiques (Sn , Kn ). La démonstration
+         du théorème de Gosset est donnée dans le polycopié de cours (Théorème IV-5-24).
+
+Objectif : Modèle de régression (linéaire) Gaussienne
+Exercice 4 (( (⋆⋆)). Nous cherchons à modéliser la dépendance d’une réponse par rapport
+à k variables explicatives, sur une population de n individus. On collecte donc
+
+                                           (x1 , y1 ), . . . , (xn , yn ) ,
+
+où yi ∈ R et xi ∈ Rk sont respectivement la réponse et les variables explicatives pour le i-ème
+individu. Considérons le modèle statistique suivant
+                               n                                           o
+                    Rn , B(Rn ), pn,θ · Leb⊗n : θ = (β, σ) ∈ Θ := Rk × R+ ∗     ,
+
+où                                                                                 
+                                                                n
+                                                                Y
+                                                           −n         yi − f (x′i β)
+                            pn,θ (y1 , · · · , yn ) := σ          g                    ;
+                                                                           σ
+                                                                i=1
+
+
+                                                                                                    Page 3
+Ecole Polytechnique, promotion 2025                                                                                 PC-1 Cours APM 41033 EP
+
+
+g est une densité par rapport Leb, f : R → R une fonction. Pour i ∈ {1, . . . , n} nous notons
+Yi la i-ème variable canonique, Yi (y1 , . . . , yn ) = yi .
+   1. Montrer que sous pn,θ ·Leb⊗n , les statistiques (Y1 , . . . , Yn ) sont indépendantes et préciser
+      leurs lois.
+   2. Montrer que sous pn,θ · Leb⊗n les variables
+
+                                                           σ −1 {Yi − f (β ′ xi )},                    i ∈ {1, · · · , n}
+
+      sont i.i.d. de loi g · Leb.
+   3. (Régression linéaire gaussienne.) Dans cette question, k = 2, g est la densité d’une loi
+      gaussienne centrée réduite, f (η) = η et pour tout i ∈ {1, · · · , n}
+                                         
+                                          1
+                                  xi =            f (β ′ xi ) = β1 + β2 xi .
+                                          xi
+
+      Proposer un estimateur de β1 et β2 .
+Nous disposons de 150 mesures de concentration d’Ozone (moyennes observées entre 13 :00
+et 15 :00 à Roosevelt Island en p.p.m) en fonction de différents facteurs : radiation solaire,
+vitesse du vent, température. On décide d’explorer la relation entre la concentration d’ozone
+(considérée comme la variable de réponse) et la radiation solaire (considérée comme la variable
+explicative).
+
+                                                                                                                   Residuals vs Fitted
+
+
+
+                                                                                                                                         117
+                150
+
+
+
+
+                                                                                            100
+
+
+
+
+                                                                                                                                                    62
+
+                                                                                                                                               99
+                100
+
+
+
+
+                                                                                            50
+                                                                                Residuals
+        Ozone
+
+
+
+
+                                                                                            0
+                50
+
+
+
+
+                                                                                            −50
+                0
+
+
+
+
+                      0   50   100   150             200       250   300                          20        30            40              50             60
+
+                                           Solar.R                                                                    Fitted values
+                                                                                                                   lm(Ozone ~ Solar.R)
+
+
+
+
+Figure 2 – (gauche) Le nuage de 150 points (xi , yi ) où, pour la i-ème mesure, xi est la
+radiation solaire et yi la concentration d’ozone. On trace aussi, en rouge, la droite deP   régression
+x 7→ b̂1 + b̂2 x où b̂1 , b̂2 ont été obtenus comme minimisant la quantité
+                                                                           P   (β1 , β2 ) 7→ 150
+                                                                                               i=1 (yi −
+β1 − β2 xi )2 . La droite horizontale est la droite d’équation x 7→ n−1 ni=1 yi . (droite) Nuage
+de 150 points (ybi , ei ) où ybi = b̂1 + b̂2 xi et ei = yi − ybi .
+
+   4. Le modèle de régression linéaire vous semble-t-il approprié ? Quelles améliorations du
+      modèle sembleraient souhaitables ?
+
+Objectif : Modèle de Poisson, modèle de mélange Poissonien
+Exercice 5 (Score de football (⋆⋆⋆)). Soit λ > 0. On appelle loi de Poisson de paramètre
+λ la loi de densité {pλ (k), k ∈ N} par rapport à la mesure de comptage µ sur N :
+
+                                                                               λk
+                                                               pλ (k) = e−λ       ,                    k∈N
+                                                                               k!
+
+                                                                                                                                                              Page 4
+Ecole Polytechnique, promotion 2025                                  PC-1 Cours APM 41033 EP
+
+
+    1. Calculer la fonction génératrice des moments de la loi de Poisson de paramètre λ.
+    2. En déduire la moyenne et la variance d’une loi de Poisson de paramètre λ.
+    3. Montrer que si X1 et X2 sont deux variables indépendantes de loi de Poisson de pa-
+        ramètres λ1 > 0 et λ2 > 0, alors la variable aléatoire X1 + X2 suit une loi de Poisson
+        de paramètre λ1 + λ2 .
+Soit (X1 , . . . , Xn ) un n-échantillon du modèle
+                                                
+                                       (N, P(N), pλ · µ : λ ∈ R+
+                                                               ∗ )
+                                                                 P
+    4. Définir le modèle statistique induit par la statistique ni=1 Xi .
+    5. Proposer une méthode d’estimation du paramètre λ.
+On se propose de modéliser le nombre de buts inscrits dans un match de football par une loi
+de Poisson. On considère tout d’abord que le nombre de buts inscrits par l’équipe locale et
+l’équipe visiteuse sont deux variables de Poisson indépendantes de loi de Poisson de paramètres
+différents. On suppose aussi que les résultats des matchs sont indépendants.
+    6. Construire le modèle statistique associé à l’observation des résultats de n matchs.
+    7. On a collecté les buts marqués en premier league de la saison 2004-2005 à la saison
+        2008-2009. Le nombre de matchs est de n = 1900 :
+             le nombre de buts marqués est en moyenne 2.523 avec une variance de 2.640,
+             le nombre de buts marqués par l’équipe locale est en moyenne 1.468 buts avec une
+             variance de 1.617,
+             le nombre de buts marqués par l’équipe visiteuse est en moyenne 1.055 avec une
+             variance de 1.158.
+        Proposer un estimateur des intensités λ1 et λ2 des deux processus de Poisson introduits
+        pour modéliser le nombre de buts marqués par chacune des deux équipes. Pourquoi
+        l’hypothèse poissonienne est-elle discutable ?
+Au lieu d’ajuster une loi de Poisson, il semble plus judicieux dans ce cas de considérer une
+famille de loi présentant une “sur-dispersion” par rapport à la loi de Poisson (i.e. pour laquelle
+la variance puisse être plus grande que la moyenne). Etudions plus en détail le nombre de
+buts marqués par l’équipe locale et l’équipe visiteuse (voir figure 3).
+
+             Observés   Poisson (λ = 1.468)                Observés    Poisson (λ = 1.055)
+      0        469              437.7                 0       692               661.6
+      1        621              642.6                 1       680               697.9
+      2        456              471.7                 2       335               368.2
+      3        217              230.8                 3       131               129.5
+      4        100               84.7                 4        51                34.1
+     ≥5        37               32.5                 ≥5       11                 8.7
+    Total     1900                                  Total    1900
+
+     Figure 3 – Résultats de l’équipe locale (gauche) et de l’équipe visiteuse (droite)
+
+    L’analyse de ces résultats suggère que la modélisation poissonnienne sous-estime le nombre
+de scores nuls et sur-estime en contre-partie les cas où 1 ou 2 buts sont marqués. On considère
+comme modèle, un mélange de la distribution de Poisson et d’une masse de Dirac en 0,
+                                                                  λk
+                              pπ,λ (k) = (1 − π)1{0} (k) + πe−λ      ,
+                                                                  k!
+
+                                                                                            Page 5
+Ecole Polytechnique, promotion 2025                                    PC-1 Cours APM 41033 EP
+
+
+où π ∈ ]0, 1[ est la proportion du mélange.
+   8. Comment obtenir des réalisations d’une telle loi à partir d’un générateur de v.a. uniforme
+      sur [0, 1] et d’un générateur de loi de Poisson de paramètre λ ?
+   9. Calculer la moyenne et le moment d’ordre 2 de cette distribution.
+ 10. Proposer une méthode d’estimation de π et de λ.
+
+Objectif : Modèle financier de Black-Scholes-Merton
+
+Exercice 6 (Prix d’un actif financier (⋆ ⋆ ⋆)). Soit X une variable aléatoire réelle
+d’espérance µ et d’écart type σ. Si E[|X|3 ] < ∞, on définit le coefficient d’asymétrie comme
+le moment d’ordre trois de la variable centrée réduite :
+                                         "         #
+                                            X −µ 3          µ3
+                                 γ1 = E                = 3/2 ,
+                                               σ           µ2
+
+avec µi les moments centrés d’ordre i. Si E[X 4 ] < ∞, on définit son kurtosis non normalisé
+(coefficient d’aplatissement) comme le moment d’ordre quatre de la variable centrée réduite :
+                                        "          #
+                                           X −µ 4        µ4
+                                 β2 = E                = 2 .
+                                             σ           µ2
+
+On définit l’excès de kurtosis comme γ2 = β2 − 3.
+   On observe la suite p1 , · · · , pn du prix d’un actif financier à la clôture d’un marché (prix
+journalier). On modélise ces données comme une réalisation du vecteur aléatoire (P1 , · · · , Pn ).
+On appelle log-rendement de cet actif la quantité
+
+                                       Xk := log(Pk /Pk−1 ) .
+
+Un modèle couramment utilisé (associé à la théorie proposée par F. Black, M. Scholes et R.
+Merton, prix Nobel 1997) consiste à supposer que (i) les log-rendements {Xi , i ≥ 1} sont
+i.i.d. et (ii) ils suivent une distribution gaussienne (dont la moyenne µ et la variance σ 2 sont
+inconnues ; l’analyse statistique peut consister à estimer ces quantités).
+     On souhaite estimer µ, σ 2 à partir de mesures des log-rendements.
+   1. Proposer un modèle statistique des log-rendements.
+   2. Proposer un estimateur de la moyenne µ et de la variance σ 2 .
+   3. On superpose l’histogramme des observations et la densité d’une loi gaussienne dont les
+      paramètres sont égaux à ceux estimés (voir figure). Peut-on être satisfait de ce modèle ?
+      Qu’observe-t-on ?
+   4. Lorsque X est une variable aléatoire gaussienne de moyenne µ et de variance σ 2 ,
+        a) montrer que le coefficient d’asymétrie est nul.
+        b) calculer E[etX ] pour tout t ∈ R. En identifiant les premiers termes du développement
+           de log E[etX ], montrer que l’excès de kurtosis est nul.
+   5. Proposer un estimateur empirique du coefficient d’asymétrie et du coefficient d’excès de
+      kurtosis.
+
+
+                                                                                               Page 6
+Ecole Polytechnique, promotion 2025                                                                                                                                                                      PC-1 Cours APM 41033 EP
+
+
+  6. En évaluant ces estimateurs sur la série des log-rendements, nous obtenons -0.0707
+     pour l’asymétrie et 1.274035 pour l’excès de kurtosis. Le modèle retenu vous semble-t-il
+     acceptable ?
+  7. Pour modéliser les log-rendements, R. Engle (Prix Nobel d’Economie 2003) a proposé
+     le modèle ARCH(1) :
+                                    q
+                                               2 Z ,
+                               Xk = α0 + α1 Xk−1         X0 = 0 ,
+                                                    k
+
+           où α0 > 0 et α1 ≥ 0 et {Zk }nk=1 est une suite i.i.d. de variables aléatoires gaussiennes
+           centrées réduites. Définir le modèle statistique associé.
+                                                                                                                                                                                                        Apple Computer − 2015
+
+
+
+
+                                                                                                                                                                        0.06
+                                                                apple.prices
+
+
+
+
+                                                                                                                                                                        0.04
+                                                                                130
+           130
+
+
+
+
+                                                                                125
+
+
+
+
+                                                                                                                                                                        0.02
+           120
+
+
+
+
+                                                                                120
+
+
+
+
+                                                                                                                                               Log Daily Returns
+                                                                       Close
+    Open
+
+
+
+
+                                                                                                                                                                        0.00
+                                                                                115
+           110
+
+
+
+
+                                                                                                                                                                        −0.02
+                                                                                110
+           100
+
+
+
+
+                                                                                105
+
+
+
+
+                                                                                                                                                                        −0.04
+           135
+
+
+
+
+                                                                                1.5e+08
+
+
+
+
+                                                                                                                                                                        −0.06
+           130
+
+
+
+
+                                                                                                                                                                                janv.   mars      mai           juil.           sept.   nov.      janv.
+           125
+
+
+
+
+                                                                                                                                                                                                                Date
+                                                                                1.0e+08
+                                                                       Volume
+    High
+           120
+           115
+
+
+
+
+                                                                                5.0e+07
+
+
+
+
+                                                                                                                                                                   30
+           110
+           130
+
+
+
+
+                                                                                          janv.   mars   mai    juil.   sept.   nov.   janv.
+
+                                                                                                               Index                                               20
+                                                                                                                                                    density
+           120
+    Low
+           110
+
+
+
+
+                                                                                                                                                                   10
+           100
+
+
+
+
+                                                                                                                                                                    0
+
+                 janv.   mars   mai    juil.   sept.   nov.   janv.
+                                                                                                                                                                                          −0.04                         0.00               0.04
+                                      Index                                                                                                                                                                       df
+
+
+
+
+                                                                                                                                               Log-rendements (haut) et ajustement
+   Mesures, dont le prix à la clôture
+                                                                                                                                               d’une gaussienne (bas)
+
+Objectif : Modèle de mélange et transformée de Fourier
+Exercice 7 (Sur l’identifiabilité des lois de mélange Gaussien et Poisson (⋆ ⋆ ⋆)).
+On appelle simplexe des probabilités l’ensemble
+                            (                            K
+                                                                 )
+                                                         X
+                                                      K
+                       S := (α1 , . . . , αK ) ∈ (R+ ) :   αi = 1 .
+                                                                                                                                                                                           i=1
+
+On pose d’autre part
+                                                           
+                                                       M := µ = (µ1 , . . . , µK ) ∈ RK : µ1 < µ2 < . . . < µK .
+                                                                                         
+  1. Démontrer que pour tout (µ1 , . . . , µK ) ∈ M, la famille de fonctions t 7−→ eitµj 1≤j≤K
+     est une famille libre.
+
+                                                                                                                                                                                                                                                          Page 7
+Ecole Polytechnique, promotion 2025                                      PC-1 Cours APM 41033 EP
+
+
+Pour tout α = (α1 , . . . , αK ) ∈ S et µ = (µ1 , . . . , µK ) ∈ M, on considère la loi de densité par
+rapport à la mesure de Lebesgue
+                                                    K
+                                             1 X                 2
+                                 fα,µ (x) = √        αk e−(x−µk ) /2 .
+                                              2π k=1
+
+   2. Démontrer que le modèle statistique de mélange gaussien (R, B(R), {fα,µ · Leb : (α, µ) ∈ S × M})
+      est identifiable. On rappelle pour cela la fonction caractéristique d’une variable aléatoire
+      X gaussienne centrée réduite :
+                                                         2
+                                           E[eitX ] = e−t /2 .
+                                                                             n
+La loi de Poisson de paramètre µ est la loi de densité {pµ (n) := e−µ µn! , n ∈ N} par rapport à
+la mesure de comptage ν sur N. Sa fonction caractéristique est donnée par
+
+                                      Φpµ (t) = exp[µ(eit − 1)].
+
+Pour tout α ∈ S et µ = (µ1 , . . . , µK ) ∈ M, on définit la densité de mélange Poissonien
+                                                   K
+                                                   X
+                                      qα,µ (n) =         αk pµk (n).
+                                                   k=1
+
+   3. Démontrer que le modèle statistique de mélange poissonnien : (N, P(N), {qα,µ ·ν, (α, µ) ∈
+      S × M}) est identifiable.
+
+
+
+
+                                                                                                Page 8
+

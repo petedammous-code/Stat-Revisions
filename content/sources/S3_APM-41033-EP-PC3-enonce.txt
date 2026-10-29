@@ -1,0 +1,224 @@
+Ecole Polytechnique, promotion 2025                                       PC-3 Cours MAP433
+
+
+    Par convention, les vecteurs sont des vecteurs colonne. Pour un vecteur a, on notera aT
+sa transposée.
+
+
+1     Exercices
+Exercice 1 (⋆⋆). Soit Z = (X1 , . . . , Xn ) un n-échantillon du modèle statistique
+                                         
+                         (R+ , B(R+ ), Unif([0, θ]) : θ ∈ R∗+ ).
+
+    1. Calculer l’estimateur du maximum de vraisemblance de θ.
+Soit g : R∗+ → R une fonction différentiable vérifiant limθ→0+ θg(θ) = 0.
+                                                        (1)       P
+   2. Peut-on choisir T : R+ → R de telle sorte que θbn := n−1 ni=1 T (Xi ) soit un estimateur
+      sans biais de g : θ → g(θ) ?
+   3. On pose Xn:n := max(X1 , . . . , Xn ). Montrer que l’on peut choisir Te : R+ → R de telle
+                  (2)
+      sorte que θbn := Te(Xn:n ) soit un estimateur sans biais de g : θ 7→ g(θ).
+Dans la suite de l’exercice, on pose g(θ) = θ.
+                                                               (1)   (2)
+    4. Comparer le risque quadratique des deux estimateurs θbn et θbn . Montrer que l’estima-
+              (1)
+       teur θbn est inadmissible pour n > 1. Voir la figure 1.
+                                                                    (3)
+    5. Pour a > 0, calculer le risque quadratique de l’estimateur θbn,a = aXn:n . Montrer que
+                      (2)
+       l’estimateur θbn est inadmissible. Voir la figure 1.
+
+          0.018
+                      Risque 1
+          0.016       Risque 2
+
+          0.014
+
+          0.012
+
+           0.01
+
+          0.008
+
+          0.006
+
+          0.004
+
+          0.002
+
+              0
+                  0     0.2      0.4   0.6         0.8   1
+
+                                                      h          i
+                                                        (i)
+Figure 1 – Exercice 1. [gauche] Evolution de θ 7→ Eθ (θbn − θ)2 dans le cas n = 20. [droite]
+       h          i
+           (i)                                              (3)
+θ 7→ Eθ (θbn − θ)2 pour i = 2, 3 dans le cas n = 5 ; pour θbn , on a envisagé a = 1 et a = a⋆ .
+
+
+
+Exercice 2 (⋆⋆). Soient x1 , . . . , xn des réels tels que xi ̸= xj pour deux indices i ̸= j. On
+considère le modèle statistique
+                                  ( n                                        )!
+                                   O
+                        n      n                        2                  2
+                      R , B(R ),       N(β1 + β2 xi , σ ) : (β1 , β2 ) ∈ R      .
+                                             i=1
+
+On suppose que σ 2 > 0 est connu.
+    1. Déterminer la matrice d’information de Fisher I(β1 , β2 ).
+
+                                                                                         Page 1
+Ecole Polytechnique, promotion 2025                                                 PC-3 Cours MAP433
+
+
+   2. Déterminer une borne inférieure sur la variance d’un estimateur (régulier) sans biais de
+      β1 .
+   3. On suppose que β2 est connu. Donner une borne inférieure sur la variance d’un estima-
+      teur (régulier) sans biais de β1 .
+   4. Déterminer une borne inférieure d’un estimateur (régulier) sans biais de β1 β2 .
+
+
+Exercice 3 (⋆⋆⋆). Soit Θ ⊂ R et (Z, Z, {pθ · µ : θ ∈ Θ}) un modèle statistique dominé. Soit
+T un estimateur sans biais de la fonction g : Θ → R telle que pour tout θ ∈ Θ, Eθ [T 2 (Z)] < ∞.
+   1. Montrer que pour toute fonction Ψ : Z → R mesurable telle que 0 < Varθ [Ψ(Z)] < ∞,
+      on a
+                                            {Covθ (T (Z), Ψ(Z))}2
+                             Varθ (T (Z)) ≥                       .
+                                                Varθ (Ψ(Z))
+Dans la suite, on fixe θ, δ tels que θ ∈ Θ et θ − δ ∈ Θ. On suppose que
+
+                           {z ∈ Z : pθ (z) = 0} ⊆ {z ∈ Z : pθ−δ (z) = 0}.
+
+   2. On considère la fonction Ψ donnée par
+                                        ( p (z)
+                                                   θ−δ
+                                                   pθ (z)   −1     si pθ (z) > 0,
+                                   Ψ(z) :=
+                                               0                   sinon.
+
+      Montrer que Eθ [Ψ(Z)] = 0 et que Covθ (T (Z), Ψ(Z)) = g(θ − δ) − g(θ).
+   3. En déduire une borne sur la variance des estimateurs sans biais de g : θ 7→ g(θ).
+   4. Proposer des conditions pour déduire la borne de Cramér-Rao de cette inégalité.
+On suppose maintenant que Z = (X1 , . . . , Xn ) est un n-échantillon du modèle
+                                   
+                      (R+ , B(R+ ), Unif([0, θ]) : θ ∈ Θ = R∗+ ).
+
+Observer que ce modèle n’est pas régulier. Nous considérons la fonction g(θ) = θ.
+   5. Montrer que pour tout δ ∈ ]0, θ[, nous avons pour tout estimateur sans biais T de θ
+
+                                                                    δ2
+                                     Varθ (T (Z)) ≥
+                                                            (θn /(θ − δ)n ) − 1
+
+   6. Soit 0 < c ≤ n. En posant δ = cθ/n, montrer que la borne inférieure peut s’écrire sous la
+      forme θ2 τn (c)/n2 pour une quantité τn (c) telle que limn→∞ τn (c) existe. Conclure Voir
+      la figure 2.
+
+
+Exercice 4 (⋆). Soit q une densité sur R par rapport à la mesure de Lebesgue vérifiant
+                        Z                      Z
+                           x q(x)dx = 0 ,        x2 q(x)dx = 1 .
+
+Soit (X1 , . . . , Xn ), un n-échantillon du modèle statistique
+
+                                     (R, B(R), {pθ · Leb, θ ∈ R})
+
+                                                                                               Page 2
+Ecole Polytechnique, promotion 2025                                                           PC-3 Cours MAP433
+
+
+
+
+Figure 2 – Exercice 2. (gauche) Tracé de c 7→ τn (c) pour différentes valeurs de n, et tracé de
+                                                                                 (2)
+c 7→ limn τn (c). (droite) Tracé de c 7→ n/((n + 2)τn (c)), ratio de l’EQM de θbn et du minorant
+de l’EQM des estimateurs sans biais.
+
+où pθ est un modèle de translation
+                                                                             
+                                                      1               x−θ
+                                         x 7→ pθ (x) = q                          ;
+                                                      σ                σ
+le facteur d’échelle σ > 0 est supposé connu. Pout tout an = (a1,n , · · · , an,n ) ∈ Rn , on
+considère la classe des estimateurs linéaires, i.e. des estimateurs qui sont des combinaisons
+linéaires des échantillons.
+                                                  Xn
+                                     θ̂n (an ) :=     ai,n Xi .
+                                                            i=1
+   1. Déterminer l’estimateur de θ de risque quadratique minimal dans la classe des estima-
+      teurs {θ̂n (an ), an ∈ Rn } et sans biais.
+   2. Calculer une borne inférieure du risque quadratique dans la classe des estimateurs
+      linéaires (θ̂n (an ), an ∈ Rn ).
+
+
+Exercice 5 (⋆ ⋆ ⋆). Soit la densité exponentielle de paramètre θ > 0 :
+
+                             x 7→ fθ (x) = θ−1 e−x/θ 1R+ (x),                θ ∈ Θ := R∗+ .
+
+Soit (X1 , . . . , Xn ) un n-échantillon du modèle statistique
+
+                                         (R, B(R), {fθ · Leb, θ ∈ Θ}) .
+
+On note X1:n ≤ X2:n ≤ · · · ≤ Xn:n les statistiques d’ordre de l’échantillon ; et
+                                                                    n
+                                                                    Y
+                                         pθ (y1 , · · · , yn ) :=         fθ (yk ).
+                                                                    k=1
+
+   1. Montrer que sous pθ · Leb⊗n , la loi jointe des statistiques d’ordre X1:n , X2:n , . . . , Xn:n
+      admet une densité par rapport à Leb, densité donnée par
+
+            (y1 , · · · , yn ) 7→ f1:n (θ; y1 , y2 , . . . , yn ) := n! pθ (y1 , · · · , yn ) 1{0≤y1 <y2 <···<yn } .
+
+                                                                                                                  Page 3
+Ecole Polytechnique, promotion 2025                                                       PC-3 Cours MAP433
+
+
+On considère la transformation
+
+                Z1 = nX1:n ,          Zk = (n − k + 1)(Xk:n − X(k−1):n ) , ∀k ≥ 2 ;                     (1)
+
+ou de façon équivalente
+                                              k
+                                              X        Zj
+                                     Xk:n =                , ∀k ≥ 1 .
+                                                     n−j+1
+                                              j=1
+
+On remarquera que le jacobien de la transformation (1) est n!. On notera aussi que pour tout
+xi ∈ R,
+          Xn        Xn
+              xi =     (n − i + 1)(xi − xi−1 ) ,   où, par convention x0 = 0 .
+              i=1      i=1
+
+   2. Montrer que sous pθ · Leb⊗n , les v.a. (Z1 , . . . , Zn ) sont des variables aléatoires i.i.d. de
+      loi exponentielle de paramètre θ > 0.
+Pour tout an = (a1,n , · · · , an,n ) ∈ Rn , on considère l’estimateur donné par
+                                                          n
+                                                          X
+                                           θ̂n (an ) :=         ai,n Xi:n .
+                                                          i=1
+
+   3. Montrer que
+                                     n
+                                     X                                              X n
+                                                                                1
+                       θ̂n (an ) =         Zj mj,n        où     mj,n :=             ai,n .
+                                                                              n−j+1
+                                     j=1                                             i=j
+
+
+   4. Calculer le biais et le risque quadratique de l’estimateur.
+   5. Déterminer les poids an de l’estimateur sans biais de risque quadratique minimal, dans
+      la classe des estimateurs de la forme (θ̂n (an ), an ∈ Rn ) [indication : on déterminera les
+      poids mj,n puis les poids aj,n ].
+   6. Déterminer la valeur des poids an pour lequel le risque quadratique est minimal dans
+      la classe des estimateurs de la forme (θ̂n (an ), an ∈ Rn ).
+
+
+
+
+                                                                                                     Page 4
+
