@@ -1,0 +1,120 @@
+/**
+ * Enveloppe Plotly : thème clair/sombre, redimensionnement, API minimale.
+ * Toutes les visualisations passent par ici pour rester cohérentes.
+ */
+import Plotly from 'plotly.js-dist-min'
+import { currentTheme } from './theme'
+
+export type Trace = Record<string, unknown>
+export type Layout = Record<string, unknown>
+
+export const COLORS = {
+  blue: '#2563eb',
+  orange: '#ea580c',
+  green: '#16a34a',
+  red: '#dc2626',
+  purple: '#7c3aed',
+  teal: '#0d9488',
+  gray: '#6b7280',
+  yellow: '#ca8a04',
+  pink: '#db2777',
+}
+
+export const PALETTE = [COLORS.blue, COLORS.orange, COLORS.green, COLORS.red, COLORS.purple, COLORS.teal, COLORS.pink, COLORS.yellow]
+
+function themeLayout(): Layout {
+  const dark = currentTheme() === 'dark'
+  const fg = dark ? '#e5e7eb' : '#1f2937'
+  const grid = dark ? '#374151' : '#e5e7eb'
+  return {
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: { color: fg, family: 'system-ui, -apple-system, Segoe UI, Roboto, sans-serif', size: 13 },
+    xaxis: { gridcolor: grid, zerolinecolor: grid, automargin: true },
+    yaxis: { gridcolor: grid, zerolinecolor: grid, automargin: true },
+    margin: { l: 50, r: 20, t: 40, b: 45 },
+    legend: { orientation: 'h', y: -0.2 },
+    autosize: true,
+  }
+}
+
+function merge(base: Layout, extra: Layout): Layout {
+  const out: Layout = { ...base }
+  for (const [k, v] of Object.entries(extra)) {
+    const b = out[k]
+    if (b && typeof b === 'object' && !Array.isArray(b) && v && typeof v === 'object' && !Array.isArray(v)) {
+      out[k] = { ...(b as Layout), ...(v as Layout) }
+    } else out[k] = v
+  }
+  return out
+}
+
+const CONFIG = { responsive: true, displaylogo: false, displayModeBar: false, locale: 'fr' }
+
+export interface PlotHandle {
+  update: (traces: Trace[], layout?: Layout) => void
+  destroy: () => void
+}
+
+/** Crée un graphe et renvoie une poignée pour le mettre à jour (react) ou le détruire. */
+export function plot(container: HTMLElement, traces: Trace[], layout: Layout = {}): PlotHandle {
+  let lastTraces = traces
+  let lastLayout = layout
+  const render = () => {
+    void Plotly.react(container, lastTraces as any, merge(themeLayout(), lastLayout) as any, CONFIG as any)
+  }
+  render()
+  const onTheme = () => render()
+  document.addEventListener('themechange', onTheme)
+  return {
+    update: (t, l) => {
+      lastTraces = t
+      if (l) lastLayout = l
+      render()
+    },
+    destroy: () => {
+      document.removeEventListener('themechange', onTheme)
+      try {
+        Plotly.purge(container)
+      } catch {
+        /* conteneur déjà retiré */
+      }
+    },
+  }
+}
+
+/** Trace d'une courbe. */
+export function lineTrace(x: number[], y: number[], name: string, color?: string, extra: Trace = {}): Trace {
+  return { x, y, name, type: 'scatter', mode: 'lines', line: { color, width: 2.5 }, ...extra }
+}
+
+/** Trace d'un histogramme déjà calculé (barres). */
+export function barTrace(x: number[], y: number[], name: string, color?: string, extra: Trace = {}): Trace {
+  return { x, y, name, type: 'bar', marker: { color, opacity: 0.6 }, ...extra }
+}
+
+/** Aire sous une courbe entre deux bornes (pour p-valeur, puissance…). */
+export function areaTrace(x: number[], y: number[], name: string, color: string, extra: Trace = {}): Trace {
+  return { x, y, name, type: 'scatter', mode: 'lines', fill: 'tozeroy', line: { color, width: 0 }, fillcolor: hexToRgba(color, 0.35), ...extra }
+}
+
+export function pointsTrace(x: number[], y: number[], name: string, color?: string, extra: Trace = {}): Trace {
+  return { x, y, name, type: 'scatter', mode: 'markers', marker: { color, size: 7 }, ...extra }
+}
+
+/** Ligne verticale (forme de layout). */
+export function vline(x: number, color: string, dash: 'solid' | 'dash' | 'dot' = 'dash'): Record<string, unknown> {
+  return { type: 'line', x0: x, x1: x, y0: 0, y1: 1, yref: 'paper', line: { color, width: 2, dash } }
+}
+
+export function hline(y: number, color: string, dash: 'solid' | 'dash' | 'dot' = 'dash'): Record<string, unknown> {
+  return { type: 'line', x0: 0, x1: 1, xref: 'paper', y0: y, y1: y, line: { color, width: 2, dash } }
+}
+
+export function hexToRgba(hex: string, alpha: number): string {
+  const h = hex.replace('#', '')
+  const r = parseInt(h.slice(0, 2), 16)
+  const g = parseInt(h.slice(2, 4), 16)
+  const b = parseInt(h.slice(4, 6), 16)
+  return `rgba(${r},${g},${b},${alpha})`
+}
