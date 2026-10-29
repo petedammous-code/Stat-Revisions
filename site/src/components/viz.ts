@@ -1,5 +1,6 @@
 import type { Viz } from '../content/types'
 import { el, rich, badge } from '../core/ui'
+import { richInline } from '../core/rich'
 
 const cleanups = new WeakMap<HTMLElement, () => void>()
 
@@ -8,7 +9,7 @@ export function mountViz(viz: Viz, compact = false): HTMLElement {
   const card = el('section', 'viz-card')
   card.id = `viz-${viz.id}`
   const head = el('div', 'viz-head')
-  head.append(el('h3', 'viz-title', viz.title))
+  head.append(el('h3', 'viz-title', richInline(viz.title)))
   if (viz.source) head.append(badge(viz.source, 'badge badge-src'))
   card.append(head)
   if (!compact) card.append(rich(viz.description, 'rich viz-desc'))

@@ -102,6 +102,36 @@ export function pointsTrace(x: number[], y: number[], name: string, color?: stri
   return { x, y, name, type: 'scatter', mode: 'markers', marker: { color, size: 7 }, ...extra }
 }
 
+/**
+ * Segments (ex. 100 intervalles de confiance) : un segment par i, de (xs[i], y0s[i]) à (xs[i], y1s[i]),
+ * ou horizontal si `horizontal` (de (y0s[i], xs[i]) à (y1s[i], xs[i])). Couleur par segment possible.
+ */
+export function segmentsTrace(xs: number[], y0s: number[], y1s: number[], name: string, color: string | string[], horizontal = false, extra: Trace = {}): Trace {
+  const x: (number | null)[] = []
+  const y: (number | null)[] = []
+  for (let i = 0; i < xs.length; i++) {
+    if (horizontal) x.push(y0s[i], y1s[i], null), y.push(xs[i], xs[i], null)
+    else x.push(xs[i], xs[i], null), y.push(y0s[i], y1s[i], null)
+  }
+  if (Array.isArray(color)) {
+    // Plotly ne colore pas une ligne par point : on émet une trace par couleur distincte.
+    return { x, y, name, type: 'scatter', mode: 'lines', line: { color: color[0], width: 2 }, connectgaps: false, ...extra }
+  }
+  return { x, y, name, type: 'scatter', mode: 'lines', line: { color, width: 2 }, connectgaps: false, ...extra }
+}
+
+/** Regroupe des segments par couleur (ex. IC qui contiennent θ en vert, les autres en rouge). */
+export function segmentsByColor(xs: number[], y0s: number[], y1s: number[], colors: string[], names: Record<string, string>, horizontal = false): Trace[] {
+  const groups = new Map<string, number[]>()
+  colors.forEach((c, i) => {
+    if (!groups.has(c)) groups.set(c, [])
+    groups.get(c)!.push(i)
+  })
+  return [...groups.entries()].map(([c, idx]) =>
+    segmentsTrace(idx.map((i) => xs[i]), idx.map((i) => y0s[i]), idx.map((i) => y1s[i]), names[c] ?? c, c, horizontal),
+  )
+}
+
 /** Ligne verticale (forme de layout). */
 export function vline(x: number, color: string, dash: 'solid' | 'dash' | 'dot' = 'dash'): Record<string, unknown> {
   return { type: 'line', x0: x, x1: x, y0: 0, y1: 1, yref: 'paper', line: { color, width: 2, dash } }

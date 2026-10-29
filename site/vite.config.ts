@@ -15,6 +15,7 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.test.ts'],
     testTimeout: 180000,
+    cache: false,
     alias: {
       'plotly.js-dist-min': fileURLToPath(new URL('./tests/stubs/plotly.ts', import.meta.url)),
     },

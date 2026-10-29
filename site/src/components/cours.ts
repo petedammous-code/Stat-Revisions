@@ -1,5 +1,6 @@
 import type { Chapter, CourseBlock, CourseSection, TheoremBlock } from '../content/types'
 import { el, rich, details, badge } from '../core/ui'
+import { richInline } from '../core/rich'
 import { renderProof } from './preuve'
 import { markRead, isRead } from '../core/store'
 import { mountViz } from './viz'
@@ -26,7 +27,7 @@ export function renderCourse(ch: Chapter): HTMLElement {
   ch.course.forEach((section, i) => {
     const a = el('a')
     a.href = `#/ch/${ch.slug}/cours?s=${section.id}`
-    a.textContent = section.title
+    a.innerHTML = richInline(section.title)
     if (section.scope === 'hors-programme') a.append(badge('hors programme', 'badge badge-hp'))
     const li = el('li')
     li.append(a)
@@ -60,7 +61,7 @@ function renderBlock(ch: Chapter, b: CourseBlock): HTMLElement {
     case 'text': {
       const box = el('div', 'block block-text')
       if (b.scope === 'hors-programme') box.classList.add('hp')
-      if (b.title) box.append(el('div', 'block-title', b.title))
+      if (b.title) box.append(el('div', 'block-title', richInline(b.title)))
       box.append(rich(b.text))
       return box
     }
@@ -70,7 +71,7 @@ function renderBlock(ch: Chapter, b: CourseBlock): HTMLElement {
       const box = el('div', 'block block-example')
       if (b.scope === 'hors-programme') box.classList.add('hp')
       const head = el('div', 'block-head')
-      head.append(el('span', 'block-kind', 'Exemple'), el('span', 'block-label', b.title), badge(b.source, 'badge badge-src'))
+      head.append(el('span', 'block-kind', 'Exemple'), el('span', 'block-label', richInline(b.title)), badge(b.source, 'badge badge-src'))
       box.append(head)
       box.append(rich(b.setup))
       box.append(renderProof(b.steps, 'Résolution pas à pas'))
@@ -95,7 +96,7 @@ export function renderTheorem(b: TheoremBlock): HTMLElement {
   const box = el('div', `block block-theorem block-${b.type}`)
   if (b.scope === 'hors-programme') box.classList.add('hp')
   const head = el('div', 'block-head')
-  head.append(el('span', 'block-kind', KIND_LABEL[b.type]), el('span', 'block-label', `${b.label} — ${b.title}`), badge(b.source, 'badge badge-src'))
+  head.append(el('span', 'block-kind', KIND_LABEL[b.type]), el('span', 'block-label', richInline(`${b.label} — ${b.title}`)), badge(b.source, 'badge badge-src'))
   if (b.scope === 'hors-programme') head.append(badge('Hors programme / complément', 'badge badge-hp'))
   box.append(head)
   if (b.hypotheses && b.hypotheses.length) {

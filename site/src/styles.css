@@ -126,6 +126,9 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
 .ctl-value { min-width: 48px; font-variant-numeric: tabular-nums; color: var(--fg-muted); }
 .ctl select { background: var(--bg-card); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; }
 .viz-plot { width: 100%; min-height: 320px; }
+.viz-plot-grid { display: grid; gap: 10px; }
+.viz-plot-sub { min-height: 280px; min-width: 0; }
+@media (max-width: 760px) { .viz-plot-grid { grid-template-columns: 1fr !important; } }
 .viz-info { margin-top: 8px; font-size: 0.95rem; }
 .segmented { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .segmented .seg { background: var(--bg-card); color: var(--fg); border: none; padding: 6px 12px; cursor: pointer; border-right: 1px solid var(--border); }

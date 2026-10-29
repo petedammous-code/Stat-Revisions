@@ -104,3 +104,14 @@ cd site && npm run typecheck && npm test && npm run build
 ```
 
 Les tests vérifient : KaTeX compilable partout, règles structurelles ci-dessus, Monte-Carlo, rendu de chaque exercice sans champ de saisie (sauf `numerique`). **Un chapitre n'est terminé que si ces trois commandes passent.**
+
+## 10. Retours d'expérience du prototype (ch6) — à appliquer
+
+- **Modèle à suivre** : `site/src/content/ch6/` (structure, style, volume). Les gros fichiers peuvent être découpés (`cours-part1.ts`, `cours-part2.ts` agrégés dans `cours.ts` ; idem pour `exercices.ts`).
+- **Titres et étiquettes** : `title`, `label` (blocs, fiche, barème), titres de sections et de viz sont désormais rendus par `richInline` : le LaTeX `$…$` y est accepté mais gardez-les courts ; l'Unicode (θ, μ², X̄ₙ) reste une bonne option.
+- **Tests** : le cache Vitest est désactivé dans la config ; avec N chapitres chargés le nombre de tests augmente (20 tests = aucun chapitre chargé → vérifier l'`export default` de `index.ts`). Pour voir les `console.log` des tests : `npx vitest run --reporter=verbose`.
+- **KaTeX strict** : pas de caractères accentués dans `$…$` (même dans `\text{}`), pas de `\tag`, pas de `\label`. Passent : `\mathbb{1}`, `\overset{\mathbb{P}_{n,\theta}}{\Longrightarrow}`, `\xrightarrow{\mathbb{P}_{n,\theta}\text{-prob}}`, `\begin{pmatrix}`, `\begin{cases}`, `\begin{aligned}`.
+- **Patron Rich** : une formule display `$$…$$` seule sur sa ligne, entourée de lignes vides ; dans les template strings, éviter `${` ; doubler les antislashs ; apostrophes typographiques « ’ » dans les chaînes simples pour éviter l'échappement.
+- **Patron viz** : `slider({ log: true, min: 0, max: 3, … })` prend min/max en log10 ; `segmented` et `toggle` acceptent le LaTeX dans les labels ; `vizFrame(container, { plots: 2 })` renvoie `plots[0]`, `plots[1]` pour deux figures côte à côte ; `segmentsTrace` / `segmentsByColor` dans `core/plot.ts` pour les IC ; recalculer `info.innerHTML = richToHtml(...)` à chaque `draw()`.
+- **Monte-Carlo** : viser < 0,5 s par vérification ; tolérance = 3–4 écarts-types Monte-Carlo, biais à n fini commenté ; éviter les statistiques à forte kurtosis (ou élargir la tolérance).
+- **Sources** : le poly utilise deux numérotations (éléments encadrés « N.M » et définitions non encadrées « Définition k ») : reproduire celle de l'extraction, avec la page (« Poly ch.6, Thm 1.7, p. 23 »).

@@ -1,6 +1,7 @@
 import type { Exercise, Difficulty } from '../content/types'
 import { EXERCISE_TYPE_LABELS } from '../content/types'
 import { el, badge } from '../core/ui'
+import { richInline } from '../core/rich'
 import { recordAttempt, getItemStats, type Outcome } from '../core/store'
 
 export interface ExerciseContext {
@@ -25,7 +26,7 @@ const ORIGIN_LABEL: Record<Exercise['origin'], string> = {
 /** En-tête commun : titre, type, source, difficulté, origine, statut. */
 export function exerciseHeader(ex: Exercise, ctx: ExerciseContext): HTMLElement {
   const h = el('header', 'ex-header')
-  const title = el('h3', 'ex-title', ex.title)
+  const title = el('h3', 'ex-title', richInline(ex.title))
   const meta = el('div', 'ex-meta')
   meta.append(badge(EXERCISE_TYPE_LABELS[ex.type], 'badge badge-type'))
   meta.append(badge(difficultyStars(ex.difficulty), 'badge badge-diff'))

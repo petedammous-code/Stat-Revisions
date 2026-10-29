@@ -1,6 +1,7 @@
 import type { Annale } from '../content/types'
 import { el, rich, button, feedback, details } from '../core/ui'
 import { exerciseHeader, finish, type ExerciseContext } from './common'
+import { richInline } from '../core/rich'
 
 /**
  * Exercice type annale : on rédige sur papier, puis on révèle indices progressifs,
@@ -43,7 +44,7 @@ export function renderAnnale(ex: Annale, ctx: ExerciseContext): HTMLElement {
     table.append(thead)
     for (const b of ex.bareme) {
       const tr = el('tr')
-      tr.append(el('td', '', b.label), el('td', '', String(b.points)))
+      tr.append(el('td', '', richInline(b.label)), el('td', '', String(b.points)))
       table.append(tr)
     }
     const trt = el('tr', 'total')

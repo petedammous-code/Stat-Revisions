@@ -219,6 +219,11 @@ function inline(s: string): string {
   return t
 }
 
+/** Rend un texte riche court (titre, étiquette) sans paragraphe englobant. */
+export function richInline(text: string): string {
+  return richToHtml(text).replace(/^<p>|<\/p>$/g, '')
+}
+
 /** Rend un texte riche dans un élément. */
 export function renderRich(el: HTMLElement, text: string): void {
   el.innerHTML = richToHtml(text)

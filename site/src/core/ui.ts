@@ -128,13 +128,30 @@ export function toggle(label: string, value: boolean, onChange: (v: boolean) => 
   return root
 }
 
-/** Panneau de contrôles (ligne de curseurs/boutons) + zone de figure + zone d'info. */
-export function vizFrame(container: HTMLElement): { controls: HTMLElement; plot: HTMLElement; info: HTMLElement } {
+/**
+ * Panneau de contrôles (ligne de curseurs/boutons) + zone(s) de figure + zone d'info.
+ * `opts.plots = 2` crée deux zones côte à côte (`plots[0]`, `plots[1]`) ; `plot` reste la première.
+ */
+export function vizFrame(container: HTMLElement, opts: { plots?: number } = {}): { controls: HTMLElement; plot: HTMLElement; plots: HTMLElement[]; info: HTMLElement } {
   const controls = el('div', 'viz-controls')
-  const plot = el('div', 'viz-plot')
+  const n = Math.max(1, opts.plots ?? 1)
+  const plots: HTMLElement[] = []
+  let plotArea: HTMLElement
+  if (n === 1) {
+    plotArea = el('div', 'viz-plot')
+    plots.push(plotArea)
+  } else {
+    plotArea = el('div', 'viz-plot-grid')
+    plotArea.style.gridTemplateColumns = `repeat(${n}, minmax(0, 1fr))`
+    for (let i = 0; i < n; i++) {
+      const p = el('div', 'viz-plot viz-plot-sub')
+      plots.push(p)
+      plotArea.append(p)
+    }
+  }
   const info = el('div', 'viz-info rich')
-  container.append(controls, plot, info)
-  return { controls, plot, info }
+  container.append(controls, plotArea, info)
+  return { controls, plot: plots[0], plots, info }
 }
 
 export function badge(text: string, className = 'badge'): HTMLElement {

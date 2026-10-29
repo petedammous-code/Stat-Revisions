@@ -1,6 +1,7 @@
 import type { Chapter } from '../content/types'
 import { el, rich, button } from '../core/ui'
 import { CHAPTERS } from '../content'
+import { richInline } from '../core/rich'
 
 /** Fiche de synthèse imprimable d'un chapitre. */
 export function renderSheet(ch: Chapter): HTMLElement {
@@ -14,14 +15,14 @@ export function renderSheet(ch: Chapter): HTMLElement {
   card.append(el('h3', '', 'Définitions'))
   for (const d of s.definitions) {
     const b = el('div', 'block block-definition')
-    b.append(el('div', 'block-head', `<span class="block-kind">Définition</span><span class="block-label">${d.label}</span><span class="badge badge-src">${d.source}</span>`))
+    b.append(el('div', 'block-head', `<span class="block-kind">Définition</span><span class="block-label">${richInline(d.label)}</span><span class="badge badge-src">${d.source}</span>`))
     b.append(rich(d.text))
     card.append(b)
   }
   card.append(el('h3', '', 'Théorèmes et propositions (avec leurs hypothèses)'))
   for (const t of s.theorems) {
     const b = el('div', 'block block-theoreme')
-    b.append(el('div', 'block-head', `<span class="block-kind">Résultat</span><span class="block-label">${t.label}</span><span class="badge badge-src">${t.source}</span>`))
+    b.append(el('div', 'block-head', `<span class="block-kind">Résultat</span><span class="block-label">${richInline(t.label)}</span><span class="badge badge-src">${t.source}</span>`))
     if (t.hypotheses.length) {
       const h = el('div', 'hypotheses')
       h.append(el('div', 'hyp-title', 'Hypothèses'))
@@ -40,7 +41,7 @@ export function renderSheet(ch: Chapter): HTMLElement {
   card.append(el('h3', '', 'Méthodes types'))
   for (const m of s.methods) {
     const b = el('div', 'block block-methode')
-    b.append(el('div', 'block-head', `<span class="block-kind">Méthode</span><span class="block-label">${m.title}</span>`))
+    b.append(el('div', 'block-head', `<span class="block-kind">Méthode</span><span class="block-label">${richInline(m.title)}</span>`))
     const ol = el('ol')
     for (const x of m.steps) {
       const li = el('li')
