@@ -1,0 +1,106 @@
+import type { SummarySheet } from '../types'
+
+export const summarySheet: SummarySheet = {
+  definitions: [
+    { label: 'Cadre (§1.1)', text: '$(\\mathbf X,Y)\\sim\\mathbb P$ sur $\\mathsf X\\times\\mathsf Y$ ; règle $g$, perte $\\ell$, risque $R(g)=\\mathbb E[\\ell(Y,g(\\mathbf X))]$ ; $g^\\star$, $R^\\star=R(g^\\star)$ ; $\\mathcal D_n$ : $n$ couples i.i.d. ; excès de risque $\\mathcal E(\\widehat g_n)=R(\\widehat g_n)-R^\\star$ avec $R(\\widehat g_n)=\\mathbb E[\\ell(Y,\\widehat g_n(\\mathbf X))\\mid\\mathcal D_n]$ (variable aléatoire, calculée en « gelant » $\\mathcal D_n$).', source: 'Poly ch.9, §1.1 ; Outils §2.8' },
+    { label: 'Déf. 1.1 — Risque empirique, MRE', text: '$\\widehat{\\mathrm R}_n(g)=\\frac1n\\sum_i\\ell(Y_i,g(\\mathbf X_i))$ ; $\\hat g^*_{n,\\mathcal C}=\\arg\\min_{g\\in\\mathcal C}\\widehat{\\mathrm R}_n(g)$ (existence et mesurabilité supposées ; vraies pour $\\mathcal C$ finie). Pour $g$ fixée : sans biais et convergent.', source: 'Poly ch.9, Déf. 1.1' },
+    { label: 'Oracle, erreurs d’estimation et d’approximation', text: '$g^*_{\\mathcal C}$ : $R(g^*_{\\mathcal C})=\\inf_{\\mathcal C}R$ ; $\\mathcal E^{\\mathcal C}_{\\mathrm{est}}(\\hat g_{n,\\mathcal C})=R(\\hat g_{n,\\mathcal C})-R(g^*_{\\mathcal C})$ (aléatoire) ; erreur d’approximation $R(g^*_{\\mathcal C})-R^\\star$ (déterministe).', source: 'Poly ch.9, éq. (1)' },
+    { label: 'Sur-apprentissage', text: 'Situation (b) : $\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})\\ll R(\\hat g^*_{n,\\mathcal C})$. Sous-apprentissage : classe trop pauvre (affines), risque empirique et risque grands.', source: 'Poly ch.9, §1.2, p. 10–12' },
+    { label: 'Méthode 1.2 — Validation', text: 'Ajuster sur $\\mathcal D_{\\mathrm{fit}}$, évaluer $\\widehat{\\mathrm R}^{(\\mathrm{val})}_n$ sur $\\mathcal D_{\\mathrm{val}}$, sélectionner le minimum ; validation croisée à $k$ blocs (moyenne). Heuristique.', source: 'Poly ch.9, Méthode 1.2' },
+    { label: 'Déf. 2.1 — Sous-gaussienne', text: '$X$ centrée, $\\psi_X(\\lambda)=\\log\\mathbb E[e^{\\lambda X}]\\le\\lambda^2v/2$ pour tout $\\lambda\\in\\mathbb R$ : $X\\in\\mathcal G(v)$ ; $\\mathrm{Var}X\\le v$.', source: 'Poly ch.9, Outils Déf. 2.1' },
+    { label: 'Déf. 1.2 — Classifieur doux', text: '$h:\\mathsf X\\to\\mathbb R$ mesurable ; classifieur dur $\\operatorname{signe}(h)$, $\\operatorname{signe}(t)=2\\mathbf{1}_{\\{t>0\\}}-1$ ($\\operatorname{signe}(0)=-1$) ; marge $Y\\,h(\\mathbf X)$.', source: 'Poly ch.9, Déf. 1.2' },
+    { label: 'Pertes de substitution', text: '$\\varphi$ convexe, croissante, $\\varphi(0)=1$, $\\varphi\\ge\\varphi_1=\\mathbf{1}_{[0,+\\infty[}$ ; en $z=-y\\,h(\\mathbf x)$ : charnière $\\max(1+z,0)$, exponentielle $e^z$, logistique $\\log_2(1+e^z)$ ; quadratique $(z+1)^2$ non croissante.', source: 'Poly ch.9, §1.4, p. 23' },
+    { label: 'Déf. 1.3 — φ-risque', text: '$R_\\varphi(h)=\\mathbb E[\\varphi(-Yh(\\mathbf X))]$, $\\widehat{\\mathrm R}_{n,\\varphi}(h)=\\frac1n\\sum_i\\varphi(-Y_ih(\\mathbf X_i))$.', source: 'Poly ch.9, Déf. 1.3' },
+    { label: 'Notations', text: 'Étoile pleine $\\star$ = bayésien ; astérisque $*$ = oracle de la classe et MRE ; $\\mathbf X$ (variable) vs $\\mathsf X$ (ensemble) ; $D_n=\\sum_i(b_i-a_i)^2$ (nombre) vs $\\mathcal D_n$ (échantillon) ; PC9 : $R_n(g)$ sans chapeau, labels $\\{0,1\\}$.', source: 'Poly ch.9, §1 ; PC9' },
+  ],
+  theorems: [
+    { label: 'Éq. (1) — Décomposition', hypotheses: ['$\\hat g_{n,\\mathcal C}\\in\\mathcal C$', 'oracle $g^*_{\\mathcal C}$ (ou $\\inf_{\\mathcal C}R$)'], text: '$\\mathcal E(\\hat g_{n,\\mathcal C})=\\{R(\\hat g_{n,\\mathcal C})-R(g^*_{\\mathcal C})\\}+\\{R(g^*_{\\mathcal C})-R^\\star\\}$ ; $\\mathcal C\\uparrow$ : approximation $\\downarrow$, estimation tend à $\\uparrow$ ; $n\\uparrow$ : approximation inchangée, estimation tend à $\\downarrow$.', source: 'Poly ch.9, éq. (1)' },
+    { label: 'Prop. 1.1 — Biais optimiste', hypotheses: ['perte positive', '$R(g)<\\infty$ sur $\\mathcal C$', 'MRE existant et mesurable'], text: '$\\mathbb E[\\widehat{\\mathrm R}_n(\\hat g^*_{n,\\mathcal C})]\\le\\inf_{\\mathcal C}R\\le\\mathbb E[R(\\hat g^*_{n,\\mathcal C})]$ ; $\\mathbb E[\\widehat{\\mathrm R}_n(g)]=R(g)$ pour $g$ fixée.', source: 'Poly ch.9, Prop. 1.1' },
+    { label: 'Th. 1.1 — No free lunch', hypotheses: ['classification binaire, perte 0-1', '$\\mathsf X$ infini, singletons mesurables', 'règle mesurable en $(\\mathbf x,\\mathcal D_n)$'], text: 'Pour tout $n$, $\\varepsilon>0$, il existe $\\mathbb P$ avec $R^\\star=0$ et $\\mathbb E[R(\\widehat g_n)]\\ge\\frac12-\\varepsilon$. Preuve : $K$ points, étiquetages uniformes, $\\frac12(1-1/K)^n$, moyenne $\\le$ max.', source: 'Poly ch.9, Th. 1.1 ; PC9 Ex. 6' },
+    { label: 'Th. 1.2 — Processus empirique', hypotheses: ['$R(g)<\\infty$ sur $\\mathcal C$', 'MRE', 'pour (3) : sup intégrable'], text: '(2) $R(\\hat g^*_{n,\\mathcal C})-\\inf_{\\mathcal C}R\\le2\\sup_{\\mathcal C}|\\widehat{\\mathrm R}_n-R|$ p.s. ; (3) en espérance sans facteur 2.', source: 'Poly ch.9, Th. 1.2' },
+    { label: 'Prop. 2.1 — Chernoff', hypotheses: ['$Z$ intégrable', '$\\lambda>0$ avec $\\mathbb E[e^{\\lambda Z}]<\\infty$'], text: '$\\mathbb P(Z-\\mathbb EZ\\ge\\varepsilon)\\le e^{-\\lambda\\varepsilon}\\mathbb E[e^{\\lambda(Z-\\mathbb EZ)}]$ ; infimum en $\\lambda>0$ ; produit des transformées pour une somme indépendante.', source: 'Poly ch.9, Outils Prop. 2.1' },
+    { label: 'Prop. 2.2 — Sous-gaussiennes', hypotheses: ['(i) indépendance, $X_i\\in\\mathcal G(v_i)$', '(ii) $X\\in\\mathcal G(v)$, $t>0$'], text: '$\\sum X_i\\in\\mathcal G(\\sum v_i)$ ; $\\mathbb P(X\\ge t)\\vee\\mathbb P(-X\\ge t)\\le e^{-t^2/(2v)}$.', source: 'Poly ch.9, Outils Prop. 2.2' },
+    { label: 'Lemme 1.1 — Hoeffding', hypotheses: ['$X\\in[a,b]$ p.s.', '$\\mathbb E X=0$'], text: '$\\mathbb E[e^{\\lambda X}]\\le e^{\\lambda^2(b-a)^2/8}$, i.e. $X\\in\\mathcal G((b-a)^2/4)$ ; non centrée : $\\psi_X(\\lambda)\\le\\lambda\\mathbb EX+\\lambda^2(b-a)^2/8$.', source: 'Poly ch.9, Lemme 1.1' },
+    { label: 'Th. 2.1 / Th. 1.3 — Inégalité de Hoeffding', hypotheses: ['$X_i$ indépendantes (pas forcément de même loi)', '$X_i\\in[a_i,b_i]$ (resp. $[0,1]$)'], text: '$\\mathbb P(S_n\\ge t)\\le e^{-2t^2/D_n}$, $D_n=\\sum(b_i-a_i)^2$ ; moyenne dans $[0,1]$ : $\\mathbb P(|\\frac1n\\sum\\{X_i-\\mathbb EX_i\\}|\\ge\\varepsilon)\\le2e^{-2n\\varepsilon^2}$.', source: 'Poly ch.9, Th. 1.3, Th. 2.1, Cor. 2.1' },
+    { label: 'Th. 1.4 — Forme « δ »', hypotheses: ['cadre du Th. 1.3', '$\\delta\\in]0,1[$'], text: 'Avec probabilité $\\ge1-\\delta$, écart $\\le\\sqrt{\\ln(2/\\delta)/(2n)}$ ; $n\\ge\\ln(2/\\delta)/(2\\varepsilon^2)$ suffit. Précision ×10 ⇒ $n$ ×100.', source: 'Poly ch.9, Th. 1.4' },
+    { label: 'Borne de l’union', hypotheses: ['événements quelconques (aucune indépendance)'], text: '$\\mathbb P(\\bigcup_jA_j)\\le\\sum_j\\mathbb P(A_j)$.', source: 'Poly ch.9, Outils §2.6' },
+    { label: 'Th. 1.5 — Déviations uniformes', hypotheses: ['perte 0-1', '$|\\mathcal C|<\\infty$'], text: '$\\mathbb P(\\sup_{\\mathcal C}\\{\\widehat{\\mathrm R}_n-R\\}>\\varepsilon)\\le|\\mathcal C|e^{-2n\\varepsilon^2}$ ; $\\mathbb P(\\sup_{\\mathcal C}|\\widehat{\\mathrm R}_n-R|>\\varepsilon)\\le2|\\mathcal C|e^{-2n\\varepsilon^2}$.', source: 'Poly ch.9, Th. 1.5' },
+    { label: 'Th. 1.6 — Grande probabilité', hypotheses: ['perte dans $[0,1]$', '$\\mathcal C$ finie', '$\\delta\\in]0,1[$'], text: 'Avec probabilité $\\ge1-\\delta$ : $R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})\\le2\\sqrt{\\log(2|\\mathcal C|/\\delta)/(2n)}$ (perte dans $[0,B]$ : ×$B$).', source: 'Poly ch.9, Th. 1.6' },
+    { label: 'Th. 1.7 — Pisier', hypotheses: ['$\\mathbb E[e^{\\lambda Z_i}]\\le e^{\\lambda^2\\sigma^2/2}$ pour tout $\\lambda\\in\\mathbb R$', 'aucune indépendance'], text: '$\\mathbb E[\\max_{i\\le m}|Z_i|]\\le\\sigma\\sqrt{2\\log(2m)}$.', source: 'Poly ch.9, Th. 1.7' },
+    { label: 'Th. 1.8 — Espérance', hypotheses: ['perte 0-1', '$|\\mathcal C|<\\infty$'], text: '$\\mathbb E[R(\\hat g^*_{n,\\mathcal C})-R(g^*_{\\mathcal C})]\\le\\sqrt{\\log(2|\\mathcal C|)/(2n)}$ (Th. 1.2 (3) + Pisier, $\\sigma=1/(2\\sqrt n)$).', source: 'Poly ch.9, Th. 1.8' },
+    { label: 'Prop. 1.2 — Classifieurs affines', hypotheses: ['$\\mathsf X=\\mathbb R^d$, densité', '$n>d$', 'MRE sur $\\mathcal C_n$ ($|\\mathcal C_n|\\le2\\binom nd$)'], text: 'Avec probabilité $\\ge1-\\delta$ : $R(\\widehat g_n)-\\inf_{\\mathcal C}R\\le\\frac{2d}n+2\\sqrt{\\log((2\\binom nd+1)/\\delta)/(2(n-d))}=O(\\sqrt{d\\log n/n})$.', source: 'Poly ch.9, Prop. 1.2' },
+    { label: 'Éq. (4) et Prop. 1.3 — φ-risque', hypotheses: ['$\\varphi\\ge\\varphi_1$', 'risques pour la perte 0-1'], text: '$\\mathbf{1}_{\\{\\operatorname{signe}(h(\\mathbf x))\\ne y\\}}\\le\\varphi_1(-yh(\\mathbf x))\\le\\varphi(-yh(\\mathbf x))$ ; $\\widehat{\\mathrm R}_n(\\operatorname{signe}h)\\le\\widehat{\\mathrm R}_{n,\\varphi}(h)$, $R(\\operatorname{signe}h)\\le R_\\varphi(h)$ (risques, pas excès de risque).', source: 'Poly ch.9, éq. (4), Prop. 1.3' },
+    { label: 'Ex. 1.3 — Logistique', hypotheses: ['$\\varphi(z)=\\log_2(1+e^z)$', '$h_\\theta=\\theta^\\top\\Phi$'], text: '$\\theta\\mapsto\\widehat{\\mathrm R}_{n,\\varphi}(h_\\theta)$ convexe (composition affine, combinaison positive) ; avec $\\Phi(\\mathbf x)=\\mathbf x$, même minimiseur que l’EMV logistique.', source: 'Poly ch.9, Ex. 1.3' },
+    { label: 'Examen 2025 Q8–Q9 — k-ppv', hypotheses: ['(H1) compact, (H2) $c_-\\le p_X\\le c_+$, (H3) $\\eta$ $L$-lipschitzienne', '$d\\ge2$'], text: '$\\mathbb E_n[(\\hat\\eta_{n,k}-\\eta)^2]\\le C_d((k/n)^{2/d}+1/k)$ ; $\\mathbb E_n[R(\\hat g_{n,k})]-R^\\star\\le2\\sqrt{C_d}\\sqrt{(k/n)^{2/d}+1/k}$ ; $k^\\star\\asymp n^{2/(d+2)}$, vitesse $n^{-1/(d+2)}$.', source: 'Examen 2025 Ex. 3 Q8–Q9' },
+  ],
+  methods: [
+    {
+      title: 'Borne sur l’erreur d’estimation d’un MRE (classe finie)',
+      steps: [
+        'Décomposer $R(\\hat g^*)-R(g^*_{\\mathcal C})$ en ajoutant / retranchant les risques empiriques ; le terme $\\widehat{\\mathrm R}_n(\\hat g^*)-\\widehat{\\mathrm R}_n(g^*_{\\mathcal C})\\le0$.',
+        'Terme du MRE : majorer par $\\sup_{\\mathcal C}|\\widehat{\\mathrm R}_n-R|$ ; terme de l’oracle (règle fixée) : sans biais ou Hoeffding.',
+        'Grande probabilité : Hoeffding par règle fixée + borne de l’union, $2|\\mathcal C|e^{-2n\\varepsilon^2}=\\delta$ ⇒ $2\\sqrt{\\log(2|\\mathcal C|/\\delta)/(2n)}$.',
+        'Espérance : éq. (3), lemme de Hoeffding ⇒ facteur $1/(4n)$, Pisier ⇒ $\\sqrt{\\log(2|\\mathcal C|)/(2n)}$ ; ou intégration de la queue.',
+        'Conclure avec l’éq. (1) et commenter : $\\log|\\mathcal C|$, $1/\\sqrt n$, sans hypothèse sur $\\mathbb P$.',
+      ],
+    },
+    {
+      title: 'Hoeffding en pratique (taille d’échantillon)',
+      steps: [
+        'Écrire la quantité comme moyenne de variables indépendantes bornées (au besoin conditionnellement à $\\mathcal D_n$).',
+        'Appliquer $2e^{-2n\\varepsilon^2}$ (ou $2e^{-2n^2\\varepsilon^2/\\sum(b_i-a_i)^2}$).',
+        'Inverser : $n\\ge\\ln(2/\\delta)/(2\\varepsilon^2)$ ; comparer à BT $n\\ge1/(4\\delta\\varepsilon^2)$.',
+        'Intégrer si conditionnement (tour des espérances).',
+      ],
+    },
+    {
+      title: 'Prouver une inégalité de concentration (Chernoff)',
+      steps: [
+        'Markov sur $e^{\\lambda(Z-\\mathbb EZ)}$, $\\lambda>0$.',
+        'Borner la transformée de Laplace : indépendance (produit) + lemme de Hoeffding (variables bornées) ou hypothèse sous-gaussienne.',
+        'Optimiser l’exposant en $\\lambda$ (trinôme : $\\lambda=t/v$).',
+        'Déviation inférieure : appliquer à $-Z$ ; bilatéral : facteur 2 (sous-additivité).',
+      ],
+    },
+    {
+      title: 'Erreur de validation (PC9 Ex. 1)',
+      steps: [
+        'Conditionner par $\\mathcal D_n$ : la règle est fixée, les erreurs de test sont i.i.d. Bernoulli$(R(g_n))$.',
+        'Sans biais conditionnel ; loi $\\mathrm{Bin}(m,R(g_n))$ conditionnelle.',
+        'BT : $\\frac{1}{4m\\varepsilon^2}$ ; Hoeffding conditionnel : $2e^{-2m\\varepsilon^2}$ ; intégrer.',
+      ],
+    },
+    {
+      title: 'Biais / variance des k-ppv et choix de k (Examen 2025 Q8–Q9)',
+      steps: [
+        'Conditionner par le design ; décomposer en variance + biais² (terme croisé nul).',
+        'Variance $\\le1/(4k)$ ; biais $\\le L\\mathfrak R_k$, Jensen (concavité de $u^{2/d}$), $\\mathbb E[\\mathfrak R_k^d]\\le k/(c_-v_d(n+1))$.',
+        'Plug-in conditionnel + Fubini + Cauchy-Schwarz.',
+        'Minimiser $(k/n)^{2/d}+1/k$ : $k^\\star\\asymp n^{2/(d+2)}$, vitesse $n^{-1/(d+2)}$ ; commenter le fléau de la dimension et le choix pratique par validation.',
+      ],
+    },
+    {
+      title: 'Convexifier (classification)',
+      steps: [
+        'Passer à un classifieur doux $h_\\theta$ linéaire en $\\theta$ et écrire la perte en fonction de $z=-Yh_\\theta(\\mathbf X)$.',
+        'Choisir $\\varphi$ convexe, croissante, $\\varphi(0)=1$, $\\varphi\\ge\\varphi_1$.',
+        'Convexité en $\\theta$ : composition affine + combinaison positive ; minimiser par gradient / Newton.',
+        'Garantie : Prop. 1.3 ($R\\le R_\\varphi$), à ne pas confondre avec une comparaison des excès de risque.',
+      ],
+    },
+  ],
+  pitfalls: [
+    '**Règle fixée vs règle apprise** : $\\widehat{\\mathrm R}_n(g)$ sans biais pour $g$ fixée seulement ; pas de Hoeffding direct sur le MRE (pertes dépendantes) : passer par le sup et la borne de l’union.',
+    '**Trois écritures de Hoeffding** : $2e^{-2n\\varepsilon^2}$ (moyenne), $2e^{-2\\varepsilon^2/n}$ (somme), $2e^{-2n\\varepsilon}$ (fausse).',
+    '**Facteurs** : 2 dans (2), pas dans (3) ; $\\log(2|\\mathcal C|)$ en bilatéral ; $(b-a)^2/8$ (lemme de Hoeffding) ; $\\sigma^2=1/(4n)$ ; $\\log(2m)$ chez Pisier.',
+    '**Borne de l’union et Pisier** : aucune indépendance requise (même échantillon pour toutes les règles).',
+    '**Sous-gaussienne** : variable centrée, pour tout $\\lambda\\in\\mathbb R$, variance seulement majorée par $v$ ; facteurs qui s’additionnent.',
+    '**Erreurs d’approximation / d’estimation** : la première est déterministe et ne dépend pas de $n$ ; la seconde est aléatoire.',
+    '**Sur-apprentissage** = situation (b) (risque empirique du MRE $\\ll$ son risque), pas (c).',
+    '**No free lunch** : interdit une garantie uniforme en la loi (pas la consistance pour une loi fixée) ; nécessite $\\mathsf X$ infini ; la loi difficile dépend de $n$.',
+    '**Validation** : la borne est en $m$ (taille de validation) ; la loi binomiale n’est que conditionnelle.',
+    '**Convexification** : la quadratique n’est pas croissante ; $\\log_2$ dans la logistique ; Prop. 1.3 compare des risques, pas des excès ; $\\operatorname{signe}(0)=-1$.',
+    '**k-ppv** : Jensen par concavité de $u^{2/d}$ ; conditionner par le design ; vitesse $n^{-1/(d+2)}$, pas $n^{-1/2}$.',
+    '**Notations** : $\\star$ (bayésien) vs $*$ (classe) ; PC9 : $R_n$, $D_n$ italique, labels $\\{0,1\\}$, $g^\\star_{\\mathcal C}$ pour l’oracle.',
+  ],
+}

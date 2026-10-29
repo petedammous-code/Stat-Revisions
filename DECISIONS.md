@@ -8,6 +8,7 @@
 
 
 
+
 1. **Notations des convergences.** Le poly note la convergence en probabilité $\xrightarrow{\mathbb{P}_{n,\theta}\text{-prob}}$ et la convergence en loi $\overset{\mathbb{P}_{n,\theta}}{\Longrightarrow}$ ; ces deux formes sont utilisées partout dans le chapitre (et enregistrées au glossaire). La flèche courte $\Rightarrow$ est tolérée dans les corrections et les options de QCM quand la probabilité sous-jacente est évidente, conformément à l'usage des corrigés de PC.
 2. **Variance empirique.** $\hat\sigma_n^2$ (normalisée par $n$) et $S_n^2$ (normalisée par $n-1$) suivent le poly (Ex. 1.6) ; la PC6 Ex. 3 normalise $S_n^2$ par $n$ : signalé dans le cours (section « Notations »), sans incidence asymptotique.
 3. **Convention exponentielle / Gamma.** Intensité (poly, PC6, PC7, Examen 2025) : $\mathcal{E}(\theta)$ a pour moyenne $1/\theta$, $\Gamma(2,\theta)$ pour moyenne $2/\theta$. Dans la variante type examen (Weibull), la loi de $X^c$ est écrite explicitement avec sa densité $\theta^{-1}e^{-y/\theta}$ (échelle), comme dans le CC 2022 Ex. 1, pour éviter toute ambiguïté.
@@ -20,6 +21,7 @@
 10. **Titres sans LaTeX.** Les champs `title` (viz, exercices, blocs, sections), `label` (fiche, barème) sont rendus en texte brut par le socle : les formules y ont été remplacées par du texte ou des caractères Unicode (θ, μ², X̄ₙ) ; le LaTeX est réservé aux champs `Rich`.
 
 ## ch1 — Modèles statistiques
+
 
 
 
@@ -48,6 +50,7 @@
 
 
 
+
 1. **Numérotation et sources.** Les éléments encadrés sont cités « Poly ch.2, Déf./Ex./Prop./Méthode N.M, p. X » (numérotation de l'extraction `ch2.md`) ; les outils en « (Outils) » (Prop. 2.1, Déf. 2.1–2.2, Thm 2.1–2.2, Lemmes 2.1–2.3) ; les compléments Ex. 4.1–4.7 et Thm 4.1 en `scope: 'hors-programme'`. Les homonymies de renvois (« Théorème 1.1 » = Cochran du ch.1 dans le fascicule d'exercices ; « Lemme 2.1 du ch.1 ») sont signalées dans le cours.
 2. **Notations.** Vraisemblance $\mathrm{L}_n$ (L droit) et log-vraisemblance **normalisée** $\ell_n=\frac1n\log\mathrm{L}_n$ comme dans le poly ; les corrigés de PC/annales qui écrivent $\log\mathrm{L}_n$ sans $\frac1n$ sont signalés (même argmax). Trois lettres distinguées partout : $\vartheta$ (variable libre), $\theta$ (valeur de calcul), $\theta^\star$ (vraie valeur, §1.4). Exponentielle et Gamma en **intensité**. Statistiques d'ordre $X_{k:n}$ ; les variantes `X_{n:n}`, `X_{1:n}` étant déjà au glossaire via ch6 (clé `Xordre`), ch2 enregistre une clé distincte `Xkn` pour `X_{k:n}`, `X_{m:n}`, `X_{m+1:n}`.
 3. **Ex. 1.5 (application numérique).** L'extraction écrit « $\hat b_n\simeq0{,}1+0{,}27\simeq0{,}62$ » ; la valeur $\sqrt{3V_n}=\sqrt{0{,}27}\approx0{,}52$ est la bonne et donne bien $0{,}62$ : le cours et l'exercice numérique écrivent $0{,}1+\sqrt{0{,}27}$.
@@ -60,6 +63,7 @@
 10. **Monte-Carlo.** Les six vérifications utilisent les formules exactes du poly/PC (biais et EQM de $1/\bar X_n$, $\mathbb{E}[X_{n:n}]$, $\chi^2(n-2)$, absence de biais du mélange non seuillé, $\mathbb{E}[\ell_n(\vartheta)]=M_{\theta^\star}(\vartheta)$) ; pour l'uniforme on teste la différence $\mathbb{E}[2\bar X_n]-\mathbb{E}[X_{n:n}]=\theta/(n+1)$ (variance MC plus faible).
 11. **Section 10 (compléments).** `role: 'complements'` et `scope: 'hors-programme'` pour toute la section ; contenu résumé (pas d'exercice dessus), conformément au poly (« non exigibles »).
 ## ch3 — Bases de la théorie de la décision
+
 
 
 
@@ -81,6 +85,7 @@
 
 
 
+
 1. **Notations.** Fonctions limites $\mathsf{M}_{\theta^\star}$, $\mathsf{W}_{\theta^\star}$ en sans-serif comme le poly ; l'équation d'estimation limite est écrite $\Psi_{\theta^\star}$ (Ψ ordinaire) pour la compatibilité KaTeX (le poly la met en sans-serif) ; information de Fisher en lettre ajourée $\mathbb{I}$ (convention du ch.7, distincte du $I(\theta)$ du glossaire de base). Glossaire ch7 enregistré sous des clés `ch7-*` sans redéfinir les variantes LaTeX déjà présentes (`\theta^\star`, `\psi(\theta,x)`, `\hat\theta_n^{\mathrm{MV}}` restent celles de ch2/socle).
 2. **Homonymies de numérotation.** Toute citation précise le chapitre (« TCL = Poly ch.6, Thm 1.6 », « Slutsky = ch.6, Lemme 1.1 », « méthode-δ = ch.6, Thm 1.7 », « Markov = ch.6, Lemme 2.1 ») ; un encart du §1 les liste.
 3. **Coquille signalée, non reproduite comme formule de référence** : la statistique de Student du §1.2 (« $/S_n^2$ ») ; le cours renvoie à $/S_n$.
@@ -92,6 +97,7 @@
 9. **Ex. 1.4 (Huber).** La forme lisse « pseudo-Huber » du poly est conservée sous le nom « perte de Huber » ; l'estimateur de Huber de la PC7 ($\gamma_k$ tronquée) est distingué dans le texte.
 10. **Visualisations.** Six vizs ; l'outil partagé `viz/common.ts` (quadrature, lois de translation, $V[\gamma_k]$, EMV de Cauchy par score de Fisher itéré depuis la médiane) est aussi utilisé par `montecarlo.ts`. La viz « Z-estimateur » apparaît deux fois dans le cours (§2 et §5, blocs distincts).
 ## ch5 — Optimalité en théorie des tests
+
 
 
 
@@ -110,6 +116,7 @@
 
 
 
+
 1. **Numérotation et sources.** Reprise de l’extraction `ch8.md` : encadrés « Cadre 1.1–1.4 », « Méthode 1.1 », Déf. 1.1–1.5, Prop. 1.1–1.5, Th. 1.1–1.2, formules (4)–(13) ; Outils cités « Outils, Prop. 2.x » ; le « Théorème et définition 2.1 » (espérance conditionnelle $L^1$) est distingué du « Théorème 2.1 » ($\mathrm{L}^2$ hilbertien) malgré la collision de numérotation du poly. Les remarques non numérotées sont citées par page (« Remarque p. 16 »).
 2. **Notations.** Attributs en gras $\mathbf{X}$, $\mathbf{x}$ dans le cours (poly) ; les énoncés repris de la PC8 et des annales gardent $X$, $x$ non gras, comme leurs sources. Codage $\{-1,1\}$ partout ; les coquilles « 0 » pour « −1 » de la PC8 (labels, $\delta_{\{0\}}$, $F_0$, $\mathbb{1}_{\{Y_k=0\}}$) sont corrigées silencieusement. Notation $\pi_1$, $\pi_{-1}$ conservée dans les exercices tirés de PC8 Ex. 3, $p$ dans le cours.
 3. **Glossaire.** Les variantes LaTeX nues `\eta` et `\mathbf{X}` ne sont **pas** enregistrées : le ch.2 les utilise pour le paramètre naturel d’une famille exponentielle et une matrice de plan ; seules des formes composées ($\eta(\mathbf{x})$, $\eta(X)$, $\mathbf{x}$, $(\mathbf{X},Y)$…) reçoivent l’infobulle « fonction de régression / attributs ».
@@ -120,3 +127,17 @@
 8. **Exemple « signal + bruit » et Monte-Carlo de Pythagore** : variante explicitement marquée (`Variante (illustration du Th. 1.1…)`), non présente telle quelle dans le poly.
 9. **Visualisations.** Six viz : Bayes 1D (préréglages Ex. 1.6 et PC8 Ex. 5 ; les uniformes sont paramétrées par moyenne et écart-type), excès de risque / majoration (13), Pythagore (Th. 1.1), LDA/QDA/logistique 2D (scénarios inspirés de la Figure 1 de PC8 ; logistique avec ordonnée à l’origine et pénalité ridge $10^{-3}$ pour éviter la divergence en cas de séparabilité), $k$-PPV 2D (deux gaussiennes ou « XOR »), risque empirique vs risque réel quand $n$ augmente (LDA/QDA 1D, risque conditionnel calculé exactement par $\Phi$, modèle bien / mal spécifié, règle « par cœur »).
 10. **Compléments** (§4 du poly) en section 11, `scope: 'hors-programme'`, résumés ; aucun exercice ne porte sur eux sauf le Monte-Carlo de l’Ex. 4.1.
+## ch9 — Approche discriminative et minimisation du risque empirique
+
+
+
+1. **Numérotation et collisions.** Les éléments sont cités avec la numérotation de l'extraction `ch9.md` (Déf. 1.1–1.3, Prop. 1.1–1.3, Th. 1.1–1.8, Lemme 1.1, Méthodes 1.1–1.2 ; Outils Prop. 2.1–2.2, Déf. 2.1, Th. 2.1, Cor. 2.1 ; Compléments Déf. 4.1–4.2, Th. 4.1–4.2, Lemmes 4.1–4.2, Cor. 4.1). Les renvois du poly à d'autres chapitres de même numéro (Th. 1.2 du ch.8, LGN Th. 2.1 du ch.7, TCL Th. 1.6 du ch.6, Prop. 2.5 du ch.8…) sont toujours écrits « du ch.N ». Éq. (1)–(4) affichées avec `\qquad(1)` (pas de `\tag`).
+2. **Notations.** Celles du poly : $\widehat{\mathrm R}_n$ (R droit), $\hat g^*_{n,\mathcal C}$ (MRE), $g^*_{\mathcal C}$ (oracle), étoile pleine pour le bayésien, $\mathcal D_n$, $\mathbf X$ / $\mathsf X$, labels $\{-1,1\}$, $\operatorname{signe}(0)=-1$. Les exercices tirés de la PC9 gardent les notations de la PC ($R_n(g)$, $D_n$ italique, labels $\{0,1\}$, $g^\star_{\mathcal C}$), signalées dans le cours et la fiche.
+3. **Indicatrice.** Le poly écrit l'indicatrice avec un 1 ajouré ; en KaTeX, `\mathbb{1}` s'affiche comme un « 1 » ordinaire (illisible : « 21_{…} − 1 »). Toutes les indicatrices du ch.9 utilisent `\mathbf{1}` (comme la macro `\ind` du socle).
+4. **Tableaux.** Le Markdown léger ne gère pas les tableaux : les tableaux du poly (p. 10, p. 12, p. 23) sont rendus en listes (voir DEMANDES_SOCLE).
+5. **No free lunch.** La preuve (Compléments §4.1, hors programme) est donnée pas à pas dans le bloc du Th. 1.1 (programme), car c'est l'exercice 6 de la PC9 ; l'intuition le signale. Elle suit la rédaction rigoureuse du poly (tirage uniforme de l'étiquetage) plutôt que celle, plus informelle, du corrigé de la PC.
+6. **Examen 2025 Ex. 3 Q8–Q9** (sans corrigé officiel) : correction de DIAGNOSTIC §2.A, avec les résultats de Q3 et Q7 admis dans l'énoncé de l'annale. Les k plus proches voisins relèvent du ch.8 pour leur définition ; Q8–Q9 (compromis, choix de $k$, fléau de la dimension) sont rattachées au ch.9 comme le fait DIAGNOSTIC §7.
+7. **PC9 Ex. 4 Q2(b).** Le corrigé obtient $\sqrt{\log M/(2n)}$ (déviation unilatérale) ; le poly (Th. 1.8) donne $\sqrt{\log(2|\mathcal C|)/(2n)}$ : les deux sont mentionnés, l'étape-suivante utilise la forme du poly. Q4(b) : la borne finale du corrigé ($2\sqrt{A/(2n)}$, coquille du facteur 2) n'est pas reproduite ; on donne la borne du Th. 1.8 avec $|\mathcal C|=2^K$.
+8. **Visualisations adaptées au poly.** Le compromis approximation / estimation utilise le classifieur par histogramme (Compléments §4.3) car il permet de calculer exactement l'erreur d'approximation ; le « choix de $k$ » des $k$-ppv est présenté comme une application de la Méthode 1.2 (validation) ; le fléau de la dimension combine la distance au plus proche voisin, la vitesse $n^{-1/(d+2)}$ (Examen 2025 Q9) et la borne de l'histogramme à $q^d$ cellules. Deux visualisations supplémentaires (biais optimiste / Th. 1.8 sur une classe finie emboîtée ; no free lunch) illustrent la Prop. 1.1 et le Th. 1.1.
+9. **Annale « classifieur par histogramme ».** Exercice de type examen blanc (DIAGNOSTIC §9 point 3), marqué `origin: 'variante'`, construit sur les Compléments §4.3 et les Th. 1.2, 1.5, 1.6, 1.8 (seuls résultats du programme utilisés).
+10. **Monte-Carlo.** Pour les inégalités (Hoeffding, Prop. 1.1 + Th. 1.8, Pisier), `observed` = violation positive et `expected` = 0 ; le lemme de Hoeffding pour une Bernoulli centrée est vérifié de façon exacte sur une grille (pas d'aléa).
