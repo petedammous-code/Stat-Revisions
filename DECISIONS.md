@@ -5,6 +5,7 @@
 
 
 
+
 1. **Notations des convergences.** Le poly note la convergence en probabilité $\xrightarrow{\mathbb{P}_{n,\theta}\text{-prob}}$ et la convergence en loi $\overset{\mathbb{P}_{n,\theta}}{\Longrightarrow}$ ; ces deux formes sont utilisées partout dans le chapitre (et enregistrées au glossaire). La flèche courte $\Rightarrow$ est tolérée dans les corrections et les options de QCM quand la probabilité sous-jacente est évidente, conformément à l'usage des corrigés de PC.
 2. **Variance empirique.** $\hat\sigma_n^2$ (normalisée par $n$) et $S_n^2$ (normalisée par $n-1$) suivent le poly (Ex. 1.6) ; la PC6 Ex. 3 normalise $S_n^2$ par $n$ : signalé dans le cours (section « Notations »), sans incidence asymptotique.
 3. **Convention exponentielle / Gamma.** Intensité (poly, PC6, PC7, Examen 2025) : $\mathcal{E}(\theta)$ a pour moyenne $1/\theta$, $\Gamma(2,\theta)$ pour moyenne $2/\theta$. Dans la variante type examen (Weibull), la loi de $X^c$ est écrite explicitement avec sa densité $\theta^{-1}e^{-y/\theta}$ (échelle), comme dans le CC 2022 Ex. 1, pour éviter toute ambiguïté.
@@ -17,6 +18,7 @@
 10. **Titres sans LaTeX.** Les champs `title` (viz, exercices, blocs, sections), `label` (fiche, barème) sont rendus en texte brut par le socle : les formules y ont été remplacées par du texte ou des caractères Unicode (θ, μ², X̄ₙ) ; le LaTeX est réservé aux champs `Rich`.
 
 ## ch1 — Modèles statistiques
+
 
 
 
@@ -39,6 +41,7 @@
 
 
 
+
 1. **Numérotation et sources.** Les éléments encadrés sont cités « Poly ch.2, Déf./Ex./Prop./Méthode N.M, p. X » (numérotation de l'extraction `ch2.md`) ; les outils en « (Outils) » (Prop. 2.1, Déf. 2.1–2.2, Thm 2.1–2.2, Lemmes 2.1–2.3) ; les compléments Ex. 4.1–4.7 et Thm 4.1 en `scope: 'hors-programme'`. Les homonymies de renvois (« Théorème 1.1 » = Cochran du ch.1 dans le fascicule d'exercices ; « Lemme 2.1 du ch.1 ») sont signalées dans le cours.
 2. **Notations.** Vraisemblance $\mathrm{L}_n$ (L droit) et log-vraisemblance **normalisée** $\ell_n=\frac1n\log\mathrm{L}_n$ comme dans le poly ; les corrigés de PC/annales qui écrivent $\log\mathrm{L}_n$ sans $\frac1n$ sont signalés (même argmax). Trois lettres distinguées partout : $\vartheta$ (variable libre), $\theta$ (valeur de calcul), $\theta^\star$ (vraie valeur, §1.4). Exponentielle et Gamma en **intensité**. Statistiques d'ordre $X_{k:n}$ ; les variantes `X_{n:n}`, `X_{1:n}` étant déjà au glossaire via ch6 (clé `Xordre`), ch2 enregistre une clé distincte `Xkn` pour `X_{k:n}`, `X_{m:n}`, `X_{m+1:n}`.
 3. **Ex. 1.5 (application numérique).** L'extraction écrit « $\hat b_n\simeq0{,}1+0{,}27\simeq0{,}62$ » ; la valeur $\sqrt{3V_n}=\sqrt{0{,}27}\approx0{,}52$ est la bonne et donne bien $0{,}62$ : le cours et l'exercice numérique écrivent $0{,}1+\sqrt{0{,}27}$.
@@ -54,6 +57,7 @@
 
 
 
+
 1. **Numérotation et sources.** Éléments encadrés cités « Poly ch.3, Déf./Prop./Thm/Cor./Ex. N.M, p. X » (numérotation de `ch3.md`) ; outils en « Outils, Prop. 2.1–2.3, Lemme 2.1 » ; compléments (Déf. 4.1, Prop. 4.1, Thm 4.1, rétrécissement, équivariance) en section 10 `scope: 'hors-programme'`. Les remarques non numérotées (§1.5 ordre partiel, §1.6 restriction de la classe, §1.7 calcul heuristique) sont des blocs `definition`/`remarque` étiquetés « Définition (§1.5, non numérotée) », « Remarque (§1.7) ».
 2. **Notations.** Information de Fisher en lettre ajourée $\mathbb{I}(\theta)$ (poly) partout dans le chapitre, et non $I(\theta)$ du glossaire de base ; clés de glossaire distinctes `IFisherPoly`, `IFisherUne`, `IFisherN`. Hessienne $\mathrm{H}_\ell$ (H droit), risque $R(\theta,T)$ (paramètre puis estimateur, y compris pour PC3 Ex. 4 dont le corrigé inverse l’ordre), statistiques d’ordre $X_{k:n}$. Notation de transposée $^\top$ (poly) et non $^T$ (feuille de PC). Densité de base de PC3 Ex. 4 notée $q$ (feuille de PC), $p_\theta$ pour la densité translatée.
 3. **PC3 Ex. 1 Q2.** Le poly §1.12 affirme qu’aucun estimateur sans biais de la forme $n^{-1}\sum T(X_i)$ n’existe ; le corrigé en construit un ($T=g+xg'$) : on suit le corrigé (réponse « oui ») et l’incohérence est signalée dans le cours.
@@ -64,3 +68,16 @@
 8. **Examen 2025 Ex. 4 Q11** (réponse courte) traitée en QCM (efficacité / BLUE de l’estimateur des moindres carrés), réponse du DIAGNOSTIC.
 9. **Ex. 1.6 (pertes)** rendu comme bloc `theorem` de type `exemple` (pas d’étapes) ; points d’histoire (Fisher, Rao) intégrés en une phrase dans l’intuition de la Déf. 1.8 et du Thm 1.1.
 10. **Visualisations hors poly.** L’estimateur de Laplace $(n\bar X_n+1)/(n+2)$ (viz admissibilité, Bernoulli) et la famille $c\,S_n^2$ (optimum $c=\frac{n-1}{n+1}$) ne sont pas dans le poly ; ils sont signalés comme variantes dans le texte de la visualisation. La « borne formelle » $\theta^2/n$ dans l’uniforme (viz Cramér-Rao) est explicitement marquée comme non applicable.
+## ch7 — Théorie asymptotique des M- et Z-estimateurs
+
+
+1. **Notations.** Fonctions limites $\mathsf{M}_{\theta^\star}$, $\mathsf{W}_{\theta^\star}$ en sans-serif comme le poly ; l'équation d'estimation limite est écrite $\Psi_{\theta^\star}$ (Ψ ordinaire) pour la compatibilité KaTeX (le poly la met en sans-serif) ; information de Fisher en lettre ajourée $\mathbb{I}$ (convention du ch.7, distincte du $I(\theta)$ du glossaire de base). Glossaire ch7 enregistré sous des clés `ch7-*` sans redéfinir les variantes LaTeX déjà présentes (`\theta^\star`, `\psi(\theta,x)`, `\hat\theta_n^{\mathrm{MV}}` restent celles de ch2/socle).
+2. **Homonymies de numérotation.** Toute citation précise le chapitre (« TCL = Poly ch.6, Thm 1.6 », « Slutsky = ch.6, Lemme 1.1 », « méthode-δ = ch.6, Thm 1.7 », « Markov = ch.6, Lemme 2.1 ») ; un encart du §1 les liste.
+3. **Coquille signalée, non reproduite comme formule de référence** : la statistique de Student du §1.2 (« $/S_n^2$ ») ; le cours renvoie à $/S_n$.
+4. **Examen 2025 Ex. 2 Q7.** Le corrigé du ch.6 (TCL multivarié + Slutsky) reste la référence ; l'annale du ch.7 (`ch7-annale-2025`) reformule Q7 par l'information de Fisher et le Thm 1.6 en version vectorielle (compléments §4.4, hors programme), présenté comme vérification de cohérence $\Sigma=\mathbb{I}^{-1}$. En Q10, l'argument « $\hat\mu_{Mom}$ ne peut pas faire mieux que l'EMV » étend le Thm 1.7 (énoncé scalaire) au cas d'un Z-estimateur d'un paramètre de dimension 2 : signalé comme lecture du Thm 4.4 / Déf. 4.1, la comparaison numérique des variances suffisant de toute façon.
+5. **PC7 Ex. 1 (Pitman, contiguïté, Lindeberg-Feller)** : hors du poly actuel ; résumé en section 9 (hors programme, pentes $2q(0)$ et $1/\sigma_q$, rapport $\sqrt{2/\pi}$), sans exercice dédié. PC7 Ex. 2–5 sont exploités en exercices et annales (`origin: 'pc'`).
+6. **Médiane.** Toujours présentée comme non couverte par le Thm 1.4 ; le calcul formel $\operatorname{signe}'=2\delta_0$ du corrigé PC7 (Q6) est repris en le qualifiant de formel.
+7. **Numérotation PC7 Ex. 2.** On suit l'énoncé (Q1–Q5) et non le corrigé (décalé) ; la consistance (Q3, non traitée séparément par le corrigé) est rédigée par LGN + continuité.
+8. **Valeurs numériques non présentes dans le corrigé officiel** (IC log-normale $\bar T_n=2$, $\mathbb{P}(\hat\theta_n=0)=\Phi(-1)$, EQM Gamma $n=5$, $V[\gamma_k]$ contaminé) : reprises de l'extraction (marquées « Extracteur ») et vérifiées numériquement (quadrature dans `viz/common.ts`, Monte-Carlo).
+9. **Ex. 1.4 (Huber).** La forme lisse « pseudo-Huber » du poly est conservée sous le nom « perte de Huber » ; l'estimateur de Huber de la PC7 ($\gamma_k$ tronquée) est distingué dans le texte.
+10. **Visualisations.** Six vizs ; l'outil partagé `viz/common.ts` (quadrature, lois de translation, $V[\gamma_k]$, EMV de Cauchy par score de Fisher itéré depuis la médiane) est aussi utilisé par `montecarlo.ts`. La viz « Z-estimateur » apparaît deux fois dans le cours (§2 et §5, blocs distincts).
