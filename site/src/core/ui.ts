@@ -1,5 +1,5 @@
 /** Petits constructeurs d'éléments d'interface (sans framework). */
-import { richToHtml } from './rich'
+import { richToHtml, richInline } from './rich'
 
 export function el<K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, html?: string): HTMLElementTagNameMap[K] {
   const e = document.createElement(tag)
@@ -17,7 +17,7 @@ export function rich(text: string, className = 'rich'): HTMLDivElement {
 export function button(label: string, onClick: () => void, className = 'btn'): HTMLButtonElement {
   const b = el('button', className)
   b.type = 'button'
-  b.innerHTML = richToHtml(label).replace(/^<p>|<\/p>$/g, '')
+  b.innerHTML = richInline(label)
   b.addEventListener('click', onClick)
   return b
 }
@@ -45,7 +45,7 @@ export interface SliderHandle {
 export function slider(opts: SliderOptions): SliderHandle {
   const root = el('label', 'ctl ctl-slider')
   const lab = el('span', 'ctl-label')
-  lab.innerHTML = richToHtml(opts.label).replace(/^<p>|<\/p>$/g, '')
+  lab.innerHTML = richInline(opts.label)
   const val = el('span', 'ctl-value')
   const input = el('input')
   input.type = 'range'
@@ -82,7 +82,7 @@ export interface SelectOption<T extends string> {
 export function select<T extends string>(label: string, options: SelectOption<T>[], value: T, onChange: (v: T) => void): HTMLElement {
   const root = el('label', 'ctl ctl-select')
   const lab = el('span', 'ctl-label')
-  lab.innerHTML = richToHtml(label).replace(/^<p>|<\/p>$/g, '')
+  lab.innerHTML = richInline(label)
   const sel = el('select')
   for (const o of options) {
     const opt = el('option')
@@ -103,7 +103,7 @@ export function segmented<T extends string>(options: SelectOption<T>[], value: T
   for (const o of options) {
     const b = el('button', 'seg')
     b.type = 'button'
-    b.innerHTML = richToHtml(o.label).replace(/^<p>|<\/p>$/g, '')
+    b.innerHTML = richInline(o.label)
     if (o.value === value) b.classList.add('active')
     b.addEventListener('click', () => {
       for (const x of buttons.values()) x.classList.remove('active')
@@ -123,7 +123,7 @@ export function toggle(label: string, value: boolean, onChange: (v: boolean) => 
   input.checked = value
   input.addEventListener('change', () => onChange(input.checked))
   const lab = el('span', 'ctl-label')
-  lab.innerHTML = richToHtml(label).replace(/^<p>|<\/p>$/g, '')
+  lab.innerHTML = richInline(label)
   root.append(input, lab)
   return root
 }
@@ -173,7 +173,7 @@ export function details(summary: string, body: HTMLElement | string, open = fals
     if (d.open) requestAnimationFrame(() => window.dispatchEvent(new Event('resize')))
   })
   const s = el('summary')
-  s.innerHTML = richToHtml(summary).replace(/^<p>|<\/p>$/g, '')
+  s.innerHTML = richInline(summary)
   d.append(s)
   if (typeof body === 'string') d.append(rich(body))
   else d.append(body)

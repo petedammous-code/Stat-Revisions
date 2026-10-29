@@ -7,3 +7,18 @@
 3. **Figures multiples dans une visualisation.** `vizFrame` ne fournit qu'une zone `plot`. Pour les figures côte à côte (méthode-δ, Slutsky, Wald/Wilson), ch6 crée deux `div` enfants avec une grille CSS en ligne et deux poignées `plot`. Demande : option `vizFrame(container, { plots: 2 })` renvoyant un tableau de zones, avec le style de grille dans `styles.css`.
 4. **Segments verticaux (IC).** Pas de helper pour tracer des segments ; ch6 utilise une trace `scatter` en mode `lines` avec des `null` séparateurs. Demande : `segmentsTrace(xs, y0s, y1s, name, color)` dans `core/plot.ts`.
 5. **Console de test silencieuse.** Les `console.log` dans les tests ne sont pas affichés par le reporter par défaut, ce qui complique le débogage du registre ; une note dans le guide (« utiliser `--reporter=verbose` et écrire dans un fichier ») suffirait.
+
+## Remontées du chapitre 1
+
+
+1. **Titres de sections numérotés.** `richInline` passe par `lightMarkdown` : un titre de section « 2. Modèle statistique… » est reconnu comme item de liste ordonnée (`^(\d+)[.)]\s+`) et rendu `<ol><li>…</li></ol>`, ce qui affiche « 1. » pour toutes les sections (visible aussi dans le prototype ch6 : plan du chapitre « 1. 1. Intuition… », « 2. 1. Modes de convergence… »). Demande : dans `richInline`, ne pas appliquer la détection de listes/titres (traiter la chaîne comme une seule ligne `inline`), ou documenter dans le guide d'éviter « N. » en tête de titre. Contournement ch1 : titres « N · … ».
+2. **Curseurs dépendants.** Plusieurs visualisations (lois usuelles, changement de variables) doivent reconstruire leurs curseurs quand la loi/transformation change ; `slider` ne propose pas de `setRange`/`destroy`. Contournement : un conteneur `div.viz-controls` imbriqué vidé et re-rempli. Demande : `SliderHandle.setRange(min, max, step)` ou un helper `controlsGroup()`.
+3. **Échelle logarithmique du curseur n.** Avec `log: true`, la valeur affichée par défaut est `v.toPrecision(3)` ; un `format` est nécessaire pour afficher un entier. Demande : option `integer: true` arrondissant la valeur réelle avant `onChange` et l'affichage.
+
+## Remontées du chapitre 2
+
+
+1. **Double numérotation du plan.** Le plan du cours (`components/cours.ts`) est un `<ol>` et les titres de sections commencent par leur numéro (« 1. Intuition… ») : l'affichage donne « 1. 1. Intuition… » (déjà le cas pour ch6). Demande : `list-style: none` sur `.toc ol` ou bien numérotation automatique et titres sans numéro dans le guide.
+2. **Curseurs reconfigurables.** `slider()` ne permet pas de changer `min/max/step/label` après création : pour les visualisations à choix de modèle (log-vraisemblance, Kullback-Leibler) ch2 reconstruit le curseur avec `controls.replaceChild`. Demande : `SliderHandle.configure({ min, max, step, label })`, et un `set(value)` sur `segmented`.
+3. **Boîtes à moustaches.** Les traces Plotly `type: 'box'` fonctionnent telles quelles (viz « méthode des moments ») ; un helper `boxTrace(values, name, color)` dans `core/plot.ts` éviterait de dupliquer les options (`boxpoints`, `marker`).
+4. **Marqueurs « tick » pour les observations.** Pour afficher un échantillon sur l'axe des abscisses, ch2 utilise `pointsTrace` avec `symbol: 'line-ns-open'` ; un helper `rugTrace(xs, y, name, color)` serait utile à plusieurs chapitres (uniforme, Laplace, statistiques d'ordre).

@@ -219,9 +219,22 @@ function inline(s: string): string {
   return t
 }
 
-/** Rend un texte riche court (titre, étiquette) sans paragraphe englobant. */
+/**
+ * Rend un texte riche court (titre, étiquette) : maths et mise en forme inline uniquement,
+ * sans interprétation des blocs (un titre « 2. Modes de convergence » reste un titre, pas une liste).
+ */
 export function richInline(text: string): string {
-  return richToHtml(text).replace(/^<p>|<\/p>$/g, '')
+  if (!text) return ''
+  const maths: string[] = []
+  let work = text.replace(/\$\$([\s\S]*?)\$\$/g, (_m, tex: string) => {
+    maths.push(texToHtml(tex.trim(), false))
+    return `\u0000${maths.length - 1}\u0000`
+  })
+  work = work.replace(/(^|[^\\])\$([^$\n]+?)\$/g, (_m, pre: string, tex: string) => {
+    maths.push(renderInline(tex.trim()))
+    return `${pre}\u0000${maths.length - 1}\u0000`
+  })
+  return inline(work).replace(/\u0000(\d+)\u0000/g, (_m, idx: string) => maths[Number(idx)])
 }
 
 /** Rend un texte riche dans un élément. */
