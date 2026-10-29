@@ -114,6 +114,12 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
 .btn-choice.correct { border-color: var(--ok); background: var(--ok-soft); }
 .btn-choice.wrong { border-color: var(--ko); background: var(--ko-soft); }
 .btn-mini { background: var(--bg-soft); color: var(--fg); border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; cursor: pointer; }
+/* Cibles tactiles ≥ 24×24 px (WCAG 2.2, 2.5.8) ; plus grandes sur écran tactile. */
+.btn-mini { min-width: 28px; min-height: 28px; }
+@media (pointer: coarse) {
+  .btn-mini { min-width: 40px; min-height: 36px; font-size: 1rem; }
+  .step-ctl { gap: 6px; }
+}
 .ex-actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
 
 /* ---------- Contrôles de visualisation ---------- */
@@ -228,11 +234,11 @@ main.page { max-width: 1040px; margin: 0 auto; padding: 16px; }
 .sortable-item.dragover { border-color: var(--accent); }
 .sortable-item.correct { border-color: var(--ok); background: var(--ok-soft); }
 .sortable-item.wrong { border-color: var(--ko); background: var(--ko-soft); }
-.drag-handle { color: var(--fg-muted); cursor: grab; user-select: none; }
+.drag-handle { color: var(--fg-muted); cursor: grab; user-select: none; touch-action: none; padding: 10px 6px; }
 .step-num { font-weight: 700; color: var(--fg-muted); min-width: 1.3em; }
 .step-body { flex: 1; }
 .step-body p { margin: 0; }
-.step-ctl { display: flex; flex-direction: column; gap: 2px; }
+.step-ctl { display: flex; flex-direction: column; gap: 4px; }
 .solution-list li { margin: 4px 0; }
 
 .lines { list-style: none; padding: 0; margin: 8px 0; }

@@ -64,7 +64,7 @@ où $Z\'$ est une copie indépendante : la probabilité, **sous $H_0$**, d’obs
   {
     id: 'ch4-annale-cc2022-ex3-translatee',
     type: 'annale',
-    title: 'CC 2022 Ex. 3 Q5, Q7, Q9 — intervalles par pivots pour l’exponentielle translatée',
+    title: 'CC 2022 Ex. 3 Q5, Q7–Q9 — intervalles par pivots pour l’exponentielle translatée',
     source: 'CC MAP433 2022 Ex. 3 Q5, Q7–Q9 (corrigé officiel complété)',
     origin: 'annale',
     difficulty: 3,
@@ -80,12 +80,12 @@ $$T_1:=\\sum_{i=1}^n(X_{i:n}-X_{1:n}),\\qquad T_2:=X_{1:n}.$$
 
 **Q7.** Montrer « sans calcul » que $F_n(a):=\\dfrac{T_2-a}{(n-1)^{-1}T_1}$ est une fonction pivotale.
 
-**Q8 (admis).** La densité de $F_n(a)$ est $t\\mapsto n\\big(1+\\frac{nt}{n-1}\\big)^{-n}\\mathbb{1}_{[0,+\\infty[}(t)$.
+**Q8 (bonus).** Montrer que la densité de $F_n(a)$ est $t\\mapsto n\\big(1+\\frac{nt}{n-1}\\big)^{-n}\\mathbb{1}_{[0,+\\infty[}(t)$.
 
 **Q9.** En déduire un intervalle de confiance de niveau $1-\\alpha$ pour $a$. Proposer un choix explicite des constantes.`,
     hints: [
       'Q5 : un changement d’échelle transforme $T_1\\sim\\mathrm{Gamma}(n-1,\\lambda)$ en une variable de loi $\\mathrm{Gamma}(n-1,1)$ : c’est le pivot ; attention à l’inversion des inégalités ($\\lambda$ au dénominateur).',
-      'Q7 : écrire $F_n(a)=(n-1)\\frac{(T_2-a)/\\lambda}{T_1/\\lambda}$ ; les deux variables $(T_2-a)/\\lambda$ et $T_1/\\lambda$ ont des lois qui ne dépendent pas de $\\theta$, et elles sont indépendantes.',
+      'Q7 : écrire $F_n(a)=(n-1)\\frac{(T_2-a)/\\lambda}{T_1/\\lambda}$ ; les deux variables $(T_2-a)/\\lambda$ et $T_1/\\lambda$ ont des lois qui ne dépendent pas de $\\theta$, et elles sont indépendantes. Q8 : pour $t\\ge0$, calculer $\\mathbb{P}(F_n(a)>t)=\\mathbb{P}\\big(U>\\frac{tV}{n-1}\\big)$ en intégrant d’abord en $U$ (survie exponentielle), puis reconnaître $\\int_0^\\infty\\frac{v^{n-2}}{(n-2)!}e^{-sv}\\,\\mathrm{d}v=s^{-(n-1)}$ ; dériver.',
       'Q9 : choisir $0\\le c_1<c_2$ avec $\\int_{c_1}^{c_2}n(1+\\frac{nt}{n-1})^{-n}\\mathrm{d}t=1-\\alpha$ et résoudre en $a$. La densité est **décroissante** : l’intervalle le plus court prend $c_1=0$ ; la fonction de survie est $(1+\\frac{nt}{n-1})^{-(n-1)}$.',
     ],
     correction: `**Q5.** Si $Y\\sim\\mathrm{Gamma}(p,\\lambda)$ (échelle), alors $Y/\\lambda\\sim\\mathrm{Gamma}(p,1)$ (changement de variable). Donc, sous $\\mathbb{P}_\\theta$, $G_1(Z;\\lambda):=T_1/\\lambda\\sim\\mathrm{Gamma}(n-1,1)$, loi qui ne dépend pas de $\\theta=(a,\\lambda)$ : **fonction pivotale** (Poly ch.4, Déf. 1.2). Avec $a_\\alpha:=\\mathrm{Gqf}_{n-1}(\\alpha/2)$ et $b_\\alpha:=\\mathrm{Gqf}_{n-1}(1-\\alpha/2)$ (f.d.r. continue), $\\mathbb{P}_\\theta(a_\\alpha\\le T_1/\\lambda\\le b_\\alpha)=1-\\alpha$ pour tout $\\theta$, et comme toutes les quantités sont positives,
@@ -95,6 +95,12 @@ $$a_\\alpha\\le\\frac{T_1}\\lambda\\le b_\\alpha\\iff\\frac{T_1}{b_\\alpha}\\le\
 Par la Prop. 1.1 (Méthode 1.1), $\\big[T_1/b_\\alpha,\\ T_1/a_\\alpha\\big]$ est un intervalle de confiance de niveau de couverture $1-\\alpha$ pour $\\lambda$.
 
 **Q7.** On écrit $F_n(a)=(n-1)\\dfrac{U}{V}$ avec $U:=(T_2-a)/\\lambda$ et $V:=T_1/\\lambda$. Sous $\\mathbb{P}_\\theta$ : $U$ suit la loi exponentielle d’échelle $1/n$ (car $T_2-a$ est exponentielle d’échelle $\\lambda/n$), $V\\sim\\mathrm{Gamma}(n-1,1)$ (Q5), et $U$, $V$ sont indépendantes (fonctions de $T_2$ et de $T_1$, indépendantes). La loi du couple $(U,V)$ est donc le produit de deux lois qui ne dépendent pas de $\\theta$ ; $F_n(a)$ en est une fonction mesurable fixe, donc sa loi ne dépend pas de $\\theta$. Comme $F_n(a)$ dépend des observations **et** du paramètre $a$, c’est une **fonction pivotale** pour $a$ (Déf. 1.2), et non une statistique.
+
+**Q8 (bonus).** Gardons $U$ (densité $ne^{-nu}\\mathbb{1}_{u\\ge0}$) et $V$ (densité $\\frac{v^{n-2}}{(n-2)!}e^{-v}\\mathbb{1}_{v>0}$), indépendantes. Comme $T_2\\ge a$ p.s., $F_n(a)\\ge0$. Pour $t\\ge0$, par indépendance et Fubini-Tonelli (intégrande positive),
+
+$$\\mathbb{P}_\\theta(F_n(a)>t)=\\mathbb{P}\\Big(U>\\frac{tV}{n-1}\\Big)=\\int_0^\\infty e^{-\\frac{ntv}{n-1}}\\frac{v^{n-2}}{(n-2)!}e^{-v}\\,\\mathrm{d}v=\\Big(1+\\frac{nt}{n-1}\\Big)^{-(n-1)},$$
+
+en reconnaissant $\\int_0^\\infty\\frac{v^{n-2}}{(n-2)!}e^{-sv}\\,\\mathrm{d}v=s^{-(n-1)}$ (densité Gamma) avec $s=1+\\frac{nt}{n-1}$. Cette fonction de survie est de classe $C^1$ sur $[0,+\\infty[$ ; en dérivant, $F_n(a)$ a pour densité $t\\mapsto(n-1)\\frac{n}{n-1}\\big(1+\\frac{nt}{n-1}\\big)^{-n}=n\\big(1+\\frac{nt}{n-1}\\big)^{-n}$ sur $[0,+\\infty[$. (Le corrigé officiel passe par la fonction muette : intégrale double contre la densité produit de $(T_1,T_2)$, changement de variable $t=(n-1)(t_2-a)/t_1$ à $t_1$ fixé, puis intégration en $t_1$ ; même résultat.)
 
 **Q9.** On choisit $0\\le c_1<c_2$ tels que $\\int_{c_1}^{c_2}n\\big(1+\\frac{nt}{n-1}\\big)^{-n}\\mathrm{d}t=1-\\alpha$. Alors, pour tout $\\theta$, $\\mathbb{P}_\\theta\\big(c_1\\le F_n(a)\\le c_2\\big)=1-\\alpha$, et (en multipliant par $T_1/(n-1)>0$)
 
@@ -110,6 +116,7 @@ analogue de l’intervalle optimal $[X_{n:n},X_{n:n}\\alpha^{-1/n}]$ de PC4 Ex. 
     bareme: [
       { label: 'Q5 pivot T₁/λ et inversion', points: 0.5 },
       { label: 'Q7 pivot par indépendance de deux pivots', points: 0.5 },
+      { label: 'Q8 (bonus) densité de Fₙ(a) par la fonction de survie', points: 0.5 },
       { label: 'Q9 résolution en a (facteur 1/(n−1))', points: 0.5 },
       { label: 'Q9 choix explicite des constantes', points: 0.25 },
     ],
@@ -149,7 +156,7 @@ $$A=\\hat\\beta_1^2-\\frac{FS^2}{\\|u\\|^2},\\qquad B=-2\\bar Y\\hat\\beta_1,\\q
 
 La région contient $\\delta=\\bar Y/\\hat\\beta_1$ (le membre de gauche s’y annule), donc elle est non vide. Si $A>0$, c’est le segment entre les deux racines : **intervalle borné**. Si $A<0$, c’est le complémentaire d’un intervalle ouvert (réunion de deux demi-droites) ou $\\mathbb{R}$ tout entier ; si $A=0$, une demi-droite ou $\\mathbb{R}$.
 
-*Interprétation.* $A>0\\iff\\dfrac{\\hat\\beta_1^2}{S^2/\\|u\\|^2}>F=\\big(\\mathrm{t}^{(n-2)}_{1-\\alpha/2}\\big)^2\\iff\\dfrac{|\\hat\\beta_1|}{S/\\|u\\|}>\\mathrm{t}^{(n-2)}_{1-\\alpha/2}$. Sous $\\beta_1=0$, $\\hat\\beta_1/(S/\\|u\\|)\\sim\\mathrm{t}(n-2)$ (pivot de Student de la pente, Ex. 2.15) : la région de Fieller est un intervalle borné **si et seulement si le test de Student de $H_0:\\beta_1=0$ rejette au niveau $\\alpha$** (dualité, §2.6). Si la pente n’est pas significativement non nulle, on ne peut pas localiser l’abscisse $\\phi$ : la région est non bornée, ce qui est cohérent. On en déduit une région pour $\\phi=\\bar x-\\delta$.`,
+*Interprétation.* $A>0\\iff\\dfrac{\\hat\\beta_1^2}{S^2/\\|u\\|^2}>F=\\big(\\mathrm{t}^{(n-2)}_{1-\\alpha/2}\\big)^2\\iff\\dfrac{|\\hat\\beta_1|}{S/\\|u\\|}>\\mathrm{t}^{(n-2)}_{1-\\alpha/2}$. Sous $\\beta_1=0$, $\\hat\\beta_1/(S/\\|u\\|)\\sim\\mathrm{t}(n-2)$ (pivot de Student de la pente, Ex. 2.15) : la région de Fieller est un intervalle borné **si et seulement si le test de Student de $H_0:\\beta_1=0$ rejette au niveau $\\alpha$** (dualité, §2.6). Si la pente n’est pas significativement non nulle, on ne peut pas localiser l’abscisse $\\phi{}$ : la région est non bornée, ce qui est cohérent. On en déduit une région pour $\\phi=\\bar x-\\delta$.`,
     bareme: [
       { label: 'Q8 normalisation, indépendance, loi de Fisher', points: 0.5 },
       { label: 'Q9 pivot et coefficients A, B, C', points: 0.5 },

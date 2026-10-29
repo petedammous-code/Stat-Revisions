@@ -45,7 +45,7 @@ export const summarySheet: SummarySheet = {
     },
     {
       title: 'Normalité asymptotique par TCL + méthode-δ',
-      steps: ['TCL (Thm 1.6) : $\\sqrt n(\\bar T_n-e(\\theta))\\Rightarrow\\mathcal{N}(0,\\sigma_T^2(\\theta))$ avec $\\sigma_T^2=\\mathrm{Var}_\\theta(T(X))$.', 'Vérifier $\\varphi$ dérivable en $e(\\theta)$, $\\mathbb{P}_{n,\\theta}(\\bar T_n\\in D_\\varphi)=1$ ; calculer $\\dot\\varphi(e(\\theta))$ **au point limite**.', 'Méthode-δ (Thm 1.7) : $\\sqrt n(\\hat\\theta_n-\\theta)\\Rightarrow\\mathcal{N}(0,\\dot\\varphi(e(\\theta))^2\\sigma_T^2(\\theta))$.', 'Si $\\dot\\varphi=0$ : changer d’échelle ($n$), transformation continue, loi $\\chi^2$ (Ex. 1.8 ; CC 2022 Ex. 2 Q7).', 'Vérification : pour l’EMV d’un modèle régulier, $v(\\theta)=1/I(\\theta)$.'],
+      steps: ['TCL (Thm 1.6) : $\\sqrt n(\\bar T_n-e(\\theta))\\Rightarrow\\mathcal{N}(0,\\sigma_T^2(\\theta))$ avec $\\sigma_T^2=\\mathrm{Var}_\\theta(T(X))$.', 'Vérifier $\\varphi$ dérivable en $e(\\theta)$, $\\mathbb{P}_{n,\\theta}(\\bar T_n\\in D_\\varphi)=1$ ; calculer $\\dot\\varphi(e(\\theta))$ **au point limite**.', 'Méthode-δ (Thm 1.7) : $\\sqrt n(\\hat\\theta_n-\\theta)\\Rightarrow\\mathcal{N}(0,\\dot\\varphi(e(\\theta))^2\\sigma_T^2(\\theta))$.', 'Si $\\dot\\varphi=0$ : changer d’échelle ($n$), transformation continue, loi $\\chi^2$ (Ex. 1.8 ; CC 2022 Ex. 2 Q7).', 'Vérification : pour l’EMV d’un modèle régulier, $v(\\theta)=1/\\mathbb{I}(\\theta)$.'],
     },
     {
       title: 'Normalité asymptotique d’un vecteur (Examen 2025 Q7, Q9)',
@@ -61,14 +61,14 @@ export const summarySheet: SummarySheet = {
     },
     {
       title: 'Comparer deux estimateurs (Prop. 1.3)',
-      steps: ['Calculer $v_1(\\theta)$ et $v_2(\\theta)$ (TCL + méthode-δ) et vérifier continuité et positivité.', 'Comparer pour tout $\\theta$ ; rapport des longueurs d’IC $\\to\\sqrt{v_1/v_2}$.', 'Rappeler $v_{EMV}=1/I(\\theta)$ (efficacité asymptotique, ch.7) et discuter robustesse (médiane : pas de moment) / queues lourdes (moments : variance qui explose).', 'Limite du critère : ponctuel et asymptotique (Hodges, compléments).'],
+      steps: ['Calculer $v_1(\\theta)$ et $v_2(\\theta)$ (TCL + méthode-δ) et vérifier continuité et positivité.', 'Comparer pour tout $\\theta$ ; rapport des longueurs d’IC $\\to\\sqrt{v_1/v_2}$.', 'Rappeler $v_{EMV}=1/\\mathbb{I}(\\theta)$ (efficacité asymptotique, ch.7) et discuter robustesse (médiane : pas de moment) / queues lourdes (moments : variance qui explose).', 'Limite du critère : ponctuel et asymptotique (Hodges, compléments).'],
     },
   ],
   pitfalls: [
     '**TCL** : hypothèse = moment d’ordre 2 ; pour la variance empirique ou le vecteur $(X_i,X_i^2)$ : moment d’ordre 4.',
     '**Slutsky** exige une limite **constante** pour l’un des deux termes ; la convergence en loi des marginales n’entraîne pas celle du couple ($Y_n=(-1)^nX_n$).',
     '**Méthode-δ** : dérivée évaluée **au point limite** de la moyenne empirique ($1/\\theta$, $2/\\theta$, $2/\\theta^2$…), pas en $\\theta$ ; ne pas oublier le **carré** ; cas $\\dot g=0$ dégénéré (échelle $n$, $\\chi^2$).',
-    '**Variance asymptotique $v(\\theta)$** = variance de la loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$, pas $\\mathrm{Var}(\\hat\\theta_n)\\approx v/n$ ; $v_{EMV}=1/I(\\theta)$ avec $I$ l’information d’**une** observation.',
+    '**Variance asymptotique $v(\\theta)$** = variance de la loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$, pas $\\mathrm{Var}(\\hat\\theta_n)\\approx v/n$ ; $v_{EMV}=1/\\mathbb{I}(\\theta)$ avec $I$ l’information d’**une** observation.',
     '**IC** : écart-type $\\sqrt{v/n}$ (pas la variance) ; dire « niveau **asymptotique** » ; la probabilité porte sur l’intervalle, pas sur $\\theta$ ; couverture à $n$ fini non garantie (Wald dégénéré si $\\bar X_n=0$).',
     '**Consistance vs sans biais asymptotique** : aucune implication ; **normalité asymptotique $\\Rightarrow$ consistance** (facteur $1/\\sqrt n$).',
     '**Méthode des moments à deux paramètres** : méthode-δ **vectorielle** (jacobienne) avec le terme croisé $\\Sigma_{12}$.',

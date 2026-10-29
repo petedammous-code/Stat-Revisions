@@ -134,6 +134,13 @@ registerGlossary([
     definition: '$\\tau_n(c)=c^2/((1-c/n)^{-n}-1)\\to c^2/(e^c-1)$ : dans $\\mathcal{U}([0,\\theta])$, tout estimateur sans biais vérifie $\\mathrm{Var}_\\theta(T)\\ge\\theta^2\\tau_n(c)/n^2$ (Exercice 3 / PC3 Ex. 3).',
     source: 'Poly ch.3, Exercice 3 ; PC3 Ex. 3 Q6',
   },
+  {
+    key: 'Xordre',
+    tex: ['X_{n:n}', 'X_{1:n}'],
+    name: 'Statistiques d’ordre extrêmes',
+    definition: '$X_{n:n}=\\max(X_1,\\dots,X_n)$, $X_{1:n}=\\min(X_1,\\dots,X_n)$ (notées $X_{(n)}$, $X_{(1)}$ au ch.1).',
+    source: 'Poly ch.2, Ex. 1.11 ; ch.6, Ex. 1.2',
+  },
 ], 'ch3')
 
 const chapter: Chapter = {
@@ -144,7 +151,7 @@ const chapter: Chapter = {
     'Comment **comparer** deux estimateurs ? On mesure l’erreur par une **perte** et sa moyenne, le **risque** $R(\\theta,T)$, qui est une **fonction** du paramètre ; pour la perte quadratique, $R(\\theta,T)=\\mathrm{Var}_\\theta(T(Z))+b(\\theta,T)^2$ (Prop. 1.1). L’ordre induit est seulement **partiel** : on définit l’**admissibilité**, on constate qu’aucun estimateur n’est uniformément optimal (l’estimateur constant est admissible), et l’on se restreint aux estimateurs **sans biais**. Dans un **modèle régulier**, la **borne de Cramér-Rao** $\\mathrm{Var}_\\theta(T)\\ge\\nabla g^\\top\\mathbb{I}(\\theta)^{-1}\\nabla g$ minore la variance de tout estimateur sans biais régulier ; l’**information de Fisher** $\\mathbb{I}(\\theta)$ est la variance du **score** et s’additionne sur un $n$-échantillon. Un estimateur qui atteint la borne est **efficace**. À l’examen : calcul de la borne (Examen 2025 Ex. 1 Q1), biais / risque / admissibilité (CC 2022 Ex. 2 Q2–4 ; Examen 2025 Ex. 2 Q3–4).',
   examWeight: 4,
   prerequisites: ['ch1', 'ch2'],
-  pcs: ['PC3'],
+  pcs: ['PC3', 'PC7'],
   course,
   vizs,
   exercises,

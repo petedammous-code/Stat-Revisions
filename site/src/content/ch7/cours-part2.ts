@@ -384,7 +384,7 @@ $$\\sqrt n\\big(\\hat\\theta_n-\\theta^\\star\\big)=\\frac{-\\sqrt n\\,\\widehat
           },
           {
             text: '$\\hat\\alpha_n=\\min(X_1,\\dots,X_n)$, $\\hat\\eta_n=\\big(\\frac1n\\sum_k\\log(X_k/\\hat\\alpha_n)\\big)^{-1}$.',
-            justification: 'À $\\eta$ fixé, $\\ell_n$ est **croissante** en $\\alpha$ là où elle est finie (pas d’annulation du score en $\\alpha$) ; puis $\\partial_\\eta\\ell_n=0$.',
+            justification: 'À $\\eta$ fixé, $\\ell_n$ est **croissante** en $\\alpha{}$ là où elle est finie (pas d’annulation du score en $\\alpha{}$) ; puis $\\partial_\\eta\\ell_n=0$.',
           },
           {
             text: 'Pour $t\\ge\\alpha$ : $\\mathbb{P}_{n,\\theta}(\\hat\\alpha_n\\ge t)=\\mathbb{P}_{n,\\theta}(X_1\\ge t)^n=(\\alpha/t)^{n\\eta}$ : $\\hat\\alpha_n$ suit une Pareto d’indice $n\\eta$.',
@@ -400,7 +400,7 @@ $$\\sqrt n\\big(\\hat\\theta_n-\\theta^\\star\\big)=\\frac{-\\sqrt n\\,\\widehat
           },
           {
             text: '$n\\eta(\\hat\\alpha_n-\\alpha)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\alpha\\,\\mathcal{E}(1)$.',
-            justification: 'Méthode-δ (Poly **ch.6**, Thm 1.7) en 0 avec vitesse $r_n=n\\eta$ et $u\\mapsto\\alpha e^u$, de dérivée $\\alpha$ en 0.',
+            justification: 'Méthode-δ (Poly **ch.6**, Thm 1.7) en 0 avec vitesse $r_n=n\\eta$ et $u\\mapsto\\alpha e^u$, de dérivée $\\alpha{}$ en 0.',
           },
         ],
         conclusion: 'Vitesse $n$ (et non $\\sqrt n$), cohérente avec l’EQM en $O(n^{-2})$ ; loi limite **exponentielle**, non gaussienne ; $\\hat\\alpha_n\\ge\\alpha$ toujours (biais positif). Ni la borne de Cramér-Rao ni le Thm 1.7 ne s’appliquent : (R-1)–(R-2) sont violées. Même phénomène pour $\\mathcal{U}([0,\\theta])$ (ch.6, Ex. 1.5).',
@@ -616,7 +616,7 @@ Pour $p=1/2$ et une loi symétrique autour de $\\theta^\\star$ : $\\sqrt n(\\wid
 
 $$\\lim_n\\mathbb{P}_{n,\\theta_n}(\\mathcal{R}_n)=1-\\Phi\\Big(z_{1-\\alpha}-h\\frac{\\mu'(\\theta_0)}\\sigma\\Big).$$
 
-Outils (au-delà du poly) : rapport de vraisemblance $\\prod_kq_{\\theta_n}(X_k)/q_{\\theta_0}(X_k)\\Rightarrow\\exp(h\\mathcal{N}(0,I(\\theta_0))-\\frac{h^2}2I(\\theta_0))$, d’espérance 1, d’où la **contiguïté** ; Lindeberg-Feller. Pentes : signe $2q(0)$, Student $1/\\sigma_q$ ; gaussien : rapport $\\sqrt{2/\\pi}\\approx0{,}80$, soit $\\pi/2\\approx1{,}57$ fois plus d’observations pour le test du signe. Le signe gagne pour des lois pointues à queues lourdes (mélange d’échelles), Student pour des lois creuses en 0 (mélange bimodal).`,
+Outils (au-delà du poly) : rapport de vraisemblance $\\prod_kq_{\\theta_n}(X_k)/q_{\\theta_0}(X_k)\\Rightarrow\\exp(h\\mathcal{N}(0,\\mathbb{I}(\\theta_0))-\\frac{h^2}2\\mathbb{I}(\\theta_0))$, d’espérance 1, d’où la **contiguïté** ; Lindeberg-Feller. Pentes : signe $2q(0)$, Student $1/\\sigma_q$ ; gaussien : rapport $\\sqrt{2/\\pi}\\approx0{,}80$, soit $\\pi/2\\approx1{,}57$ fois plus d’observations pour le test du signe. Le signe gagne pour des lois pointues à queues lourdes (mélange d’échelles), Student pour des lois creuses en 0 (mélange bimodal).`,
       },
     ],
   },

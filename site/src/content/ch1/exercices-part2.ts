@@ -204,6 +204,44 @@ export const exercisesPart2: Exercise[] = [
     ],
     conclusion: 'Suite du sujet (chapitre 4) : $T_1/\\lambda\\sim\\mathrm{Gamma}(n-1,1)$ est un pivot pour $\\lambda$, et $F_n(a)=(T_2-a)/((n-1)^{-1}T_1)$ est pivotale pour $a$ (quotient de deux pivots indépendants).',
   },
+  {
+    id: 'ch1-etape-cc2022-ex4-q4-q6',
+    type: 'etape-suivante',
+    title: 'CC 2022 Ex. 4 Q4–Q6 — espérance, covariance et variance de Ȳ − δβ̂₁',
+    source: 'CC MAP433 2022 Ex. 4 Q4–Q6 (corrigé officiel) ; Poly ch.1, Prop. 2.4',
+    origin: 'annale',
+    difficulty: 1,
+    tags: ['vecteurs-gaussiens', 'regression'],
+    setup: 'Régression linéaire simple : $Y\\sim\\mathcal{N}(\\mathbf{X}\\beta,\\sigma^2\\mathrm{I}_n)$, $\\mathbf{X}=[\\mathbf{1},x]$ de rang 2, $\\beta=(\\beta_0,\\beta_1)^\\top$ avec $\\beta_1\\ne0$. On pose $u=x-\\bar x\\mathbf{1}$, $\\phi=-\\beta_0/\\beta_1$, $\\delta=\\bar x-\\phi$, $\\bar Y=\\frac1n\\mathbf{1}^\\top Y$ et $\\hat\\beta_1=\\frac{u^\\top Y}{\\|u\\|^2}$ (formule des moindres carrés, Q1). Outil : pour $a,b\\in\\mathbb{R}^n$, $\\mathbb{E}[a^\\top Y]=a^\\top\\mathbf{X}\\beta$ et $\\mathrm{Cov}(a^\\top Y,b^\\top Y)=\\sigma^2a^\\top b$ (Prop. 2.4).',
+    steps: [
+      {
+        prompt: 'Q4 — Que vaut $\\mathbb{E}_\\theta[\\bar Y-\\delta\\hat\\beta_1]$ ?',
+        choices: [
+          { text: '$\\beta_0+\\beta_1\\bar x-\\delta\\beta_1=\\beta_0+\\beta_1\\phi=0$', correct: true, explanation: 'Linéarité : $\\mathbb{E}[\\bar Y]=\\frac1n\\sum_i(\\beta_0+\\beta_1x_i)=\\beta_0+\\beta_1\\bar x$ et $\\hat\\beta_1$ est sans biais ($u^\\top\\mathbf{1}=0$, $u^\\top x=\\|u\\|^2$). Comme $\\bar x-\\delta=\\phi=-\\beta_0/\\beta_1$, on obtient $\\beta_0+\\beta_1\\phi=0$.' },
+          { text: '$\\beta_0-\\delta\\beta_1$, non nul en général', correct: false, explanation: 'Oubli du terme $\\beta_1\\bar x$ : $\\mathbb{E}[\\bar Y]=\\beta_0+\\beta_1\\bar x$, pas $\\beta_0$ (ce ne serait vrai que si $\\bar x=0$).' },
+          { text: 'Nulle seulement si $\\bar x=0$', correct: false, explanation: 'Le choix $\\delta=\\bar x-\\phi$ est fait précisément pour annuler l’espérance quel que soit $x$ : $\\beta_0+\\beta_1(\\bar x-\\delta)=\\beta_0+\\beta_1\\phi=0$.' },
+        ],
+      },
+      {
+        prompt: 'Q5 — Que vaut $\\mathrm{Cov}_\\theta(\\bar Y,\\hat\\beta_1)$ ?',
+        choices: [
+          { text: '$\\dfrac{1}{n\\|u\\|^2}\\mathbf{1}^\\top(\\sigma^2\\mathrm{I}_n)u=\\dfrac{\\sigma^2\\,\\mathbf{1}^\\top u}{n\\|u\\|^2}=0$, car $\\mathbf{1}^\\top u=\\sum_i(x_i-\\bar x)=0$', correct: true, explanation: 'Covariance de deux formes linéaires du vecteur gaussien $Y$ de covariance $\\sigma^2\\mathrm{I}_n$ (Prop. 2.4), puis centrage de $u$.' },
+          { text: '$-\\dfrac{\\sigma^2\\bar x}{\\|u\\|^2}$', correct: false, explanation: 'C’est $\\mathrm{Cov}(\\hat\\beta_0,\\hat\\beta_1)$ (terme hors diagonale de $\\sigma^2(\\mathbf{X}^\\top\\mathbf{X})^{-1}$) : $\\hat\\beta_0=\\bar Y-\\hat\\beta_1\\bar x$ n’est pas $\\bar Y$.' },
+          { text: '$\\dfrac{\\sigma^2}{\\|u\\|^2}$', correct: false, explanation: 'C’est $\\mathrm{Var}(\\hat\\beta_1)=\\mathrm{Cov}(\\hat\\beta_1,\\hat\\beta_1)$ ; ici le premier vecteur est $\\frac1n\\mathbf{1}$, orthogonal à $u$.' },
+        ],
+      },
+      {
+        prompt: 'Q6 — Que vaut $\\mathrm{Var}_\\theta(\\bar Y-\\delta\\hat\\beta_1)$ ?',
+        choices: [
+          { text: '$\\dfrac{\\sigma^2}n+\\delta^2\\dfrac{\\sigma^2}{\\|u\\|^2}=\\sigma^2w(\\delta)$, $w(\\delta)=\\frac1n+\\frac{\\delta^2}{\\|u\\|^2}$', correct: true, explanation: '$\\mathrm{Var}(A-\\delta B)=\\mathrm{Var}(A)+\\delta^2\\mathrm{Var}(B)-2\\delta\\,\\mathrm{Cov}(A,B)$ ; le terme croisé est nul par Q5, $\\mathrm{Var}(\\bar Y)=\\sigma^2/n$ et $\\mathrm{Var}(\\hat\\beta_1)=\\sigma^2/\\|u\\|^2$.' },
+          { text: '$\\dfrac{\\sigma^2}n-\\delta^2\\dfrac{\\sigma^2}{\\|u\\|^2}$', correct: false, explanation: 'Erreur de signe : la variance d’une différence de variables décorrélées est la **somme** des variances (le coefficient $-\\delta$ est élevé au carré).' },
+          { text: '$\\dfrac{\\sigma^2}n+\\delta\\dfrac{\\sigma^2}{\\|u\\|^2}$', correct: false, explanation: '$\\mathrm{Var}(\\delta B)=\\delta^2\\mathrm{Var}(B)$, pas $\\delta\\,\\mathrm{Var}(B)$ (une variance doit rester positive pour $\\delta<0$).' },
+          { text: '$\\dfrac{\\sigma^2}n+\\delta^2\\dfrac{\\sigma^2}{\\|u\\|^2}+\\dfrac{2\\delta\\sigma^2\\bar x}{\\|u\\|^2}$', correct: false, explanation: 'Terme croisé $-2\\delta\\,\\mathrm{Cov}$ calculé avec $\\mathrm{Cov}(\\hat\\beta_0,\\hat\\beta_1)=-\\sigma^2\\bar x/\\|u\\|^2$ au lieu de $\\mathrm{Cov}(\\bar Y,\\hat\\beta_1)=0$ (Q5).' },
+        ],
+      },
+    ],
+    conclusion: 'Avec Q7 ($\\bar Y-\\delta\\hat\\beta_1=v^\\top Y$, $v=\\frac1n\\mathbf{1}-\\frac\\delta{\\|u\\|^2}u$, gaussienne et indépendante de $S^2$ par Cochran ; annale « CC MAP433 2022 Ex. 2 Q1 et Ex. 4 Q2–3, 7 » de ce chapitre), on obtient $\\bar Y-\\delta\\hat\\beta_1\\sim\\mathcal{N}(0,\\sigma^2w(\\delta))$ ; la suite (Q8–Q9, loi $\\mathrm{F}(1,n-2)$ et région de Fieller) est traitée au ch.4.',
+  },
   // ------------------------------------------------------------------ Associer
   {
     id: 'ch1-assoc-modele-mesure',

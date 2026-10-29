@@ -237,3 +237,37 @@ Périmètre contrôlé : `site/src/content/ch4/**` (cours en 11 sections, 7 visu
 - [À vérifier] `ch4-vf-bonferroni-exact` : « niveau exact de $I_1\times I_2$ différent de $(1-\alpha/2)^2$ » suit l'affirmation du poly (Ex. 1.7, étape 2) sans calcul ; non vérifié numériquement (l'écart est probablement faible).
 - [À vérifier] La viz `ch4-loi-pvaleur` (cas discret) teste `|θ−θ₀|<1e-9` pour annoncer le régime « θ = θ₀ » : selon l'arrondi du curseur (pas 0,01 depuis 0,3), le message pourrait basculer en « intérieur de Θ₀ » ; cosmétique, non observé.
 - [Manque] Volumes du guide respectés et dépassés : 45 exercices (12 QCM, 6 VF, 4 ordonner, 5 trouver-erreur, 5 étape-suivante, 3 associer, 5 numériques, 5 annales dont 3 de vraies annales), 20 flashcards dont 5 « hypothèse manquante », 7 visualisations, 6 Monte-Carlo. Les idées de viz 4 (région bivariée de l'Ex. 1.7), 7 (couplage binomial animé), 8 (riverains/aéroport) et 10 (significativité vs taille d'effet) de l'extraction ne sont pas réalisées. PC4 Ex. 6 (vaccination) n'a qu'un résumé en cours, sans exercice interactif.
+
+## Passe de cohérence finale
+
+Correction des 27 constats de l’audit transversal (couverture des annales, notations entre chapitres, socle). Chaque constat a été revérifié contre `content/sources/Année 2025.txt`, `content/sources/CCfinal.txt` (énoncé et corrigé), `DIAGNOSTIC.md` §2.A–2.B et les extractions `ch2.md`, `ch5.md`, `ch6.md`, `ch7.md`, `ch8.md`, `ch9.md`. `npm run typecheck`, `npm test` (186 tests, code de sortie 0) et `npm run build` passent ; contrôle Chromium à 390 et 1280 px des pages Entraînement des ch.1, 2, 4, 5, 9 et Annales du ch.4 : aucune erreur console, aucun `.katex-error`, pas de débordement horizontal ; saisie clavier « 0,62 » acceptée en locale fr-FR ; puce d’association déplaçable.
+
+- [Corrigé] COV-1 — Examen 2025 Ex. 3 Q6–Q7 : nouvel exercice `ch9-etape-2025-q6-q7` (4 étapes : loi binomiale de $N_t$, loi Beta de $U_k$, encadrement de $\mathbb E_n[\mathfrak R_k^d]$, condition de bord). Distracteur « exposant $1/d$ » de l’audit écarté (borne vraie par Jensen) ; renvoi du ch.8 (cours §10) mis à jour.
+- [Corrigé] COV-2 — CC 2022 Ex. 4 Q4–Q6 : nouvel exercice `ch1-etape-cc2022-ex4-q4-q6`. Distracteur « nulle par Cochran, faux » de l’audit écarté ($\bar Y$ et $\hat\beta_1$ sont effectivement indépendantes) ; remplacé par $\mathrm{Var}(\hat\beta_1)$.
+- [Corrigé] COV-3 — Examen 2025 Ex. 4 Q12 : `ch5-assoc-2025-ex4-q12` (Student $t(n-p)$, Fisher $F(K-1,n-p)$, Fisher $F(2,n-p)$) et QCM jumeau `ch5-qcm-2025-ex4-q12-conjoint`, tagués `hors-programme`.
+- [Corrigé] COV-4 — Examen 2025 Ex. 4 Q3 : QCM `ch2-qcm-2025-ex4-q3` (résidus standardisés).
+- [Corrigé] COV-5 — Examen 2025 Ex. 4 Q7 : QCM `ch1-qcm-2025-ex4-q7-acp` (ACP).
+- [Corrigé] socle-revision-rates-absents — `core/store.ts` `dueItems` inclut les items dont le dernier résultat est < 1 ; test ajouté (`tests/core.test.ts`).
+- [Corrigé] F1 — glossaire commun `elln` : $\ell_n=\frac1n\log\mathrm{L}_n$ (Poly ch.2, Déf. 1.5).
+- [Corrigé] F2 — ch.7 (`ch7-etape-gamma`, `ch7-annale-pc7-gamma`, `ch7-annale-pc7-lognormale`) : $\ell_n$ non normalisée annoncée comme telle (notation de la PC7), indices écrits avec $\log\mathrm{L}_n$.
+- [Corrigé] F3 — ch.6 `ch6-annale-pc7-gamma` Q1 : $\log\mathrm{L}_n$, $(\log\mathrm{L}_n)'$, $(\log\mathrm{L}_n)''$, $\mathrm{L}_n$ droit.
+- [Corrigé] F4 — entrée commune `phi` supprimée ; infobulle « test » enregistrée aux ch.4, ch.5 (`\phi`, `\phi_n`) et ch.6, ch.7 (`\phi_n`). Effet de bord traité : le $\phi$ de Fieller (ch.4) écrit `\phi{}`.
+- [Corrigé] F5 — ch.6 `convLoiPoly` : `\Rightarrow` et `\Longrightarrow` nus retirés.
+- [Corrigé] F6 — ch.6 `ch6-annale-2025-ex2` Q10 (et conclusion de l’étape associée) aligné sur le ch.7 (Thm 1.7 scalaire, extension hors programme, comparaison directe).
+- [Corrigé] socle-associer-puce-placee-inamovible — `stopPropagation`, sélection d’une puce placée, déplacement ou retour en réserve, consigne mise à jour ; test ajouté.
+- [Corrigé] socle-ordonner-defilement-reordonne — glisser tactile limité à la poignée (touchmove non passif, `touch-action: none`) ; test ajouté (un toucher sur le corps de l’étape ne réordonne plus).
+- [Corrigé] socle-numerique-virgule — `type="text"`, `inputmode="decimal"`, virgule ou point, saisie invalide refusée (shake) sans enregistrement ; tests ajoutés.
+- [Corrigé] F7 — ch.2 (flashcard méthode des moments, cours §méthodes) : « Lemme 2.1 (Outils du ch.2) = théorème de continuité, ch.6 Thm 1.1 ».
+- [Corrigé] F8 — prérequis des ch.4, 5, 7, 8, 9 complétés d’après les encadrés « résultats antérieurs » (ch.5 : ajout de ch.2, cité p. 28).
+- [Corrigé] F9 — règle unique « PC de la semaine + PC dont un exercice est tiré » appliquée aux ch.1–5.
+- [Corrigé] F10 — ch.6 (30 occurrences) et bloc Pitman du ch.7 : $\mathbb{I}(\cdot)$ ; entrée commune `Ifisher` mise à jour (variantes ajourées, source ch.3 Déf. 1.8 / ch.7 Déf. 1.4).
+- [Corrigé] F11 — $X_{n:n}$, $X_{1:n}$ ajoutés à `Xkn` (ch.2) et enregistrés aux ch.3, 4, 5 ; **pas** au ch.9, où $X_{1:n}$ est le design (constat partiellement inexact sur ce point).
+- [Corrigé] F12 — $\alpha$ paramètre de Pareto (ch.7, 3 occurrences) et de Weibull (ch.2, 2 occurrences) écrit `\alpha{}`.
+- [Corrigé] F13 — ch.8 : conflit $X_{(n)}$ (plus proche voisin) / statistique d’ordre signalé dans le cours et dans l’énoncé de l’annale ; la notation vient du CC 2022 Ex. 5, pas de l’Examen 2025 (source rectifiée).
+- [Corrigé] F14 — viz lois usuelles (ch.1) : « EMV $X_{(n)}$ (ch.2, Ex. 1.11 ; sa loi : Ex. 1.13) ».
+- [Corrigé] COV-6 — CC 2022 Ex. 3 Q8 (bonus) devient une vraie question dans `ch4-annale-cc2022-ex3-translatee` (indice, correction par la fonction de survie, barème 0,5).
+- [Corrigé] socle-associer-clavier — puces et cases `tabIndex=0`, `role="button"`, `aria-label`, Entrée/Espace, focus restitué après rendu ; test ajouté.
+- [Corrigé] socle-numerique-affichage-flottant — valeur attendue et tolérance formatées (`formatWithTolerance`, virgule décimale) ; tests ajoutés.
+- [Corrigé] socle-ordonner-cibles-petites — `.btn-mini` ≥ 28×28 px, 40×36 px sous `pointer: coarse`, espacement 4–6 px (mesuré : 40×36 px à 390 px).
+- [Rejeté] Aucun constat rejeté en bloc ; deux distracteurs proposés par l’audit (COV-1 « exposant $1/d$ », COV-2 « Cochran ») ont été écartés car mathématiquement justes (voir DECISIONS, passe finale §8).
+- [Reporté] Rien.

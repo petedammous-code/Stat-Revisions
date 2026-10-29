@@ -147,6 +147,22 @@ export const exercisesPart1: Exercise[] = [
       { text: 'une loi $\\mathcal{N}(0,1)$ asymptotiquement seulement.', correct: false, explanation: 'Dans le modèle gaussien la loi est exacte (Fisher) ; l’asymptotique n’est pas nécessaire.' },
     ],
   },
+  {
+    id: 'ch5-qcm-2025-ex4-q12-conjoint',
+    type: 'qcm',
+    title: 'Examen 2025 Ex. 4 Q12 (iii) — tester l’effet conjoint de deux variables',
+    source: 'Examen 2025 Ex. 4 Q12 ; DIAGNOSTIC §2.A Ex. 4 ; PC5 Ex. 4 (= Exercice 6 du poly, complément)',
+    origin: 'annale',
+    difficulty: 2,
+    tags: ['hors-programme', 'regression', 'fisher'],
+    question: 'Régression multiple gaussienne $\\mathbf{Y}=Z\\beta+\\varepsilon$, $\\varepsilon\\sim\\mathcal{N}(0,\\sigma^2I_n)$, $\\sigma^2$ inconnue, $Z$ de taille $n\\times p$ et de rang $p$. Pour tester $H_0:\\beta_{Vx}=\\beta_{T12}=0$ au niveau $\\alpha$, on utilise :',
+    options: [
+      { text: '$F=\\dfrac{(SCR_0-SCR)/2}{SCR/(n-p)}$, qui suit $F(2,n-p)$ sous $H_0$ ; rejet si $F>\\mathrm{f}_{1-\\alpha}(2,n-p)$.', correct: true, explanation: 'Test de Fisher de sous-modèle (Exercice 6 du poly, rapport de vraisemblance généralisé) : $(SCR_0-SCR)/\\sigma^2\\sim\\chi^2(2)$ et $SCR/\\sigma^2\\sim\\chi^2(n-p)$ sont indépendants par Cochran, et $\\sigma^2$ s’élimine dans le rapport.' },
+      { text: 'Deux tests de Student séparés, chacun au niveau $\\alpha$, en rejetant $H_0$ si l’un des deux rejette.', correct: false, explanation: 'Problème des tests multiples (Q6 du même exercice) : la probabilité de rejeter à tort l’un des deux dépasse $\\alpha$ en général. Et ce n’est pas le même test : deux coefficients peuvent être chacun non significatifs mais conjointement significatifs (variables corrélées).' },
+      { text: '$F=\\dfrac{(SCR_0-SCR)/2}{SCR/(n-p)}$, qui suit $F(2,n)$ sous $H_0$.', correct: false, explanation: 'Mauvais degrés de liberté au dénominateur : les résidus vivent dans l’orthogonal de $\\mathrm{Im}(Z)$, de dimension $n-p$ (les $p$ coefficients estimés coûtent $p$ degrés de liberté).' },
+      { text: '$(SCR_0-SCR)/\\hat\\sigma^2$, qui suit exactement $\\chi^2(2)$ sous $H_0$.', correct: false, explanation: 'Ce serait exact avec la **vraie** variance $\\sigma^2$ ; avec $\\hat\\sigma^2=SCR/(n-p)$ aléatoire, la statistique vaut $2F$, de loi $2\\,F(2,n-p)$ (seulement asymptotiquement $\\chi^2(2)$).' },
+    ],
+  },
   // ------------------------------------------------------------------ Vrai / Faux
   {
     id: 'ch5-vf-unicite-partout',

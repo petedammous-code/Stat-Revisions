@@ -116,6 +116,22 @@ export const exercisesPart1: Exercise[] = [
     ],
   },
   {
+    id: 'ch2-qcm-2025-ex4-q3',
+    type: 'qcm',
+    title: 'Examen 2025 Ex. 4 Q3 — allure des résidus standardisés',
+    source: 'Examen 2025 Ex. 4 Q3 ; DIAGNOSTIC §2.A Ex. 4 (EN1) ; Poly ch.4 §2.9 (banquise)',
+    origin: 'annale',
+    difficulty: 1,
+    tags: ['regression', 'hors-programme'],
+    question: 'Modèle gaussien $Y_i=\\beta_1+\\beta_2t_i+\\varepsilon_i$, $\\varepsilon_i$ i.i.d. $\\mathcal{N}(0,\\sigma^2)$. Si ce modèle est adapté, les résidus standardisés (résidus divisés par leur écart-type estimé), tracés contre $t_i$ ou contre les valeurs ajustées, doivent :',
+    options: [
+      { text: 'ressembler à un échantillon $\\mathcal{N}(0,1)$ : centrés, de dispersion constante, sans structure en fonction de $t_i$, avec un QQ-plot gaussien aligné (environ 5 % des points hors de $[-2,2]$).', correct: true, explanation: 'Sous le modèle, les résidus sont gaussiens, centrés, de même variance après standardisation, et ne dépendent plus de $t_i$ : tout motif visible signale un défaut du modèle (réponse du DIAGNOSTIC).' },
+      { text: 'présenter une tendance ou une courbure en fonction de $t_i$.', correct: false, explanation: 'C’est au contraire le signe d’un **mauvais** ajustement : une non-linéarité (terme en $t_i^2$, rupture…) oubliée dans la partie déterministe du modèle.' },
+      { text: 's’élargir en entonnoir quand $t_i$ ou la valeur ajustée augmente.', correct: false, explanation: 'Signe d’**hétéroscédasticité** : la variance du bruit dépend de $t_i$, ce qui contredit l’hypothèse $\\mathrm{Var}(\\varepsilon_i)=\\sigma^2$ constante.' },
+      { text: 'être tous dans l’intervalle $[-1,1]$.', correct: false, explanation: 'Faux : pour une $\\mathcal{N}(0,1)$, environ 32 % des valeurs sortent de $[-1,1]$ ; des résidus tous dans $[-1,1]$ seraient plutôt suspects (variance surestimée).' },
+    ],
+  },
+  {
     id: 'ch2-qcm-poisson-moment2',
     type: 'qcm',
     title: 'Méthode des moments d’ordre 2 pour la loi de Poisson',

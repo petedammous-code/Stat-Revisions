@@ -3,8 +3,8 @@ import { el, rich, button, feedback } from '../core/ui'
 import { exerciseHeader, finish, shuffled, explanationsBox, type ExerciseContext } from './common'
 
 /**
- * Remettre les étapes d'une preuve dans l'ordre : glisser-déposer (souris et tactile)
- * avec boutons ▲ ▼ en secours. Score : 1 si tout est en place, 0.5 si ≥ 60 % des étapes
+ * Remettre les étapes d'une preuve dans l'ordre : glisser-déposer (souris ; au doigt, par la
+ * poignée ⋮⋮ uniquement) avec boutons ▲ ▼ en secours. Score : 1 si tout est en place, 0.5 si ≥ 60 % des étapes
  * sont à la bonne position, 0 sinon.
  */
 export function renderOrdonner(ex: Ordonner, ctx: ExerciseContext): HTMLElement {
@@ -53,16 +53,32 @@ export function renderOrdonner(ex: Ordonner, ctx: ExerciseContext): HTMLElement 
         const from = Number(e.dataTransfer?.getData('text/plain'))
         if (!Number.isNaN(from)) move(from, pos)
       })
-      // Tactile : déplacement par pression longue simplifiée (touchmove sur l'item).
-      let touchStartY = 0
-      li.addEventListener('touchstart', (e) => {
+      // Tactile : le glisser ne démarre QUE sur la poignée ⋮⋮ (sinon un simple défilement de la
+      // page commencé sur une étape la déplaçait). Pendant le glisser, on bloque le défilement
+      // (touchmove non passif + touch-action: none sur la poignée, voir styles.css).
+      let touchStartY: number | null = null
+      handle.setAttribute('aria-hidden', 'true')
+      handle.addEventListener('touchstart', (e) => {
+        if (root.dataset.done) return
         touchStartY = e.touches[0].clientY
+        li.classList.add('dragging')
       }, { passive: true })
-      li.addEventListener('touchend', (e) => {
+      handle.addEventListener('touchmove', (e) => {
+        if (touchStartY !== null) e.preventDefault()
+      }, { passive: false })
+      const endTouch = (e: TouchEvent) => {
+        if (touchStartY === null) return
         const dy = e.changedTouches[0].clientY - touchStartY
+        touchStartY = null
+        li.classList.remove('dragging')
         const h = li.getBoundingClientRect().height || 1
         const shift = Math.round(dy / h)
         if (shift !== 0) move(pos, Math.max(0, Math.min(order.length - 1, pos + shift)))
+      }
+      handle.addEventListener('touchend', endTouch)
+      handle.addEventListener('touchcancel', () => {
+        touchStartY = null
+        li.classList.remove('dragging')
       })
       list.append(li)
     })

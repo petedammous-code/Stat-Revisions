@@ -117,7 +117,7 @@ export const flashcards: Flashcard[] = [
     id: 'ch2-fc-methode-moments',
     kind: 'methode',
     front: 'Méthode : construire et justifier un estimateur des moments (Méthode 1.1 + rédaction examen).',
-    back: 'Choisir $d$ fonctions $T_j$ intégrables ; calculer $e_j(\\theta)$ ; écrire $e_j(\\vartheta)=\\frac1n\\sum_iT_j(X_i)$ ; résoudre (changement d’inconnues si besoin : somme/produit, logarithme) ; vérifier **unicité et appartenance à $\\Theta$** (Cauchy-Schwarz pour une variance) ; préciser « estimateur des moments associé à $T$ » ; consistance par LGN + Lemme 2.1 (ch.6), normalité par TCL + méthode-δ (vectorielle si $d=2$).',
+    back: 'Choisir $d$ fonctions $T_j$ intégrables ; calculer $e_j(\\theta)$ ; écrire $e_j(\\vartheta)=\\frac1n\\sum_iT_j(X_i)$ ; résoudre (changement d’inconnues si besoin : somme/produit, logarithme) ; vérifier **unicité et appartenance à $\\Theta$** (Cauchy-Schwarz pour une variance) ; préciser « estimateur des moments associé à $T$ » ; consistance par LGN + Lemme 2.1 (Outils du ch.2 ; = théorème de continuité, ch.6 Thm 1.1), normalité par TCL + méthode-δ (vectorielle si $d=2$).',
     source: 'Poly ch.2, Méthode 1.1 ; Examen 2025 Ex. 2 Q9(a)',
     tags: ['methode-moments'],
   },

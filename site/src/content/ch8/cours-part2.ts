@@ -523,7 +523,7 @@ $$\\mathbb{E}[\\psi(Y)\\mid\\mathbf{X}]=\\Big(\\int_{\\mathsf{Y}}\\psi(y)\\,p_{Y
 - **Q3 (≈ 0,5 pt)** : pour $\\hat g=2\\,\\mathbb{1}_{\\{\\hat\\eta\\ge1/2\\}}-1$, $R(\\hat g)-R^\\star\\le2\\,\\mathbb{E}|\\eta(X)-\\hat\\eta(X)|$ → majoration (13), deux cas.
 - **Q4 (≈ 0,25 pt)** : la règle des $k$-PPV est le plug-in de $\\hat\\eta_{n,k}(x)=\\frac1k\\sum_{i\\in N_k(x)}\\mathbb{1}_{\\{Y_i=1\\}}$.
 - **Q5 (≈ 0,25 pt)** : illustration graphique ($k=3$, $n=10$, $d=2$) : cercle contenant les 3 plus proches voisins, vote majoritaire, frontière non linéaire.
-- Q6–Q9 (loi Beta de $F_x(\\mathfrak{R}_k(x))$, biais-variance du $k$-PPV, choix de $k\\asymp n^{2/(d+2)}$, fléau de la dimension) relèvent du ch.1 et du ch.9.
+- Q6–Q9 (loi Beta de $F_x(\\mathfrak{R}_k(x))$, biais-variance du $k$-PPV, choix de $k\\asymp n^{2/(d+2)}$, fléau de la dimension) sont entraînées au ch.9 (étapes « Examen 2025 Q6–Q7 », « Q8 » et « Q9 ») ; la loi Beta des statistiques d’ordre est aussi au ch.1.
 
 **Rédaction attendue** : nommer chaque outil (« par le Lemme 2.2 », « tour + produit car $\\mathbb{1}_{\\{g(X)=-1\\}}$ est $\\sigma(X)$-mesurable bornée », « disjonction de cas sur $D\\in\\{-1,0,1\\}$ ») et conclure par « $g^\\star$ est un classifieur bayésien (Déf. 1.4) ».`,
       },
@@ -537,7 +537,7 @@ $$\\mathbb{E}[\\psi(Y)\\mid\\mathbf{X}]=\\Big(\\int_{\\mathsf{Y}}\\psi(y)\\,p_{Y
         kind: 'text',
         id: 'ch8-s10-cc2022',
         title: 'Ce qui est tombé — CC 2022 Ex. 5 : plus proche voisin (≈ 2,5 pts)',
-        text: `$\\hat h_n(x)=Y_{\\varphi_n(x)}$ avec $\\varphi_n(x)=\\arg\\min_i\\|x-X_i\\|$ ; $r^\\star=\\min(\\eta,1-\\eta)$, $R^\\star=\\mathbb{E}[r^\\star(X)]$ ; admis : $X_{(n)}:=X_{\\varphi_n(X)}\\to X$ en probabilité, $\\eta$ continue.
+        text: `$\\hat h_n(x)=Y_{\\varphi_n(x)}$ avec $\\varphi_n(x)=\\arg\\min_i\\|x-X_i\\|$ ; $r^\\star=\\min(\\eta,1-\\eta)$, $R^\\star=\\mathbb{E}[r^\\star(X)]$ ; admis : $X_{(n)}:=X_{\\varphi_n(X)}\\to X$ en probabilité (notation du CC 2022 : plus proche voisin de $X$ ; à ne pas confondre avec la statistique d’ordre $X_{(n)}=\\max_iX_i$ du ch.1), $\\eta$ continue.
 
 1. $r^\\star(1-r^\\star)=\\eta(1-\\eta)$ (disjonction $\\eta\\le1/2$ / $\\eta>1/2$).
 2. $\\mathbb{P}(Y=-1,Y_i=1,\\varphi_n(X)=i\\mid X,X_{1:n})=(1-\\eta(X))\\eta(X_i)\\mathbb{1}_{\\{\\varphi_n(X)=i\\}}$ (indépendance des couples, $\\varphi_n(X)$ fonction de $(X,X_{1:n})$).

@@ -315,7 +315,7 @@ export const exercisesPart2: Exercise[] = [
       { left: '$\\mathcal{N}(\\eta,1)$', right: '$T(x)=x$, $A(\\eta)=\\eta^2/2$, $\\Xi=\\mathbb{R}$, $h(x)=(2\\pi)^{-1/2}\\mathrm{e}^{-x^2/2}$', explanation: 'Complétion du carré.' },
       { left: 'Poisson reparamétrée par $\\eta=\\log\\theta$', right: '$T(x)=x$, $A(\\eta)=\\mathrm{e}^\\eta$, $\\Xi=\\mathbb{R}$, $h(x)=1/x!$', explanation: '$\\sum_k\\mathrm{e}^{\\eta k}/k!=\\exp(\\mathrm{e}^\\eta)$.' },
       { left: 'Binomiale $\\mathrm{Bin}(m,\\theta)$ reparamétrée par $\\eta=\\log\\frac\\theta{1-\\theta}$', right: '$T(x)=x$, $A(\\eta)=m\\log(1+\\mathrm{e}^\\eta)$, $\\Xi=\\mathbb{R}$, $h(x)=\\binom mx$', explanation: 'Binôme de Newton.' },
-      { left: 'Weibull d’échelle $\\lambda$ ($\\alpha$ fixé) reparamétrée par $\\eta=\\lambda^{-\\alpha}$', right: '$T(x)=-x^\\alpha$, $A(\\eta)=-\\log\\eta$, $\\Xi=]0,+\\infty[$, $h(x)=\\alpha x^{\\alpha-1}$', explanation: 'Changement de variable $u=x^\\alpha$ ; non canonique en $\\lambda$.' },
+      { left: 'Weibull d’échelle $\\lambda$ ($\\alpha{}$ fixé) reparamétrée par $\\eta=\\lambda^{-\\alpha}$', right: '$T(x)=-x^\\alpha$, $A(\\eta)=-\\log\\eta$, $\\Xi=]0,+\\infty[$, $h(x)=\\alpha x^{\\alpha-1}$', explanation: 'Changement de variable $u=x^\\alpha$ ; non canonique en $\\lambda$.' },
     ],
   },
   // ------------------------------------------------------------------ Numériques

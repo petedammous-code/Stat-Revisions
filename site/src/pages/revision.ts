@@ -7,7 +7,8 @@ import { renderFlashcards } from '../components/flashcards'
 
 /**
  * Révision ciblée : répétition espacée simple.
- * 1) items échus (ratés d'abord), 2) items portant sur les notions les plus ratées, 3) jamais vus.
+ * 1) items ratés ou partiels à la dernière tentative (même si leur échéance n'est pas atteinte),
+ *    puis items échus, 2) items portant sur les notions les plus ratées, 3) jamais vus.
  */
 export function renderRevision(): HTMLElement {
   const page = el('main', 'page')

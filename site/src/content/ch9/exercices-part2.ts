@@ -78,6 +78,54 @@ export const exercisesPart2: Exercise[] = [
     conclusion: 'Th. 1.8 : borne en $\\sqrt{\\log|\\mathcal C|/n}$, sans hypothèse sur $\\mathbb P$. Avec seulement la déviation unilatérale, la PC obtient $\\sqrt{\\log M/(2n)}$.',
   },
   {
+    id: 'ch9-etape-2025-q6-q7',
+    type: 'etape-suivante',
+    title: 'Examen 2025 Q6–Q7 — loi du rayon des k plus proches voisins et encadrement de son espérance',
+    source: 'Examen 2025 Ex. 3 Q6–Q7 ; DIAGNOSTIC §2.A',
+    origin: 'annale',
+    difficulty: 2,
+    tags: ['knn', 'statistiques-ordre', 'cours'],
+    setup: 'Cadre de l’Examen 2025 Ex. 3 : $X_1,\\dots,X_n$ i.i.d. de même loi que $X$ ; (H1) le support $\\mathcal X\\subset\\mathbb R^d$ de $X$ est compact ; (H2) $X$ a une densité $p_X$ avec $0<c_-\\le p_X\\le c_+$ sur $\\mathcal X$. Pour $x\\in\\mathcal X$, $F_x(t)=\\mathbb P(X\\in B(x,t))$ et $\\mathfrak R_k(x)$ est le rayon de la plus petite boule centrée en $x$ qui contient $k$ des points $X_i$ ; $v_d$ est le volume de la boule unité de $\\mathbb R^d$. Rappel du sujet : $\\mathbb P(\\mathrm{Bin}(n,u)\\ge k)=\\mathbb P(\\mathrm{Beta}(k,n-k+1)\\le u)$.',
+    steps: [
+      {
+        prompt: 'Étape 1 (Q6) — Que vaut $\\mathbb P_n(\\mathfrak R_k(x)\\le t)$ pour $t>0$ ?',
+        choices: [
+          { text: '$\\sum_{j=k}^n\\binom nj F_x(t)^j(1-F_x(t))^{n-j}$, car $\\{\\mathfrak R_k(x)\\le t\\}=\\{N_t\\ge k\\}$ avec $N_t=\\sum_i\\mathbf 1\\{X_i\\in B(x,t)\\}\\sim\\mathrm{Bin}(n,F_x(t))$', correct: true, explanation: 'La boule $B(x,t)$ contient au moins $k$ points exactement quand le $k$-ième plus proche voisin est à distance $\\le t$. Les indicatrices $\\mathbf 1\\{X_i\\in B(x,t)\\}$ sont des Bernoulli de paramètre $F_x(t)$, indépendantes car les $X_i$ le sont : leur somme est binomiale.' },
+          { text: '$\\binom nk F_x(t)^k(1-F_x(t))^{n-k}$', correct: false, explanation: 'C’est $\\mathbb P(N_t=k)$ : on a confondu « au moins $k$ points dans la boule » avec « exactement $k$ ». Avec $k+1$ points dans $B(x,t)$, on a encore $\\mathfrak R_k(x)\\le t$.' },
+          { text: '$\\sum_{j=0}^{k-1}\\binom nj F_x(t)^j(1-F_x(t))^{n-j}$', correct: false, explanation: 'Mauvais sens de l’événement : c’est $\\mathbb P(N_t\\le k-1)=\\mathbb P_n(\\mathfrak R_k(x)>t)$, le complémentaire.' },
+          { text: '$F_x(t)^k$', correct: false, explanation: 'C’est la probabilité que $k$ points **fixés** tombent dans la boule ; on ne sait pas à l’avance lesquels seront les $k$ plus proches voisins, d’où le dénombrement binomial sur les $n$ points.' },
+        ],
+      },
+      {
+        prompt: 'Étape 2 (Q6) — Loi de $U_k(x)=F_x(\\mathfrak R_k(x))$ :',
+        choices: [
+          { text: '$\\mathrm{Beta}(k,n-k+1)$, d’espérance $\\frac k{n+1}$ : $\\mathbb P_n(U_k\\le u)=\\mathbb P_n(\\mathfrak R_k\\le F_x^{-1}(u))=\\mathbb P(\\mathrm{Bin}(n,u)\\ge k)$', correct: true, explanation: '$F_x$ est continue ($X$ a une densité) et strictement croissante tant qu’elle est $<1$ (densité minorée par $c_->0$ sur le support, (H2)), d’où l’équivalence $U_k\\le u\\iff\\mathfrak R_k\\le F_x^{-1}(u)$ ; on applique l’étape 1 en $t=F_x^{-1}(u)$, où $F_x(t)=u$, puis le rappel. C’est l’analogue de $F(X_{(k)})\\sim\\mathrm{Beta}(k,n-k+1)$ (ch.1).' },
+          { text: '$\\mathrm{Beta}(n-k+1,k)$, d’espérance $\\frac{n-k+1}{n+1}$', correct: false, explanation: 'Paramètres inversés : pour $k=1$ (plus proche voisin), $U_1$ doit être petit (espérance $\\frac1{n+1}$), pas proche de $1$.' },
+          { text: '$\\mathcal U([0,1])$, comme $F(X_1)$', correct: false, explanation: '$F(X_1)$ est uniforme pour **une** observation ; $U_k$ est la $k$-ième plus petite des $n$ valeurs i.i.d. uniformes $F_x(\\|X_i-x\\|)$ : elle se concentre autour de $\\frac k{n+1}$.' },
+          { text: '$\\mathrm{Bin}(n,u)$', correct: false, explanation: 'La binomiale est la loi de $N_t$, qui sert au calcul ; $U_k$ est à valeurs dans $[0,1]$ et a une densité.' },
+        ],
+      },
+      {
+        prompt: 'Étape 3 (Q7) — On a $c_-v_dt^d\\le F_x(t)\\le c_+v_dt^d$ (minoration lorsque $B(x,t)\\subset\\mathcal X$). Quel encadrement en déduit-on ?',
+        choices: [
+          { text: 'En $t=\\mathfrak R_k(x)$ : $\\frac{U_k}{c_+v_d}\\le\\mathfrak R_k^d\\le\\frac{U_k}{c_-v_d}$, puis en espérance $\\frac{k}{c_+v_d(n+1)}\\le\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{k}{c_-v_d(n+1)}$', correct: true, explanation: '$F_x(t)=\\int_{B(x,t)}p_X$ est compris entre $c_-$ et $c_+$ fois le volume $v_dt^d$ de la boule (la minoration demande que la boule reste dans le support, où $p_X\\ge c_-$). On évalue en $t=\\mathfrak R_k(x)$, où $F_x(t)=U_k$, on inverse, puis on prend l’espérance avec $\\mathbb E_n[U_k]=\\frac k{n+1}$ (étape 2).' },
+          { text: '$\\frac{k}{c_-v_d(n+1)}\\le\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{k}{c_+v_d(n+1)}$', correct: false, explanation: '$c_+$ et $c_-$ permutés : comme $c_-\\le c_+$, le « minorant » serait plus grand que le « majorant ». Une densité plus forte ($c_+$) rapproche les voisins : elle donne la borne **inférieure** du rayon.' },
+          { text: '$F_x(t)\\le c_+v_dt^d$ donne $\\mathfrak R_k^d\\le\\frac{U_k}{c_+v_d}$, d’où $\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{k}{c_+v_d(n+1)}$', correct: false, explanation: 'Sens de l’inégalité perdu à l’inversion : $U_k=F_x(\\mathfrak R_k)\\le c_+v_d\\mathfrak R_k^d$ donne $\\mathfrak R_k^d\\ge\\frac{U_k}{c_+v_d}$, une **minoration**. Le majorant utile (celui de la Q8) vient de $c_-$.' },
+          { text: '$\\mathfrak R_k(x)^d=U_k$, donc $\\mathbb E_n[\\mathfrak R_k(x)^d]=\\frac k{n+1}$', correct: false, explanation: '$U_k=F_x(\\mathfrak R_k)$ est la **masse** de la boule, pas son volume $v_d\\mathfrak R_k^d$ ; les deux ne sont comparables qu’à travers les bornes $c_\\pm$ de (H2).' },
+        ],
+      },
+      {
+        prompt: 'Étape 4 (Q7) — Pour quels $x$ la minoration $F_x(t)\\ge c_-v_dt^d$ est-elle justifiée ?',
+        choices: [
+          { text: 'Lorsque $B(x,t)\\subset\\mathcal X$ : hors du support, $p_X=0$ et une partie de la boule ne compte pas', correct: true, explanation: 'Près du bord de $\\mathcal X$, $F_x(t)$ peut être nettement plus petit que $c_-v_dt^d$ (en $d=1$, au bord de $[0,1]$, environ la moitié). L’énoncé de l’examen passe cet effet de bord sous silence (DIAGNOSTIC §2.A) ; le signaler en une phrase est apprécié.' },
+          { text: 'Pour tout $x\\in\\mathcal X$ et tout $t>0$, par (H2)', correct: false, explanation: '(H2) minore $p_X$ **sur le support** seulement ; la boule peut déborder de $\\mathcal X$, où la densité est nulle.' },
+          { text: 'Seulement pour $t\\le1$', correct: false, explanation: 'Le rayon n’a rien à voir : ce qui compte est que la boule reste dans le support.' },
+        ],
+      },
+    ],
+    conclusion: 'Résultat de la Q7 : $\\frac{1}{c_+v_d}\\frac{k}{n+1}\\le\\mathbb E_n[\\mathfrak R_k(x)^d]\\le\\frac{1}{c_-v_d}\\frac{k}{n+1}$, au bord près. C’est l’entrée admise de l’exercice « Examen 2025 Q8 — décomposition biais / variance » ci-dessous, où l’on passe de $\\mathbb E[\\mathfrak R_k^d]$ à $\\mathbb E[\\mathfrak R_k^2]$ par Jensen avec $u\\mapsto u^{2/d}$ concave.',
+  },
+  {
     id: 'ch9-etape-2025-q8',
     type: 'etape-suivante',
     title: 'Examen 2025 Q8 — décomposition biais / variance des k plus proches voisins',

@@ -125,7 +125,7 @@ export const exercisesPart1: Exercise[] = [
     tags: ['tcl', 'tcl-multivarie', 'variance-asymptotique'],
     question: '$Y_i\\sim\\mathcal{N}(\\mu,\\sigma^2)$ i.i.d., $\\hat\\mu_{ML}=\\bar Y_n$, $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum(Y_i-\\bar Y_n)^2$. La matrice de covariance limite de $\\sqrt n(\\hat\\theta_{ML}-\\theta)$ est :',
     options: [
-      { text: '$\\begin{pmatrix}\\sigma^2&0\\\\0&2\\sigma^4\\end{pmatrix}$', correct: true, explanation: 'Exact : $W_i=(Y_i-\\mu,(Y_i-\\mu)^2-\\sigma^2)$, $\\mathrm{Var}(Y-\\mu)=\\sigma^2$, covariance $\\mathbb{E}[(Y-\\mu)^3]=0$ par symétrie, $\\mathrm{Var}((Y-\\mu)^2)=\\sigma^4\\mathrm{Var}(\\xi^2)=2\\sigma^4$. C’est $I(\\theta)^{-1}$.' },
+      { text: '$\\begin{pmatrix}\\sigma^2&0\\\\0&2\\sigma^4\\end{pmatrix}$', correct: true, explanation: 'Exact : $W_i=(Y_i-\\mu,(Y_i-\\mu)^2-\\sigma^2)$, $\\mathrm{Var}(Y-\\mu)=\\sigma^2$, covariance $\\mathbb{E}[(Y-\\mu)^3]=0$ par symétrie, $\\mathrm{Var}((Y-\\mu)^2)=\\sigma^4\\mathrm{Var}(\\xi^2)=2\\sigma^4$. C’est $\\mathbb{I}(\\theta)^{-1}$.' },
       { text: '$\\begin{pmatrix}\\sigma^2&0\\\\0&\\sigma^4\\end{pmatrix}$', correct: false, explanation: 'Faux : $\\mathrm{Var}(\\xi^2)=2$ (rappelé dans le sujet), la variance limite de la variance empirique gaussienne est $2\\sigma^4$.' },
       { text: '$\\begin{pmatrix}\\sigma^2/n&0\\\\0&2\\sigma^4/n\\end{pmatrix}$', correct: false, explanation: 'Faux : c’est (approximativement) la covariance de $\\hat\\theta_{ML}$, pas celle de la loi limite de $\\sqrt n(\\hat\\theta_{ML}-\\theta)$ : le facteur $n$ a déjà été absorbé.' },
       { text: '$\\begin{pmatrix}\\sigma^2&\\sigma^3\\\\\\sigma^3&2\\sigma^4\\end{pmatrix}$', correct: false, explanation: 'Faux : la covariance $\\mathbb{E}[(Y-\\mu)^3]$ est nulle pour une loi symétrique ; elle serait non nulle pour une loi dissymétrique.' },
@@ -195,7 +195,7 @@ export const exercisesPart1: Exercise[] = [
       { text: 'Faux : la dérivée s’évalue au **point limite de $\\bar X_n$**, c’est-à-dire en $1/\\theta$ : $\\phi\'(1/\\theta)=-\\theta^2$, et la variance asymptotique vaut $\\theta^4\\cdot\\theta^{-2}=\\theta^2$.', correct: true, explanation: 'Le Thm 1.7 demande $g$ dérivable au point $\\theta$ où $T_n$ converge ; ici $T_n=\\bar X_n\\to1/\\theta$.' },
       { text: 'Vrai : la méthode-δ évalue toujours la dérivée en la vraie valeur du paramètre $\\theta$.', correct: false, explanation: 'Confusion : « la vraie valeur » du Thm 1.7 est la limite de $T_n$ ; si $T_n=\\bar X_n$, cette limite est $\\mathbb{E}_\\theta[X]=1/\\theta$, pas $\\theta$.' },
       { text: 'Faux : il ne faut pas élever la dérivée au carré.', correct: false, explanation: 'Erroné : le carré est bien nécessaire (variance multipliée par $\\dot g^2$) ; l’erreur de l’énoncé porte sur le point d’évaluation.' },
-      { text: 'Vrai, et on trouve $\\phi\'(\\theta)^2/\\theta^2=1/\\theta^6$.', correct: false, explanation: 'Calcul fondé sur le mauvais point ; la bonne variance est $\\theta^2=1/I(\\theta)$ (Ex. 1.7).' },
+      { text: 'Vrai, et on trouve $\\phi\'(\\theta)^2/\\theta^2=1/\\theta^6$.', correct: false, explanation: 'Calcul fondé sur le mauvais point ; la bonne variance est $\\theta^2=1/\\mathbb{I}(\\theta)$ (Ex. 1.7).' },
     ],
   },
   {
@@ -336,7 +336,7 @@ export const exercisesPart1: Exercise[] = [
       'Slutsky (iii) : remplacer $\\theta$ par $\\hat\\theta_n$ au dénominateur, $\\sqrt n\\frac{\\hat\\theta_n-\\theta}{\\hat\\theta_n/\\sqrt2}\\Rightarrow\\mathcal{N}(0,1)$.',
       'Portmanteau sur $[-z_{1-\\alpha/2},z_{1-\\alpha/2}]$ et résolution en $\\theta$ : $\\widehat I_n=\\big[\\hat\\theta_n\\pm z_{1-\\alpha/2}\\frac{\\hat\\theta_n}{\\sqrt{2n}}\\big]$, de niveau asymptotique $1-\\alpha$.',
     ],
-    explanation: 'C’est la Méthode 1.1 du poly avec $v(\\theta)=\\theta^2/2$ ($=1/I(\\theta)$ : l’EMV est asymptotiquement efficace). L’ordre TCL → δ → consistance → Slutsky → Portmanteau est la rédaction attendue à l’examen.',
+    explanation: 'C’est la Méthode 1.1 du poly avec $v(\\theta)=\\theta^2/2$ ($=1/\\mathbb{I}(\\theta)$ : l’EMV est asymptotiquement efficace). L’ordre TCL → δ → consistance → Slutsky → Portmanteau est la rédaction attendue à l’examen.',
   },
   {
     id: 'ch6-ord-serie-poisson',
@@ -409,7 +409,7 @@ export const exercisesPart1: Exercise[] = [
       'D’où l’IC de niveau asymptotique $1-\\alpha$ : $\\big[\\hat\\theta_n(1-z_{1-\\alpha/2}/\\sqrt n),\\ \\hat\\theta_n(1+z_{1-\\alpha/2}/\\sqrt n)\\big]$.',
     ],
     faultyIndex: 1,
-    explanation: '$v(\\theta)$ est la variance de la **loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$**, pas celle de $\\hat\\theta_n$ : heuristiquement $\\mathrm{Var}(\\hat\\theta_n)\\approx v(\\theta)/n=\\theta^2/n$, et $\\hat\\theta_n\\approx\\theta+\\theta\\xi/\\sqrt n$ avec $\\xi\\approx\\mathcal{N}(0,1)$. Le facteur $\\sqrt n$ a été « oublié » : c’est le piège « inverser $\\sqrt n$ » du DIAGNOSTIC. (Remarque : $v(\\theta)=\\theta^2=1/I(\\theta)$, à ne pas confondre non plus avec $1/I_n(\\theta)=\\theta^2/n$.)',
+    explanation: '$v(\\theta)$ est la variance de la **loi limite de $\\sqrt n(\\hat\\theta_n-\\theta)$**, pas celle de $\\hat\\theta_n$ : heuristiquement $\\mathrm{Var}(\\hat\\theta_n)\\approx v(\\theta)/n=\\theta^2/n$, et $\\hat\\theta_n\\approx\\theta+\\theta\\xi/\\sqrt n$ avec $\\xi\\approx\\mathcal{N}(0,1)$. Le facteur $\\sqrt n$ a été « oublié » : c’est le piège « inverser $\\sqrt n$ » du DIAGNOSTIC. (Remarque : $v(\\theta)=\\theta^2=1/\\mathbb{I}(\\theta)$, à ne pas confondre non plus avec $1/\\mathbb{I}_n(\\theta)=\\theta^2/n$.)',
   },
   {
     id: 'ch6-err-sigma-carre',

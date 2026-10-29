@@ -77,7 +77,7 @@ export const exercisesPart2: Exercise[] = [
       {
         prompt: 'Étape 3 — La méthode-δ donne $\\sqrt n(\\hat\\theta_n-\\theta)\\Rightarrow$ :',
         choices: [
-          { text: '$\\mathcal{N}(0,\\theta^2/2)$', correct: true, explanation: '$g\'(2/\\theta)^2\\cdot2/\\theta^2=\\frac{\\theta^4}4\\cdot\\frac2{\\theta^2}=\\theta^2/2=1/I(\\theta)$.' },
+          { text: '$\\mathcal{N}(0,\\theta^2/2)$', correct: true, explanation: '$g\'(2/\\theta)^2\\cdot2/\\theta^2=\\frac{\\theta^4}4\\cdot\\frac2{\\theta^2}=\\theta^2/2=1/\\mathbb{I}(\\theta)$.' },
           { text: '$\\mathcal{N}(0,\\theta^2)$', correct: false, explanation: '$\\theta^2$ est la variance asymptotique pour $\\mathcal{E}(\\theta)=\\Gamma(1,\\theta)$ ; avec $a=2$ l’information double et la variance est divisée par 2.' },
           { text: '$\\mathcal{N}(0,\\theta^4/2)$', correct: false, explanation: 'Oubli de multiplier par la variance $2/\\theta^2$ de l’étape 1 (ou erreur de simplification).' },
         ],
@@ -91,7 +91,7 @@ export const exercisesPart2: Exercise[] = [
         ],
       },
     ],
-    conclusion: 'Numériquement : $n=50$, $\\bar X_n=0{,}8$ donne $\\hat\\theta_n=2{,}5$ et l’IC à 95 % $[2{,}01;2{,}99]$. Trois routes mènent à $\\theta^2/2$ : Slutsky (LGN + TCL), théorème sur l’EMV (ch.7, $I(\\theta)=2/\\theta^2$), méthode-δ.',
+    conclusion: 'Numériquement : $n=50$, $\\bar X_n=0{,}8$ donne $\\hat\\theta_n=2{,}5$ et l’IC à 95 % $[2{,}01;2{,}99]$. Trois routes mènent à $\\theta^2/2$ : Slutsky (LGN + TCL), théorème sur l’EMV (ch.7, $\\mathbb{I}(\\theta)=2/\\theta^2$), méthode-δ.',
   },
   {
     id: 'ch6-etape-vecteur-2025',
@@ -130,7 +130,7 @@ export const exercisesPart2: Exercise[] = [
       {
         prompt: 'Étape 4 — Conclusion :',
         choices: [
-          { text: '$\\sqrt n(\\hat\\theta_{ML}-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}\\big(0,\\mathrm{diag}(\\sigma^2,2\\sigma^4)\\big)$ par TCL multivarié et Slutsky (vectoriel).', correct: true, explanation: 'Cohérent avec $I(\\theta)^{-1}$, $I(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$.' },
+          { text: '$\\sqrt n(\\hat\\theta_{ML}-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}\\big(0,\\mathrm{diag}(\\sigma^2,2\\sigma^4)\\big)$ par TCL multivarié et Slutsky (vectoriel).', correct: true, explanation: 'Cohérent avec $\\mathbb{I}(\\theta)^{-1}$, $\\mathbb{I}(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$.' },
           { text: '$\\sqrt n(\\hat\\theta_{ML}-\\theta)\\Rightarrow\\mathcal{N}(0,\\mathrm{diag}(\\sigma^2/n,2\\sigma^4/n))$.', correct: false, explanation: 'Le facteur $1/n$ a déjà été absorbé par la normalisation $\\sqrt n$.' },
           { text: 'Seules les marginales convergent ; la loi jointe n’est pas déterminée.', correct: false, explanation: 'Le TCL multivarié donne directement la loi jointe du vecteur $\\frac1{\\sqrt n}\\sum W_i$.' },
         ],
@@ -181,7 +181,7 @@ export const exercisesPart2: Exercise[] = [
         ],
       },
     ],
-    conclusion: 'Q10 : $v_{ML}=\\sigma^2<v_{Med}=\\frac\\pi2\\sigma^2$ ; $v_{Mom}\\approx\\sigma^2$ quand $\\sigma\\to0$ mais explose quand $\\sigma\\to\\infty$ (queues lourdes de la log-normale). L’EMV est toujours le meilleur (Prop. 1.3, efficacité asymptotique).',
+    conclusion: 'Q10 : $v_{ML}=\\sigma^2<v_{Med}=\\frac\\pi2\\sigma^2$ ; $v_{Mom}\\approx\\sigma^2$ quand $\\sigma\\to0$ mais explose quand $\\sigma\\to\\infty$ (queues lourdes de la log-normale). La comparaison directe des variances (Prop. 1.3) donne $v_{ML}\\le v_{Mom}$ et $v_{ML}<v_{Med}$ : l’EMV est le meilleur des trois.',
   },
   {
     id: 'ch6-etape-lognormale-theta',
@@ -220,7 +220,7 @@ export const exercisesPart2: Exercise[] = [
       {
         prompt: 'Étape 4 — La méthode-δ donne $\\sqrt n(\\hat\\theta_n-\\theta)\\Rightarrow\\mathcal{N}(0,\\sigma_0^2(\\theta))$ avec :',
         choices: [
-          { text: '$\\sigma_0^2(\\theta)=\\frac{2\\theta^2(1+2\\theta)}{(1+2\\theta)^2}=\\frac{2\\theta^2}{1+2\\theta}$', correct: true, explanation: 'Inférieur à $\\theta$ (variance asymptotique de $\\bar Y_n$) : l’EMV fait mieux que l’estimateur naïf ; c’est $1/I(\\theta)$.' },
+          { text: '$\\sigma_0^2(\\theta)=\\frac{2\\theta^2(1+2\\theta)}{(1+2\\theta)^2}=\\frac{2\\theta^2}{1+2\\theta}$', correct: true, explanation: 'Inférieur à $\\theta$ (variance asymptotique de $\\bar Y_n$) : l’EMV fait mieux que l’estimateur naïf ; c’est $1/\\mathbb{I}(\\theta)$.' },
           { text: '$\\sigma_0^2(\\theta)=2\\theta^2(1+2\\theta)$', correct: false, explanation: 'Oubli du facteur $\\varphi\'^2$.' },
           { text: '$\\sigma_0^2(\\theta)=\\theta$', correct: false, explanation: '$\\theta$ est la variance asymptotique de $\\bar Y_n$, estimateur concurrent moins précis.' },
         ],
@@ -380,7 +380,7 @@ export const exercisesPart2: Exercise[] = [
     hints: [
       'Q6 : LGN sur $Y_i$ et $Y_i^2$ puis théorème de continuité avec $(u,w)\\mapsto w-u^2$ (c’est la Prop. 1.2). Q7 : écrire $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum(Y_i-\\mu)^2-(\\bar Y_n-\\mu)^2$ (éq. (2) de l’Ex. 1.6).',
       'Q7 : vecteur $W_i=(Y_i-\\mu,(Y_i-\\mu)^2-\\sigma^2)$, covariance terme à terme (le moment d’ordre 3 centré est nul par symétrie), puis Slutsky pour le terme $\\sqrt n(\\bar Y_n-\\mu)^2$. Q8 : la médiane de $LN(\\mu,\\sigma^2)$ est $e^\\mu$ ; prendre $\\ln\\tilde X_n$ et appliquer le rappel avec $\\alpha=1/2$.',
-      'Q9 : $m_k=e^{k\\mu+k^2\\sigma^2/2}$, inverser le système en $(\\mu,\\sigma^2)$ ; TCL multivarié sur $(X_i,X_i^2)$ ; méthode-δ **vectorielle** avec $g(a,b)=2\\ln a-\\frac12\\ln b$ et $\\nabla g=(2/m_1,-1/(2m_2))$. Q10 : Prop. 1.3, $v_{ML}=\\sigma^2=1/I(\\mu)$.',
+      'Q9 : $m_k=e^{k\\mu+k^2\\sigma^2/2}$, inverser le système en $(\\mu,\\sigma^2)$ ; TCL multivarié sur $(X_i,X_i^2)$ ; méthode-δ **vectorielle** avec $g(a,b)=2\\ln a-\\frac12\\ln b$ et $\\nabla g=(2/m_1,-1/(2m_2))$. Q10 : Prop. 1.3, $v_{ML}=\\sigma^2=1/\\mathbb{I}(\\mu)$.',
     ],
     correction: `**Q6 (consistance).** Les $Y_i$ sont i.i.d. gaussiens, donc de carré intégrable ainsi que les $Y_i^2$ (moments de tous ordres). Par la LGN faible (Thm 1.2), $\\bar Y_n\\xrightarrow{\\mathbb{P}_{n,\\theta}\\text{-prob}}\\mu$ et $\\frac1n\\sum_iY_i^2\\xrightarrow{\\mathbb{P}_{n,\\theta}\\text{-prob}}\\sigma^2+\\mu^2$. Par la Prop. 2.1 le couple converge en probabilité, et par le théorème de continuité (Thm 1.1) appliqué à $(u,w)\\mapsto w-u^2$, continue, $\\widehat{\\sigma^2}_{ML}=\\frac1n\\sum_iY_i^2-\\bar Y_n^2\\to\\sigma^2$. La suite $(\\hat\\mu_{ML},\\widehat{\\sigma^2}_{ML})$ est consistante (Déf. 1.2).
 
@@ -392,7 +392,7 @@ Les $W_i$ sont i.i.d., centrés, de carré intégrable, de covariance $\\Sigma$ 
 
 $$\\sqrt n\\big(\\hat\\theta_{ML}-\\theta\\big)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}\\Big(\\begin{pmatrix}0\\\\0\\end{pmatrix},\\begin{pmatrix}\\sigma^2&0\\\\0&2\\sigma^4\\end{pmatrix}\\Big).$$
 
-(Cohérence : $\\Sigma=I(\\theta)^{-1}$ avec $I(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$.)
+(Cohérence : $\\Sigma=\\mathbb{I}(\\theta)^{-1}$ avec $\\mathbb{I}(\\mu,\\sigma^2)=\\mathrm{diag}(1/\\sigma^2,1/(2\\sigma^4))$.)
 
 **Q8 (médiane).** $\\ln$ est croissante et la médiane de $\\mathcal{N}(\\mu,\\sigma^2)$ est $\\mu$, donc la médiane de $LN(\\mu,\\sigma^2)$ est $e^\\mu$ : on pose $\\hat\\mu_{Med}:=\\ln\\tilde X_n=\\mathrm{med}(Y_1,\\dots,Y_n)$. Le rappel avec $\\alpha=1/2$, $q_{1/2}=\\mu$, $f(\\mu)=\\frac1{\\sqrt{2\\pi\\sigma^2}}$ donne
 
@@ -412,7 +412,7 @@ $$v_{Mom}=\\nabla g^\\top\\Sigma\\nabla g=4(e^{\\sigma^2}-1)-2(e^{2\\sigma^2}-1)
 
 Quand $\\sigma^2\\to\\infty$, $v_{Mom}\\sim\\frac14e^{4\\sigma^2}$.
 
-**Q10.** Variances asymptotiques : $v_{ML}=\\sigma^2$ (borne de Cramér-Rao $1/I(\\mu)$ : l’EMV est asymptotiquement efficace, ch.7 Thm 1.7), $v_{Med}=\\frac\\pi2\\sigma^2$ (efficacité relative constante $2/\\pi\\approx0{,}64$), $v_{Mom}=\\sigma^2+\\frac23\\sigma^6+\\dots$ Par la Prop. 1.3, l’EMV est toujours le meilleur. Quand $\\sigma\\to0$ : $v_{Mom}\\approx v_{ML}<v_{Med}$ (les moments sont quasi efficaces, la médiane perd 36 %). Quand $\\sigma\\to\\infty$ : $v_{ML}<v_{Med}\\ll v_{Mom}$ (les moments empiriques d’une loi à queue lourde ont une variance qui explose). La médiane est robuste (aucune hypothèse de moment, insensible aux valeurs aberrantes) ; les moments sont simples mais inadaptés aux queues lourdes.`,
+**Q10.** Variances asymptotiques : $v_{ML}=\\sigma^2$ ($=(\\mathbb{I}^{-1})_{11}$ ; efficacité asymptotique : extension vectorielle, hors programme, du Thm 1.7 du ch.7, qui est scalaire ; licite ici car $\\mathbb{I}(\\mu,\\sigma^2)$ est diagonale ; la médiane, qui n’est pas un Z-estimateur régulier, n’est pas couverte), $v_{Med}=\\frac\\pi2\\sigma^2$ (efficacité relative constante $2/\\pi\\approx0{,}64$), $v_{Mom}=\\sigma^2+\\frac23\\sigma^6+\\dots$ Par la Prop. 1.3, la comparaison directe des trois variances donne $v_{ML}\\le v_{Mom}$ et $v_{ML}<v_{Med}$ : l’EMV est toujours le meilleur des trois. Quand $\\sigma\\to0$ : $v_{Mom}\\approx v_{ML}<v_{Med}$ (les moments sont quasi efficaces, la médiane perd 36 %). Quand $\\sigma\\to\\infty$ : $v_{ML}<v_{Med}\\ll v_{Mom}$ (les moments empiriques d’une loi à queue lourde ont une variance qui explose). La médiane est robuste (aucune hypothèse de moment, insensible aux valeurs aberrantes) ; les moments sont simples mais inadaptés aux queues lourdes.`,
     bareme: [
       { label: 'Q6 consistance (LGN + continuité, couple)', points: 0.5 },
       { label: 'Q7 décomposition, covariance Σ, TCL multivarié, Slutsky', points: 0.75 },
@@ -478,13 +478,13 @@ Quand $\\sigma^2\\to\\infty$, $v_{Mom}\\sim\\frac14e^{4\\sigma^2}$.
       'Q3 : trois routes : LGN + continuité ; EQM $\\to0$ + Markov ; normalité asymptotique $\\Rightarrow$ consistance. Q4 : TCL pour $\\bar X_n$ puis méthode-δ avec $g(x)=2/x$, dérivée évaluée en $2/\\theta$.',
       'Q5 : Méthode 1.1 avec $v(\\theta)=\\theta^2/2$ : Slutsky pour remplacer $\\theta$ par $\\hat\\theta_n$ au dénominateur.',
     ],
-    correction: `**Q1.** Par indépendance, $L_n(\\theta)=\\theta^{2n}\\big(\\prod_iX_i\\big)e^{-\\theta\\sum_iX_i}$ ; $\\ell_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum_iX_i$, $\\dot\\ell_n(\\theta)=\\frac{2n}\\theta-\\sum_iX_i$, $\\ddot\\ell_n(\\theta)=-\\frac{2n}{\\theta^2}<0$ : stricte concavité, le point critique est l’unique maximum : $\\hat\\theta_n=\\frac{2n}{\\sum_iX_i}=\\frac2{\\bar X_n}$.
+    correction: `**Q1.** Par indépendance, $\\mathrm{L}_n(\\theta)=\\theta^{2n}\\big(\\prod_iX_i\\big)e^{-\\theta\\sum_iX_i}$ ; $\\log\\mathrm{L}_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum_iX_i$, $(\\log\\mathrm{L}_n)'(\\theta)=\\frac{2n}\\theta-\\sum_iX_i$, $(\\log\\mathrm{L}_n)''(\\theta)=-\\frac{2n}{\\theta^2}<0$ : stricte concavité, le point critique est l’unique maximum : $\\hat\\theta_n=\\frac{2n}{\\sum_iX_i}=\\frac2{\\bar X_n}$.
 
 **Q2.** $S:=\\sum_iX_i\\sim\\Gamma(2n,\\theta)$ (additivité). $\\mathbb{E}_\\theta[\\hat\\theta_n]=2n\\int_0^\\infty\\frac1x\\frac{\\theta^{2n}x^{2n-1}}{\\Gamma(2n)}e^{-\\theta x}\\mathrm{d}x=\\frac{2n}{2n-1}\\theta$ : biais $b(\\hat\\theta_n)=\\frac\\theta{2n-1}>0$ ; de même $\\mathbb{E}_\\theta[\\hat\\theta_n^2]=\\frac{4n^2}{(2n-1)(2n-2)}\\theta^2$, et par la décomposition biais-variance (ch.3 Prop. 1.1) $EQM(\\hat\\theta_n)=\\theta^2\\Big(\\frac{4n^2}{(2n-1)^2(2n-2)}+\\frac1{(2n-1)^2}\\Big)=\\theta^2\\frac{n+1}{(2n-1)(n-1)}$, décroissance en $1/n$ compatible avec une vitesse $\\sqrt n$.
 
 **Q3.** Par la LGN (Thm 1.2), $\\bar X_n\\xrightarrow{\\mathbb{P}_{n,\\theta}\\text{-prob}}2/\\theta$ ; $x\\mapsto2/x$ est continue en $2/\\theta>0$ ; par le théorème de continuité (Thm 1.1), $\\hat\\theta_n\\to\\theta$ : consistance. (Autres routes : $EQM\\to0$ et Markov ; ou normalité asymptotique de Q4 $\\Rightarrow$ consistance.)
 
-**Q4.** Par le TCL (Thm 1.6 ; $\\mathbb{E}_\\theta[X]=2/\\theta$, $\\mathrm{Var}_\\theta(X)=2/\\theta^2$), $\\sqrt n(\\bar X_n-2/\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,2/\\theta^2)$. $g(x)=2/x$ est $C^1$ sur $\\mathbb{R}_+^*$, $\\mathbb{P}_{n,\\theta}(\\bar X_n>0)=1$, $g\'(2/\\theta)=-\\theta^2/2$ ; par la méthode-δ (Thm 1.7), $\\sqrt n(\\hat\\theta_n-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}\\big(0,\\frac{\\theta^4}4\\cdot\\frac2{\\theta^2}\\big)=\\mathcal{N}(0,\\theta^2/2)$. (Vérification : $I(\\theta)=2/\\theta^2$ et $\\theta^2/2=1/I(\\theta)$, ch.7 Thm 1.6.)
+**Q4.** Par le TCL (Thm 1.6 ; $\\mathbb{E}_\\theta[X]=2/\\theta$, $\\mathrm{Var}_\\theta(X)=2/\\theta^2$), $\\sqrt n(\\bar X_n-2/\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,2/\\theta^2)$. $g(x)=2/x$ est $C^1$ sur $\\mathbb{R}_+^*$, $\\mathbb{P}_{n,\\theta}(\\bar X_n>0)=1$, $g\'(2/\\theta)=-\\theta^2/2$ ; par la méthode-δ (Thm 1.7), $\\sqrt n(\\hat\\theta_n-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}\\big(0,\\frac{\\theta^4}4\\cdot\\frac2{\\theta^2}\\big)=\\mathcal{N}(0,\\theta^2/2)$. (Vérification : $\\mathbb{I}(\\theta)=2/\\theta^2$ et $\\theta^2/2=1/\\mathbb{I}(\\theta)$, ch.7 Thm 1.6.)
 
 **Q5.** Par Q4 et Portmanteau, $\\lim_n\\mathbb{P}_{n,\\theta}\\big(-z_{1-\\alpha/2}\\le\\sqrt n\\frac{\\hat\\theta_n-\\theta}{\\theta/\\sqrt2}\\le z_{1-\\alpha/2}\\big)=1-\\alpha$. La normalité asymptotique entraîne $\\hat\\theta_n\\to\\theta$ en probabilité ; $v(\\theta)=\\theta^2/2$ est continue et $>0$ ; par Slutsky (iii), $\\sqrt n\\frac{\\hat\\theta_n-\\theta}{\\hat\\theta_n/\\sqrt2}\\Rightarrow\\mathcal{N}(0,1)$, d’où l’intervalle de niveau asymptotique $1-\\alpha$ (Méthode 1.1) :
 
@@ -520,7 +520,7 @@ Application : $n=50$, $\\bar X_n=0{,}8$ : $\\hat\\theta_n=2{,}5$, IC à 95 % $[2
       'Q3 : méthode-δ avec $g(\\theta)=e^{-1/\\theta}$, $g\'(\\theta)=\\theta^{-2}e^{-1/\\theta}$. Q4 : $f(q_{1/2})=\\theta^{-1}e^{-\\ln2}=\\frac1{2\\theta}$, puis transformation continue (division par $\\ln2$).',
       'Q5 : Ex. 1.6 : $\\gamma=\\mathbb{E}[(Y-\\theta)^4]-\\theta^4$ ; pour une exponentielle d’échelle $\\theta$, $\\mathbb{E}[(Y-\\theta)^4]=9\\theta^4$.',
     ],
-    correction: `**Q1.** Les $Y_i=X_i^c$ sont i.i.d. d’espérance $\\theta$ et de variance $\\theta^2<\\infty$. Par la LGN faible (Thm 1.2), $\\hat\\theta_n=\\bar Y_n\\xrightarrow{\\mathbb{P}_{n,\\theta}\\text{-prob}}\\theta$ : consistance (Déf. 1.2). Par le TCL (Thm 1.6, moment d’ordre 2), $\\sqrt n(\\hat\\theta_n-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,\\theta^2)$ : normalité asymptotique (Déf. 1.6), variance asymptotique $v(\\theta)=\\theta^2$ (qui vaut $1/I(\\theta)$ : l’EMV est asymptotiquement efficace).
+    correction: `**Q1.** Les $Y_i=X_i^c$ sont i.i.d. d’espérance $\\theta$ et de variance $\\theta^2<\\infty$. Par la LGN faible (Thm 1.2), $\\hat\\theta_n=\\bar Y_n\\xrightarrow{\\mathbb{P}_{n,\\theta}\\text{-prob}}\\theta$ : consistance (Déf. 1.2). Par le TCL (Thm 1.6, moment d’ordre 2), $\\sqrt n(\\hat\\theta_n-\\theta)\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}\\mathcal{N}(0,\\theta^2)$ : normalité asymptotique (Déf. 1.6), variance asymptotique $v(\\theta)=\\theta^2$ (qui vaut $1/\\mathbb{I}(\\theta)$ : l’EMV est asymptotiquement efficace).
 
 **Q2.** *Slutsky (Méthode 1.1).* $v(\\theta)=\\theta^2$ est continue et $>0$ ; $\\hat\\theta_n\\to\\theta$ en probabilité donc $\\hat\\theta_n/\\theta\\to1$ ; par Slutsky (iii), $\\sqrt n(\\hat\\theta_n-\\theta)/\\hat\\theta_n\\Rightarrow\\mathcal{N}(0,1)$ ; par Portmanteau, $\\big[\\hat\\theta_n(1-z_{1-\\alpha/2}/\\sqrt n),\\ \\hat\\theta_n(1+z_{1-\\alpha/2}/\\sqrt n)\\big]$ est de niveau asymptotique $1-\\alpha$. *Inversion du pivot.* $\\sqrt n(\\hat\\theta_n-\\theta)/\\theta\\Rightarrow\\mathcal{N}(0,1)$ (Ex. 1.10) ; $-z\\le\\sqrt n(\\hat\\theta_n/\\theta-1)\\le z\\iff\\frac{\\hat\\theta_n}{1+z/\\sqrt n}\\le\\theta\\le\\frac{\\hat\\theta_n}{1-z/\\sqrt n}$ (pour $z/\\sqrt n<1$) : second IC de niveau asymptotique $1-\\alpha$, analogue de Wilson (PC6 Ex. 1, méthode 3).
 

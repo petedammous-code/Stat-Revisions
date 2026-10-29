@@ -166,7 +166,12 @@ export function weaknessByTag(): { tag: string; attempts: number; rate: number }
     .sort((x, y) => x.rate - y.rate || y.attempts - x.attempts)
 }
 
-/** Items à réviser : échus (due < now), triés par urgence ; puis jamais vus. */
+/**
+ * Items à réviser : échus (due ≤ now) **ou** ratés / partiels à la dernière tentative,
+ * quelle que soit leur échéance (un échec doit être reproposé tout de suite en révision
+ * ciblée). Tri : ratés d'abord (lastOutcome croissant), puis les plus récents parmi les
+ * non réussis, puis par échéance.
+ */
 export function dueItems(now = Date.now()): { chapter: string; itemId: string; stats: ItemStats }[] {
   const d = load()
   return Object.entries(d.items)
@@ -174,8 +179,13 @@ export function dueItems(now = Date.now()): { chapter: string; itemId: string; s
       const [chapter, itemId] = k.split('::')
       return { chapter, itemId, stats }
     })
-    .filter((x) => x.stats.due <= now)
-    .sort((x, y) => x.stats.lastOutcome - y.stats.lastOutcome || x.stats.due - y.stats.due)
+    .filter((x) => x.stats.due <= now || x.stats.lastOutcome < 1)
+    .sort(
+      (x, y) =>
+        x.stats.lastOutcome - y.stats.lastOutcome ||
+        (x.stats.lastOutcome < 1 ? y.stats.last - x.stats.last : 0) ||
+        x.stats.due - y.stats.due,
+    )
 }
 
 export function recordExam(r: ExamRecord): void {

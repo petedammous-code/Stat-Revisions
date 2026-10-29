@@ -115,7 +115,7 @@ const chapter: Chapter = {
   summary:
     'Au lieu de modéliser la loi des données, on choisit une **classe** $\\mathcal C$ de règles et l’on minimise le **risque empirique** $\\widehat{\\mathrm R}_n(g)=\\frac1n\\sum_i\\ell(Y_i,g(\\mathbf X_i))$. L’excès de risque se décompose en **erreur d’approximation** (déterministe, décroissante avec la classe) et **erreur d’estimation** (aléatoire, croissante avec la classe, décroissante avec $n$) : c’est le compromis sous-/sur-apprentissage, arbitré en pratique par **validation**. Le *no free lunch* interdit toute garantie sans hypothèse. Le Th. 1.2 ramène l’erreur d’estimation au **processus empirique** $\\sup_{g\\in\\mathcal C}|\\widehat{\\mathrm R}_n(g)-R(g)|$, contrôlé pour une classe finie par **Hoeffding + borne de l’union** (et Pisier en espérance) : bornes en $\\sqrt{\\log|\\mathcal C|/n}$. Enfin, la perte 0-1 rend la minimisation combinatoire : on la **convexifie** (charnière, logistique). À l’examen : Examen 2025 Ex. 3 Q8–Q9 (biais / variance des $k$ plus proches voisins, choix de $k$, fléau de la dimension).',
   examWeight: 3,
-  prerequisites: ['ch8'],
+  prerequisites: ['ch2', 'ch3', 'ch4', 'ch6', 'ch7', 'ch8'],
   pcs: ['PC9'],
   course,
   vizs,

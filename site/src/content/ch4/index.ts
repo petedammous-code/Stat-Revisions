@@ -113,6 +113,20 @@ registerGlossary([
     definition: '$\\mathcal{I}_{n,\\alpha}$ : intervalle gaussien $[\\bar X_n\\pm z_{1-\\alpha/2}\\sigma/\\sqrt n]$ (Ex. 1.4) ou de Bienaymé-Tchebychev $[\\bar X_n\\pm1/(2\\sqrt{n\\alpha})]$ (Ex. 1.8) ; $\\mathcal{I}^\\star_{n,\\alpha}=[\\bar X_n\\pm\\sqrt{\\log(2/\\alpha)/(2n)}]$ (Hoeffding).',
     source: 'Poly ch.4, Ex. 1.4 et 1.8',
   },
+  {
+    key: 'phiTest',
+    tex: ['\\phi', '\\phi_n'],
+    name: 'Test (fonction critique)',
+    definition: 'Test $\\phi:\\mathsf{Z}\\to[0,1]$ ; $\\phi(z)$ est la probabilité de rejeter $H_0$ ayant observé $z$ (test pur si $\\phi\\in\\{0,1\\}$). Le poly note les tests avec un $\\phi$ droit.',
+    source: 'Poly ch.4, §2 ; ch.5, Déf. 1.1',
+  },
+  {
+    key: 'Xordre',
+    tex: ['X_{n:n}', 'X_{1:n}'],
+    name: 'Statistiques d’ordre extrêmes',
+    definition: '$X_{n:n}=\\max(X_1,\\dots,X_n)$, $X_{1:n}=\\min(X_1,\\dots,X_n)$ (notées $X_{(n)}$, $X_{(1)}$ au ch.1).',
+    source: 'Poly ch.2, Ex. 1.11 ; ch.6, Ex. 1.2',
+  },
 ], 'ch4')
 
 const chapter: Chapter = {
@@ -122,8 +136,8 @@ const chapter: Chapter = {
   summary:
     'Une estimation ne dit rien de sa précision : on la remplace par une **région de confiance** $\\mathcal{C}(Z)$ qui contient $g(\\theta)$ avec probabilité au moins $1-\\alpha$ **pour tout** $\\theta$ (l’aléa porte sur la région), construite par une **fonction pivotale** (Méthode 1.1 : pivot, loi, $A_\\alpha$, résolution en $\\theta$) — pivots gaussiens $\\mathcal{N}(0,1)$, Student, $\\chi^2$ (théorème de Gosset), pivot $\\chi^2(2n)$ de l’exponentielle, $X_{n:n}/\\theta$ de l’uniforme — ou, sans pivot, par une inégalité de déviation (Tchebychev, Hoeffding). Un **test** $\\phi$ décide entre $H_0$ et $H_1$ : fonction puissance, taille, niveau, approche de **Neyman-Pearson** (on contrôle le risque de première espèce ; seule décision forte : rejeter $H_0$), Méthode 2.1, tests gaussiens ($z$, Student, variance), dualité IC/test. La **$p$-valeur** $\\hat\\alpha(Z)$ est le plus petit niveau qui rejette ; uniforme sous $H_0$ quand le niveau est atteint, elle n’est **pas** la probabilité de $H_0$. Tombé : Examen 2025 Ex. 1 Q3, Ex. 2 Q5, Ex. 4 ; CC 2022 Ex. 1 Q4, Ex. 3 Q5–Q9, Ex. 4 Q8–Q9.',
   examWeight: 4,
-  prerequisites: ['ch1', 'ch3'],
-  pcs: ['PC4'],
+  prerequisites: ['ch1', 'ch2', 'ch3'],
+  pcs: ['PC4', 'PC2'],
   course,
   vizs,
   exercises,

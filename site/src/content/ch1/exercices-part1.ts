@@ -179,6 +179,22 @@ export const exercisesPart1: Exercise[] = [
       { text: '$\\mathrm{Beta}(n-k+1,k)$, d’espérance $\\dfrac{n-k+1}{n+1}$.', correct: false, explanation: 'Faux : paramètres inversés ; pour $k=n$ (maximum) on doit trouver $\\mathrm{Beta}(n,1)$ de densité $nu^{n-1}$ et d’espérance $n/(n+1)$, cohérent avec l’Ex. 1.13.' },
     ],
   },
+  {
+    id: 'ch1-qcm-2025-ex4-q7-acp',
+    type: 'qcm',
+    title: 'Examen 2025 Ex. 4 Q7 — ACP : objectif et clé mathématique',
+    source: 'Examen 2025 Ex. 4 Q7 ; DIAGNOSTIC §2.A Ex. 4 (EN3)',
+    origin: 'annale',
+    difficulty: 1,
+    tags: ['hors-programme', 'vecteurs-gaussiens'],
+    question: 'Données $\\mathbb{X}\\in\\mathbb{R}^{n\\times d}$ centrées colonne par colonne (une ligne par individu). Quel est l’objectif de l’Analyse en Composantes Principales et sa clé mathématique ?',
+    options: [
+      { text: 'Réduire la dimension en projetant les données sur le sous-espace de dimension $q$ qui conserve le maximum de variance ; ses axes sont les vecteurs propres de la covariance empirique $\\frac1n\\mathbb{X}^\\top\\mathbb{X}$ associés aux $q$ plus grandes valeurs propres (ou, de façon équivalente, la SVD de $\\mathbb{X}$).', correct: true, explanation: 'La variance des données projetées sur une direction unitaire $v$ vaut $v^\\top\\big(\\frac1n\\mathbb{X}^\\top\\mathbb{X}\\big)v$ : elle est maximale pour le vecteur propre de plus grande valeur propre (quotient de Rayleigh), puis on itère dans l’orthogonal. Même objet que la matrice de covariance d’un vecteur aléatoire (Prop. 2.4).' },
+      { text: 'Projeter sur les vecteurs propres associés aux $q$ plus **petites** valeurs propres de $\\frac1n\\mathbb{X}^\\top\\mathbb{X}$.', correct: false, explanation: 'Ce sont les directions de variance **minimale** : la projection écraserait l’essentiel de l’information (elles servent plutôt à détecter des relations linéaires presque exactes entre variables).' },
+      { text: 'Minimiser l’erreur de prédiction d’une variable cible $Y$ à partir des colonnes de $\\mathbb{X}$.', correct: false, explanation: 'Confusion avec la régression : l’ACP est **non supervisée**, elle n’utilise aucune variable cible.' },
+      { text: 'Diagonaliser $\\frac1n\\mathbb{X}^\\top\\mathbb{X}$ sans centrer les données, le centrage ne changeant pas les axes.', correct: false, explanation: 'Sans centrage, $\\frac1n\\mathbb{X}^\\top\\mathbb{X}$ est la matrice des moments d’ordre 2, pas la covariance : le premier axe pointe essentiellement vers la moyenne des données au lieu de la direction de plus grande dispersion.' },
+    ],
+  },
   // ------------------------------------------------------------------ Vrai / Faux
   {
     id: 'ch1-vf-theta-dim-infinie',

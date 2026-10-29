@@ -127,6 +127,13 @@ registerGlossary([
     definition: '$\\gamma_0=\\operatorname{signe}$ (médiane), $\\gamma_\\infty(x)=x$ (moyenne), $\\gamma_k(x)=x$ si $|x|\\le k$ et $k\\operatorname{signe}(x)$ sinon (Huber).',
     source: 'PC7 Ex. 5, éq. (5)',
   },
+  {
+    key: 'phiTestN',
+    tex: ['\\phi_n'],
+    name: 'Suite de tests',
+    definition: 'Test $\\phi_n:\\mathsf{Z}_n\\to\\{0,1\\}$ construit sur le $n$-échantillon ; $\\phi_n=1$ : on rejette $H_0$.',
+    source: 'Poly ch.4, §2 ; ch.6, §2',
+  },
 ], 'ch7')
 
 const chapter: Chapter = {
@@ -136,7 +143,7 @@ const chapter: Chapter = {
   summary:
     'La plupart des estimateurs sont définis **implicitement** : on maximise une fonction objectif empirique $\\widehat{M}_n(\\theta)=\\frac1n\\sum_i m(\\theta,X_i)$ (M-estimateur, dont l’EMV) ou on annule une équation d’estimation $\\widehat\\Psi_n(\\theta)=\\frac1n\\sum_i\\psi(\\theta,X_i)$ (Z-estimateur, dont la médiane et la moyenne). Le chapitre donne la **consistance** (convergence uniforme + maximum isolé, Thm 1.1–1.3) et la **normalité asymptotique** (TCL au numérateur, LGN au dénominateur, Slutsky : $v_\\psi=\\mathbb{E}[\\psi^2]/(\\mathbb{E}[\\psi\'])^2$, Thm 1.4–1.5). Pour l’EMV, $v=1/\\mathbb{I}(\\theta^\\star)$ (Thm 1.6), et c’est **la plus petite** variance asymptotique parmi les Z-estimateurs réguliers (Thm 1.7, par Cauchy-Schwarz). Illustrations : médiane contre EMV pour Cauchy, robustesse (PC7 Ex. 5), et ce qui casse hors régularité (Pareto : vitesse $n$ ; bord de $\\Theta$). À l’examen : Examen 2025 Ex. 2 Q7–Q8 et Q10.',
   examWeight: 2,
-  prerequisites: ['ch2', 'ch6'],
+  prerequisites: ['ch2', 'ch3', 'ch6'],
   pcs: ['PC7'],
   course,
   vizs,

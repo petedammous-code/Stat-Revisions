@@ -144,7 +144,7 @@ const chapter: Chapter = {
     'Le chapitre pose le **vocabulaire** de tout le cours : un modèle statistique $(\\mathsf{Z},\\mathcal{Z},\\mathcal{C})$ est un espace d’observations et une famille de lois candidates ; il est **paramétrique** si $\\mathcal{C}=\\{\\mathbb{P}_\\theta,\\theta\\in\\Theta\\}$, **dominé** si toutes les lois ont une densité par rapport à une même mesure $\\sigma$-finie, **identifiable** si $\\theta\\mapsto\\mathbb{P}_\\theta$ est injective. Une **statistique** est une fonction mesurable des seules observations ; elle induit un modèle dont on calcule les lois par la **fonction muette** et le **changement de variables**. Le **$n$-échantillon** formalise les observations i.i.d. (densité produit). Les théorèmes de **Cochran** et de **Gosset** ($\\bar X_n\\perp S_n^2$, $(n-1)S_n^2/\\sigma^2\\sim\\chi^2(n-1)$, Student) sont les outils de tous les exercices gaussiens. À l’examen : changement de variables (loi de $X^c$, de $\\ln X$), statistiques d’ordre, Gosset/Cochran (CC 2022 Ex. 1–4 ; Examen 2025 Ex. 2 Q1, Q3–5, Ex. 3 Q6).',
   examWeight: 3,
   prerequisites: [],
-  pcs: ['PC1'],
+  pcs: ['PC1', 'PC3', 'PC4'],
   course,
   vizs,
   exercises,

@@ -80,7 +80,7 @@ registerGlossary([
   },
   {
     key: 'Xkn',
-    tex: ['X_{k:n}', 'X_{m:n}', 'X_{m+1:n}', 'X_{k+1:n}'],
+    tex: ['X_{k:n}', 'X_{m:n}', 'X_{m+1:n}', 'X_{k+1:n}', 'X_{n:n}', 'X_{1:n}'],
     name: 'Statistiques d’ordre',
     definition: '$X_{1:n}\\le\\dots\\le X_{n:n}$ : observations rangées par ordre croissant (notées $X_{(k)}$ au ch.1) ; $X_{n:n}=\\max_iX_i$ est l’EMV de $\\mathcal{U}([0,\\theta])$.',
     source: 'Poly ch.2, Ex. 1.5, 1.6, 1.11',
@@ -158,7 +158,7 @@ const chapter: Chapter = {
     'Comment **construire** un estimateur ? Deux procédés systématiques : la **méthode des moments** (égaler moments exacts $e_j(\\vartheta)=\\mathbb{E}_\\vartheta[T_j(X_1)]$ et moments empiriques $\\frac1n\\sum_iT_j(X_i)$, Méthode 1.1) et le **maximum de vraisemblance** (maximiser $\\mathrm{L}_n(\\vartheta)=\\prod_iq_\\vartheta(X_i)$, Méthode 1.2 : annuler le score **puis vérifier le maximum global**, ou étude directe dans les modèles non réguliers comme $\\mathcal{U}([0,\\theta])$). Généralisations : Z-estimateurs (zéros de $\\Psi_n$) et M-estimateurs (maxima de $M_n$). L’heuristique de consistance de l’EMV repose sur la **divergence de Kullback-Leibler** : $\\ell_n(\\vartheta)\\to M_{\\theta^\\star}(\\vartheta)=M_{\\theta^\\star}(\\theta^\\star)-\\mathrm{KL}(\\mathbb{Q}_{\\theta^\\star},\\mathbb{Q}_\\vartheta)$, maximale en $\\theta^\\star$ seulement si le modèle est identifiable. À l’examen : point d’entrée de tous les problèmes (Examen 2025 Ex. 2 Q2 et Q9(a), Ex. 4 Q1 et Q9 ; CC 2022 Ex. 4 Q1) — une erreur ici se propage.',
   examWeight: 3,
   prerequisites: ['ch1'],
-  pcs: ['PC2'],
+  pcs: ['PC2', 'PC7'],
   course,
   vizs,
   exercises,

@@ -11,7 +11,7 @@ export const exercisesPart2: Exercise[] = [
     origin: 'pc',
     difficulty: 2,
     tags: ['emv', 'information-fisher', 'normalite-asymptotique', 'ic-asymptotique', 'gamma'],
-    setup: 'Suite de $n$-échantillons de $\\Gamma(2,\\theta)$, densité $\\theta^2xe^{-\\theta x}\\mathbb{1}_{x>0}$ (intensité), $\\theta>0$.',
+    setup: 'Suite de $n$-échantillons de $\\Gamma(2,\\theta)$, densité $\\theta^2xe^{-\\theta x}\\mathbb{1}_{x>0}$ (intensité), $\\theta>0$. On note ici $\\ell_n:=\\log\\mathrm{L}_n$ la log-vraisemblance **non normalisée** (notation de la PC7 ; au ch.2, $\\ell_n=\\frac1n\\log\\mathrm{L}_n$, même argmax), $\\dot\\ell_n$ et $\\ddot\\ell_n$ ses dérivées en $\\theta$.',
     steps: [
       {
         prompt: 'Étape 1 — Le score de l’échantillon $\\dot\\ell_n(\\theta)$ et l’EMV sont :',
@@ -399,11 +399,11 @@ Le **Thm 1.7 du ch.7** (modèle régulier, $\\Theta$ ouvert) garantit $v_\\psi\\
 
 **Q5.** Donner un intervalle de confiance asymptotique de niveau $1-\\alpha$ pour $\\theta$.`,
     hints: [
-      'Q1 : $\\ell_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum X_i$, concave. Q2 : $\\sum X_i\\sim\\Gamma(2n,\\theta)$, calculer $\\mathbb{E}[S^{-1}]$ et $\\mathbb{E}[S^{-2}]$ en reconnaissant une densité Gamma.',
+      'Q1 : $\\log\\mathrm{L}_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum X_i$ (log-vraisemblance non normalisée), concave. Q2 : $\\sum X_i\\sim\\Gamma(2n,\\theta)$, calculer $\\mathbb{E}[S^{-1}]$ et $\\mathbb{E}[S^{-2}]$ en reconnaissant une densité Gamma.',
       'Q3 : LGN + continuité de $x\\mapsto2/x$ en $2/\\theta$ (ou EQM $\\to0$ et Markov). Q4 : trois routes — Slutsky « LGN × TCL », Thm 1.6 avec $\\mathbb{I}(\\theta)=-\\mathbb{E}[\\ddot\\ell]$, méthode-δ.',
       'Q5 : pivot $\\sqrt n(\\hat\\theta_n-\\theta)/(\\theta/\\sqrt2)$, puis Slutsky pour remplacer $\\theta$ par $\\hat\\theta_n$ au dénominateur.',
     ],
-    correction: `**Q1.** Par indépendance, $\\mathrm{L}_n(\\theta)=\\theta^{2n}\\big(\\prod_iX_i\\big)e^{-\\theta\\sum_iX_i}$, donc $\\ell_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum_iX_i$, $\\dot\\ell_n(\\theta)=\\frac{2n}\\theta-\\sum_iX_i$, $\\ddot\\ell_n(\\theta)=-\\frac{2n}{\\theta^2}<0$. La log-vraisemblance est strictement concave sur $\\mathbb{R}_+^*$ ; l’annulation du score donne l’unique maximum
+    correction: `**Q1.** Par indépendance, $\\mathrm{L}_n(\\theta)=\\theta^{2n}\\big(\\prod_iX_i\\big)e^{-\\theta\\sum_iX_i}$, donc la log-vraisemblance non normalisée (notation de la PC7 ; au ch.2, $\\ell_n=\\frac1n\\log\\mathrm{L}_n$) vaut $\\ell_n(\\theta):=\\log\\mathrm{L}_n(\\theta)=C+2n\\ln\\theta-\\theta\\sum_iX_i$, $\\dot\\ell_n(\\theta)=\\frac{2n}\\theta-\\sum_iX_i$, $\\ddot\\ell_n(\\theta)=-\\frac{2n}{\\theta^2}<0$. La log-vraisemblance est strictement concave sur $\\mathbb{R}_+^*$ ; l’annulation du score donne l’unique maximum
 
 $$\\hat\\theta_n=\\frac{2n}{\\sum_iX_i}=\\frac2{\\bar X_n}.$$
 
@@ -451,11 +451,11 @@ Application : $n=50$, $\\bar X_n=0{,}8$ : $[2{,}01;2{,}99]$ à 95 %.`,
 
 **Q4 (vérification).** Calculer l’information de Fisher $\\mathbb{I}(\\theta)$ et comparer avec Q2 ; comparer avec l’estimateur naïf $\\bar Y_n$.`,
     hints: [
-      'Q1 : densité $\\frac1{\\sqrt{2\\pi}\\sigma x}e^{-(\\log x-\\mu)^2/2\\sigma^2}$ ; avec $\\mu=\\sigma^2=\\theta$, $\\ell_n(\\theta)=C-\\frac n2\\log\\theta-\\sum\\frac{Y_i^2}{2\\theta}-\\frac{n\\theta}2$ ; étudier le signe du score (trinôme en $\\theta$).',
+      'Q1 : densité $\\frac1{\\sqrt{2\\pi}\\sigma x}e^{-(\\log x-\\mu)^2/2\\sigma^2}$ ; avec $\\mu=\\sigma^2=\\theta$, $\\log\\mathrm{L}_n(\\theta)=C-\\frac n2\\log\\theta-\\sum\\frac{Y_i^2}{2\\theta}-\\frac{n\\theta}2$ ; étudier le signe du score (trinôme en $\\theta$).',
       'Q2 : l’EMV est fonction de $\\bar T_n=\\frac1n\\sum Y_i^2$ ; $\\mathbb{E}[Y^2]=\\theta+\\theta^2$, $\\mathrm{Var}(Y^2)=2\\theta^2(1+2\\theta)$ ; TCL puis méthode-δ avec $\\varphi(z)=\\sqrt{1/4+z}$.',
       'Q3 : Slutsky avec $\\sigma_0(\\hat\\theta_n)$, $\\sigma_0$ continue. Q4 : $\\dot\\ell(\\theta,y)=-\\frac1{2\\theta}+\\frac{y^2}{2\\theta^2}-\\frac12$.',
     ],
-    correction: `**Q1.** Avec $Y_i=\\log X_i$ et $\\mu=\\sigma^2=\\theta$ : $\\ell_n(\\theta)=C-\\frac n2\\log\\theta-\\sum_i\\frac{(Y_i-\\theta)^2}{2\\theta}=C-\\frac n2\\log\\theta-\\sum_i\\frac{Y_i^2}{2\\theta}-\\frac{n\\theta}2$ (la constante absorbe $-\\sum\\log X_i$, jacobien sans effet, et $\\sum Y_i$). Le score vaut
+    correction: `**Q1.** Avec $Y_i=\\log X_i$ et $\\mu=\\sigma^2=\\theta$, la log-vraisemblance non normalisée (notation de la PC7 ; au ch.2, $\\ell_n=\\frac1n\\log\\mathrm{L}_n$) vaut $\\ell_n(\\theta):=\\log\\mathrm{L}_n(\\theta)=C-\\frac n2\\log\\theta-\\sum_i\\frac{(Y_i-\\theta)^2}{2\\theta}=C-\\frac n2\\log\\theta-\\sum_i\\frac{Y_i^2}{2\\theta}-\\frac{n\\theta}2$ (la constante absorbe $-\\sum\\log X_i$, jacobien sans effet, et $\\sum Y_i$). Le score vaut
 
 $$2\\dot\\ell_n(\\theta)=-\\frac n\\theta+\\frac{\\sum_iY_i^2}{\\theta^2}-n=-\\frac{n}{\\theta^2}\\Big(\\theta^2+\\theta-\\frac1n\\sum_iY_i^2\\Big).$$
 

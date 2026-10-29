@@ -28,6 +28,15 @@ describe('Stockage de la progression', () => {
     const due = dueItems(Date.now() + 12 * 3600 * 1000)
     expect(due.map((d) => d.itemId)).toEqual(['ko'])
   })
+  it('révision ciblée : un item raté ou partiel est reproposé immédiatement, ratés d’abord', () => {
+    recordAttempt({ chapter: 'ch2', itemId: 'ok', type: 'qcm', tags: [], outcome: 1 })
+    recordAttempt({ chapter: 'ch2', itemId: 'partiel', type: 'annale', tags: [], outcome: 0.5 })
+    recordAttempt({ chapter: 'ch2', itemId: 'rate', type: 'annale', tags: [], outcome: 0 })
+    expect(dueItems().map((d) => d.itemId)).toEqual(['rate', 'partiel'])
+    // Réussi ensuite : il sort de la liste jusqu'à son échéance.
+    recordAttempt({ chapter: 'ch2', itemId: 'rate', type: 'annale', tags: [], outcome: 1 })
+    expect(dueItems().map((d) => d.itemId)).toEqual(['partiel'])
+  })
 })
 
 describe('Texte riche', () => {

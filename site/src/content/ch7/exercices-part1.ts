@@ -353,7 +353,7 @@ export const exercisesPart1: Exercise[] = [
     tags: ['hors-regularite', 'emv', 'hypotheses'],
     prompt: 'Modèle de Pareto $q_\\theta(x)=\\eta\\alpha^\\eta x^{-(1+\\eta)}\\mathbb{1}_{x\\ge\\alpha}$, $\\eta$ connu, EMV $\\hat\\alpha_n=\\min_iX_i$. Trouver la ligne fausse.',
     lines: [
-      '$\\hat\\alpha_n$ est l’EMV car, à $\\eta$ fixé, la log-vraisemblance est croissante en $\\alpha$ sur $]0,\\min_iX_i]$ et vaut $-\\infty$ au-delà.',
+      '$\\hat\\alpha_n$ est l’EMV car, à $\\eta$ fixé, la log-vraisemblance est croissante en $\\alpha{}$ sur $]0,\\min_iX_i]$ et vaut $-\\infty$ au-delà.',
       'Par le Thm 1.6, $\\sqrt n(\\hat\\alpha_n-\\alpha)\\Rightarrow\\mathcal{N}(0,1/\\mathbb{I}(\\alpha))$.',
       '$\\mathbb{P}(\\hat\\alpha_n\\ge t)=(\\alpha/t)^{n\\eta}$ pour $t\\ge\\alpha$.',
       '$n\\eta\\log(\\hat\\alpha_n/\\alpha)$ suit exactement la loi $\\mathcal{E}(1)$.',

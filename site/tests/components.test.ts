@@ -3,6 +3,7 @@ import type { Exercise, Qcm, VraiFaux, Ordonner, TrouverErreur, EtapeSuivante, A
 import { renderExercise } from '../src/components/exercise'
 import { chapters } from './helpers'
 import { resetAll, getItemStats } from '../src/core/store'
+import { parseDecimal, formatWithTolerance } from '../src/components/numerique'
 
 const base = { source: 'Test', origin: 'variante' as const, difficulty: 1 as const, tags: ['test'] }
 
@@ -38,7 +39,8 @@ describe('Composants d’exercice', () => {
       const inputs = el.querySelectorAll('input:not([type=range]):not([type=checkbox])')
       if (ex.type === 'numerique') {
         expect(inputs.length).toBe(1)
-        expect((inputs[0] as HTMLInputElement).type).toBe('number')
+        expect((inputs[0] as HTMLInputElement).type).toBe('text')
+        expect((inputs[0] as HTMLInputElement).inputMode).toBe('decimal')
       } else expect(inputs.length, `${ex.type} ne doit avoir aucun champ texte`).toBe(0)
       expect(el.querySelectorAll('textarea').length).toBe(0)
     }
@@ -110,6 +112,108 @@ describe('Composants d’exercice', () => {
     input.value = '1.955'
     ;(el.querySelector('.ex-actions .btn, .num-row .btn') as HTMLButtonElement).click()
     expect(getItemStats('test', 'n1')?.lastOutcome).toBe(1)
+  })
+
+  it('Numérique : virgule décimale française acceptée, saisie invalide refusée sans enregistrer', () => {
+    const el = renderExercise(FIXTURES[6], { chapter: 'test' })
+    const input = el.querySelector<HTMLInputElement>('.num-input')!
+    const btn = el.querySelector('.ex-actions .btn, .num-row .btn') as HTMLButtonElement
+    input.value = '1,9x'
+    btn.click()
+    expect(getItemStats('test', 'n1')).toBeUndefined()
+    input.value = ' 1,955 '
+    btn.click()
+    expect(getItemStats('test', 'n1')?.lastOutcome).toBe(1)
+    expect(el.querySelector('.feedback')?.textContent).toContain('1,96')
+  })
+
+  it('Numérique : analyse et formatage des nombres', () => {
+    expect(parseDecimal('0,62')).toBe(0.62)
+    expect(parseDecimal('0.62')).toBe(0.62)
+    expect(parseDecimal('-1,5e-3')).toBe(-0.0015)
+    expect(parseDecimal(',5')).toBe(0.5)
+    expect(parseDecimal('1 234,5')).toBe(1234.5)
+    expect(parseDecimal('')).toBeNull()
+    expect(parseDecimal('-')).toBeNull()
+    expect(parseDecimal('1,2,3')).toBeNull()
+    expect(parseDecimal('abc')).toBeNull()
+    expect(formatWithTolerance(1 / 12, 0.002)).toBe('0,0833')
+    expect(formatWithTolerance(0.3068528194400547, 0.005)).toBe('0,3069')
+    expect(formatWithTolerance(1.96, 0.01)).toBe('1,96')
+  })
+
+  it('Numérique : la valeur attendue est affichée arrondie', () => {
+    const ex = { ...FIXTURES[6], id: 'n2', answer: 1 / 12, tolerance: 0.002 } as Numerique
+    const el = renderExercise(ex, { chapter: 'test' })
+    el.querySelector<HTMLInputElement>('.num-input')!.value = '0,5'
+    ;(el.querySelector('.num-row .btn') as HTMLButtonElement).click()
+    const txt = el.querySelector('.feedback')?.textContent ?? ''
+    expect(txt).toContain('0,0833')
+    expect(txt).not.toContain('0.0833333')
+  })
+
+  it('Associer : une puce placée se déplace ou retourne dans la réserve', () => {
+    const ex = FIXTURES[5] as Associer
+    const el = renderExercise(ex, { chapter: 'test' })
+    const chipOf = (i: number) => el.querySelector<HTMLElement>(`.chip[data-pair="${i}"]`)!
+    const slots = () => [...el.querySelectorAll<HTMLElement>('.slot')]
+    chipOf(0).click()
+    slots()[0].click()
+    expect(slots()[0].querySelector('.chip[data-pair="0"]')).toBeTruthy()
+    // Toucher la puce placée la sélectionne (elle n'est pas reposée au même endroit)…
+    chipOf(0).click()
+    expect(chipOf(0).classList.contains('picked')).toBe(true)
+    // … puis toucher une autre case l'y déplace.
+    slots()[1].click()
+    expect(slots()[0].querySelector('.chip')).toBeNull()
+    expect(slots()[1].querySelector('.chip[data-pair="0"]')).toBeTruthy()
+    // Deux touchers sur la puce placée la renvoient dans la réserve.
+    chipOf(0).click()
+    chipOf(0).click()
+    expect(el.querySelector('.match-pool .chip[data-pair="0"]')).toBeTruthy()
+    expect(slots()[1].querySelector('.chip')).toBeNull()
+  })
+
+  it('Associer : utilisable au clavier', () => {
+    const ex = FIXTURES[5] as Associer
+    const el = renderExercise(ex, { chapter: 'test' })
+    document.body.append(el)
+    const press = (node: HTMLElement) => node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }))
+    for (const node of el.querySelectorAll<HTMLElement>('.chip, .slot')) {
+      expect(node.tabIndex).toBe(0)
+      expect(node.getAttribute('role')).toBe('button')
+    }
+    for (let i = 0; i < ex.pairs.length; i++) {
+      press(el.querySelector<HTMLElement>(`.match-pool .chip[data-pair="${i}"]`)!)
+      const slot = el.querySelectorAll<HTMLElement>('.slot')[i]
+      press(slot)
+      expect(document.activeElement).toBe(el.querySelectorAll<HTMLElement>('.slot')[i])
+    }
+    ;(el.querySelector('.ex-actions .btn') as HTMLButtonElement).click()
+    expect(getItemStats('test', 'a1')?.lastOutcome).toBe(1)
+    el.remove()
+  })
+
+  it('Ordonner : un défilement tactile commencé sur une étape ne la déplace pas ; la poignée, si', () => {
+    const el = renderExercise(FIXTURES[2], { chapter: 'test' })
+    const order = () => [...el.querySelectorAll('.sortable-item .step-body')].map((x) => x.textContent?.trim())
+    const touch = (node: Element, type: string, y: number) => {
+      const ev = new Event(type, { bubbles: true, cancelable: true })
+      Object.defineProperty(ev, 'touches', { value: [{ clientY: y }] })
+      Object.defineProperty(ev, 'changedTouches', { value: [{ clientY: y }] })
+      node.dispatchEvent(ev)
+    }
+    const before = order()
+    const body = el.querySelectorAll('.sortable-item .step-body')[2]
+    touch(body, 'touchstart', 300)
+    touch(body, 'touchend', 50)
+    expect(order()).toEqual(before)
+    const handle = el.querySelectorAll('.sortable-item .drag-handle')[2]
+    touch(handle, 'touchstart', 10)
+    touch(handle, 'touchend', 8)
+    const after = order()
+    expect(after).not.toEqual(before)
+    expect(after[0]).toBe(before[2])
   })
 
   it('Annale : indices progressifs, correction, auto-évaluation', () => {

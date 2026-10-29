@@ -222,6 +222,21 @@ export const exercisesPart2: Exercise[] = [
     ],
   },
   {
+    id: 'ch5-assoc-2025-ex4-q12',
+    type: 'associer',
+    title: 'Examen 2025 Ex. 4 Q12 — quel test pour quelle hypothèse en régression multiple ?',
+    source: 'Examen 2025 Ex. 4 Q12 ; DIAGNOSTIC §2.A Ex. 4 ; PC5 Ex. 4 (= Exercice 6 du poly, complément)',
+    origin: 'annale',
+    difficulty: 2,
+    tags: ['hors-programme', 'regression', 'fisher'],
+    prompt: 'Données ozone : $\\mathbf{Y}=Z\\beta+\\varepsilon$, $\\varepsilon\\sim\\mathcal{N}(0,\\sigma^2I_n)$, $\\sigma^2$ inconnue, $Z$ de taille $n\\times p$ et de rang $p$ (constante, $T12$, $Vx$ et les $K-1$ indicatrices de la nébulosité $Ne12$, codée comme variable qualitative à $K$ modalités). $SCR$ et $SCR_0$ sont les sommes des carrés des résidus du modèle complet et du sous-modèle. Associer chaque question à son test.',
+    pairs: [
+      { left: '(i) Le vent $Vx$ influence-t-il $O_3$ ? $H_0:\\beta_{Vx}=0$ contre $\\beta_{Vx}\\ne0$', right: 'Test de Student : $T=\\hat\\beta_{Vx}/\\widehat{se}(\\hat\\beta_{Vx})\\sim t(n-p)$ sous $H_0$, rejet si $|T|$ est grand', explanation: 'Une seule contrainte linéaire : $\\hat\\beta_{Vx}$ gaussien, $\\widehat{se}$ construit avec $SCR/(n-p)$ indépendant (Cochran), d’où une Student à $n-p$ degrés de liberté.' },
+      { left: '(ii) Y a-t-il un effet de la nébulosité ? $H_0$ : les $K-1$ coefficients des indicatrices de $Ne12$ sont nuls', right: 'Test de Fisher de sous-modèle : $F\\sim F(K-1,n-p)$ sous $H_0$', explanation: 'Une variable qualitative à $K$ modalités apporte $K-1$ coefficients (une modalité de référence absorbée par la constante) : on teste $K-1$ contraintes simultanément.' },
+      { left: '(iii) $O_3$ dépend-il conjointement de $Vx$ et $T12$ ? $H_0:\\beta_{Vx}=\\beta_{T12}=0$', right: '$F=\\dfrac{(SCR_0-SCR)/2}{SCR/(n-p)}\\sim F(2,n-p)$ sous $H_0$, rejet si $F$ est grand', explanation: 'Deux contraintes : numérateur $\\chi^2(2)/2$ et dénominateur $\\chi^2(n-p)/(n-p)$ indépendants par Cochran (Exercice 6 du poly, $p-r=2$).' },
+    ],
+  },
+  {
     id: 'ch5-assoc-familles',
     type: 'associer',
     title: 'Familles et statistique du rapport monotone',

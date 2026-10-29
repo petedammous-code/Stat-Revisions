@@ -52,7 +52,7 @@ registerGlossary([
   },
   {
     key: 'convLoiPoly',
-    tex: ['\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}', '\\overset{\\mathbb{P}_n}{\\Longrightarrow}', '\\Longrightarrow', '\\Rightarrow'],
+    tex: ['\\overset{\\mathbb{P}_{n,\\theta}}{\\Longrightarrow}', '\\overset{\\mathbb{P}_n}{\\Longrightarrow}'],
     name: 'Convergence en loi (notation du poly)',
     definition: '$Y_n\\overset{\\mathbb{P}_n}{\\Longrightarrow}\\mu$ : pour toute $f$ continue bornée, $\\mathbb{E}_n[f(Y_n)]\\to\\int f\\,\\mathrm{d}\\mu$. Double flèche surmontée de la probabilité sous laquelle on travaille.',
     source: 'Poly ch.6, Déf. 1.4',
@@ -147,6 +147,13 @@ registerGlossary([
     name: 'Fonction puissance du n-ième test',
     definition: '$\\beta_{\\phi_n}(\\theta)=\\mathbb{P}_{n,\\theta}(\\phi_n=1)$ : probabilité de rejeter $H_0$ avec le $n$-ième test. Taille asymptotique $\\sup_{\\Theta_0}\\limsup_n\\beta_{\\phi_n}$ ; consistance : $\\liminf_n\\beta_{\\phi_n}(\\theta)=1$ sur $\\Theta_1$.',
     source: 'Poly ch.6, Déf. 1.9–1.11',
+  },
+  {
+    key: 'phiTestN',
+    tex: ['\\phi_n'],
+    name: 'Suite de tests',
+    definition: 'Test $\\phi_n:\\mathsf{Z}_n\\to\\{0,1\\}$ construit sur le $n$-échantillon ; $\\phi_n=1$ : on rejette $H_0$.',
+    source: 'Poly ch.4, §2 ; ch.6, §2',
   },
 ], 'ch6')
 

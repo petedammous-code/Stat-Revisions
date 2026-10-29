@@ -178,7 +178,7 @@ const chapter: Chapter = {
   summary:
     'On ne cherche plus à estimer un paramètre mais une **règle de prédiction** $g:\\mathsf{X}\\to\\mathsf{Y}$, jugée par son **risque** $R(g)=\\mathbb{E}[\\ell(Y,g(\\mathbf{X}))]$ sous une loi $\\mathbb{P}$ inconnue du couple $(\\mathbf{X},Y)$. Si $\\mathbb{P}$ était connue, la règle optimale serait l’**espérance conditionnelle** $\\mathbb{E}[Y\\mid\\mathbf{X}]$ (perte quadratique, Th. 1.1) ou le **classifieur de Bayes** $g^\\star=2\\,\\mathbb{1}_{\\{\\eta\\ge1/2\\}}-1$ (perte 0–1, Th. 1.2), avec la formule d’**excès de risque** $\\mathbb{E}[|2\\eta(\\mathbf{X})-1|\\mathbb{1}_{\\{g\\ne g^\\star\\}}]$ et le **risque bayésien** $\\mathbb{E}[\\min(\\eta,1-\\eta)]$. Comme $\\mathbb{P}$ est inconnue, on **modélise** la loi, on estime le paramètre et on substitue (règle *plug-in* : LDA, QDA, logistique, linéaire gaussien) ; si le modèle est bien spécifié, l’excès de risque moyen tend vers 0 (Prop. 1.5, via $R(\\tilde g)-R^\\star\\le2\\,\\mathbb{E}|\\eta-\\tilde\\eta|$). C’est un problème entier de l’examen (Examen 2025 Ex. 3, CC 2022 Ex. 5) dont les premières questions sont du cours récité.',
   examWeight: 5,
-  prerequisites: ['ch1'],
+  prerequisites: ['ch1', 'ch2', 'ch6', 'ch7'],
   pcs: ['PC8'],
   course,
   vizs,

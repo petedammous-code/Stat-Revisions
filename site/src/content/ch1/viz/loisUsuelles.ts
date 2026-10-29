@@ -132,7 +132,7 @@ const LAWS: Record<Law, LawSpec> = {
     support: (p) => [-0.2, p.theta + 0.2],
     tex: (p) => `\\mathcal{U}([0,${fmt(p.theta)}])`,
     densityTex: 'p_\\theta(x)=\\frac1\\theta\\mathbb{1}_{[0,\\theta]}(x)',
-    comment: 'Attente d’un bus à horaire régulier (Ex. 1.3). Le **support dépend de $\\theta$** : modèle non régulier (chapitre 3), EMV $X_{(n)}$ (Ex. 1.13).',
+    comment: 'Attente d’un bus à horaire régulier (Ex. 1.3). Le **support dépend de $\\theta$** : modèle non régulier (chapitre 3), EMV $X_{(n)}$ (ch.2, Ex. 1.11 ; sa loi : Ex. 1.13).',
   },
   student: {
     label: 'Student',

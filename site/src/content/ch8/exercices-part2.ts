@@ -466,7 +466,7 @@ en utilisant $\\mathbb{1}_{\\{g(X)=1\\}}=1-\\mathbb{1}_{\\{g(X)=-1\\}}$. Le seco
     difficulty: 3,
     tags: ['knn', 'risque-bayesien', 'esperance-conditionnelle'],
     durationMin: 25,
-    statement: `$(X,Y),(X_1,Y_1),\\dots,(X_n,Y_n)$ i.i.d., $Y\\in\\{-1,1\\}$, $\\eta(x)=\\mathbb{P}(Y=1\\mid X=x)$ continue. Règle du plus proche voisin : $\\hat h_n(x)=Y_{\\varphi_n(x)}$ avec $\\varphi_n(x)=\\arg\\min_i\\|x-X_i\\|$ ; on note $X_{(n)}=X_{\\varphi_n(X)}$ et l’on admet $X_{(n)}\\to X$ en probabilité. On pose $r^\\star=\\min(\\eta(X),1-\\eta(X))$, $R^\\star=\\mathbb{E}[r^\\star]$.
+    statement: `$(X,Y),(X_1,Y_1),\\dots,(X_n,Y_n)$ i.i.d., $Y\\in\\{-1,1\\}$, $\\eta(x)=\\mathbb{P}(Y=1\\mid X=x)$ continue. Règle du plus proche voisin : $\\hat h_n(x)=Y_{\\varphi_n(x)}$ avec $\\varphi_n(x)=\\arg\\min_i\\|x-X_i\\|$ ; on note $X_{(n)}=X_{\\varphi_n(X)}$ (notation du CC 2022 : plus proche voisin de $X$ ; à ne pas confondre avec la statistique d’ordre $X_{(n)}=\\max_iX_i$ du ch.1) et l’on admet $X_{(n)}\\to X$ en probabilité. On pose $r^\\star=\\min(\\eta(X),1-\\eta(X))$, $R^\\star=\\mathbb{E}[r^\\star]$.
 
 **Q1.** Montrer que $r^\\star(1-r^\\star)=\\eta(X)(1-\\eta(X))$.
 

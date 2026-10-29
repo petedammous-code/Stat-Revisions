@@ -58,16 +58,16 @@ export const GLOSSARY: GlossaryEntry[] = [
   {
     key: 'elln',
     tex: ['\\ell_n', '\\ell_n(\\theta)'],
-    name: 'Log-vraisemblance',
-    definition: '$\\ell_n(\\theta) = \\log L_n(\\theta) = \\sum_{i=1}^n \\log p_\\theta(X_i)$.',
-    source: 'Poly ch.2',
+    name: 'Log-vraisemblance (normalisée)',
+    definition: '$\\ell_n(\\vartheta)=\\frac1n\\log\\mathrm{L}_n(\\vartheta)=\\frac1n\\sum_{i=1}^n\\log q_\\vartheta(X_i)$ (log-vraisemblance normalisée, Poly ch.2 Déf. 1.5) ; certains corrigés de PC et le poly ch.7 (Ex. 1.10) écrivent $\\ell_n$ sans le facteur $\\frac1n$ (même argmax).',
+    source: 'Poly ch.2, Déf. 1.5',
   },
   {
     key: 'Ifisher',
-    tex: ['I(\\theta)', 'I_n(\\theta)', 'I_1(\\theta)'],
+    tex: ['\\mathbb{I}(\\theta)', '\\mathbb{I}_1(\\theta)', '\\mathbb{I}_n(\\theta)', 'I(\\theta)', 'I_n(\\theta)', 'I_1(\\theta)'],
     name: 'Information de Fisher',
-    definition: 'Dans un modèle régulier, $I(\\theta) = \\mathbb{E}_\\theta\\big[\\nabla_\\theta \\log p_\\theta(X)\\,\\nabla_\\theta \\log p_\\theta(X)^T\\big]$ ; pour un $n$-échantillon, $I_n(\\theta) = n\\,I(\\theta)$.',
-    source: 'Poly ch.2 / ch.3',
+    definition: 'Dans un modèle régulier, $\\mathbb{I}(\\theta) = \\mathbb{E}_\\theta\\big[\\nabla_\\theta \\log p_\\theta(X)\\,\\nabla_\\theta \\log p_\\theta(X)^\\top\\big]$ (lettre ajourée, comme le poly) ; pour un $n$-échantillon, $\\mathbb{I}_n(\\theta) = n\\,\\mathbb{I}(\\theta)$.',
+    source: 'Poly ch.3, Déf. 1.8 ; ch.7, Déf. 1.4',
   },
   {
     key: 'thetahat',
@@ -123,13 +123,6 @@ export const GLOSSARY: GlossaryEntry[] = [
     tex: ['H_1'],
     name: 'Hypothèse alternative',
     definition: 'Hypothèse $H_1 : \\theta \\in \\Theta_1$ (avec $\\Theta_0 \\cap \\Theta_1 = \\emptyset$).',
-    source: 'Poly ch.4',
-  },
-  {
-    key: 'phi',
-    tex: ['\\varphi', '\\phi', '\\varphi_n', '\\phi_n'],
-    name: 'Fonction critique (test)',
-    definition: 'Test $\\varphi : \\mathsf{Z} \\to [0,1]$ ; $\\varphi(z)$ est la probabilité de rejeter $H_0$ ayant observé $z$ (test pur si $\\varphi \\in \\{0,1\\}$).',
     source: 'Poly ch.4',
   },
   {

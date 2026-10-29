@@ -148,6 +148,20 @@ registerGlossary([
     definition: '$\\phi^{\\star,1}$ : rejet si $\\bar X_n>\\theta_0+z_{1-\\alpha}/\\sqrt n$ (à droite) ; $\\phi^{\\star,2}$ : rejet si $\\bar X_n<\\theta_0-z_{1-\\alpha}/\\sqrt n$ (à gauche) ; $\\phi^{\\star,3}$ : rejet si $|\\bar X_n-\\theta_0|>z_{1-\\alpha/2}/\\sqrt n$ (bilatéral, U.M.P.U.).',
     source: 'Poly ch.5, Exercice 5 ; PC5 Ex. 2',
   },
+  {
+    key: 'phiTest',
+    tex: ['\\phi', '\\phi_n'],
+    name: 'Test (fonction critique)',
+    definition: 'Test $\\phi:\\mathsf{Z}\\to[0,1]$ ; $\\phi(z)$ est la probabilité de rejeter $H_0$ ayant observé $z$ (test pur si $\\phi\\in\\{0,1\\}$). Le poly note les tests avec un $\\phi$ droit.',
+    source: 'Poly ch.4, §2 ; ch.5, Déf. 1.1',
+  },
+  {
+    key: 'Xordre',
+    tex: ['X_{n:n}', 'X_{1:n}'],
+    name: 'Statistiques d’ordre extrêmes',
+    definition: '$X_{n:n}=\\max(X_1,\\dots,X_n)$, $X_{1:n}=\\min(X_1,\\dots,X_n)$ (notées $X_{(n)}$, $X_{(1)}$ au ch.1).',
+    source: 'Poly ch.2, Ex. 1.11 ; ch.6, Ex. 1.2',
+  },
 ], 'ch5')
 
 const chapter: Chapter = {
@@ -157,8 +171,8 @@ const chapter: Chapter = {
   summary:
     'À niveau $\\alpha$ fixé, quel est le **meilleur** test ? Neyman-Pearson répond : celui qui maximise la puissance en **chaque** point de l’alternative (test U.P.P.). Pour deux hypothèses simples, le test optimal rejette quand le **rapport de vraisemblance** $r(z)=p_{\\theta_1}(z)/p_{\\theta_0}(z)$ dépasse un seuil $c_\\alpha$ réglé pour que la taille vaille **exactement** $\\alpha$ (Th. 1.1), et il est essentiellement unique (Th. 1.2). Dans une famille à **rapport de vraisemblance monotone**, le même test est optimal contre toute l’alternative unilatérale (Th. 1.3–1.4) ; en bilatéral, aucun test n’est U.P.P. (Prop. 1.1). C’est l’exercice « test U.P.P. » de chaque annale (CC 2022 Ex. 1, Examen 2025 Ex. 1 Q2).',
   examWeight: 4,
-  prerequisites: ['ch4'],
-  pcs: ['PC5'],
+  prerequisites: ['ch2', 'ch3', 'ch4'],
+  pcs: ['PC5', 'PC4'],
   course,
   vizs,
   exercises,
