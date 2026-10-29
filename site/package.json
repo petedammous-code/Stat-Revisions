@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.json",
-    "test": "vitest run",
+    "test": "node -e \"for (const d of ['node_modules/.vitest-cache','node_modules/.vite']) require('fs').rmSync(d,{recursive:true,force:true})\" && vitest run",
     "check": "npm run typecheck && npm run test && npm run build"
   },
   "dependencies": {
