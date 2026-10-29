@@ -51,6 +51,8 @@ function renderSection(ch: Chapter, section: CourseSection, openByDefault: boole
     if (d.open) {
       markRead(`${ch.slug}:${section.id}`)
       d.classList.add('read')
+      // Les graphes Plotly montés dans une section repliée ont une largeur fausse : on force un redimensionnement.
+      requestAnimationFrame(() => window.dispatchEvent(new Event('resize')))
     }
   })
   return d

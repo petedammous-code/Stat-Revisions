@@ -169,6 +169,9 @@ export function feedback(kind: 'ok' | 'ko' | 'partial' | 'info', text: string): 
 export function details(summary: string, body: HTMLElement | string, open = false): HTMLDetailsElement {
   const d = el('details', 'fold')
   if (open) d.open = true
+  d.addEventListener('toggle', () => {
+    if (d.open) requestAnimationFrame(() => window.dispatchEvent(new Event('resize')))
+  })
   const s = el('summary')
   s.innerHTML = richToHtml(summary).replace(/^<p>|<\/p>$/g, '')
   d.append(s)
